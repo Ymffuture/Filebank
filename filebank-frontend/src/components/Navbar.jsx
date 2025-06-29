@@ -80,8 +80,8 @@ export default function Navbar() {
     <Header className="sticky top-2 z-50 bg-[#adc6df] px-4 flex flex-wrap justify-between items-center shadow rounded">
       <Space>
         
-        <img src={logo} alt="FileBank Logo" className="w-35 h-8" />
-        <span className='text-white'>Powered by Qurovex</span>
+        <img src={logo} alt="FileBank Logo" className="w-20 h-8" />
+        <span className='text-white md:block hidden'>Powered by Qurovex</span>
         <Menu
           mode="horizontal"
           theme="dark"
