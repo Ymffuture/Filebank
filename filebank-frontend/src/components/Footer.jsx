@@ -4,7 +4,7 @@ import { Tooltip } from 'antd';
 
 const Footer = () => {
   return (
-    <footer className="bg-[#F0F8FF] py-6 mt-10 shadow-inner">
+    <footer className="bg-[#e0eefa] py-6 mt-0 shadow-inner">
       <div className="flex justify-center gap-6 text-[#1E90FF] text-xl">
         <Tooltip title="Facebook">
           <a

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Layout, Menu, Avatar, Dropdown, Space, Badge, Button, message } from 'antd';
-import { BellOutlined, DownOutlined } from '@ant-design/icons';
+import { BellOutlined, DashboardOutlined, DownOutlined, FileOutlined } from '@ant-design/icons';
 import { GoogleLogin, googleLogout } from '@react-oauth/google';
 import { jwtDecode } from 'jwt-decode';
 import api from '../api/fileApi';
@@ -71,15 +71,17 @@ export default function Navbar() {
   );
 
   const mainMenuItems = [
-    { key: 'dashboard', label: <a href="/dashboard">Dashboard</a> },
-    { key: 'files', label: <a href="/files">Files</a> },
+    { key: 'dashboard', label: <a href="/dashboard"><DashboardOutlined/> Dashboard</a> },
+    { key: 'files', label: <a href="/files"><FileOutlined/> Files</a> },
     user?.role === 'admin' && { key: 'admin', label: <a href="/admin">Admin Panel</a> }
   ].filter(Boolean);
 
   return (
-    <Header className="sticky top-0 z-50 bg-[#1E90FF] px-4 flex flex-wrap justify-between items-center shadow">
+    <Header className="sticky top-2 z-50 bg-[#adc6df] px-4 flex flex-wrap justify-between items-center shadow rounded">
       <Space>
-        <img src={logo} alt="FileBank Logo" className="w-30 h-8" />
+        
+        <img src={logo} alt="FileBank Logo" className="w-35 h-8" />
+        <span className='text-white'>Powered by Qurovex</span>
         <Menu
           mode="horizontal"
           theme="dark"

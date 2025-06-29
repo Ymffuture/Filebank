@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { Upload, Button, Alert, message, Progress } from 'antd';
 import { UploadOutlined } from '@ant-design/icons';
 import api from '../api/fileApi';
-import FileList from './FileList';
 
 export default function FileUpload({ onUpload }) {
   const [files, setFiles] = useState([]); // start with empty array
@@ -17,6 +16,8 @@ export default function FileUpload({ onUpload }) {
       return;
     }
 
+
+
     const formData = new FormData();
     files.forEach(f => formData.append('file', f));
 
@@ -27,7 +28,7 @@ export default function FileUpload({ onUpload }) {
       const res = await api.post('/upload', formData, {
         headers: { 'Content-Type': 'multipart/form-data' },
         onUploadProgress: (e) => {
-          const percent = Math.round((e.loaded * 100) / e.total);
+          const percent = Math.floor((e.loaded * 100) / e.total);
           setProgress(percent);
         }
       });
@@ -46,10 +47,19 @@ export default function FileUpload({ onUpload }) {
     }
   };
 
+const beforeUpload =(file)=>{
+ 
+    
+}
   return (
-    <div className="bg-[#F0F8FF] p-4 rounded shadow">
+    <div className="bg-[#E1EEFA] p-2 -m-0 rounded flex-1/12 text-[white]">
       <Upload
         beforeUpload={(file) => {
+           const isLt2M =file.size/1024/1024<2;
+  if(!isLt2M){
+    setText('File size exceeds 2MB')
+ return isLt2M || Upload.LIST_IGNORE;
+  }
           setFiles(prev => [...prev, file]);
           setText("");
           setText2("");
@@ -60,17 +70,26 @@ export default function FileUpload({ onUpload }) {
         onRemove={(file) => {
           setFiles(prev => prev.filter(f => f.uid !== file.uid));
         }}
+        className='flex gap-9'
+        showUploadList={{
+        showPreviewIcon:true,
+        showRemoveIcon:true,
+        showDownloadIcon:true,
+        }}
+        listType='picture-card'
+        disabled={uploading}
       >
-        <Button icon={<UploadOutlined />} disabled={uploading}>
-          Select File(s)
+        <Button  disabled={uploading} type='link'>
+         Import/Drop file(s)
         </Button>
       </Upload>
 
       <div className="mt-2">
         <Button
-          type="primary"
+          type="link"
           onClick={handleSubmit}
           loading={uploading}
+          icon={<UploadOutlined />}
         >
           {uploading ? 'Uploading...' : 'Upload'}
         </Button>
@@ -82,11 +101,18 @@ export default function FileUpload({ onUpload }) {
         </div>
       )}
       <br />
-      <hr />
+  
       <br />
-      {text && <Alert message={text} type="error" className="mt-2" />}
-      {text2 && <Alert message={text2} type="success" className="mt-2" />}
-      <FileList />
+      {text && <Alert message={text} type="error" className="mt-2 select-none" 
+       description='Please check the internet connection'
+      closable
+      banner
+      />}
+      {text2 && <Alert message={text2} type="success" className="mt-2 select-none" 
+      closable
+      banner
+      />}
+  
     </div>
   );
 }

@@ -1,1 +1,13 @@
 @import "tailwindcss";
+
+.ant-upload-list-item-name{
+
+    color:#014e14;
+}
+
+.ant-progress-bg{
+    background: #014e14;
+}
+.ant-layout-header{
+    background: #001529;
+}
