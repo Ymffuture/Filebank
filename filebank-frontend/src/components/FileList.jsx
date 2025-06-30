@@ -2,10 +2,10 @@ import React, { useEffect, useState } from 'react';
 import { Card, Button, Space, message, Popconfirm } from 'antd';
 import { DeleteOutlined, DownloadOutlined, FileOutlined } from '@ant-design/icons';
 import api from '../api/fileApi';
-import { io } from 'socket.io-client';
+
 export default function FileList() {
   const [files, setFiles] = useState([]);
-const socket = io('http://localhost:5000');
+
   const fetchFiles = async () => {
     try {
       const res = await api.get('/');
@@ -18,12 +18,8 @@ const socket = io('http://localhost:5000');
 
 useEffect(() => {
   fetchFiles();
-
-  socket.on('filesUpdated', fetchFiles);
-
-  return () => {
-    socket.off('filesUpdated');
-  };
+  const interval = setInterval(fetchFiles, 5000); // every 5 seconds
+  return () => clearInterval(interval);
 }, []);
 
   const handleDelete = async (slug) => {
@@ -36,7 +32,6 @@ useEffect(() => {
       message.error('Delete failed');
     }
   };
-
 
 
   return (

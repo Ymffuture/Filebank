@@ -2,7 +2,7 @@ import axios from 'axios';
 
 // Create a shared Axios instance
 const api = axios.create({
-  baseURL: 'http://localhost:5000/', // works for /auth, /files, /notifications etc.
+  baseURL: 'http://localhost:5000/api/files', // works for /auth, /files, /notifications etc.
 });
 
 // Request interceptor: Attach token
