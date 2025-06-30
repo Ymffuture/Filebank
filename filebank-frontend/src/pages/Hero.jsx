@@ -72,7 +72,7 @@ export default function Hero() {
   return (
     <div
       style={{
-        minHeight: '80vh',
+        minHeight: '85vh',
         padding: '3rem 1.5rem',
         color: 'white',
         textAlign: 'center',
@@ -80,8 +80,8 @@ export default function Hero() {
         flexDirection: 'column',
         justifyContent: 'center',
         background: `radial-gradient(circle at top left, ${ratColors.blue} 0%, ${ratColors.gold} 20%, ${ratColors.green} 40%, ${ratColors.darkBlue} 60%, ${ratColors.blue} 80%, ${ratColors.lightBlue} 100%)`,
-        borderRadius: '16px',
-        maxWidth: 960,
+        borderRadius: '8px',
+        maxWidth: 1260,
         margin: '2rem auto',
         boxShadow: '0 8px 24px rgb(0 0 0 / 0.2)',
       }}
