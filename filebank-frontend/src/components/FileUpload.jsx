@@ -3,14 +3,14 @@ import { Upload, Button, Alert, message, Progress } from 'antd';
 import { UploadOutlined } from '@ant-design/icons';
 import api from '../api/fileApi';
 
-import { useSnackbar } from 'notistack';
+// import { useSnackbar } from 'notistack';
 export default function FileUpload({ onUpload }) {
   const [files, setFiles] = useState([]); // start with empty array
   const [uploading, setUploading] = useState(false);
   const [progress, setProgress] = useState(0);
   const [text, setText] = useState("");
   const [text2, setText2] = useState("");
-  const {enqueueSnackbar} = useSnackbar()
+  // const {enqueueSnackbar} = useSnackbar()
 const handleSubmit = async () => {
   if (files.length === 0) {
     setText('No files selected.');
@@ -34,13 +34,13 @@ const handleSubmit = async () => {
 
     if (onUpload) {onUpload(res.data);
     setText2('Upload complete 100%.');
-    enqueueSnackbar('Upload successful!',{variant:'success'});
+    // enqueueSnackbar('Upload successful!',{variant:'success'});
     setFiles([]); 
   }
   }catch(err) {
     console.error(err);
     setText('Upload file failed, please try again.');
-    enqueueSnackbar('Upload failed.',{variant:'error'});
+   // enqueueSnackbar('Upload failed.',{variant:'error'});
   }finally {
     setUploading(false);
     setProgress(0);
