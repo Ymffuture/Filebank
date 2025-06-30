@@ -66,14 +66,7 @@ export default function Navbar() {
   );
 
   const mainMenuItems = [
-    {
-      key: 'dashboard',
-      label: (
-        <Link to="/dashboard" className="flex items-center gap-1">
-          <DashboardOutlined /> Dashboard
-        </Link>
-      ),
-    },
+
     {
       key: 'files',
       label: (
