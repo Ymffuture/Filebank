@@ -1,16 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import { Layout, Menu, Avatar, Dropdown, Space, Badge, Button, message } from 'antd';
 import { BellOutlined, DashboardOutlined, DownOutlined, FileOutlined } from '@ant-design/icons';
-import { GoogleLogin, googleLogout } from '@react-oauth/google';
+ import { GoogleLogin, googleLogout } from '@react-oauth/google';
 import { jwtDecode } from 'jwt-decode';
 import api from '../api/fileApi';
 import logo from '/vite.svg';
+import { Link, useNavigate } from 'react-router-dom';
 
 const { Header } = Layout;
 
 export default function Navbar() {
   const [user, setUser] = useState(() => JSON.parse(localStorage.getItem('filebankUser')));
   const [notifications, setNotifications] = useState(0);
+const navigate = useNavigate();
 
   useEffect(() => {
     if (user) {
@@ -27,31 +29,30 @@ export default function Navbar() {
     }
   };
 
-  const handleLoginSuccess = async (credentialResponse) => {
-    try {
-      const decoded = jwtDecode(credentialResponse.credential);
-      const googleUser = {
-        googleId: decoded.sub,
-        name: decoded.name,
-        email: decoded.email,
-        picture: decoded.picture,
-      };
+const handleLoginSuccess = async (credentialResponse) => {
+  try {
+    const credential = credentialResponse.credential;
+    
+    // Send the raw token to your backend
+    const res = await api.post('/auth/google-login', { credential });
 
-      const res = await api.post('/auth/google-login', googleUser);
-      const userData = res.data.user;
-      const token = res.data.token;
+    const userData = res.data.user;
+    const token = res.data.token;
 
-      setUser(userData);
-      localStorage.setItem('filebankUser', JSON.stringify(userData));
-      localStorage.setItem('filebankToken', token);
+    setUser(userData);
+    localStorage.setItem('filebankUser', JSON.stringify(userData));
+    localStorage.setItem('filebankToken', token);
 
-      message.success('Login successful!');
-      fetchNotifications();
-    } catch (err) {
-      console.error(err);
-      message.error('Login failed.');
-    }
-  };
+    message.success('Login successful!');
+    fetchNotifications();
+    navigate('/');
+  } catch (err) {
+    console.error('Login error:', err);
+    message.error('Login failed.');
+  }
+};
+
+
 
   const handleLogout = () => {
     googleLogout();
@@ -65,16 +66,38 @@ export default function Navbar() {
     <Menu
       items={[
         { key: '1', label: <span onClick={handleLogout}>Logout</span> },
-        { key: '2', label: <a href="/profile">Profile</a> },
+        { key: '2', label: <Link to="/profile">Profile</Link>},
       ]}
     />
   );
 
-  const mainMenuItems = [
-    { key: 'dashboard', label: <a href="/dashboard"><DashboardOutlined/> Dashboard</a> },
-    { key: 'files', label: <a href="/files"><FileOutlined/> Files</a> },
-    user?.role === 'admin' && { key: 'admin', label: <a href="/admin">Admin Panel</a> }
-  ].filter(Boolean);
+ const mainMenuItems = [
+  {
+    key: 'dashboard',
+    label: (
+      <Link to="/dashboard" className="flex items-center gap-1">
+        <DashboardOutlined /> Dashboard
+      </Link>
+    )
+  },
+  {
+    key: 'files',
+    label: (
+      <Link to="/files" className="flex items-center gap-1">
+        <FileOutlined /> Files
+      </Link>
+    )
+  },
+  user?.role === 'admin' && {
+    key: 'admin',
+    label: (
+      <Link to="/admin" className="flex items-center gap-1">
+        Admin Panel
+      </Link>
+    )
+  }
+].filter(Boolean);
+
 
   return (
     <Header className="sticky top-2 z-50 bg-[#adc6df] px-4 flex flex-wrap justify-between items-center shadow rounded">

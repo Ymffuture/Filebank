@@ -1,32 +1,23 @@
 import express from 'express';
 import dotenv from 'dotenv';
-import passport from 'passport';
-import session from 'express-session';
 import cors from 'cors';
 import connectDB from './config/db.js';
-import './config/passport.js';
 
 import authRoutes from './routes/auth.routes.js';
 import fileRoutes from './routes/file.routes.js';
 
 dotenv.config();
-
 connectDB();
 
 const app = express();
 
+// CORS config (SPA + token-based auth)
 app.use(cors({
   origin: 'http://localhost:5173',
-  credentials: true
+  credentials: true // Only needed if you're dealing with cookies (optional here)
 }));
+
 app.use(express.json());
-app.use(session({
-  secret: 'supersecret', // You can make this env var
-  resave: false,
-  saveUninitialized: true
-}));
-app.use(passport.initialize());
-app.use(passport.session());
 
 // Routes
 app.use('/api/auth', authRoutes);
