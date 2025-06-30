@@ -3,13 +3,14 @@ import { Upload, Button, Alert, message, Progress } from 'antd';
 import { UploadOutlined } from '@ant-design/icons';
 import api from '../api/fileApi';
 
+import { useSnackbar } from 'notistack';
 export default function FileUpload({ onUpload }) {
   const [files, setFiles] = useState([]); // start with empty array
   const [uploading, setUploading] = useState(false);
   const [progress, setProgress] = useState(0);
   const [text, setText] = useState("");
   const [text2, setText2] = useState("");
-
+  const {enqueueSnackbar} = useSnackbar()
 const handleSubmit = async () => {
   if (files.length === 0) {
     setText('No files selected.');
@@ -31,15 +32,16 @@ const handleSubmit = async () => {
       }
     });
 
-    if (onUpload) onUpload(res.data);
+    if (onUpload) {onUpload(res.data);
     setText2('Upload complete 100%.');
-    message.success('Upload successful!');
+    enqueueSnackbar('Upload successful!',{variant:'success'});
     setFiles([]); 
-  } catch (err) {
+  }
+  }catch(err) {
     console.error(err);
     setText('Upload file failed, please try again.');
-    message.error('Upload failed.');
-  } finally {
+    enqueueSnackbar('Upload failed.',{variant:'error'});
+  }finally {
     setUploading(false);
     setProgress(0);
   }
@@ -51,7 +53,8 @@ const handleSubmit = async () => {
   beforeUpload={(file) => {
     const isLt2M = file.size / 1024 / 1024 < 2;
     if (!isLt2M) {
-      setText('File size exceeds 2MB');
+      setText('File size exceeds 2MB. try upload less than 2MB');
+      enqueueSnackbar('File size exceeds 2MB',{variant:'warning'})
       return Upload.LIST_IGNORE;
     }
     return false; // Prevent auto upload
@@ -109,3 +112,4 @@ const handleSubmit = async () => {
     </div>
   );
 }
+

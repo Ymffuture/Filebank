@@ -4,8 +4,9 @@ import { Button, Typography, message, Avatar, Dropdown, Menu, Badge, Space } fro
 import { BellOutlined, DashboardFilled, DownOutlined, LogoutOutlined } from '@ant-design/icons';
 import { Link, useNavigate } from 'react-router-dom';
 import api from '../api/fileApi';
+// import { toast } from 'react-toastify';
 // import { UserCircle2Icon } from 'lucide-react';
-
+import { useSnackbar } from 'notistack';
 const { Title, Paragraph, Text } = Typography;
 
 const ratColors = {
@@ -18,12 +19,13 @@ const ratColors = {
 };
 
 export default function Hero() {
+  const {enqueueSnackbar} = useSnackbar()
   const [user, setUser] = useState(() => JSON.parse(localStorage.getItem('filebankUser')));
   const [notifications, setNotifications] = useState(0);
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (user) fetchNotifications();
+    if (user) {fetchNotifications()};
   }, [user]);
 
   const fetchNotifications = async () => {
@@ -37,18 +39,18 @@ export default function Hero() {
 
   const handleLoginSuccess = async (credentialResponse) => {
     try {
-      const credential = credentialResponse.credential;
+      const {credential} = credentialResponse.credential;
       const res = await api.post('/auth/google-login', { credential });
 
       setUser(res.data.user);
       localStorage.setItem('filebankUser', JSON.stringify(res.data.user));
       localStorage.setItem('filebankToken', res.data.token);
 
-      message.success('Login successful!');
+      enqueueSnackbar('Login successful!',{variant:'success'});
       fetchNotifications();
       navigate('/dashboard');
     } catch {
-      message.error('Google login failed.');
+      enqueueSnackbar('Google login failed.',{variant:'error'});
     }
   };
 
