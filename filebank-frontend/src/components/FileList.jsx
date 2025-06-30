@@ -55,14 +55,14 @@ export default function FileList() {
   return (
 
     <>
-    <Button primary type="link" icon={<ArrowBigLeftDashIcon/>} className='mt-8 mb-18'>
+   
+    <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 p-4">
+
+       <Button primary type="link" icon={<ArrowBigLeftDashIcon/>} className='mt-8 mb-18'>
                 <Link to='/dashboard'>
                 Baaaack
                 </Link>
                 </Button>
-    
-    
-    <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 p-4">
       {files.map((file) => {
         const fileType = getFileType(file.url);
         return (

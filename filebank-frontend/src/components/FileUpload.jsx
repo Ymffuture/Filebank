@@ -46,7 +46,7 @@ const handleSubmit = async () => {
 };
 
   return (
-    <div className="bg-[#E1EEFA] p-2 -m-0 rounded flex-1/12 text-[white]">
+    <div className="bg-[#E1EEFA] p-12 -m-0 rounded flex-1/12 text-[white]">
       <Upload
   beforeUpload={(file) => {
     const isLt2M = file.size / 1024 / 1024 < 2;
