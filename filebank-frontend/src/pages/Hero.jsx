@@ -69,7 +69,7 @@ export default function Hero() {
   );
 
   return (
-    <div className="flex flex-col justify-center items-center min-h-[80vh] bg-gradient-to-br from-blue-500 via-blue-700 to-blue-900 text-white p-6 text-center rounded shadow-lg max-w-4xl mx-auto">
+    <div className="flex flex-col justify-center items-center min-h-[80vh] bg-gradient-to-br from-[#d6d6d6] via-blue-700 to-blue-900 text-white p-6 text-center rounded shadow-lg mb-4 mx-auto">
       <Title level={1} style={{ color: '#fff', fontWeight: 'bold' }}>
         Welcome to FileBank
       </Title>

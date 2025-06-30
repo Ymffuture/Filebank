@@ -13,7 +13,7 @@ const app = express();
 
 // CORS config (SPA + token-based auth)
 app.use(cors({
-  origin: 'http://localhost:5173',
+  origin: 'http://localhost:5173' ||  'https://filebank.vercel.app/',
   credentials: true // Only needed if you're dealing with cookies (optional here)
 }));
 

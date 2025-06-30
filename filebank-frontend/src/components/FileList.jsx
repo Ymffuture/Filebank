@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Card, Button, Space, message, Popconfirm } from 'antd';
 import { DeleteOutlined, DownloadOutlined, FileOutlined } from '@ant-design/icons';
 import api from '../api/fileApi';
+import Navbar from './Navbar';
 
 export default function FileList() {
   const [files, setFiles] = useState([]);
@@ -35,6 +36,10 @@ useEffect(() => {
 
 
   return (
+    <>
+    
+    {/* <Navbar/> */}
+  
     <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 p-4">
       {files.map((file) => (
         <Card
@@ -66,5 +71,6 @@ useEffect(() => {
         </Card>
       ))}
     </div>
+    </>
   );
 }
