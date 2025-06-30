@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { GoogleLogin, googleLogout } from '@react-oauth/google';
 import { Button, Typography, message, Avatar, Dropdown, Menu, Badge, Space } from 'antd';
-import { BellOutlined, DownOutlined } from '@ant-design/icons';
+import { BellOutlined, DashboardFilled, DownOutlined, LogoutOutlined } from '@ant-design/icons';
 import { Link, useNavigate } from 'react-router-dom';
 import api from '../api/fileApi';
+// import { UserCircle2Icon } from 'lucide-react';
 
 const { Title, Paragraph, Text } = Typography;
 
@@ -63,8 +64,9 @@ export default function Hero() {
   const userMenu = (
     <Menu
       items={[
-        { key: '1', label: <span onClick={handleLogout}>Logout</span> },
-        { key: '2', label: <Link to="/profile">Profile</Link> },
+        { key: '1', label: <span onClick={handleLogout}><LogoutOutlined/> Logout</span> },
+        
+        { key: '23', label: <Link to="/dashboard"><DashboardFilled/> Dashboard</Link> },
       ]}
     />
   );
@@ -113,15 +115,15 @@ export default function Hero() {
               />
             </Badge>
 
-            <Dropdown overlay={userMenu} placement="bottomCenter" trigger={['click']}>
+            <Dropdown overlay={userMenu} placement="bottomCenter" trigger={['click']} className='p-4'>
               <Space
                 style={{
                   cursor: 'pointer',
                   alignItems: 'center',
-                  gap: 12,
-                  padding: '6px 14px',
+                  gap: 80,
+                  padding: '8px 16px',
                   background: ratColors.gold,
-                  borderRadius: 30,
+                  borderRadius: 10,
                   color: ratColors.darkBlue,
                   fontWeight: '600',
                   boxShadow: '0 4px 14px rgba(255, 215, 0, 0.5)',

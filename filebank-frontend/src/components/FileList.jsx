@@ -26,7 +26,7 @@ export default function FileList() {
 
   const handleDelete = async (slug) => {
     try {
-      await api.delete(`/${slug}`);
+      await api.delete(`files/${slug}`);
       message.success('File deleted');
       fetchFiles();
     } catch (err) {
