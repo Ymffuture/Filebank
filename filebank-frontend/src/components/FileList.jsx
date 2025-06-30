@@ -2,10 +2,10 @@ import React, { useEffect, useState } from 'react';
 import { Card, Button, Space, message, Popconfirm } from 'antd';
 import { DeleteOutlined, DownloadOutlined, FileOutlined } from '@ant-design/icons';
 import api from '../api/fileApi';
-
+import { io } from 'socket.io-client';
 export default function FileList() {
   const [files, setFiles] = useState([]);
-
+const socket = io('http://localhost:5000');
   const fetchFiles = async () => {
     try {
       const res = await api.get('/');
@@ -15,11 +15,15 @@ export default function FileList() {
       message.error('Failed to load files');
     }
   };
-  
+
 useEffect(() => {
   fetchFiles();
-  const interval = setInterval(fetchFiles, 5000); // every 5 seconds
-  return () => clearInterval(interval);
+
+  socket.on('filesUpdated', fetchFiles);
+
+  return () => {
+    socket.off('filesUpdated');
+  };
 }, []);
 
   const handleDelete = async (slug) => {
@@ -33,9 +37,7 @@ useEffect(() => {
     }
   };
 
-  useEffect(() => {
-    fetchFiles();
-  }, []);
+
 
   return (
     <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 p-4">
