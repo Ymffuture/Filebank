@@ -9,7 +9,7 @@ export default function FileList() {
 
   const [files, setFiles] = useState([]);
 
-const {enqueueSnackbar} = useSnackbar();
+const enqueueSnackbar = useSnackbar();
 
   const fetchFiles = async () => {
     try {
