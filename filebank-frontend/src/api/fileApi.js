@@ -2,7 +2,9 @@ import axios from 'axios';
 
 // Create a shared Axios instance
 const api = axios.create({
-  baseURL: 'http://localhost:5000/api', // works for /auth, /files, /notifications etc.
+  baseURL: 'https://filebankserver.onrender.com/api',
+  
+  // works for /auth, /files, /notifications etc.
 });
 
 // Request interceptor: Attach token
