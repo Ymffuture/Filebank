@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Layout, Menu, Avatar, Dropdown, Space, Badge, message } from 'antd';
-import { BellOutlined, DashboardOutlined, FileOutlined, InfoCircleOutlined } from '@ant-design/icons';
+import { BellOutlined, DashboardOutlined, FileOutlined, HomeOutlined, InfoCircleOutlined } from '@ant-design/icons';
 import { GoogleLogin, googleLogout } from '@react-oauth/google';
 import api from '../api/fileApi';
 import logo from '/vite.svg';
@@ -87,6 +87,14 @@ export default function Navbar() {
       label: (
         <Link to="/about" className="flex items-center gap-1">
           <InfoCircleOutlined/> About Us
+        </Link>
+      ),
+    },
+      {
+      key: 'dashboard',
+      label: (
+        <Link to="/" className="flex items-center gap-1">
+          <HomeOutlined/> Home
         </Link>
       ),
     },

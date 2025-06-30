@@ -5,7 +5,16 @@ import { BellOutlined, DownOutlined } from '@ant-design/icons';
 import { Link, useNavigate } from 'react-router-dom';
 import api from '../api/fileApi';
 
-const { Title, Paragraph } = Typography;
+const { Title, Paragraph, Text } = Typography;
+
+const ratColors = {
+  blue: '#1E90FF',
+  gold: '#FFD700',
+  green: '#32CD32',
+  lightBlue: '#F0F8FF',
+  accent: '#FFC107', // gold accent for links
+  darkBlue: '#0B3D91',
+};
 
 export default function Hero() {
   const [user, setUser] = useState(() => JSON.parse(localStorage.getItem('filebankUser')));
@@ -13,40 +22,32 @@ export default function Hero() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (user) {
-      fetchNotifications();
-    }
+    if (user) fetchNotifications();
   }, [user]);
 
   const fetchNotifications = async () => {
     try {
-      const res = await api.get('/notifications'); // Your backend endpoint
+      const res = await api.get('/notifications');
       setNotifications(res.data.count || 0);
-    } catch (err) {
-      console.warn('Could not load notifications', err);
+    } catch {
+      // silently fail
     }
   };
 
   const handleLoginSuccess = async (credentialResponse) => {
     try {
       const credential = credentialResponse.credential;
-
-      // Backend validation of token and login
       const res = await api.post('/auth/google-login', { credential });
 
-      const userData = res.data.user;
-      const token = res.data.token;
-
-      setUser(userData);
-      localStorage.setItem('filebankUser', JSON.stringify(userData));
-      localStorage.setItem('filebankToken', token);
+      setUser(res.data.user);
+      localStorage.setItem('filebankUser', JSON.stringify(res.data.user));
+      localStorage.setItem('filebankToken', res.data.token);
 
       message.success('Login successful!');
       fetchNotifications();
       navigate('/dashboard');
-    } catch (err) {
-      console.error('Login error:', err);
-      message.error('Login failed.');
+    } catch {
+      message.error('Google login failed.');
     }
   };
 
@@ -69,28 +70,66 @@ export default function Hero() {
   );
 
   return (
-    <div className="flex flex-col justify-center items-center min-h-[80vh] bg-gradient-to-br from-[#d6d6d6] via-blue-700 to-blue-900 text-white p-6 text-center rounded shadow-lg mb-4 mx-auto">
-      <Title level={1} style={{ color: '#fff', fontWeight: 'bold' }}>
-        Welcome to FileBank
+    <div
+      style={{
+        minHeight: '80vh',
+        padding: '3rem 1.5rem',
+        color: 'white',
+        textAlign: 'center',
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'center',
+        background: `radial-gradient(circle at top left, ${ratColors.blue} 0%, ${ratColors.gold} 20%, ${ratColors.green} 40%, ${ratColors.darkBlue} 60%, ${ratColors.blue} 80%, ${ratColors.lightBlue} 100%)`,
+        borderRadius: '16px',
+        maxWidth: 960,
+        margin: '2rem auto',
+        boxShadow: '0 8px 24px rgb(0 0 0 / 0.2)',
+      }}
+    >
+      <Title level={1} style={{ fontWeight: '800', marginBottom: 12, textShadow: '0 2px 6px rgba(0,0,0,0.4)' }}>
+        Welcome to <span style={{ color: ratColors.gold }}>FileBank</span>
       </Title>
-      <Paragraph style={{ fontSize: '1.2rem', maxWidth: 600, marginBottom: 40 }}>
-        Securely upload, manage, and access your files anytime, anywhere. Powered by Qurovex technology.
+      <Paragraph
+        style={{
+          fontSize: '1.25rem',
+          maxWidth: 600,
+          margin: '0 auto 2rem',
+          lineHeight: 1.6,
+          textShadow: '0 1px 4px rgba(0,0,0,0.3)',
+        }}
+      >
+        Securely upload, organize, and access your files anywhere, anytime. Powered by <strong>Quorvex</strong>{' '}
+        technology and protected with industry-leading security standards.
       </Paragraph>
 
-      <div className="flex gap-6 flex-wrap justify-center items-center">
+      <div className="flex flex-wrap justify-center items-center gap-8">
         {user ? (
           <>
-            <Badge count={notifications} offset={[0, 5]}>
+            <Badge count={notifications} offset={[0, 6]} size="small">
               <BellOutlined
-                className="text-white text-2xl cursor-pointer"
+                style={{ fontSize: 28, color: 'white', cursor: 'pointer' }}
                 onClick={fetchNotifications}
                 title="Notifications"
               />
             </Badge>
+
             <Dropdown overlay={userMenu} placement="bottomCenter" trigger={['click']}>
-              <Space className="cursor-pointer text-white" align="center">
-                <Avatar src={user.picture} alt={user.name} />
-                <span className="font-semibold">{user.name}</span>
+              <Space
+                style={{
+                  cursor: 'pointer',
+                  alignItems: 'center',
+                  gap: 12,
+                  padding: '6px 14px',
+                  background: ratColors.gold,
+                  borderRadius: 30,
+                  color: ratColors.darkBlue,
+                  fontWeight: '600',
+                  boxShadow: '0 4px 14px rgba(255, 215, 0, 0.5)',
+                  userSelect: 'none',
+                }}
+              >
+                <Avatar src={user.picture} size={40} />
+                <span>{user.name || user.displayName}</span>
                 <DownOutlined />
               </Space>
             </Dropdown>
@@ -100,8 +139,63 @@ export default function Hero() {
             onSuccess={handleLoginSuccess}
             onError={() => message.error('Google login failed.')}
             useOneTap
+            shape="circle"
+            size="large"
           />
         )}
+      </div>
+
+      {/* Instructions */}
+      <div
+        style={{
+          marginTop: '3rem',
+          maxWidth: 680,
+          marginLeft: 'auto',
+          marginRight: 'auto',
+          backgroundColor: 'rgba(255 255 255 / 0.12)',
+          padding: '1.5rem',
+          borderRadius: '12px',
+          boxShadow: 'inset 0 0 10px rgba(255, 255, 255, 0.1)',
+          fontSize: '1rem',
+          lineHeight: 1.5,
+          color: ratColors.lightBlue,
+          textAlign: 'left',
+        }}
+      >
+        <Title level={3} style={{ color: ratColors.gold }}>
+          How It Works
+        </Title>
+        <Paragraph>
+          1. <b>Sign in with Google</b> to securely access your personal FileBank account.
+        </Paragraph>
+        <Paragraph>
+          2. <b>Upload and manage</b> your files effortlessly using our intuitive dashboard.
+        </Paragraph>
+        <Paragraph>
+          3. Receive real-time <b>notifications</b> for important updates and file activity.
+        </Paragraph>
+        <Paragraph>
+          4. Your files are protected with industry-standard encryption and stored securely in the cloud.
+        </Paragraph>
+      </div>
+
+      {/* Footer links */}
+      <div
+        style={{
+          marginTop: '3rem',
+          display: 'flex',
+          justifyContent: 'center',
+          gap: '1.5rem',
+          fontSize: '0.9rem',
+          color: ratColors.accent,
+        }}
+      >
+        <Link to="/terms" style={{ color: ratColors.accent, textDecoration: 'underline' }}>
+          Terms of Service
+        </Link>
+        <Link to="/privacy" style={{ color: ratColors.accent, textDecoration: 'underline' }}>
+          Privacy Policy
+        </Link>
       </div>
     </div>
   );
