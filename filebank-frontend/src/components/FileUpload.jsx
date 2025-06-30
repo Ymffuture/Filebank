@@ -54,7 +54,7 @@ const handleSubmit = async () => {
     const isLt2M = file.size / 1024 / 1024 < 2;
     if (!isLt2M) {
       setText('File size exceeds 2MB. try upload less than 2MB');
-      enqueueSnackbar('File size exceeds 2MB',{variant:'warning'})
+     // enqueueSnackbar('File size exceeds 2MB',{variant:'warning'})
       return Upload.LIST_IGNORE;
     }
     return false; // Prevent auto upload
