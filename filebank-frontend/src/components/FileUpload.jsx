@@ -23,7 +23,7 @@ const handleSubmit = async () => {
   setProgress(0);
 
   try {
-    const res = await api.post('/upload', formData, {
+    const res = await api.post('files/upload', formData, {
       headers: { 'Content-Type': 'multipart/form-data' },
       onUploadProgress: (e) => {
         const percent = Math.floor((e.loaded * 100) / e.total);

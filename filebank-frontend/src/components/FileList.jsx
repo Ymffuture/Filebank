@@ -8,7 +8,7 @@ export default function FileList() {
 
   const fetchFiles = async () => {
     try {
-      const res = await api.get('/');
+      const res = await api.get('/files');
       setFiles(res.data);
     } catch (err) {
       console.error(err);
