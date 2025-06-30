@@ -3,12 +3,12 @@ import { Card, Button, Space, Popconfirm, Tooltip } from 'antd';
 import { DeleteOutlined, DownloadOutlined, FileOutlined, FileImageOutlined, FilePdfOutlined } from '@ant-design/icons';
 import { ArrowBigLeftDashIcon } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import { useSnackbar } from 'notistack';
+// import { useSnackbar } from 'notistack';
 import api from '../api/fileApi';
 
 export default function FileList() {
   const [files, setFiles] = useState([]);
-  const { enqueueSnackbar } = useSnackbar();
+//  const { enqueueSnackbar } = useSnackbar();
 
   const fetchFiles = async () => {
     try {
@@ -18,7 +18,7 @@ export default function FileList() {
       setFiles(res.data);
     } catch (err) {
       console.error(err);
-      enqueueSnackbar('Failed to load files', { variant: 'error' });
+   //   enqueueSnackbar('Failed to load files', { variant: 'error' });
     }
   };
 
@@ -33,13 +33,13 @@ export default function FileList() {
       await api.delete(`/files/${slug}`, {
         headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
       });
-      enqueueSnackbar('File deleted', { variant: 'success' });
+   //   enqueueSnackbar('File deleted', { variant: 'success' });
       fetchFiles();
     } catch (err) {
       console.error(err.response || err);
-      enqueueSnackbar(
-        err.response?.data?.message || 'Delete failed',
-        { variant: 'error' }
+ //     enqueueSnackbar(
+   //       err.response?.data?.message || 'Delete failed',
+  //        { variant: 'error' }
       );
     }
   };
