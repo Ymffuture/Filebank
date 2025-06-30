@@ -68,7 +68,7 @@ export default function Privacy() {
       </Paragraph>
 
      <div className='flex gap-8'>
-         <Link to='/privacy'>
+         <Link to='/terms'>
             <Button type='dashed'>
        Terms
       
