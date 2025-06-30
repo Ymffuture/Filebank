@@ -15,6 +15,12 @@ export default function FileList() {
       message.error('Failed to load files');
     }
   };
+  
+useEffect(() => {
+  fetchFiles();
+  const interval = setInterval(fetchFiles, 5000); // every 5 seconds
+  return () => clearInterval(interval);
+}, []);
 
   const handleDelete = async (slug) => {
     try {
