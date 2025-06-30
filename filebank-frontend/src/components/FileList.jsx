@@ -1,23 +1,24 @@
 import React, { useEffect, useState } from 'react';
-import { Card, Button, Space, message, Popconfirm, Tooltip } from 'antd';
+import { Card, Button, Space, Popconfirm, Tooltip } from 'antd';
 import { DeleteOutlined, DownloadOutlined, FileOutlined, FileImageOutlined, FilePdfOutlined } from '@ant-design/icons';
-import api from '../api/fileApi';
 import { ArrowBigLeftDashIcon } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useSnackbar } from 'notistack';
+import api from '../api/fileApi';
+
 export default function FileList() {
-
   const [files, setFiles] = useState([]);
-
-const enqueueSnackbar = useSnackbar();
+  const { enqueueSnackbar } = useSnackbar();
 
   const fetchFiles = async () => {
     try {
-      const res = await api.get('/files');
+      const res = await api.get('/files', {
+        headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
+      });
       setFiles(res.data);
     } catch (err) {
       console.error(err);
-       enqueueSnackbar('Failed to load files',{variant:'error'});
+      enqueueSnackbar('Failed to load files', { variant: 'error' });
     }
   };
 
@@ -25,29 +26,31 @@ const enqueueSnackbar = useSnackbar();
     fetchFiles();
     const interval = setInterval(fetchFiles, 5000);
     return () => clearInterval(interval);
-  }, 1000);
+  }, []);
 
   const handleDelete = async (slug) => {
     try {
-      await api.delete(`files/${slug}`);
-      enqueueSnackbar('File deleted',{variant:'success'});
+      await api.delete(`/files/${slug}`, {
+        headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
+      });
+      enqueueSnackbar('File deleted', { variant: 'success' });
       fetchFiles();
     } catch (err) {
-      console.error(err);
-       enqueueSnackbar('Delete failed',{variant:'error'});
+      console.error(err.response || err);
+      enqueueSnackbar(
+        err.response?.data?.message || 'Delete failed',
+        { variant: 'error' }
+      );
     }
   };
 
-  // Utility to format date & time nicely
   const formatDateTime = (dateString) => {
-    const options = {
+    return new Date(dateString).toLocaleString(undefined, {
       year: 'numeric', month: 'short', day: 'numeric',
       hour: '2-digit', minute: '2-digit'
-    };
-    return new Date(dateString).toLocaleString(undefined, options);
+    });
   };
 
-  // Utility to detect file type
   const getFileType = (url) => {
     const ext = url.split('.').pop().toLowerCase();
     if (['jpg', 'jpeg', 'png', 'gif', 'bmp', 'webp'].includes(ext)) return 'image';
@@ -56,16 +59,11 @@ const enqueueSnackbar = useSnackbar();
   };
 
   return (
-
-    <>
-   
     <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 p-4">
+      <Button type="link" icon={<ArrowBigLeftDashIcon />} className="mt-8 mb-18">
+        <Link to="/dashboard">Back</Link>
+      </Button>
 
-       <Button primary type="link" icon={<ArrowBigLeftDashIcon/>} className='mt-8 mb-18'>
-                <Link to='/dashboard'>
-                Baaaack
-                </Link>
-                </Button>
       {files.map((file) => {
         const fileType = getFileType(file.url);
         return (
@@ -103,7 +101,6 @@ const enqueueSnackbar = useSnackbar();
             <p><strong>Uploaded by:</strong> {file.userId || 'N/A'}</p>
             <p><strong>Uploaded on:</strong> {file.createdAt ? formatDateTime(file.createdAt) : 'Unknown'}</p>
 
-            {/* Preview section */}
             {fileType === 'image' && (
               <img
                 src={file.url}
@@ -111,7 +108,6 @@ const enqueueSnackbar = useSnackbar();
                 style={{ width: '100%', maxHeight: 150, objectFit: 'contain', marginTop: 8, borderRadius: 8 }}
               />
             )}
-
             {fileType === 'pdf' && (
               <iframe
                 src={file.url}
@@ -121,7 +117,6 @@ const enqueueSnackbar = useSnackbar();
                 style={{ marginTop: 8, borderRadius: 8, border: '1px solid #ddd' }}
               />
             )}
-
             {fileType === 'other' && (
               <div
                 style={{
@@ -143,6 +138,6 @@ const enqueueSnackbar = useSnackbar();
         );
       })}
     </div>
-    </>
   );
 }
+
