@@ -23,7 +23,7 @@ export default function Hero() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (user) {fetchNotifications()};
+    if (user) fetchNotifications();
   }, [user]);
 
   const fetchNotifications = async () => {
@@ -54,13 +54,14 @@ export default function Hero() {
   };
 
   const handleLogout = () => {
-    googleLogout();
-    localStorage.removeItem('filebankUser');
-    localStorage.removeItem('filebankToken');
-    setUser(null);
-    enqueueSnackbar('Logged out', {variant:'info');
-    navigate('/');
-  };
+  googleLogout();
+  localStorage.removeItem('filebankUser');
+  localStorage.removeItem('filebankToken');
+  setUser(null);
+  enqueueSnackbar('Logged out', { variant: 'info' });
+  navigate('/');
+};
+
 
   const userMenu = (
     <Menu
