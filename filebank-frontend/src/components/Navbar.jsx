@@ -28,11 +28,11 @@ export default function Navbar() {
   useEffect(() => {
     if (!user) return;
 
-    fetchNotifications(); // initial fetch
+    fetchNotifications(); 
 
     const interval = setInterval(() => {
       fetchNotifications();
-    }, 5000); // refresh every 5s
+    }, 1000); 
 
     return () => clearInterval(interval); // cleanup on unmount
   }, [user, fetchNotifications]);
