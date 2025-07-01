@@ -100,8 +100,8 @@ export default function FileList() {
               hoverable
               bodyStyle={{ minHeight: 200 }}
             >
-              <p><strong>Uploaded by:</strong> {file.userId || 'N/A'}</p>
-              <p><strong>Uploaded on:</strong> {file.createdAt ? formatDateTime(file.createdAt) : 'Unknown'}</p>
+              <p><strong>ID:</strong> {file.slug || 'N/A'}</p>
+              <p><strong>Date:</strong> {file.createdAt ? formatDateTime(file.createdAt) : 'Unknown'}</p>
 
               {fileType === 'image' && (
                 <img
