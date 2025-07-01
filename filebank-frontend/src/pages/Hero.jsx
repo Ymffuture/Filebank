@@ -47,9 +47,9 @@ export default function Hero() {
       enqueueSnackbar('Login successful!',{variant:'success'});
       fetchNotifications();
       navigate('/dashboard');
-    } catch(err) {
-      console.error(err) 
-     enqueueSnackbar('Google login failed.',{variant:'error'}, err);
+    } catch {
+      console.error('Error message :Failed') 
+     enqueueSnackbar('Google login failed.',{variant:'error'});
     }
   };
 
