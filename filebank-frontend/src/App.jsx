@@ -16,7 +16,7 @@ const Loader = () => (
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-    minHeight: '80vh',
+    minHeight: '100vh',
     background: 'radial-gradient(circle, #1E90FF 0%, #FFD700 40%, #32CD32 70%)'
   }}>
     <svg
