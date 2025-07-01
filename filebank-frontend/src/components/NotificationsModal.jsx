@@ -12,7 +12,7 @@ export default function NotificationsModal({ visible, onClose }) {
   const loadNotifications = async () => {
     setLoading(true);
     try {
-      const res = await api.get('/');
+      const res = await api.get('/notifications');
       setNotifications(res.data);
     } catch (err) {
       enqueueSnackbar('Failed to load notifications', { variant: 'error' });
