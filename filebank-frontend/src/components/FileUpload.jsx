@@ -32,24 +32,26 @@ const handleSubmit = async () => {
     }
   });
 
-  // Success actions
   setText2('Upload complete 100%.');
   enqueueSnackbar('Upload successful!', { variant: 'success' });
   setFiles([]);
 
-  if (onUpload) {
-    onUpload(res.data);
-  }
+  // Delay if onUpload triggers something that closes/hides the snackbar
+  setTimeout(() => {
+    if (onUpload) {
+      onUpload(res.data);
+    }
+  }, 500);
 
 } catch (err) {
   console.error(err);
   setText('Upload file failed, please try again.');
   enqueueSnackbar('Upload failed.', { variant: 'error' });
-}finally {
-    setUploading(false);
-    setProgress(0);
-  }
-};
+} finally {
+  setUploading(false);
+  setProgress(0);
+}
+
 
   return (
     <div className="bg-[#E1EEFA] p-12 m-0 rounded  text-[white]">
