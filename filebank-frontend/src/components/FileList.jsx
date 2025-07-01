@@ -4,12 +4,12 @@ import { DeleteOutlined, DownloadOutlined, FileOutlined, FileImageOutlined, File
 import api from '../api/fileApi';
 import { ArrowBigLeftDashIcon } from 'lucide-react';
 import { Link } from 'react-router-dom';
-// import { useSnackbar } from 'notistack';
-export default function FileList() {
+import { useSnackbar } from 'notistack';
 
+export default function FileList() {
   const [files, setFiles] = useState([]);
 
-// const {enqueueSnackbar} = useSnackbar();
+ const {enqueueSnackbar} = useSnackbar();
 
   const fetchFiles = async () => {
     try {
@@ -17,7 +17,7 @@ export default function FileList() {
       setFiles(res.data);
     } catch (err) {
       console.error(err);
-    //   enqueueSnackbar('Failed to load files',{variant:'error'});
+       enqueueSnackbar('Failed to load files',{variant:'error'});
     }
   };
 
@@ -30,11 +30,11 @@ export default function FileList() {
   const handleDelete = async (slug) => {
     try {
       await api.delete(`files/${slug}`);
-   //   enqueueSnackbar('File deleted',{variant:'success'});
+      enqueueSnackbar('File deleted',{variant:'success'});
       fetchFiles();
     } catch (err) {
       console.error(err);
-    //   enqueueSnackbar('Delete failed',{variant:'error'});
+      enqueueSnackbar('Delete failed',{variant:'error'});
     }
   };
 
