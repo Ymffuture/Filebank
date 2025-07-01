@@ -1,10 +1,9 @@
 import axios from 'axios';
+
 const api = axios.create({
   // baseURL: 'http://localhost:5000/api',
-
      baseURL: 'https://filebankserver.onrender.com/api',
-
-
+  
 });
 
 // Request interceptor: Attach token
@@ -31,7 +30,7 @@ api.interceptors.response.use(
       // Optional: Trigger a reload or navigate
       window.location.href = '/';  // You could navigate programmatically if in a React component
       // Or optionally show a message (if you're inside a React context)
-      console.error('Session expired, please log in again');
+     // console.error('Session expired, please log in again');
     }
     return Promise.reject(error);
   }
