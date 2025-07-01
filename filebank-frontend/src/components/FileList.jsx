@@ -40,7 +40,7 @@ export default function FileList() {
  //     enqueueSnackbar(
    //       err.response?.data?.message || 'Delete failed',
   //        { variant: 'error' }
-      );
+ //   );
     }
   };
 
