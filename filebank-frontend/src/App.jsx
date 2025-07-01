@@ -5,7 +5,7 @@ import Profile from'./pages/Profile';
 const FileList = lazy(() => import('./components/FileList'));
 const Footer = lazy(() => import('./components/Footer'));
 const Home = lazy(() => import('./pages/Home'));
-// const Profile = lazy(() => import('./pages/Profile'));
+const Admin = lazy(() => import('./components/Admin'));
 const Hero = lazy(() => import('./pages/Hero'));
 const Privacy = lazy(() => import('./pages/Privacy'));
 const Terms = lazy(() => import('./pages/Terms'));
@@ -59,6 +59,7 @@ export default function App() {
           <Route path="/" element={<Hero />} />
           <Route path="/terms" element={<Terms />} />
           <Route path="/privacy" element={<Privacy />} />
+          <Route path="/admin" element={<Admin />} />
         </Routes>
         <Footer />
       </Suspense>
