@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { Modal, List, Badge, Button, Space, Popconfirm, Spin, message } from 'antd';
+import { Modal, List, Badge, Button, Space, Popconfirm, Spin } from 'antd';
 import { DeleteOutlined, CheckOutlined, BellOutlined } from '@ant-design/icons';
+import { useSnackbar } from 'notistack';
 import api from '../api/fileApi';
 
 export default function NotificationsModal({ visible, onClose }) {
+  const { enqueueSnackbar } = useSnackbar();
   const [notifications, setNotifications] = useState([]);
   const [loading, setLoading] = useState(false);
 
@@ -13,7 +15,7 @@ export default function NotificationsModal({ visible, onClose }) {
       const res = await api.get('/notifications');
       setNotifications(res.data);
     } catch (err) {
-      message.error('Failed to load notifications');
+      enqueueSnackbar('Failed to load notifications', { variant: 'error' });
     } finally {
       setLoading(false);
     }
@@ -26,30 +28,32 @@ export default function NotificationsModal({ visible, onClose }) {
   const markAsRead = async (id) => {
     try {
       await api.put(`/notifications/${id}/read`);
-      message.success('Marked as read');
+      enqueueSnackbar('Marked as read', { variant: 'success' });
       loadNotifications();
     } catch {
-      message.error('Failed to mark as read');
+      enqueueSnackbar('Failed to mark as read', { variant: 'error' });
     }
   };
 
   const deleteNotification = async (id) => {
     try {
       await api.delete(`/notifications/${id}`);
-      message.success('Deleted');
+      enqueueSnackbar('Deleted', { variant: 'info' });
       loadNotifications();
     } catch {
-      message.error('Failed to delete');
+      enqueueSnackbar('Failed to delete', { variant: 'error' });
     }
   };
 
   const markAllAsRead = async () => {
     try {
-      await Promise.all(notifications.filter(n => !n.read).map(n => api.put(`/notifications/${n._id}/read`)));
-      message.success('All marked as read');
+      await Promise.all(
+        notifications.filter(n => !n.read).map(n => api.put(`/notifications/${n._id}/read`))
+      );
+      enqueueSnackbar('All marked as read', { variant: 'success' });
       loadNotifications();
     } catch {
-      message.error('Failed to mark all');
+      enqueueSnackbar('Failed to mark all', { variant: 'error' });
     }
   };
 
@@ -83,19 +87,11 @@ export default function NotificationsModal({ visible, onClose }) {
             <List.Item
               actions={[
                 !item.read && (
-                  <Button
-                    type="link"
-                    size="small"
-                    icon={<CheckOutlined />}
-                    onClick={() => markAsRead(item._id)}
-                  >
+                  <Button type="link" size="small" icon={<CheckOutlined />} onClick={() => markAsRead(item._id)}>
                     Mark as Read
                   </Button>
                 ),
-                <Popconfirm
-                  title="Delete this notification?"
-                  onConfirm={() => deleteNotification(item._id)}
-                >
+                <Popconfirm title="Delete this notification?" onConfirm={() => deleteNotification(item._id)}>
                   <Button type="link" danger icon={<DeleteOutlined />} size="small">
                     Delete
                   </Button>
