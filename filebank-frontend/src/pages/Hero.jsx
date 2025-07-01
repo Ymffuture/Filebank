@@ -4,9 +4,7 @@ import { Button, Typography, message, Avatar, Dropdown, Menu, Badge, Space } fro
 import { BellOutlined, DashboardFilled, DownOutlined, LogoutOutlined } from '@ant-design/icons';
 import { Link, useNavigate } from 'react-router-dom';
 import api from '../api/fileApi';
-// import { toast } from 'react-toastify';
-// import { UserCircle2Icon } from 'lucide-react';
-// import { useSnackbar } from 'notistack';
+import { useSnackbar } from 'notistack';
 const { Title, Paragraph, Text } = Typography;
 
 const ratColors = {
@@ -19,7 +17,7 @@ const ratColors = {
 };
 
 export default function Hero() {
- // const {enqueueSnackbar} = useSnackbar()
+ const {enqueueSnackbar} = useSnackbar()
   const [user, setUser] = useState(() => JSON.parse(localStorage.getItem('filebankUser')));
   const [notifications, setNotifications] = useState(0);
   const navigate = useNavigate();
@@ -45,13 +43,13 @@ export default function Hero() {
       setUser(res.data.user);
       localStorage.setItem('filebankUser', JSON.stringify(res.data.user));
       localStorage.setItem('filebankToken', res.data.token);
-
- //     enqueueSnackbar('Login successful!',{variant:'success'});
+      
+      enqueueSnackbar('Login successful!',{variant:'success'});
       fetchNotifications();
       navigate('/dashboard');
     } catch(err) {
       console.error(err) 
- //     enqueueSnackbar('Google login failed.',{variant:'error'});
+     enqueueSnackbar('Google login failed.',{variant:'error'}, err);
     }
   };
 
@@ -60,7 +58,7 @@ export default function Hero() {
     localStorage.removeItem('filebankUser');
     localStorage.removeItem('filebankToken');
     setUser(null);
-    message.info('Logged out');
+    enqueueSnackbar(('Logged out', {variant:'info');
     navigate('/');
   };
 
