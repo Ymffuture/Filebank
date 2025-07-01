@@ -114,15 +114,6 @@ export default function Navbar() {
   visible={notifModalVisible}
   onClose={() => setNotifModalVisible(false)}
 />
-
-            <Dropdown overlay={userMenu} placement="bottomRight" trigger={['click']}>
-              <Space className="cursor-pointer text-white">
-                {profilePic
-                  ? <Avatar src={profilePic} size="large" />
-                  : <Avatar size="large" style={{ backgroundColor: '#1890ff', color: '#fff' }}>{initials}</Avatar>}
-                <span>{user.role?.toUpperCase()}</span>
-              </Space>
-            </Dropdown>
           </>
         )}
         {!user && (
