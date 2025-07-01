@@ -12,7 +12,7 @@ export default function NotificationsModal({ visible, onClose }) {
   const loadNotifications = async () => {
     setLoading(true);
     try {
-      const res = await api.get('/notifications');
+      const res = await api.get('/notifications/all');
       setNotifications(res.data);
     } catch (err) {
       enqueueSnackbar('Failed to load notifications', { variant: 'error' });
@@ -27,7 +27,7 @@ export default function NotificationsModal({ visible, onClose }) {
 
   const markAsRead = async (id) => {
     try {
-      await api.put(`/${id}/read`);
+      await api.put(`notifications/${id}/read`);
       enqueueSnackbar('Marked as read', { variant: 'success' });
       loadNotifications();
     } catch {
@@ -37,7 +37,7 @@ export default function NotificationsModal({ visible, onClose }) {
 
   const deleteNotification = async (id) => {
     try {
-      await api.delete(`/${id}`);
+      await api.delete(`notifications/${id}`);
       enqueueSnackbar('Deleted', { variant: 'info' });
       loadNotifications();
     } catch {
