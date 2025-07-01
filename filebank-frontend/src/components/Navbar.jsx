@@ -18,7 +18,7 @@ export default function Navbar() {
 
   useEffect(() => {
     if (user) fetchNotifications();
-  }, 1000);
+  }, 300);
 
   const fetchNotifications = async () => {
     try {
@@ -86,7 +86,7 @@ export default function Navbar() {
   const profilePic = user?.picture;
   const initials = user?.name
     ? user.name.split(' ').map(n => n[0]).join('').toUpperCase()
-    : 'U';
+    : 'FB';
 
   return (
     <Header className="bg-[#adc6df] px-4 flex justify-between items-center shadow rounded sticky top-0 z-50">
