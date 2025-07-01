@@ -17,7 +17,7 @@ export default function Navbar() {
   const navigate = useNavigate();
 
   const playSound = () => {
-    const audio = new Audio('/notification.mp3');
+    const audio = new Audio('/mix.wav');
     audio.play().catch(() => {
       // Fallback beep
       const ctx = new (window.AudioContext || window.webkitAudioContext)();
