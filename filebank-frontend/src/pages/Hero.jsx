@@ -37,7 +37,7 @@ export default function Hero() {
 
   const handleLoginSuccess = async (credentialResponse) => {
     try {
-      const {credential} = credentialResponse.credential;
+      const credential = credentialResponse.credential;
       const res = await api.post('/auth/google-login', { credential });
 
       setUser(res.data.user);
