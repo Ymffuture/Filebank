@@ -18,7 +18,7 @@ export default function Navbar() {
 
   useEffect(() => {
     if (user) fetchNotifications();
-  }, [user]);
+  }, 1000);
 
   const fetchNotifications = async () => {
     try {
