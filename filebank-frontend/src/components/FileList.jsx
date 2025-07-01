@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Card, Button, Space, Popconfirm, Tooltip } from 'antd';
+import { Card, Button, Space, Popconfirm, Tooltip, Empty } from 'antd';
 import { DeleteOutlined, DownloadOutlined, FileOutlined, FileImageOutlined, FilePdfOutlined } from '@ant-design/icons';
 import api from '../api/fileApi';
 import { ArrowBigLeftDashIcon } from 'lucide-react';
@@ -53,6 +53,17 @@ export default function FileList() {
     return 'other';
   };
 
+  if (files.length === 0) {
+    return (
+      <div className="py-12">
+        <Empty
+          description="No files found. Upload to get started!"
+          imageStyle={{ height: 100 }}
+        />
+      </div>
+    );
+  }
+
   return (
     <>
       {location.pathname === '/files' && (
@@ -71,6 +82,7 @@ export default function FileList() {
           return (
             <Card
               key={file._id}
+              hoverable
               title={
                 <Tooltip title={file.filename}>
                   <Space>
@@ -97,11 +109,10 @@ export default function FileList() {
                   </Button>
                 </Popconfirm>
               ]}
-              hoverable
-              bodyStyle={{ minHeight: 200 }}
+              bodyStyle={{ minHeight: 200, padding: '16px' }}
+              style={{ borderRadius: '12px', boxShadow: '0 4px 12px rgba(0,0,0,0.05)' }}
             >
-              <p><strong>ID:</strong> {file.slug || 'N/A'}</p>
-              <p><strong>Date:</strong> {file.createdAt ? formatDateTime(file.createdAt) : 'Unknown'}</p>
+              <p className="text-gray-500 text-sm"><strong>Uploaded:</strong> {formatDateTime(file.createdAt)}</p>
 
               {fileType === 'image' && (
                 <img
