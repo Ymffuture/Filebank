@@ -58,7 +58,7 @@ export default function Hero() {
     localStorage.removeItem('filebankUser');
     localStorage.removeItem('filebankToken');
     setUser(null);
-    enqueueSnackbar(('Logged out', {variant:'info');
+    enqueueSnackbar('Logged out', {variant:'info');
     navigate('/');
   };
 
