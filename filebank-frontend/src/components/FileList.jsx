@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Card, Button, Space, Popconfirm, Tooltip, Empty } from 'antd';
+import { Card, Button, Space, Popconfirm, Tooltip, Skeleton } from 'antd';
 import { DeleteOutlined, DownloadOutlined, FileOutlined, FileImageOutlined, FilePdfOutlined } from '@ant-design/icons';
 import api from '../api/fileApi';
 import { ArrowBigLeftDashIcon } from 'lucide-react';
@@ -8,16 +8,20 @@ import { useSnackbar } from 'notistack';
 
 export default function FileList() {
   const [files, setFiles] = useState([]);
+  const [loading, setLoading] = useState(true);
   const { enqueueSnackbar } = useSnackbar();
   const location = useLocation();
 
   const fetchFiles = async () => {
+    setLoading(true);
     try {
       const res = await api.get('/files');
       setFiles(res.data);
     } catch (err) {
       console.error(err);
       enqueueSnackbar('Failed to load files', { variant: 'error' });
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -53,17 +57,6 @@ export default function FileList() {
     return 'other';
   };
 
-  if (files.length === 0) {
-    return (
-      <div className="py-12">
-        <Empty
-          description="No files found. Upload to get started!"
-          imageStyle={{ height: 100 }}
-        />
-      </div>
-    );
-  }
-
   return (
     <>
       {location.pathname === '/files' && (
@@ -77,81 +70,93 @@ export default function FileList() {
       )}
 
       <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 p-4">
-        {files.map((file) => {
-          const fileType = getFileType(file.url);
-          return (
-            <Card
-              key={file._id}
-              hoverable
-              title={
-                <Tooltip title={file.filename}>
-                  <Space>
-                    {fileType === 'image' && <FileImageOutlined />}
-                    {fileType === 'pdf' && <FilePdfOutlined />}
-                    {fileType === 'other' && <FileOutlined />}
-                    {file.filename.length > 20 ? file.filename.slice(0, 20) + '...' : file.filename}
-                  </Space>
-                </Tooltip>
-              }
-              actions={[
-                <a href={file.url} target="_blank" rel="noopener noreferrer" key="download">
-                  <DownloadOutlined /> Download
-                </a>,
-                <Popconfirm
-                  title="Are you sure to delete this file?"
-                  onConfirm={() => handleDelete(file.slug)}
-                  okText="Yes"
-                  cancelText="No"
-                  key="delete"
-                >
-                  <Button danger type="text" icon={<DeleteOutlined />}>
-                    Delete
-                  </Button>
-                </Popconfirm>
-              ]}
-              bodyStyle={{ minHeight: 200, padding: '16px' }}
-              style={{ borderRadius: '12px', boxShadow: '0 4px 12px rgba(0,0,0,0.05)' }}
-            >
-              <p className="text-gray-500 text-sm"><strong>Uploaded:</strong> {formatDateTime(file.createdAt)}</p>
-
-              {fileType === 'image' && (
-                <img
-                  src={file.url}
-                  alt={file.filename}
-                  style={{ width: '100%', maxHeight: 150, objectFit: 'contain', marginTop: 8, borderRadius: 8 }}
-                />
-              )}
-
-              {fileType === 'pdf' && (
-                <iframe
-                  src={file.url}
-                  title={file.filename}
-                  width="100%"
-                  height="150"
-                  style={{ marginTop: 8, borderRadius: 8, border: '1px solid #ddd' }}
-                />
-              )}
-
-              {fileType === 'other' && (
-                <div
-                  style={{
-                    marginTop: 8,
-                    height: 150,
-                    display: 'flex',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    backgroundColor: '#fafafa',
-                    borderRadius: 8,
-                    color: '#999',
-                    fontSize: 48,
-                  }}
-                >
-                  <FileOutlined />
-                </div>
-              )}
+        {loading ? (
+          Array.from({ length: 6 }).map((_, idx) => (
+            <Card key={idx} hoverable bodyStyle={{ minHeight: 200 }}>
+              <Skeleton active avatar paragraph={{ rows: 3 }} />
             </Card>
-          );
-        })}
+          ))
+        ) : files.length > 0 ? (
+          files.map((file) => {
+            const fileType = getFileType(file.url);
+            return (
+              <Card
+                key={file._id}
+                title={
+                  <Tooltip title={file.filename}>
+                    <Space>
+                      {fileType === 'image' && <FileImageOutlined />}
+                      {fileType === 'pdf' && <FilePdfOutlined />}
+                      {fileType === 'other' && <FileOutlined />}
+                      {file.filename.length > 20 ? file.filename.slice(0, 20) + '...' : file.filename}
+                    </Space>
+                  </Tooltip>
+                }
+                actions={[
+                  <a href={file.url} target="_blank" rel="noopener noreferrer" key="download">
+                    <DownloadOutlined /> Download
+                  </a>,
+                  <Popconfirm
+                    title="Are you sure to delete this file?"
+                    onConfirm={() => handleDelete(file.slug)}
+                    okText="Yes"
+                    cancelText="No"
+                    key="delete"
+                  >
+                    <Button danger type="text" icon={<DeleteOutlined />}>
+                      Delete
+                    </Button>
+                  </Popconfirm>
+                ]}
+                hoverable
+                bodyStyle={{ minHeight: 200 }}
+              >
+                <p><strong>Uploaded by:</strong> {file.userId || 'N/A'}</p>
+                <p><strong>Uploaded on:</strong> {file.createdAt ? formatDateTime(file.createdAt) : 'Unknown'}</p>
+
+                {fileType === 'image' && (
+                  <img
+                    src={file.url}
+                    alt={file.filename}
+                    style={{ width: '100%', maxHeight: 150, objectFit: 'contain', marginTop: 8, borderRadius: 8 }}
+                  />
+                )}
+
+                {fileType === 'pdf' && (
+                  <iframe
+                    src={file.url}
+                    title={file.filename}
+                    width="100%"
+                    height="150"
+                    style={{ marginTop: 8, borderRadius: 8, border: '1px solid #ddd' }}
+                  />
+                )}
+
+                {fileType === 'other' && (
+                  <div
+                    style={{
+                      marginTop: 8,
+                      height: 150,
+                      display: 'flex',
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                      backgroundColor: '#fafafa',
+                      borderRadius: 8,
+                      color: '#999',
+                      fontSize: 48,
+                    }}
+                  >
+                    <FileOutlined />
+                  </div>
+                )}
+              </Card>
+            );
+          })
+        ) : (
+          <Card hoverable className="text-center text-gray-400" bodyStyle={{ minHeight: 200 }}>
+            <p>No files found</p>
+          </Card>
+        )}
       </div>
     </>
   );
