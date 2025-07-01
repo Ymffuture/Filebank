@@ -24,23 +24,28 @@ const handleSubmit = async () => {
   setProgress(0);
 
   try {
-    const res = await api.post('files/upload', formData, {
-      headers: { 'Content-Type': 'multipart/form-data' },
-      onUploadProgress: (e) => {
-        const percent = Math.floor((e.loaded * 100) / e.total);
-        setProgress(percent);
-      }
-    });
+  const res = await api.post('files/upload', formData, {
+    headers: { 'Content-Type': 'multipart/form-data' },
+    onUploadProgress: (e) => {
+      const percent = Math.floor((e.loaded * 100) / e.total);
+      setProgress(percent);
+    }
+  });
 
-    if (onUpload) {onUpload(res.data);
-    setText2('Upload complete 100%.');
-    enqueueSnackbar('Upload successful!',{variant:'success'});
-    setFiles([]); 
+  // Success actions
+  setText2('Upload complete 100%.');
+  enqueueSnackbar('Upload successful!', { variant: 'success' });
+  setFiles([]);
+
+  if (onUpload) {
+    onUpload(res.data);
   }
-  }catch {
-    setText('Upload file failed, please try again.');
-    enqueueSnackbar('Upload failed.',{variant:'error'});
-  }finally {
+
+} catch (err) {
+  console.error(err);
+  setText('Upload file failed, please try again.');
+  enqueueSnackbar('Upload failed.', { variant: 'error' });
+}finally {
     setUploading(false);
     setProgress(0);
   }
@@ -80,14 +85,16 @@ const handleSubmit = async () => {
 
 
       <div className="mt-2">
-        <Button
-          type="link"
-          onClick={handleSubmit}
-          loading={uploading}
-          icon={<UploadOutlined />}
-        >
-          {uploading ? 'Uploading...' : 'Upload'}
-        </Button>
+    <Button
+  type="link"
+  onClick={handleSubmit}
+  loading={uploading}
+  icon={<UploadOutlined />}
+  disabled={uploading || files.length === 0}
+>
+  {uploading ? 'Uploading...' : 'Upload'}
+</Button>
+
       </div>
 
       {progress > 0 && (
