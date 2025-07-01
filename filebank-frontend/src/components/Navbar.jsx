@@ -1,6 +1,6 @@
-import React, { useState, useEffect,useCallback } from 'react';
-import { Layout, Menu, Avatar, Dropdown, Space, Badge, Button, Drawer } from 'antd';
-import { BellOutlined, DashboardOutlined, FileOutlined, HomeOutlined, InfoCircleOutlined, MenuOutlined } from '@ant-design/icons';
+import React, { useState, useEffect, useCallback } from 'react';
+import { Layout, Menu, Avatar, Dropdown, Space, Badge, Button, Drawer, message } from 'antd';
+import { BellOutlined, DashboardOutlined, FileOutlined, HomeOutlined, InfoCircleOutlined, MenuOutlined, UserOutlined } from '@ant-design/icons';
 import { GoogleLogin, googleLogout } from '@react-oauth/google';
 import { Link, useNavigate } from 'react-router-dom';
 import api from '../api/fileApi';
@@ -16,25 +16,40 @@ export default function Navbar() {
   const [notifModalVisible, setNotifModalVisible] = useState(false);
   const navigate = useNavigate();
 
+  const playSound = () => {
+    const audio = new Audio('/notification.mp3');
+    audio.play().catch(() => {
+      // Fallback beep
+      const ctx = new (window.AudioContext || window.webkitAudioContext)();
+      const oscillator = ctx.createOscillator();
+      oscillator.type = 'sine';
+      oscillator.frequency.setValueAtTime(880, ctx.currentTime);
+      oscillator.connect(ctx.destination);
+      oscillator.start();
+      oscillator.stop(ctx.currentTime + 0.15);
+    });
+  };
+
   const fetchNotifications = useCallback(async () => {
     try {
       const res = await api.get('/notifications');
-      setNotifications(res.data.count || 0);
+      const newCount = res.data.count || 0;
+      if (newCount > notifications) {
+        playSound();
+      }
+      setNotifications(newCount);
     } catch (err) {
       console.warn('Could not load notifications', err);
     }
-  }, []);
+  }, [notifications]);
 
   useEffect(() => {
     if (!user) return;
 
-    fetchNotifications(); 
+    fetchNotifications();
 
-    const interval = setInterval(() => {
-      fetchNotifications();
-    }, 1000); 
-
-    return () => clearInterval(interval); // cleanup on unmount
+    const interval = setInterval(fetchNotifications, 5000);
+    return () => clearInterval(interval);
   }, [user, fetchNotifications]);
 
   const handleLoginSuccess = async (credentialResponse) => {
@@ -87,13 +102,13 @@ export default function Navbar() {
     },
     user?.role === 'admin' && {
       key: 'admin',
-      label: <Link to="/admin">Admin Panel</Link>
+      label: <Link to="/admin"><DashboardOutlined /> Admin Panel</Link>
     }
   ].filter(Boolean);
 
   const profilePic = user?.picture;
-  const initials = user?.name
-    ? user.name.split(' ').map(n => n[0]).join('').toUpperCase()
+  const initials = user?.displayName
+    ? user.displayName.split(' ').map(n => n[0]).join('').toUpperCase()
     : 'FB';
 
   return (
@@ -110,24 +125,34 @@ export default function Navbar() {
       <Space className="md:flex hidden">
         {user && (
           <>
-            
-<Badge count={notifications} offset={[0, 5]}
-  style={{
-    backgroundColor: '#ADD8E6',  
-    color: '#fff',               
-    boxShadow: '0 0 0 1px #fff inset' 
-  }}
-  >
-  <BellOutlined
-    className="text-white text-[28px] cursor-pointer select-none"
-    onClick={() => setNotifModalVisible(true)}
-  />
-</Badge>
+            <Badge
+              count={notifications}
+              offset={[0, 5]}
+              style={{
+                backgroundColor: '#ADD8E6',
+                color: '#fff',
+                boxShadow: '0 0 0 1px #fff inset'
+              }}
+            >
+              <BellOutlined
+                className="text-white text-[28px] cursor-pointer select-none"
+                onClick={() => setNotifModalVisible(true)}
+              />
+            </Badge>
 
-<NotificationsModal
-  visible={notifModalVisible}
-  onClose={() => setNotifModalVisible(false)}
-/>
+            <NotificationsModal
+              visible={notifModalVisible}
+              onClose={() => setNotifModalVisible(false)}
+            />
+
+            <Dropdown overlay={userMenu} placement="bottomRight" trigger={['click']}>
+              <Space className="cursor-pointer">
+                {profilePic
+                  ? <Avatar src={profilePic} size="large" />
+                  : <Avatar size="large" icon={<UserOutlined />} />}
+                <span className="text-white">{user.role?.toUpperCase()}</span>
+              </Space>
+            </Dropdown>
           </>
         )}
         {!user && (
@@ -138,7 +163,6 @@ export default function Navbar() {
         )}
       </Space>
 
-      {/* Mobile: hamburger */}
       <Button
         type="text"
         icon={<MenuOutlined />}
@@ -147,7 +171,17 @@ export default function Navbar() {
       />
 
       <Drawer
-        title="Menu"
+        title={
+          <Space>
+            {profilePic
+              ? <Avatar src={profilePic} />
+              : <Avatar icon={<UserOutlined />} />}
+            <div>
+              <div className="font-bold">{user?.displayName || 'Guest'}</div>
+              <div className="text-sm text-gray-500">{user?.email}</div>
+            </div>
+          </Space>
+        }
         placement="right"
         onClose={() => setDrawerVisible(false)}
         open={drawerVisible}
@@ -157,28 +191,6 @@ export default function Navbar() {
           items={mainMenuItems}
           onClick={() => setDrawerVisible(false)}
         />
-        <div className="mt-4">
-          {user ? (
-            <>
-              <Badge count={notifications} offset={[0, 5]}>
-                <BellOutlined className="text-lg cursor-pointer" onClick={fetchNotifications} />
-              </Badge>
-              <Dropdown overlay={userMenu} placement="bottomRight" trigger={['click']}>
-                <Space className="cursor-pointer mt-2">
-                  {profilePic
-                    ? <Avatar src={profilePic} size="large" />
-                    : <Avatar size="large" style={{ backgroundColor: '#1890ff', color: '#fff' }}>{initials}</Avatar>}
-                  <span>{user.role?.toUpperCase()}</span>
-                </Space>
-              </Dropdown>
-            </>
-          ) : (
-            <GoogleLogin
-              onSuccess={handleLoginSuccess}
-              onError={() => message.error('Login failed.')}
-            />
-          )}
-        </div>
       </Drawer>
     </Header>
   );
