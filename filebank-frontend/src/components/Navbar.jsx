@@ -1,16 +1,17 @@
 import React, { useState, useEffect } from 'react';
-import { Layout, Menu, Avatar, Dropdown, Space, Badge, message } from 'antd';
-import { BellOutlined, DashboardOutlined, FileOutlined, HomeOutlined, InfoCircleOutlined } from '@ant-design/icons';
+import { Layout, Menu, Avatar, Dropdown, Space, Badge, Button, Drawer } from 'antd';
+import { BellOutlined, DashboardOutlined, FileOutlined, HomeOutlined, InfoCircleOutlined, MenuOutlined } from '@ant-design/icons';
 import { GoogleLogin, googleLogout } from '@react-oauth/google';
+import { Link, useNavigate } from 'react-router-dom';
 import api from '../api/fileApi';
 import logo from '/vite.svg';
-import { Link, useNavigate } from 'react-router-dom';
 
 const { Header } = Layout;
 
 export default function Navbar() {
   const [user, setUser] = useState(() => JSON.parse(localStorage.getItem('filebankUser')));
   const [notifications, setNotifications] = useState(0);
+  const [drawerVisible, setDrawerVisible] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -37,11 +38,9 @@ export default function Navbar() {
       localStorage.setItem('filebankUser', JSON.stringify(userData));
       localStorage.setItem('filebankToken', token);
 
-      message.success('Login successful!');
       fetchNotifications();
       navigate('/');
-    } catch (err) {
-      console.error('Login error:', err);
+    } catch {
       message.error('Login failed.');
     }
   };
@@ -64,85 +63,107 @@ export default function Navbar() {
   );
 
   const mainMenuItems = [
-
+    {
+      key: 'home',
+      label: <Link to="/"><HomeOutlined /> Home</Link>
+    },
+    {
+      key: 'about',
+      label: <Link to="/about"><InfoCircleOutlined /> About Us</Link>
+    },
     {
       key: 'files',
-      label: (
-        <Link to="/files" className="flex items-center gap-1">
-          <FileOutlined /> Files
-        </Link>
-      ),
-    },
-      {
-      key: 'dashboard',
-      label: (
-        <Link to="/about" className="flex items-center gap-1">
-          <InfoCircleOutlined/> About Us
-        </Link>
-      ),
-    },
-      {
-      key: 'dashboard',
-      label: (
-        <Link to="/" className="flex items-center gap-1">
-          <HomeOutlined/> Home
-        </Link>
-      ),
+      label: <Link to="/files"><FileOutlined /> Files</Link>
     },
     user?.role === 'admin' && {
       key: 'admin',
-      label: (
-        <Link to="/admin" className="flex items-center gap-1">
-          Admin Panel
-        </Link>
-      ),
-    },
+      label: <Link to="/admin">Admin Panel</Link>
+    }
   ].filter(Boolean);
 
-  // Extract profile picture safely, fallback to null
-const profilePic = user?.picture;
-
-
-  // Extract initials from user name as fallback avatar
+  const profilePic = user?.picture;
   const initials = user?.name
-    ? user.name
-        .split(' ')
-        .map((n) => n[0])
-        .join('')
-        .toUpperCase()
+    ? user.name.split(' ').map(n => n[0]).join('').toUpperCase()
     : 'U';
 
   return (
-    <Header className="sticky top-2 z-50 bg-[#adc6df] px-4 flex flex-wrap justify-between items-center shadow rounded">
+    <Header className="bg-[#adc6df] px-4 flex justify-between items-center shadow rounded sticky top-0 z-50">
       <Space>
         <img src={logo} alt="FileBank Logo" className="w-8 h-8" />
-        <span className="text-white md:block hidden">Powered by Qurovex</span>
-        <Menu mode="horizontal" theme="dark" items={mainMenuItems} className="bg-transparent text-white" />
+        <span className="hidden md:block text-white">Powered by Qurovex</span>
       </Space>
 
-      <Space>
-        {user ? (
+      <div className="hidden md:flex">
+        <Menu mode="horizontal" theme="dark" items={mainMenuItems} className="bg-transparent text-white" />
+      </div>
+
+      <Space className="md:flex hidden">
+        {user && (
           <>
             <Badge count={notifications} offset={[0, 5]}>
               <BellOutlined className="text-white text-lg cursor-pointer" onClick={fetchNotifications} />
             </Badge>
             <Dropdown overlay={userMenu} placement="bottomRight" trigger={['click']}>
               <Space className="cursor-pointer text-white">
-                {profilePic ? (
-                  <Avatar src={profilePic} size="large" />
-                ) : (
-                  <Avatar size="large" style={{ backgroundColor: '#1890ff', color: '#fff' }}>
-                    {initials}
-                  </Avatar>
-                )}
+                {profilePic
+                  ? <Avatar src={profilePic} size="large" />
+                  : <Avatar size="large" style={{ backgroundColor: '#1890ff', color: '#fff' }}>{initials}</Avatar>}
                 <span>{user.role?.toUpperCase()}</span>
               </Space>
             </Dropdown>
           </>
-        ) : (
-          <GoogleLogin onSuccess={handleLoginSuccess} onError={() => message.error('Login failed.')} />
+        )}
+        {!user && (
+          <GoogleLogin
+            onSuccess={handleLoginSuccess}
+            onError={() => message.error('Login failed.')}
+          />
         )}
       </Space>
+
+      {/* Mobile: hamburger */}
+      <Button
+        type="text"
+        icon={<MenuOutlined />}
+        className="md:hidden text-white"
+        onClick={() => setDrawerVisible(true)}
+      />
+
+      <Drawer
+        title="Menu"
+        placement="right"
+        onClose={() => setDrawerVisible(false)}
+        open={drawerVisible}
+      >
+        <Menu
+          mode="vertical"
+          items={mainMenuItems}
+          onClick={() => setDrawerVisible(false)}
+        />
+        <div className="mt-4">
+          {user ? (
+            <>
+              <Badge count={notifications} offset={[0, 5]}>
+                <BellOutlined className="text-lg cursor-pointer" onClick={fetchNotifications} />
+              </Badge>
+              <Dropdown overlay={userMenu} placement="bottomRight" trigger={['click']}>
+                <Space className="cursor-pointer mt-2">
+                  {profilePic
+                    ? <Avatar src={profilePic} size="large" />
+                    : <Avatar size="large" style={{ backgroundColor: '#1890ff', color: '#fff' }}>{initials}</Avatar>}
+                  <span>{user.role?.toUpperCase()}</span>
+                </Space>
+              </Dropdown>
+            </>
+          ) : (
+            <GoogleLogin
+              onSuccess={handleLoginSuccess}
+              onError={() => message.error('Login failed.')}
+            />
+          )}
+        </div>
+      </Drawer>
     </Header>
   );
 }
+
