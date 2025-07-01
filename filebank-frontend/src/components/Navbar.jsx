@@ -111,7 +111,13 @@ export default function Navbar() {
         {user && (
           <>
             
-<Badge count={notifications} offset={[0, 5]}>
+<Badge count={notifications} offset={[0, 5]}
+  style={{
+    backgroundColor: '#FFD700',  
+    color: '#000',               
+    boxShadow: '0 0 0 1px #fff inset' 
+  }}
+  >
   <BellOutlined
     className="text-white text-[28px] cursor-pointer select-none"
     onClick={() => setNotifModalVisible(true)}
