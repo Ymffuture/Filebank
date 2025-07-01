@@ -4,6 +4,7 @@ import { BellOutlined, DashboardOutlined, FileOutlined, HomeOutlined, InfoCircle
 import { GoogleLogin, googleLogout } from '@react-oauth/google';
 import { Link, useNavigate } from 'react-router-dom';
 import api from '../api/fileApi';
+import NotificationsModal from './NotificationsModal';
 import logo from '/vite.svg';
 
 const { Header } = Layout;
@@ -12,6 +13,7 @@ export default function Navbar() {
   const [user, setUser] = useState(() => JSON.parse(localStorage.getItem('filebankUser')));
   const [notifications, setNotifications] = useState(0);
   const [drawerVisible, setDrawerVisible] = useState(false);
+  const [notifModalVisible, setNotifModalVisible] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -100,9 +102,19 @@ export default function Navbar() {
       <Space className="md:flex hidden">
         {user && (
           <>
-            <Badge count={notifications} offset={[0, 5]}>
-              <BellOutlined className="text-white text-lg cursor-pointer" onClick={fetchNotifications} />
-            </Badge>
+            
+<Badge count={notifications} offset={[0, 5]}>
+  <BellOutlined
+    className="text-white text-lg cursor-pointer"
+    onClick={() => setNotifModalVisible(true)}
+  />
+</Badge>
+
+<NotificationsModal
+  visible={notifModalVisible}
+  onClose={() => setNotifModalVisible(false)}
+/>
+
             <Dropdown overlay={userMenu} placement="bottomRight" trigger={['click']}>
               <Space className="cursor-pointer text-white">
                 {profilePic
