@@ -1,169 +1,120 @@
-import React, { useState, useEffect } from 'react';
-import { Layout, Menu, Avatar, Dropdown, Space, Badge, Button, Drawer } from 'antd';
-import { BellOutlined, DashboardOutlined, FileOutlined, HomeOutlined, InfoCircleOutlined, MenuOutlined } from '@ant-design/icons';
-import { GoogleLogin, googleLogout } from '@react-oauth/google';
-import { Link, useNavigate } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { Modal, List, Badge, Button, Space, Popconfirm, Spin, message } from 'antd';
+import { DeleteOutlined, CheckOutlined, BellOutlined } from '@ant-design/icons';
 import api from '../api/fileApi';
-import logo from '/vite.svg';
 
-const { Header } = Layout;
+export default function NotificationsModal({ visible, onClose }) {
+  const [notifications, setNotifications] = useState([]);
+  const [loading, setLoading] = useState(false);
 
-export default function Navbar() {
-  const [user, setUser] = useState(() => JSON.parse(localStorage.getItem('filebankUser')));
-  const [notifications, setNotifications] = useState(0);
-  const [drawerVisible, setDrawerVisible] = useState(false);
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    if (user) fetchNotifications();
-  }, [user]);
-
-  const fetchNotifications = async () => {
+  const loadNotifications = async () => {
+    setLoading(true);
     try {
       const res = await api.get('/notifications');
-      setNotifications(res.data.count || 0);
+      setNotifications(res.data);
     } catch (err) {
-      console.warn('Could not load notifications', err);
+      message.error('Failed to load notifications');
+    } finally {
+      setLoading(false);
     }
   };
 
-  const handleLoginSuccess = async (credentialResponse) => {
+  useEffect(() => {
+    if (visible) loadNotifications();
+  }, [visible]);
+
+  const markAsRead = async (id) => {
     try {
-      const credential = credentialResponse.credential;
-      const res = await api.post('/auth/google-login', { credential });
-      const userData = res.data.user;
-      const token = res.data.token;
-
-      setUser(userData);
-      localStorage.setItem('filebankUser', JSON.stringify(userData));
-      localStorage.setItem('filebankToken', token);
-
-      fetchNotifications();
-      navigate('/');
+      await api.put(`/notifications/${id}/read`);
+      message.success('Marked as read');
+      loadNotifications();
     } catch {
-      message.error('Login failed.');
+      message.error('Failed to mark as read');
     }
   };
 
-  const handleLogout = () => {
-    googleLogout();
-    localStorage.removeItem('filebankUser');
-    localStorage.removeItem('filebankToken');
-    setUser(null);
-    message.info('Logged out');
+  const deleteNotification = async (id) => {
+    try {
+      await api.delete(`/notifications/${id}`);
+      message.success('Deleted');
+      loadNotifications();
+    } catch {
+      message.error('Failed to delete');
+    }
   };
 
-  const userMenu = (
-    <Menu
-      items={[
-        { key: '1', label: <span onClick={handleLogout}>Logout</span> },
-        { key: '2', label: <Link to="/profile">Profile</Link> },
-      ]}
-    />
-  );
-
-  const mainMenuItems = [
-    {
-      key: 'home',
-      label: <Link to="/"><HomeOutlined /> Home</Link>
-    },
-    {
-      key: 'about',
-      label: <Link to="/about"><InfoCircleOutlined /> About Us</Link>
-    },
-    {
-      key: 'files',
-      label: <Link to="/files"><FileOutlined /> Files</Link>
-    },
-    user?.role === 'admin' && {
-      key: 'admin',
-      label: <Link to="/admin">Admin Panel</Link>
+  const markAllAsRead = async () => {
+    try {
+      await Promise.all(notifications.filter(n => !n.read).map(n => api.put(`/notifications/${n._id}/read`)));
+      message.success('All marked as read');
+      loadNotifications();
+    } catch {
+      message.error('Failed to mark all');
     }
-  ].filter(Boolean);
-
-  const profilePic = user?.picture;
-  const initials = user?.name
-    ? user.name.split(' ').map(n => n[0]).join('').toUpperCase()
-    : 'U';
+  };
 
   return (
-    <Header className="bg-[#adc6df] px-4 flex justify-between items-center shadow rounded sticky top-0 z-50">
-      <Space>
-        <img src={logo} alt="FileBank Logo" className="w-8 h-8" />
-        <span className="hidden md:block text-white">Powered by Qurovex</span>
-      </Space>
-
-      <div className="hidden md:flex">
-        <Menu mode="horizontal" theme="dark" items={mainMenuItems} className="bg-transparent text-white" />
-      </div>
-
-      <Space className="md:flex hidden">
-        {user && (
-          <>
-            <Badge count={notifications} offset={[0, 5]}>
-              <BellOutlined className="text-white text-lg cursor-pointer" onClick={fetchNotifications} />
-            </Badge>
-            <Dropdown overlay={userMenu} placement="bottomRight" trigger={['click']}>
-              <Space className="cursor-pointer text-white">
-                {profilePic
-                  ? <Avatar src={profilePic} size="large" />
-                  : <Avatar size="large" style={{ backgroundColor: '#1890ff', color: '#fff' }}>{initials}</Avatar>}
-                <span>{user.role?.toUpperCase()}</span>
-              </Space>
-            </Dropdown>
-          </>
-        )}
-        {!user && (
-          <GoogleLogin
-            onSuccess={handleLoginSuccess}
-            onError={() => message.error('Login failed.')}
-          />
-        )}
-      </Space>
-
-      {/* Mobile: hamburger */}
-      <Button
-        type="text"
-        icon={<MenuOutlined />}
-        className="md:hidden text-white"
-        onClick={() => setDrawerVisible(true)}
-      />
-
-      <Drawer
-        title="Menu"
-        placement="right"
-        onClose={() => setDrawerVisible(false)}
-        open={drawerVisible}
-      >
-        <Menu
-          mode="vertical"
-          items={mainMenuItems}
-          onClick={() => setDrawerVisible(false)}
-        />
-        <div className="mt-4">
-          {user ? (
-            <>
-              <Badge count={notifications} offset={[0, 5]}>
-                <BellOutlined className="text-lg cursor-pointer" onClick={fetchNotifications} />
-              </Badge>
-              <Dropdown overlay={userMenu} placement="bottomRight" trigger={['click']}>
-                <Space className="cursor-pointer mt-2">
-                  {profilePic
-                    ? <Avatar src={profilePic} size="large" />
-                    : <Avatar size="large" style={{ backgroundColor: '#1890ff', color: '#fff' }}>{initials}</Avatar>}
-                  <span>{user.role?.toUpperCase()}</span>
-                </Space>
-              </Dropdown>
-            </>
-          ) : (
-            <GoogleLogin
-              onSuccess={handleLoginSuccess}
-              onError={() => message.error('Login failed.')}
-            />
+    <Modal
+      title={
+        <Space>
+          <BellOutlined /> Notifications
+          <Badge count={notifications.filter(n => !n.read).length} />
+        </Space>
+      }
+      open={visible}
+      onCancel={onClose}
+      footer={[
+        <Button key="markAll" onClick={markAllAsRead} icon={<CheckOutlined />}>
+          Mark All as Read
+        </Button>,
+        <Button key="close" onClick={onClose}>
+          Close
+        </Button>,
+      ]}
+      width={600}
+    >
+      {loading ? (
+        <Spin />
+      ) : (
+        <List
+          itemLayout="horizontal"
+          dataSource={notifications}
+          renderItem={item => (
+            <List.Item
+              actions={[
+                !item.read && (
+                  <Button
+                    type="link"
+                    size="small"
+                    icon={<CheckOutlined />}
+                    onClick={() => markAsRead(item._id)}
+                  >
+                    Mark as Read
+                  </Button>
+                ),
+                <Popconfirm
+                  title="Delete this notification?"
+                  onConfirm={() => deleteNotification(item._id)}
+                >
+                  <Button type="link" danger icon={<DeleteOutlined />} size="small">
+                    Delete
+                  </Button>
+                </Popconfirm>
+              ]}
+            >
+              <List.Item.Meta
+                title={
+                  <span style={{ fontWeight: item.read ? 'normal' : 'bold' }}>
+                    {item.message}
+                  </span>
+                }
+                description={new Date(item.createdAt).toLocaleString()}
+              />
+            </List.Item>
           )}
-        </div>
-      </Drawer>
-    </Header>
+        />
+      )}
+    </Modal>
   );
 }
 
