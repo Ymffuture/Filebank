@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect,useCallback } from 'react';
 import { Layout, Menu, Avatar, Dropdown, Space, Badge, Button, Drawer } from 'antd';
 import { BellOutlined, DashboardOutlined, FileOutlined, HomeOutlined, InfoCircleOutlined, MenuOutlined } from '@ant-design/icons';
 import { GoogleLogin, googleLogout } from '@react-oauth/google';
@@ -16,18 +16,26 @@ export default function Navbar() {
   const [notifModalVisible, setNotifModalVisible] = useState(false);
   const navigate = useNavigate();
 
-  useEffect(() => {
-    if (user) fetchNotifications();
-  }, 300);
-
-  const fetchNotifications = async () => {
+  const fetchNotifications = useCallback(async () => {
     try {
       const res = await api.get('/notifications');
       setNotifications(res.data.count || 0);
     } catch (err) {
       console.warn('Could not load notifications', err);
     }
-  };
+  }, []);
+
+  useEffect(() => {
+    if (!user) return;
+
+    fetchNotifications(); // initial fetch
+
+    const interval = setInterval(() => {
+      fetchNotifications();
+    }, 5000); // refresh every 5s
+
+    return () => clearInterval(interval); // cleanup on unmount
+  }, [user, fetchNotifications]);
 
   const handleLoginSuccess = async (credentialResponse) => {
     try {
