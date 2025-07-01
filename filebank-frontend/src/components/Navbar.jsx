@@ -105,7 +105,7 @@ export default function Navbar() {
             
 <Badge count={notifications} offset={[0, 5]}>
   <BellOutlined
-    className="text-white text-lg cursor-pointer"
+    className="text-white text-[28px] cursor-pointer select-none"
     onClick={() => setNotifModalVisible(true)}
   />
 </Badge>
