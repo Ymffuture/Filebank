@@ -113,8 +113,8 @@ export default function Navbar() {
             
 <Badge count={notifications} offset={[0, 5]}
   style={{
-    backgroundColor: '#FFD700',  
-    color: '#000',               
+    backgroundColor: '#ADD8E6',  
+    color: '#fff',               
     boxShadow: '0 0 0 1px #fff inset' 
   }}
   >
