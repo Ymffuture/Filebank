@@ -14,9 +14,7 @@ export default function Navbar() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (user) {
-      fetchNotifications();
-    }
+    if (user) fetchNotifications();
   }, [user]);
 
   const fetchNotifications = async () => {
@@ -102,7 +100,7 @@ export default function Navbar() {
   ].filter(Boolean);
 
   // Extract profile picture safely, fallback to null
-const profilePic = user?.picture || user?.photo || user?.avatar || null;
+const profilePic = user?.picture;
 
 
   // Extract initials from user name as fallback avatar
@@ -117,7 +115,7 @@ const profilePic = user?.picture || user?.photo || user?.avatar || null;
   return (
     <Header className="sticky top-2 z-50 bg-[#adc6df] px-4 flex flex-wrap justify-between items-center shadow rounded">
       <Space>
-        <img src={logo} alt="FileBank Logo" className="w-20 h-8" />
+        <img src={logo} alt="FileBank Logo" className="w-8 h-8" />
         <span className="text-white md:block hidden">Powered by Qurovex</span>
         <Menu mode="horizontal" theme="dark" items={mainMenuItems} className="bg-transparent text-white" />
       </Space>
