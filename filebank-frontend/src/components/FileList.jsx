@@ -25,7 +25,7 @@ export default function FileList() {
     fetchFiles();
     const interval = setInterval(fetchFiles, 5000);
     return () => clearInterval(interval);
-  }, 3000);
+  }, []);
 
   const handleDelete = async (slug) => {
     try {
