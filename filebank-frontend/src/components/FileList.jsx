@@ -113,7 +113,7 @@ export default function FileList() {
                 hoverable
                 bodyStyle={{ minHeight: 200 }}
               >
-   
+                 
                 <p className='text-white bg-[green] p-1 rounded' ><strong>Uploaded on:</strong> {file.createdAt ? formatDateTime(file.createdAt) : 'Unknown'}</p>
 
                 {fileType === 'image' && (
@@ -151,6 +151,7 @@ export default function FileList() {
                     <FileOutlined />
                   </div>
                 )}
+                <p className='text-[gray] p-2 ' >{file.slug} </p>
               </Card>
             );
           })
