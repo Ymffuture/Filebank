@@ -3,7 +3,7 @@ import { Upload, Button, Alert, Progress } from 'antd';
 import { UploadOutlined } from '@ant-design/icons';
 import api from '../api/fileApi';
 import { useSnackbar } from 'notistack';
-
+import {Helmet} from 'react-helmet' ;
 export default function FileUpload({ onUpload, currentUserFileCount = 0}) {
   const [files, setFiles] = useState([]); 
   const [uploading, setUploading] = useState(false);
@@ -54,8 +54,14 @@ export default function FileUpload({ onUpload, currentUserFileCount = 0}) {
   };
 
   return (
+  <>
+  <Helmet>
+        <title>Up Load Files</title>
+        <meta name="description" content="Learn about FileBank — a secure file management platform by Qurovex Institute." />
+      </Helmet>
+  
     <div className="bg-[#E1EEFA] p-12 m-0 rounded text-[white]">
-      <p>You can upload up to 13 documents. Remaining: {13 - currentUserFileCount}</p>
+      <p className='text-black p-1 bg-white' >You can upload up to 13 documents. Remaining: {13 - currentUserFileCount}</p>
 
       <Upload
         beforeUpload={(file) => {
@@ -126,6 +132,7 @@ export default function FileUpload({ onUpload, currentUserFileCount = 0}) {
         />
       )}
     </div>
+  </>
   );
 }
 
