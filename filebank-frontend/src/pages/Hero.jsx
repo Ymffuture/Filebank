@@ -197,6 +197,7 @@ export default function Hero() {
         <Link to="/terms" style={{ color: ratColors.accent, textDecoration: 'underline' }}>
           Terms of Service
         </Link>
+        <span>|</span>
         <Link to="/privacy" style={{ color: ratColors.accent, textDecoration: 'underline' }}>
           Privacy Policy
         </Link>
