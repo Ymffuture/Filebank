@@ -3,7 +3,7 @@ import Navbar from '../components/Navbar';
 import FileUpload from '../components/FileUpload';
 import FileList from '../components/FileList';
 import { Card } from 'antd';
-import Doc from './FileBankDocumentary' 
+import FileBankDocumentary from "./FileBankDocumentary" ;
 export default function Home() {
   const [refresh, setRefresh] = useState(0);
 
@@ -32,7 +32,7 @@ export default function Home() {
           }}
         >
           <h1 className="text-2xl font-bold text-gray-700 mb-4">Filebank Documentary</h1>
-          <Doc/>
+          <FileBankDocumentary/>
         </Card>
       </main>
     </div>
