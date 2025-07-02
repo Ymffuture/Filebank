@@ -27,7 +27,7 @@ export default function FileList() {
 
   useEffect(() => {
     fetchFiles();
-    const interval = setInterval(fetchFiles, 5000);
+    const interval = setInterval(fetchFiles, 60000);
     return () => clearInterval(interval);
   }, []);
 
