@@ -9,7 +9,7 @@ const Admin = lazy(() => import('./components/Admin'));
 const Hero = lazy(() => import('./pages/Hero'));
 const Privacy = lazy(() => import('./pages/Privacy'));
 const Terms = lazy(() => import('./pages/Terms'));
-
+const AboutUs = lazy(() => import('./pages/AboutUs'));
 // SVG loader
 const Loader = () => (
   <div style={{
@@ -60,6 +60,7 @@ export default function App() {
           <Route path="/terms" element={<Terms />} />
           <Route path="/privacy" element={<Privacy />} />
           <Route path="/admin" element={<Admin />} />
+          <Route path="/about-us" element={<AboutUs />} />
         </Routes>
         <Footer />
       </Suspense>
