@@ -4,7 +4,7 @@ import { UploadOutlined } from '@ant-design/icons';
 import api from '../api/fileApi';
 import { useSnackbar } from 'notistack';
 
-export default function FileUpload({ onUpload }) {
+export default function FileUpload({ onUpload, currentUserFileCount = 0}) {
   const [files, setFiles] = useState([]); 
   const [uploading, setUploading] = useState(false);
   const [progress, setProgress] = useState(0);
