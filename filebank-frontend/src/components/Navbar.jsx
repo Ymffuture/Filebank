@@ -117,8 +117,9 @@ export default function Navbar() {
   <img
   src={logo}
   alt="FileBank Logo"
-  className="w-10 h-10 scale-[-50%]"
+  className="w-16 h-16 scale-125"
 />
+
         <span className="hidden md:block text-white">Powered by Qurovex</span>
       </Space>
 
