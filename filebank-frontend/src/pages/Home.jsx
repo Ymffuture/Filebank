@@ -3,7 +3,7 @@ import Navbar from '../components/Navbar';
 import FileUpload from '../components/FileUpload';
 import FileList from '../components/FileList';
 import { Card } from 'antd';
-
+import Doc from './FileBankDocumentary' 
 export default function Home() {
   const [refresh, setRefresh] = useState(0);
 
@@ -31,8 +31,8 @@ export default function Home() {
             padding: '24px'
           }}
         >
-          <h1 className="text-2xl font-bold text-gray-700 mb-4">Your Files</h1>
-          <FileList key={refresh} />
+          <h1 className="text-2xl font-bold text-gray-700 mb-4">Filebank Documentary</h1>
+          <Doc/>
         </Card>
       </main>
     </div>
