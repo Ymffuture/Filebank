@@ -1,6 +1,7 @@
 import React from 'react';
 import { Card, Typography, Space, Divider } from 'antd';
-import { FileOutlined, CloudUploadOutlined, ShieldOutlined, TeamOutlined } from '@ant-design/icons';
+import { CloudUpload, ShieldCheck, Users, Mail, MapPin, Globe } from 'lucide-react';
+import { Helmet } from 'react-helmet';
 import Navbar from '../components/Navbar';
 
 const { Title, Paragraph, Text } = Typography;
@@ -8,6 +9,11 @@ const { Title, Paragraph, Text } = Typography;
 export default function AboutUs() {
   return (
     <div className="min-h-screen bg-[#E1EEFA]">
+      <Helmet>
+        <title>About Us | FileBank by Qurovex</title>
+        <meta name="description" content="Learn about FileBank — a secure file management platform by Qurovex Institute." />
+      </Helmet>
+
       <Navbar />
       <main className="container mx-auto py-8 px-4">
         <Card
@@ -31,7 +37,7 @@ export default function AboutUs() {
                   hoverable
                   style={{ background: '#F0F8FF' }}
                 >
-                  <CloudUploadOutlined style={{ fontSize: '48px', color: '#1E90FF' }} />
+                  <CloudUpload size={48} color="#1E90FF" className="mx-auto mb-2" />
                   <Title level={4}>Simple & Fast Uploads</Title>
                   <Paragraph>Upload any file in seconds. Drag & drop support, PDF, images, and more.</Paragraph>
                 </Card>
@@ -42,7 +48,7 @@ export default function AboutUs() {
                   hoverable
                   style={{ background: '#F0F8FF' }}
                 >
-                  <ShieldOutlined style={{ fontSize: '48px', color: '#1E90FF' }} />
+                  <ShieldCheck size={48} color="#1E90FF" className="mx-auto mb-2" />
                   <Title level={4}>Secure & Private</Title>
                   <Paragraph>Your files are encrypted and stored securely using Cloudinary + MongoDB.</Paragraph>
                 </Card>
@@ -53,7 +59,7 @@ export default function AboutUs() {
                   hoverable
                   style={{ background: '#F0F8FF' }}
                 >
-                  <TeamOutlined style={{ fontSize: '48px', color: '#1E90FF' }} />
+                  <Users size={48} color="#1E90FF" className="mx-auto mb-2" />
                   <Title level={4}>Made for Everyone</Title>
                   <Paragraph>Whether you're an individual or a team, FileBank simplifies your file management.</Paragraph>
                 </Card>
@@ -63,15 +69,17 @@ export default function AboutUs() {
 
               <Title level={4}>Our Mission</Title>
               <Paragraph>
-                At <Text strong>FileBank</Text>, we aim to empower users to manage their digital files with ease, speed, and security. 
+                At <Text strong>FileBank</Text>, we aim to empower users to manage their digital files with ease, speed, and security.
                 Our platform integrates modern technology, a user-friendly interface, and robust security practices to deliver top-tier service.
               </Paragraph>
 
               <Title level={4}>Contact Us</Title>
               <Paragraph>
-                📧 <Text code>quorvexinstitute@gmail.com</Text><br/>
-                📍 2354 Drieziek 4, Orange Farm, Johannesburg South, 1841<br/>
-                🌐 <a href="https://filebank.vercel.app" target="_blank" rel="noopener noreferrer">filebank.vercel.app</a>
+                <Space direction="vertical" size="small">
+                  <span><Mail className="inline mr-2" size={16} /> <Text code>quorvexinstitute@gmail.com</Text></span>
+                  <span><MapPin className="inline mr-2" size={16} /> 2354 Drieziek 4, Orange Farm, Johannesburg South, 1841</span>
+                  <span><Globe className="inline mr-2" size={16} /> <a href="https://filebank.vercel.app" target="_blank" rel="noopener noreferrer">filebank.vercel.app</a></span>
+                </Space>
               </Paragraph>
             </Space>
           </Typography>
@@ -80,4 +88,3 @@ export default function AboutUs() {
     </div>
   );
 }
-
