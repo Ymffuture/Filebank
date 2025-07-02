@@ -120,14 +120,14 @@ export default function FileList() {
         {loading ? (
           Array.from({ length: 4 }).map((_, idx) => (
             <Card key={idx} hoverable bodyStyle={{ minHeight: 200 }}>
-              <Skeleton active avatar paragraph={{ rows: 3 }} />
+              <Skeleton active avatar paragraph={{ rows: 4 }} />
             </Card>
           ))
         ) : files.length > 0 ? (
           files.map((file) => {
             const fileType = getFileType(file.url);
             // Use downloadUrl if available, otherwise append ?fl=attachment for PDFs
-            const downloadUrl = file.url || (fileType === 'pdf' ? `${file.url}?fl=attachment` : file.url);
+            const downloadUrl = file.url || (fileType === 'pdf' ? `${file.url}?fl=attachment:${file.originalname}` : file.downloadUrl);
 
             return (
               <Card
