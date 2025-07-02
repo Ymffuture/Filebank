@@ -58,11 +58,51 @@ export default function FileList() {
   };
 
   const getFileType = (url) => {
-    const ext = url.split('.').pop().toLowerCase();
-    if (['jpg', 'jpeg', 'png', 'gif', 'bmp', 'webp'].includes(ext)) return 'image';
-    if (ext === 'pdf') return 'pdf';
-    return 'other';
-  };
+  const ext = url.split('.').pop().toLowerCase();
+
+  if (['jpg', 'jpeg', 'png', 'gif', 'bmp', 'webp', 'svg', 'ico', 'tiff'].includes(ext)) {
+    return 'image';
+  }
+
+  if (['pdf'].includes(ext)) {
+    return 'pdf';
+  }
+
+  if (['doc', 'docx', 'odt', 'rtf'].includes(ext)) {
+    return 'word';
+  }
+
+  if (['xls', 'xlsx', 'ods', 'csv'].includes(ext)) {
+    return 'excel';
+  }
+
+  if (['ppt', 'pptx', 'odp'].includes(ext)) {
+    return 'powerpoint';
+  }
+
+  if (['txt', 'md', 'json', 'xml', 'yaml', 'yml', 'log'].includes(ext)) {
+    return 'text';
+  }
+
+  if (['zip', 'rar', '7z', 'tar', 'gz'].includes(ext)) {
+    return 'archive';
+  }
+
+  if (['mp3', 'wav', 'ogg', 'flac', 'aac'].includes(ext)) {
+    return 'audio';
+  }
+
+  if (['mp4', 'mov', 'avi', 'wmv', 'mkv', 'webm'].includes(ext)) {
+    return 'video';
+  }
+
+  if (['html', 'htm', 'css', 'js', 'ts', 'jsx', 'tsx', 'php', 'py', 'java', 'c', 'cpp', 'rb', 'go', 'rs'].includes(ext)) {
+    return 'code';
+  }
+
+  return 'other';
+};
+
 
   return (
     <>
