@@ -66,7 +66,7 @@ export default function FileUpload({ onUpload, currentUserFileCount = 0}) {
         beforeUpload={(file) => {
           const isLt2M = file.size / 1024 / 1024 < 2;
           if (!isLt2M) {
-            setText('File size exceeds 2MB. try upload less than 2MB');
+            setText('something went wrong.');
             enqueueSnackbar('File size exceeds 2MB', { variant: 'warning' });
             return Upload.LIST_IGNORE;
           }
@@ -100,7 +100,7 @@ export default function FileUpload({ onUpload, currentUserFileCount = 0}) {
           icon={<UploadOutlined />}
           disabled={uploading || files.length === 0}
         >
-          {uploading ? 'Uploading...' : 'Upload'}
+          {uploading ? 'Please wait...' : 'Upload'}
         </Button>
       </div>
 
@@ -115,7 +115,7 @@ export default function FileUpload({ onUpload, currentUserFileCount = 0}) {
           message={text}
           type="error"
           className="mt-2 select-none"
-          description="Please check the internet connection"
+          description="Please check the internet connection. "
           closable
           banner
         />
