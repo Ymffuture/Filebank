@@ -1,20 +1,47 @@
-<svg width="200" height="60" viewBox="0 0 200 60" xmlns="http://www.w3.org/2000/svg">
-  <!-- File icon -->
-  <rect x="10" y="10" width="30" height="40" rx="4" ry="4" fill="#1E90FF" />
-  <polygon points="40,10 30,10 30,20" fill="#FFD700" />
+<svg width="160" height="100" viewBox="0 0 160 100" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="outerCubeGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1E90FF"/>
+      <stop offset="100%" stop-color="#32CD32"/>
+    </linearGradient>
+    <linearGradient id="innerCubeGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FFD700" stop-opacity="0.8"/>
+      <stop offset="100%" stop-color="#1E90FF" stop-opacity="1"/>
+    </linearGradient>
+    <radialGradient id="cloudGlow" cx="60%" cy="40%" r="50%">
+      <stop offset="0%" stop-color="#1E90FF" stop-opacity="0.3"/>
+      <stop offset="100%" stop-color="#32CD32" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
 
-  <!-- Bank icon (simplified building) -->
-  <g transform="translate(50, 10)">
-    <rect width="30" height="40" rx="2" ry="2" fill="#32CD32" />
-    <rect x="5" y="15" width="5" height="15" fill="#F0F8FF" />
-    <rect x="20" y="15" width="5" height="15" fill="#F0F8FF" />
-  </g>
+  <!-- Soft cloud backdrop -->
+  <ellipse cx="80" cy="60" rx="45" ry="18" fill="url(#cloudGlow)" />
 
-  <!-- Brand name -->
-  <text x="90" y="38" font-family="Arial, sans-serif" font-size="24" fill="#1E90FF" font-weight="bold">
-    File
-  </text>
-  <text x="135" y="38" font-family="Arial, sans-serif" font-size="24" fill="#FFD700" font-weight="bold">
-    Bank
-  </text>
+  <!-- Cloud shape -->
+  <path d="M60 65
+           q-10 0 -10 -10
+           q0 -10 10 -10
+           q5 -10 15 -10
+           q10 0 15 10
+           q10 0 10 10
+           q0 10 -10 10z"
+        fill="#1E90FF" opacity="0.2" />
+
+  <!-- Outer cube -->
+  <rect x="70" y="30" width="20" height="20" transform="rotate(45 80 40)"
+        fill="url(#outerCubeGrad)" stroke="#32CD32" stroke-width="1.5" rx="3" ry="3" opacity="0.85"/>
+
+  <!-- Inner cube -->
+  <rect x="74" y="34" width="12" height="12" transform="rotate(45 80 40)"
+        fill="url(#innerCubeGrad)" stroke="#FFD700" stroke-width="1" rx="2" ry="2"/>
+
+  <!-- Upload arrow -->
+  <path d="M80 25 L85 35 H82 V45 H78 V35 H75 Z"
+        fill="#FFD700" opacity="0.9"/>
+
+  <!-- Shadow -->
+  <ellipse cx="80" cy="62" rx="18" ry="5" fill="#000" opacity="0.15"/>
+
+  <!-- Sparkle dot -->
+  <circle cx="95" cy="25" r="2" fill="#FFD700" opacity="0.8"/>
 </svg>
