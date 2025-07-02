@@ -9,6 +9,7 @@ import { useSnackbar } from 'notistack';
 export default function FileList() {
   const [files, setFiles] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [deleting, setDeleting] = useState(null); // Track deleting state for each file
   const { enqueueSnackbar } = useSnackbar();
   const location = useLocation();
 
@@ -32,6 +33,7 @@ export default function FileList() {
   }, []);
 
   const handleDelete = async (slug) => {
+    setDeleting(slug); // Set deleting state
     try {
       await api.delete(`files/${slug}`);
       enqueueSnackbar('File deleted', { variant: 'success' });
@@ -39,13 +41,18 @@ export default function FileList() {
     } catch (err) {
       console.error(err);
       enqueueSnackbar('Delete failed', { variant: 'error' });
+    } finally {
+      setDeleting(null);
     }
   };
 
   const formatDateTime = (dateString) => {
     const options = {
-      year: 'numeric', month: 'short', day: 'numeric',
-      hour: '2-digit', minute: '2-digit'
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit',
     };
     return new Date(dateString).toLocaleString(undefined, options);
   };
@@ -79,43 +86,51 @@ export default function FileList() {
         ) : files.length > 0 ? (
           files.map((file) => {
             const fileType = getFileType(file.url);
+            // Use downloadUrl if available, otherwise append ?fl=attachment for PDFs
+            const downloadUrl = file.downloadUrl || (fileType === 'pdf' ? `${file.url}?fl=attachment` : file.url);
+
             return (
               <Card
                 key={file._id}
                 title={
                   <Tooltip title={file.slug}>
-  <Space>
-    {fileType === 'image' && <FileImageOutlined />}
-    {fileType === 'pdf' && <FilePdfOutlined />}
-    {fileType === 'other' && <FileOutlined />}
-    {file.filename.length > 20 ? file.filename.slice(0, 20) + '...' : file.filename}
-    <span className="text-gray-400 text-xs">({file.slug})</span> 
-  </Space>
-</Tooltip>
-
+                    <Space>
+                      {fileType === 'image' && <FileImageOutlined />}
+                      {fileType === 'pdf' && <FilePdfOutlined />}
+                      {fileType === 'other' && <FileOutlined />}
+                      {file.filename.length > 20 ? file.filename.slice(0, 20) + '...' : file.filename}
+                      <span className="text-gray-400 text-xs">({file.slug})</span>
+                    </Space>
+                  </Tooltip>
                 }
                 actions={[
-                  <a href={file.url} target="_blank" rel="noopener noreferrer" key="download">
-  <DownloadOutlined /> Download
-</a>
-,
+                  <a href={downloadUrl} download={file.filename} key="download">
+                    <DownloadOutlined /> Download
+                  </a>,
                   <Popconfirm
                     title="Are you sure to delete this file?"
                     onConfirm={() => handleDelete(file.slug)}
                     okText="Yes"
                     cancelText="No"
                     key="delete"
+                    disabled={deleting === file.slug}
                   >
-                    <Button danger type="text" icon={<DeleteOutlined />}>
+                    <Button
+                      danger
+                      type="text"
+                      icon={<DeleteOutlined />}
+                      loading={deleting === file.slug}
+                    >
                       Delete
                     </Button>
-                  </Popconfirm>
+                  </Popconfirm>,
                 ]}
                 hoverable
                 bodyStyle={{ minHeight: 200 }}
               >
-                 
-                <p className='text-white bg-[green] p-1 rounded' ><strong>Uploaded on:</strong> {file.createdAt ? formatDateTime(file.createdAt) : 'Unknown'}</p>
+                <p className="text-white bg-[green] p-1 rounded">
+                  <strong>Uploaded on:</strong> {file.createdAt ? formatDateTime(file.createdAt) : 'Unknown'}
+                </p>
 
                 {fileType === 'image' && (
                   <img
@@ -152,7 +167,7 @@ export default function FileList() {
                     <FileOutlined />
                   </div>
                 )}
-                <p className='text-[gray] p-2 ' >{file.slug} </p>
+                <p className="text-[gray] p-2">{file.slug}</p>
               </Card>
             );
           })
@@ -165,4 +180,3 @@ export default function FileList() {
     </>
   );
 }
-
