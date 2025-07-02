@@ -95,9 +95,10 @@ export default function FileList() {
 
                 }
                 actions={[
-                  <a href={file.url} target="_blank" rel="noopener noreferrer" key="download">
-                    <DownloadOutlined /> Download
-                  </a>,
+                  <a href={`/api/files/download/${file.slug}`} key="download">
+  <DownloadOutlined /> Download
+</a>
+,
                   <Popconfirm
                     title="Are you sure to delete this file?"
                     onConfirm={() => handleDelete(file.slug)}
