@@ -71,7 +71,7 @@ export default function FileList() {
 
       <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 p-4">
         {loading ? (
-          Array.from({ length: 6 }).map((_, idx) => (
+          Array.from({ length: 4 }).map((_, idx) => (
             <Card key={idx} hoverable bodyStyle={{ minHeight: 200 }}>
               <Skeleton active avatar paragraph={{ rows: 3 }} />
             </Card>
@@ -83,14 +83,16 @@ export default function FileList() {
               <Card
                 key={file._id}
                 title={
-                  <Tooltip title={file.filename}>
-                    <Space>
-                      {fileType === 'image' && <FileImageOutlined />}
-                      {fileType === 'pdf' && <FilePdfOutlined />}
-                      {fileType === 'other' && <FileOutlined />}
-                      {file.filename.length > 20 ? file.filename.slice(0, 20) + '...' : file.filename}
-                    </Space>
-                  </Tooltip>
+                  <Tooltip title={file.slug}>
+  <Space>
+    {fileType === 'image' && <FileImageOutlined />}
+    {fileType === 'pdf' && <FilePdfOutlined />}
+    {fileType === 'other' && <FileOutlined />}
+    {file.filename.length > 20 ? file.filename.slice(0, 20) + '...' : file.filename}
+    <span className="text-gray-400 text-xs">({file.slug})</span> 
+  </Space>
+</Tooltip>
+
                 }
                 actions={[
                   <a href={file.url} target="_blank" rel="noopener noreferrer" key="download">
@@ -111,8 +113,8 @@ export default function FileList() {
                 hoverable
                 bodyStyle={{ minHeight: 200 }}
               >
-                <p><strong>Uploaded by:</strong> {file.userId || 'N/A'}</p>
-                <p><strong>Uploaded on:</strong> {file.createdAt ? formatDateTime(file.createdAt) : 'Unknown'}</p>
+   
+                <p className='text-white bg-[green] p-1 rounded' ><strong>Uploaded on:</strong> {file.createdAt ? formatDateTime(file.createdAt) : 'Unknown'}</p>
 
                 {fileType === 'image' && (
                   <img
@@ -125,7 +127,7 @@ export default function FileList() {
                 {fileType === 'pdf' && (
                   <iframe
                     src={file.url}
-                    title={file.filename}
+                    title={file.slug}
                     width="100%"
                     height="150"
                     style={{ marginTop: 8, borderRadius: 8, border: '1px solid #ddd' }}
