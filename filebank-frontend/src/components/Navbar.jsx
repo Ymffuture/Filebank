@@ -114,7 +114,11 @@ export default function Navbar() {
   return (
     <Header className="bg-[#adc6df] px-4 flex justify-between items-center shadow rounded sticky top-0 z-50">
       <Space>
-        <img src={logo} alt="FileBank Logo" className="w-25 h-10" />
+  <img
+  src={logo}
+  alt="FileBank Logo"
+  className="w-10 h-10 scale-110"
+/>
         <span className="hidden md:block text-white">Powered by Qurovex</span>
       </Space>
 
