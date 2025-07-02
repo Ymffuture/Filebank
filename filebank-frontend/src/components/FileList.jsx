@@ -95,7 +95,7 @@ export default function FileList() {
 
                 }
                 actions={[
-                  <a href={`/api/files/download/${file.slug}`} key="download">
+                  <a href={file.url} target="_blank" rel="noopener noreferrer" key="download">
   <DownloadOutlined /> Download
 </a>
 ,
