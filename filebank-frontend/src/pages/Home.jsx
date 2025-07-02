@@ -3,7 +3,7 @@ import Navbar from '../components/Navbar';
 import FileUpload from '../components/FileUpload';
 import FileList from '../components/FileList';
 import { Card } from 'antd';
-import FileBankDocumentary from "./FileBankDocumentary" ;
+import FileBankDocumentary from "../components/FileBankDocumentary";
 export default function Home() {
   const [refresh, setRefresh] = useState(0);
 
