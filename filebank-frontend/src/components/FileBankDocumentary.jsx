@@ -1,7 +1,7 @@
 import React from 'react';
 import { Collapse, Typography, Card } from 'antd';
 import { Helmet } from 'react-helmet';
-import Navbar from '../components/Navbar';
+// import Navbar from '../components/Navbar';
 import { FileText, ShieldCheck, Globe, UploadCloud, LockKeyhole } from 'lucide-react';
 
 const { Title, Paragraph, Text } = Typography;
@@ -15,7 +15,7 @@ export default function FileBankDocumentary() {
         <meta name="description" content="Discover how FileBank saves your important files, like CVs, certificates, and more, accessible anytime, anywhere with just internet access." />
       </Helmet>
 
-      <Navbar />
+    
       <main className="container mx-auto py-10 px-4">
         <Card className="shadow-lg rounded-xl bg-white">
           <Typography>
