@@ -94,7 +94,7 @@ export default function Navbar() {
     },
     {
       key: 'about',
-      label: <Link to="/about"><InfoCircleOutlined /> About Us</Link>
+      label: <Link to="/about-us"><InfoCircleOutlined /> About Us</Link>
     },
     {
       key: 'files',
