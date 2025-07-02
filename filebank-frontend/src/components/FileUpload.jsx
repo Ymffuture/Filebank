@@ -60,7 +60,7 @@ export default function FileUpload({ onUpload, currentUserFileCount = 0}) {
         <meta name="description" content="Learn about FileBank — a secure file management platform by Qurovex Institute." />
       </Helmet>
   
-    <div className="bg-[#E1EEFA] p-12 m-0 rounded text-[white]">
+    <div className="bg-[white] p-12 m-0 rounded text-[#333]">
     
       <Upload
         beforeUpload={(file) => {
