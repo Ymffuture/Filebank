@@ -8,7 +8,7 @@ export default function Home() {
   const [refresh, setRefresh] = useState(0);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#fff] to-[#f0f4f8]">
+    <div className="min-h-screen bg-gradient-to-br from-[#fff] to-[#fff]">
       <Navbar />
       <main className="container mx-auto py-10 space-y-12 px-4">
         <section>
