@@ -8,7 +8,7 @@ const { Title, Paragraph, Text } = Typography;
 
 export default function AboutUs() {
   return (
-    <div className="min-h-screen bg-[#E1EEFA]">
+    <div className="min-h-screen bg-[#fff]">
       <Helmet>
         <title>About Us | FileBank by Qurovex</title>
         <meta name="description" content="Learn about FileBank — a secure file management platform by Qurovex Institute." />
