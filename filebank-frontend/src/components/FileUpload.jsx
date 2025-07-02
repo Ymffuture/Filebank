@@ -61,8 +61,7 @@ export default function FileUpload({ onUpload, currentUserFileCount = 0}) {
       </Helmet>
   
     <div className="bg-[#E1EEFA] p-12 m-0 rounded text-[white]">
-      <p className='text-black p-1 bg-white' >You can upload up to 13 documents. Remaining: {13 - currentUserFileCount}</p>
-
+    
       <Upload
         beforeUpload={(file) => {
           const isLt2M = file.size / 1024 / 1024 < 2;
