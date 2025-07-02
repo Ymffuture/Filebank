@@ -127,7 +127,7 @@ export default function FileList() {
                 {fileType === 'pdf' && (
                   <iframe
                     src={file.url}
-                    title={file.slug}
+                    title={file.filename}
                     width="100%"
                     height="150"
                     style={{ marginTop: 8, borderRadius: 8, border: '1px solid #ddd' }}
