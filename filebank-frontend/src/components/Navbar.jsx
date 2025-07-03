@@ -109,7 +109,7 @@ export default function Navbar() {
   const profilePic = user?.picture;
 
   return (
-    <Header style={{ backgroundColor: '#001529' }} className="flex justify-between items-center shadow sticky top-0 z-50">
+    <Header style={{ backgroundColor: '#fff' }} className="flex justify-between items-center shadow sticky top-0 z-50">
       <Space>
         <img
           src={logo}
@@ -136,7 +136,7 @@ export default function Navbar() {
               }}
             >
               <BellOutlined
-                className="text-white text-[28px] cursor-pointer select-none"
+                className="text-white text-[30px] cursor-pointer select-none"
                 onClick={() => setNotifModalVisible(true)}
               />
             </Badge>
@@ -151,7 +151,7 @@ export default function Navbar() {
                 {profilePic
                   ? <Avatar src={profilePic} size="large" />
                   : <Avatar size="large" icon={<UserOutlined />} />}
-                <span className="text-white">{user.role?.toUpperCase()}</span>
+                <span className="text-[#333] text-[10px]">{user.role?.toUpperCase()}</span>
               </Space>
             </Dropdown>
           </>
