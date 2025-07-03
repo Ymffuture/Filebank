@@ -116,6 +116,11 @@ export default function FileList() {
         </div>
       )}
 
+<div className="bg-yellow-100 text-yellow-800 border border-yellow-300 rounded p-3 mb-4 text-sm">
+  <strong>Tip:</strong> After downloading, rename files like <code>uiey3653jvbsksvak.pdf</code> to something meaningful (e.g., <code>MyCv.pdf</code>) so you can easily find them later.
+</div>
+
+      
       <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 p-4">
         {loading ? (
           Array.from({ length: 4 }).map((_, idx) => (
