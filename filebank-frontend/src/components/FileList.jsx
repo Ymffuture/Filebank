@@ -123,7 +123,7 @@ export default function FileList() {
       )}
 
       <Alert
-        message="Tip: After downloading, rename files like uiey3653jvbsksvak to something meaningful (e.g., MyCv.pdf) so you can easily find them later."
+        message="Tip: Before downloading, rename files like gdyD6-my-cvpdf to something meaningful (e.g., MyCv.pdf) so you can easily find them later."
         type="warning"
         showIcon
         closable
