@@ -136,7 +136,8 @@ export default function FileList() {
           files.map((file) => {
             const fileType = getFileType(file.url);
             // Use downloadUrl if available, otherwise append ?fl=attachment for PDFs
-            const downloadUrl = file.downloadUrl || `${file.url}?fl=attachment`;
+           // const downloadUrl = file.downloadUrl || `${file.url}?fl=attachment`;
+            const downloadUrl = `${file.url}?fl=attachment:${encodeURIComponent(file.originalname)}` || file.downloadUrl;
 
 
             return (
