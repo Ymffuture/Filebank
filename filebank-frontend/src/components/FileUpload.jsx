@@ -37,7 +37,7 @@ export default function FileUpload({ onUpload, currentUserFileCount = 0}) {
       setText2(
   <>
     Upload complete 100%.{' '}
-    <Link to="/files" className="text-green-600 font-semibold underline hover:text-green-800">
+    <Link to="/files" className="text-green-600 font-semibold hover:text-green-800">
       <Button type='dashed' >
       View
       </Button>
@@ -58,8 +58,8 @@ export default function FileUpload({ onUpload, currentUserFileCount = 0}) {
       console.error(err);
       setText(<>
     Something went wrong.{' '}
-    <Link to="/documents" className="text-green-600 font-semibold underline hover:text-green-800">
-      <Button type='dashed' >
+    <Link to="/help" className="text-green-600 font-semibold underline hover:text-green-800">
+      <Button type='link' >
       Learn more
       </Button>
     </Link>
