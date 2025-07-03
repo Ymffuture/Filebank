@@ -1,6 +1,20 @@
 import React, { useEffect, useState } from 'react';
 import { Card, Button, Space, Popconfirm, Tooltip, Skeleton, Alert} from 'antd';
-import { DeleteOutlined, DownloadOutlined, FileOutlined, FileImageOutlined, FilePdfOutlined } from '@ant-design/icons';
+import {
+  FileImageOutlined,
+  FilePdfOutlined,
+  FileExcelOutlined,
+  FileWordOutlined,
+  FilePptOutlined,
+  FileTextOutlined,
+  FileZipOutlined,
+  AudioOutlined,
+  VideoCameraOutlined,
+  CodeOutlined,
+  FileOutlined,
+  DeleteOutlined,
+  DownloadOutlined
+} from '@ant-design/icons';
 import api from '../api/fileApi';
 import { ArrowBigLeftDashIcon } from 'lucide-react';
 import { Link, useLocation } from 'react-router-dom';
@@ -143,8 +157,8 @@ const [refresh, setRefresh] = useState(0)
           files.map((file) => {
             const fileType = getFileType(file.url);
             // Use downloadUrl if available, otherwise append ?fl=attachment for PDFs
-           // const downloadUrl = file.downloadUrl || `${file.url}?fl=attachment`;
-            const downloadUrl = `${file.url}?fl=attachment:${encodeURIComponent(file.originalname)}` || file.downloadUrl;
+           const downloadUrl = file.downloadUrl || `${file.url}?fl=attachment`;
+         //   const downloadUrl = `${file.url}?fl=attachment:${encodeURIComponent(file.originalname)}` || file.downloadUrl;
 
 
             return (
@@ -155,16 +169,15 @@ const [refresh, setRefresh] = useState(0)
                     <Space>
                       {fileType === 'image' && <FileImageOutlined />}
 {fileType === 'pdf' && <FilePdfOutlined />}
-{fileType === 'word' && <FileOutlined />}
-{fileType === 'excel' && <FileOutlined />}
-{fileType === 'powerpoint' && <FileOutlined />}
-{fileType === 'text' && <FileOutlined />}
-{fileType === 'archive' && <FileOutlined />}
-{fileType === 'audio' && <FileOutlined />}
-{fileType === 'video' && <FileOutlined />}
-{fileType === 'code' && <FileOutlined />}
+{fileType === 'word' && <FileWordOutlined />}
+{fileType === 'excel' && <FileExcelOutlined />}
+{fileType === 'powerpoint' && <FilePptOutlined />}
+{fileType === 'text' && <FileTextOutlined />}
+{fileType === 'archive' && <FileZipOutlined />}
+{fileType === 'audio' && <AudioOutlined />}
+{fileType === 'video' && <VideoCameraOutlined />}
+{fileType === 'code' && <CodeOutlined />}
 {fileType === 'other' && <FileOutlined />}
-
                       {file.filename.length > 20 ? file.filename.slice(0, 20) + '...' : file.filename}
                       <span className="text-gray-400 text-xs">({file.slug})</span>
                     </Space>
