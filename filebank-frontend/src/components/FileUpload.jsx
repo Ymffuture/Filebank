@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
-import {Link} from "react-router-dom" ;
+import { Link } from "react-router-dom";
 import { Upload, Button, Alert, Progress } from 'antd';
 import { UploadOutlined, InfoCircleOutlined, LinkOutlined } from '@ant-design/icons';
 import api from '../api/fileApi';
 import { useSnackbar } from 'notistack';
-import {Helmet} from 'react-helmet' ;
-export default function FileUpload({ onUpload, currentUserFileCount = 0}) {
-  const [files, setFiles] = useState([]); 
+import { Helmet } from 'react-helmet';
+
+export default function FileUpload({ onUpload, currentUserFileCount = 0 }) {
+  const [files, setFiles] = useState([]);
   const [uploading, setUploading] = useState(false);
   const [progress, setProgress] = useState(0);
   const [text, setText] = useState("");
@@ -35,17 +36,15 @@ export default function FileUpload({ onUpload, currentUserFileCount = 0}) {
       });
 
       setText2(
-  <>
-    Upload complete 100%.{' '}
-    <Link to="/files" className="text-green-600 font-semibold hover:text-green-800">
-      <Button type="dashed"
-icon={<LinkOutlined />} 
- >
-      View
-      </Button>
-    </Link>
-  </>
-);
+        <>
+          Upload complete 100%.{' '}
+          <Link to="/files" className="text-green-600 font-semibold hover:text-green-800">
+            <Button type="dashed" icon={<LinkOutlined />}>
+              View
+            </Button>
+          </Link>
+        </>
+      );
 
       enqueueSnackbar('Upload successful!', { variant: 'success' });
       setFiles([]);
@@ -58,17 +57,16 @@ icon={<LinkOutlined />}
 
     } catch (err) {
       console.error(err);
-      setText(<>
-    Something went wrong.{' '}
-      <Button type="link"
-        icon= {<InfoCircleOutlined/>} 
-        >
-        <Link to="/help" className="text-green-600 font-semibold underline hover:text-green-800">
-      Learn more
-          </Link>
-      </Button>
-    
-  </>);
+      setText(
+        <>
+          Something went wrong.{' '}
+          <Button type="link" icon={<InfoCircleOutlined />}>
+            <Link to="/help" className="text-green-600 font-semibold underline hover:text-green-800">
+              Learn more
+            </Link>
+          </Button>
+        </>
+      );
       enqueueSnackbar('Upload failed.', { variant: 'error' });
     } finally {
       setUploading(false);
@@ -77,85 +75,85 @@ icon={<LinkOutlined />}
   };
 
   return (
-  <>
-  <Helmet>
-        <title>Up Load Files</title>
-        <meta name="description" content="Learn about FileBank — a secure file management platform by Qurovex Institute." />
+    <>
+      <Helmet>
+        <title>Upload Files</title>
+        <meta name="description" content="Securely upload your files to FileBank." />
       </Helmet>
-  
-    <div className="bg-[white] p-12 m-0 rounded text-[#333]">
-    
-      <Upload
-        beforeUpload={(file) => {
-          const isLt2M = file.size / 1024 / 1024 < 5;
-          if (!isLt2M) {
-            setText('something went wrong.');
-            enqueueSnackbar('File size exceeds 5MB', { variant: 'warning' });
-            return Upload.LIST_IGNORE;
-          }
-          return false; // Prevent auto upload
-        }}
-        onChange={({ fileList }) => {
-          setFiles(fileList);
-          setText("");
-          setText2("");
-        }}
-        fileList={files}
-        multiple
-        listType="picture-card"
-        showUploadList={{
-          showPreviewIcon: true,
-          showRemoveIcon: true,
-          showDownloadIcon: true
-        }}
-        disabled={uploading}
-      >
-        <Button disabled={uploading} type="link">
-          Import/Drop file(s)
-        </Button>
-      </Upload>
 
-      <div className="mt-6 text-[#333] ">
-        <Button
-          type="link"
-          onClick={handleSubmit}
-          loading={uploading}
-          icon={<UploadOutlined />}
-          disabled={uploading || files.length === 0}
-        >
-          {uploading ? 'Please wait...' : 'Upload'}
-        </Button>
-      </div>
-
-      {progress > 0 && (
-        <div className="mt-2">
-          <Progress percent={progress} />
+      <div className="flex items-center justify-center min-h-screen bg-gray-100">
+        <div className="bg-white p-8 rounded-lg shadow-md max-w-lg w-full">
+          <h2 className="text-2xl font-bold mb-4 text-center text-gray-800">Upload Files</h2>
+          <Upload.Dragger
+            beforeUpload={(file) => {
+              const allowedTypes = ['image/jpeg', 'image/png', 'application/pdf'];
+              const isAllowedType = allowedTypes.includes(file.type);
+              if (!isAllowedType) {
+                setText('Invalid file type. Only JPEG, PNG, and PDF are allowed.');
+                enqueueSnackbar('Invalid file type', { variant: 'warning' });
+                return Upload.LIST_IGNORE;
+              }
+              const isLt5M = file.size / 1024 / 1024 < 5;
+              if (!isLt5M) {
+                setText('File size exceeds 5MB');
+                enqueueSnackbar('File size exceeds 5MB', { variant: 'warning' });
+                return Upload.LIST_IGNORE;
+              }
+              return false; // Prevent auto upload
+            }}
+            onChange={({ fileList }) => {
+              setFiles(fileList);
+              setText("");
+              setText2("");
+            }}
+            fileList={files}
+            multiple
+            showUploadList={{
+              showPreviewIcon: true,
+              showRemoveIcon: true,
+              showDownloadIcon: true
+            }}
+            disabled={uploading}
+          >
+            <p className="ant-upload-drag-icon">
+              <UploadOutlined />
+            </p>
+            <p className="ant-upload-text">Click or drag file to this area to upload</p>
+            <p className="ant-upload-hint">Allowed file types: JPEG, PNG, PDF. Max size: 5MB.</p>
+          </Upload.Dragger>
+          <div className="mt-4 flex justify-center">
+            <Button
+              type="primary"
+              onClick={handleSubmit}
+              loading={uploading}
+              disabled={uploading || files.length === 0}
+            >
+              {uploading ? 'Uploading...' : 'Start Upload'}
+            </Button>
+          </div>
+          {progress > 0 && (
+            <div className="mt-4">
+              <Progress percent={progress} />
+            </div>
+          )}
+          {text && (
+            <Alert
+              message={text}
+              type="error"
+              className="mt-4"
+              closable
+            />
+          )}
+          {text2 && (
+            <Alert
+              message={text2}
+              type="success"
+              className="mt-4"
+              closable
+            />
+          )}
         </div>
-      )}
-
-      {text && (
-        <Alert
-          message={text}
-          type="error"
-          className="mt-2 select-none"
-          description="Please check the internet connection, Or try Logging in."
-          closable
-          banner
-        />
-      )}
-
-      {text2 && (
-        <Alert
-          message={text2}
-          type="success"
-          className="mt-2 select-none"
-          description="To see your file(s) please navigate to Files and manage" 
-          closable
-          banner
-        />
-      )}
-    </div>
-  </>
+      </div>
+    </>
   );
 }
-
