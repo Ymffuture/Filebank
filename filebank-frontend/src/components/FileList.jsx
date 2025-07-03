@@ -127,7 +127,8 @@ export default function FileList() {
           files.map((file) => {
             const fileType = getFileType(file.url);
             // Use downloadUrl if available, otherwise append ?fl=attachment for PDFs
-            const downloadUrl = file.url || (fileType === 'pdf' ? `${file.url}?fl=attachment:${file.originalname}` : file.downloadUrl);
+            const downloadUrl = file.downloadUrl || `${file.url}?fl=attachment`;
+
 
             return (
               <Card
@@ -136,8 +137,17 @@ export default function FileList() {
                   <Tooltip title={file.slug}>
                     <Space>
                       {fileType === 'image' && <FileImageOutlined />}
-                      {fileType === 'pdf' && <FilePdfOutlined />}
-                      {fileType === 'other' && <FileOutlined />}
+{fileType === 'pdf' && <FilePdfOutlined />}
+{fileType === 'word' && <FileOutlined />}
+{fileType === 'excel' && <FileOutlined />}
+{fileType === 'powerpoint' && <FileOutlined />}
+{fileType === 'text' && <FileOutlined />}
+{fileType === 'archive' && <FileOutlined />}
+{fileType === 'audio' && <FileOutlined />}
+{fileType === 'video' && <FileOutlined />}
+{fileType === 'code' && <FileOutlined />}
+{fileType === 'other' && <FileOutlined />}
+
                       {file.filename.length > 20 ? file.filename.slice(0, 20) + '...' : file.filename}
                       <span className="text-gray-400 text-xs">({file.slug})</span>
                     </Space>
@@ -213,7 +223,8 @@ export default function FileList() {
           })
         ) : (
           <Card hoverable className="text-center text-gray-400" bodyStyle={{ minHeight: 200 }}>
-            <p>No files found</p>
+            <p className="text-lg text-gray-400">No files uploaded yet. Start by uploading your first file!</p>
+
           </Card>
         )}
       </div>
