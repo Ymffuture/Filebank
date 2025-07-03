@@ -119,7 +119,7 @@ export default function FileList() {
         ) : files.length > 0 ? (
           files.map((file) => {
             const fileType = getFileType(file.url);
-            const downloadUrl = file.downloadUrl || `${file.url}?fl=attachment:${encodeURIComponent(file.filename)}`;
+            const downloadUrl = file.downloadUrl || `${file.url}?fl=attachment:${file.originalname} `;
 
             return (
               <Card
