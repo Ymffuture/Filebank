@@ -1,13 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { GoogleLogin, googleLogout } from '@react-oauth/google';
-import { Button, Typography, message, Avatar, Dropdown, Menu, Badge, Space } from 'antd';
-import { BellOutlined, DashboardFilled, DownOutlined, LogoutOutlined } from '@ant-design/icons';
+import { Button, Typography, message, Avatar, Dropdown, Menu, Badge, Space, Row, Col, Card, Modal } from 'antd';
+import { BellOutlined, DashboardFilled, DownOutlined, LogoutOutlined, LockOutlined, SmileOutlined, GlobalOutlined, SettingOutlined } from '@ant-design/icons';
 import { Link, useNavigate } from 'react-router-dom';
 import api from '../api/fileApi';
 import { useSnackbar } from 'notistack';
-const { Title, Paragraph, Text } = Typography;
-//import CustomButton from '../components/ui/AppButton';
 
+const { Title, Paragraph } = Typography;
 
 const ratColors = {
   blue: '#1E90FF',
@@ -19,9 +18,10 @@ const ratColors = {
 };
 
 export default function Hero() {
- const {enqueueSnackbar} = useSnackbar()
+  const { enqueueSnackbar } = useSnackbar();
   const [user, setUser] = useState(() => JSON.parse(localStorage.getItem('filebankUser')));
   const [notifications, setNotifications] = useState(0);
+  const [isModalVisible, setIsModalVisible] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -46,94 +46,56 @@ export default function Hero() {
       localStorage.setItem('filebankUser', JSON.stringify(res.data.user));
       localStorage.setItem('filebankToken', res.data.token);
       
-      enqueueSnackbar('Login successful!',{variant:'success'});
+      enqueueSnackbar('Login successful!', { variant: 'success' });
       fetchNotifications();
       navigate('/dashboard');
     } catch {
-      console.error('Error message :Failed') 
-     enqueueSnackbar('Google login failed.',{variant:'error'});
+      console.error('Error message: Failed');
+      enqueueSnackbar('Google login failed.', { variant: 'error' });
     }
   };
 
   const handleLogout = () => {
-  googleLogout();
-  localStorage.removeItem('filebankUser');
-  localStorage.removeItem('filebankToken');
-  setUser(null);
-  enqueueSnackbar('Logged out', { variant: 'info' });
-  navigate('/');
-};
-
+    googleLogout();
+    localStorage.removeItem('filebankUser');
+    localStorage.removeItem('filebankToken');
+    setUser(null);
+    enqueueSnackbar('Logged out', { variant: 'info' });
+    navigate('/');
+  };
 
   const userMenu = (
     <Menu
       items={[
-        { key: '1', label: <span onClick={handleLogout}><LogoutOutlined/> Logout</span> },
-        
-        { key: '23', label: <Link to="/dashboard"><DashboardFilled/> Dashboard</Link> },
+        { key: '1', label: <span onClick={handleLogout}><LogoutOutlined /> Logout</span> },
+        { key: '2', label: <Link to="/dashboard"><DashboardFilled /> Dashboard</Link> },
       ]}
     />
   );
 
-  return (
-    <div
-      style={{
-        minHeight: '85vh',
-        padding: '3rem 1.5rem',
-        color: 'white',
-        textAlign: 'center',
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'center',
-        background: `radial-gradient(circle at top left, ${ratColors.blue} 0%, ${ratColors.gold} 20%, ${ratColors.green} 40%, ${ratColors.darkBlue} 60%, ${ratColors.blue} 80%, ${ratColors.lightBlue} 100%)`,
-        borderRadius: '8px',
-        maxWidth: 1260,
-        margin: '2rem auto',
-        boxShadow: '0 8px 24px rgb(0 0 0 / 0.2)',
-      }}
-    >
-      <Title level={1} style={{ fontWeight: '800', marginBottom: 12, textShadow: '0 2px 6px rgba(0,0,0,0.4)' }}>
-        Welcome to <span style={{ color: ratColors.gold }}>FileBank</span>
-      </Title>
-      <Paragraph
-        style={{
-          fontSize: '1.25rem',
-          maxWidth: 600,
-          margin: '0 auto 2rem',
-          lineHeight: 1.6,
-          textShadow: '0 1px 4px rgba(0,0,0,0.3)',
-        }}
-      >
-        Securely upload, organize, and access your files anywhere, anytime. Powered by <strong>Quorvex</strong>{' '}
-        technology and protected with industry-leading security standards.
-      </Paragraph>
+  const showModal = () => {
+    setIsModalVisible(true);
+  };
 
-      <div className="flex flex-wrap justify-center items-center gap-8">
+  const handleOk = () => {
+    setIsModalVisible(false);
+  };
+
+  const handleCancel = () => {
+    setIsModalVisible(false);
+  };
+
+  return (
+    <div style={{ padding: '2rem', maxWidth: '1200px', margin: '0 auto' }}>
+      {/* Navigation */}
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2rem' }}>
         {user ? (
           <>
             <Badge count={notifications} offset={[0, 6]} size="small">
-              <BellOutlined
-                style={{ fontSize: 28, color: 'white', cursor: 'pointer' }}
-                onClick={fetchNotifications}
-                title="Notifications"
-              />
+              <BellOutlined style={{ fontSize: 28, color: 'black' }} onClick={fetchNotifications} title="Notifications" />
             </Badge>
-
-            <Dropdown overlay={userMenu} placement="bottomCenter" trigger={['click']} className='p-4'>
-              <Space
-                style={{
-                  cursor: 'pointer',
-                  alignItems: 'center',
-                  gap: 80,
-                  padding: '8px 16px',
-                  background: ratColors.gold,
-                  borderRadius: 10,
-                  color: ratColors.darkBlue,
-                  fontWeight: '600',
-                  boxShadow: '0 4px 14px rgba(255, 215, 0, 0.5)',
-                  userSelect: 'none',
-                }}
-              >
+            <Dropdown overlay={userMenu} placement="bottomCenter" trigger={['click']}>
+              <Space style={{ cursor: 'pointer', alignItems: 'center', gap: 8 }}>
                 <Avatar src={user.picture} size={40} />
                 <span>{user.name || user.displayName}</span>
                 <DownOutlined />
@@ -141,74 +103,100 @@ export default function Hero() {
             </Dropdown>
           </>
         ) : (
-          <GoogleLogin
-            onSuccess={handleLoginSuccess}
-            onError={() => message.error('Google login failed.')}
-            useOneTap
-            shape="circle"
-            size="large"
-          />
+          <Space>
+            <GoogleLogin
+              onSuccess={handleLoginSuccess}
+              onError={() => message.error('Google login failed.')}
+              useOneTap
+              shape="circle"
+              size="large"
+            />
+            <Button type="primary" onClick={showModal} style={{ backgroundColor: ratColors.blue, borderColor: ratColors.blue }}>
+              Login with Email
+            </Button>
+          </Space>
         )}
       </div>
 
-      {/* Instructions */}
-      <div
-        style={{
-          marginTop: '3rem',
-          maxWidth: 680,
-          marginLeft: 'auto',
-          marginRight: 'auto',
-          backgroundColor: 'rgba(255 255 255 / 0.12)',
-          padding: '1.5rem',
-          borderRadius: '12px',
-          boxShadow: 'inset 0 0 10px rgba(255, 255, 255, 0.1)',
-          fontSize: '1rem',
-          lineHeight: 1.5,
-          color: ratColors.lightBlue,
-          textAlign: 'left',
-        }}
-      >
-        <Title level={3} style={{ color: ratColors.gold }}>
-          How It Works
+      {/* Hero Content */}
+      <div style={{ 
+        background: `linear-gradient(to bottom, ${ratColors.lightBlue}, #ffffff)`, 
+        padding: '4rem 2rem', 
+        textAlign: 'center', 
+        marginBottom: '4rem',
+        borderRadius: '8px',
+        boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)'
+      }}>
+        <Title level={1} style={{ color: ratColors.darkBlue }}>
+          Welcome to <span style={{ color: ratColors.gold }}>FileBank</span>
         </Title>
-        <Paragraph>
-          1. <b>Sign in with Google</b> to securely access your personal FileBank account.
+        <Paragraph style={{ fontSize: '1.25rem', color: ratColors.darkBlue }}>
+          Securely upload, organize, and access your files anywhere, anytime.
         </Paragraph>
-        <Paragraph>
-          2. <b>Upload and manage</b> your files effortlessly using our intuitive dashboard.
-        </Paragraph>
-        <Paragraph>
-          3. Receive real-time <b>notifications</b> for important updates and file activity.
-        </Paragraph>
-        <Paragraph>
-          4. Your files are protected with industry-standard encryption and stored securely in the cloud.
+        <Paragraph style={{ fontSize: '1rem', marginTop: '1rem', color: ratColors.darkBlue }}>
+          Powered by <strong>Quorvex</strong> technology and protected with industry-leading security standards.
         </Paragraph>
       </div>
 
-      {/* Footer links */}
-      <div
-        style={{
-          marginTop: '3rem',
-          display: 'flex',
-          justifyContent: 'center',
-          gap: '1.5rem',
-          fontSize: '0.9rem',
-          color: ratColors.accent,
-        }}
-      >
-        <Link to="/terms" style={{ color: ratColors.accent, textDecoration: 'underline' }}>
-          Terms of Service
-        </Link>
-        <span>|</span>
-        <Link to="/privacy" style={{ color: ratColors.accent, textDecoration: 'underline' }}>
-          Privacy Policy
-        </Link>
+      {/* Trust-Building Section */}
+      <div style={{ marginBottom: '4rem' }}>
+        <Title level={2} style={{ textAlign: 'center', marginBottom: '2rem', color: ratColors.darkBlue }}>
+          Why Trust FileBank?
+        </Title>
+        <Row gutter={16}>
+          <Col xs={24} sm={12} md={6}>
+            <Card hoverable>
+              <LockOutlined style={{ fontSize: 32, color: ratColors.blue }} />
+              <Title level={4} style={{ color: ratColors.darkBlue }}>Security</Title>
+              <Paragraph>Your files are encrypted and stored securely with top-tier protection.</Paragraph>
+            </Card>
+          </Col>
+          <Col xs={24} sm={12} md={6}>
+            <Card hoverable>
+              <SmileOutlined style={{ fontSize: 32, color: ratColors.green }} />
+              <Title level={4} style={{ color: ratColors.darkBlue }}>Ease of Use</Title>
+              <Paragraph>Intuitive interface to manage your files effortlessly.</Paragraph>
+            </Card>
+          </Col>
+          <Col xs={24} sm={12} md={6}>
+            <Card hoverable>
+              <GlobalOutlined style={{ fontSize: 32, color: ratColors.accent }} />
+              <Title level={4} style={{ color: ratColors.darkBlue }}>Accessibility</Title>
+              <Paragraph>Access your files from any device, anywhere, anytime.</Paragraph>
+            </Card>
+          </Col>
+          <Col xs={24} sm={12} md={6}>
+            <Card hoverable>
+              <SettingOutlined style={{ fontSize: 32, color: ratColors.gold }} />
+              <Title level={4} style={{ color: ratColors.darkBlue }}>Control</Title>
+              <Paragraph>You have full control over your files and storage space.</Paragraph>
+            </Card>
+          </Col>
+        </Row>
       </div>
-      <div>
-      <h1>Login with EMAIL</h1>
-        <span className="text-[green]" >Comming soon</span >
-      <Button type="link" >Get started</Button>
-    </div>
+
+      {/* Footer */}
+      <div style={{ textAlign: 'center', marginTop: '4rem' }}>
+        <Space>
+          <Link to="/terms" style={{ color: ratColors.accent }}>Terms of Service</Link>
+          <Link to="/privacy" style={{ color: ratColors.accent }}>Privacy Policy</Link>
+        </Space>
+      </div>
+
+      {/* Modal for Email Login */}
+      <Modal
+        title="Login with Email"
+        visible={isModalVisible}
+        onOk={handleOk}
+        onCancel={handleCancel}
+        footer={[
+          <Button key="ok" type="primary" onClick={handleOk} style={{ backgroundColor: ratColors.blue, borderColor: ratColors.blue }}>
+            OK
+          </Button>,
+        ]}
+      >
+        <Paragraph>This feature is coming soon. Stay tuned!</Paragraph>
+      </Modal>
     </div>
   );
 }
