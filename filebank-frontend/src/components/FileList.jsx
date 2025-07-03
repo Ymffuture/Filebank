@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Card, Button, Space, Popconfirm, Tooltip, Skeleton, Text, Alert} from 'antd';
+import { Card, Button, Space, Popconfirm, Tooltip, Skeleton, Alert} from 'antd';
 import { DeleteOutlined, DownloadOutlined, FileOutlined, FileImageOutlined, FilePdfOutlined } from '@ant-design/icons';
 import api from '../api/fileApi';
 import { ArrowBigLeftDashIcon } from 'lucide-react';
@@ -117,7 +117,7 @@ export default function FileList() {
       )}
 
 <div className="bg-yellow-100 text-yellow-800 border border-yellow-300 rounded p-3 mb-4 text-sm">
-  <strong>Tip:</strong> After downloading, rename files like <Text code>uiey3653jvbsksvak</Text> to something meaningful (e.g., <code>MyCv.pdf</code>) so you can easily find them later.
+  <strong>Tip:</strong> After downloading, rename files like <code>uiey3653jvbsksvak</code> to something meaningful (e.g., <code>MyCv.pdf</code>) so you can easily find them later.
 </div>
 
 <Alert
