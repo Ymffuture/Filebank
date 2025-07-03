@@ -6,9 +6,11 @@ import { ArrowBigLeftDashIcon } from 'lucide-react';
 import { Link, useLocation } from 'react-router-dom';
 import { useSnackbar } from 'notistack';
 import FileUpload from "./FileUpload" 
+
 export default function FileList() {
   const [files, setFiles] = useState([]);
   const [loading, setLoading] = useState(true);
+const [refresh, setRefresh] = useState("" ) 
   const [deleting, setDeleting] = useState(null); // Track deleting state for each file
   const { enqueueSnackbar } = useSnackbar();
   const location = useLocation();
@@ -239,7 +241,7 @@ export default function FileList() {
         ) : (
           <Card hoverable className="text-center text-gray-400" bodyStyle={{ minHeight: 200 }}>
             <p className="text-lg text-gray-400">No files uploaded yet. Start by uploading your first file!</p>
-<FileUpload/>
+<FileUpload onUpload={() => setRefresh((r) => r + 1)} />
           </Card>
         )}
       </div>
