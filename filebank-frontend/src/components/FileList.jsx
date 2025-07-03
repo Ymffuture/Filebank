@@ -19,7 +19,7 @@ import api from '../api/fileApi';
 import { ArrowBigLeftDashIcon } from 'lucide-react';
 import { Link, useLocation } from 'react-router-dom';
 import { useSnackbar } from 'notistack';
-import FileUpload from './FileUpload';
+// import FileUpload from './FileUpload';
 
 export default function FileList() {
   const [files, setFiles] = useState([]);
@@ -206,7 +206,7 @@ export default function FileList() {
         ) : (
           <Card hoverable className="text-center text-gray-400" bodyStyle={{ minHeight: 200 }}>
             <p className="text-lg text-gray-400">No files uploaded yet. Start by uploading your first file!</p>
-            <FileUpload onUpload={() => setRefresh(r => r + 1)} />
+            
           </Card>
         )}
       </div>
