@@ -10,7 +10,7 @@ import FileUpload from "./FileUpload"
 export default function FileList() {
   const [files, setFiles] = useState([]);
   const [loading, setLoading] = useState(true);
-const [refresh, setRefresh] = useState("" ) 
+const [refresh, setRefresh] = useState(0) 
   const [deleting, setDeleting] = useState(null); // Track deleting state for each file
   const { enqueueSnackbar } = useSnackbar();
   const location = useLocation();
