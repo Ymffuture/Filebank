@@ -6,6 +6,8 @@ import { Link, useNavigate } from 'react-router-dom';
 import api from '../api/fileApi';
 import { useSnackbar } from 'notistack';
 const { Title, Paragraph, Text } = Typography;
+import CustomButton from '../components/ui/AppButton';
+
 
 const ratColors = {
   blue: '#1E90FF',
@@ -202,6 +204,12 @@ export default function Hero() {
           Privacy Policy
         </Link>
       </div>
+      <div>
+      <h1>Login with EMAIL</h1>
+      <CustomButton onClick={() => alert('Clicked!')}>
+        Get started
+      </CustomButton>
+    </div>
     </div>
   );
 }
