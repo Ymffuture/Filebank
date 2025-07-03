@@ -232,7 +232,7 @@ export default function FileList() {
                     <FileOutlined />
                   </div>
                 )}
-                <p className="text-[gray] p-2">{file.slug} <span className='text-[red] font-semibold bg-black p-1 rounded'>upload:{file.fileCount}</span></p>
+                <p className="text-[gray] p-2 underline">@{file.slug}</p>
               </Card>
             );
           })
