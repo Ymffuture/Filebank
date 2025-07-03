@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import {Link} from "react-router-dom" ;
 import { Upload, Button, Alert, Progress } from 'antd';
-import { UploadOutlined } from '@ant-design/icons';
+import { UploadOutlined, InfoCircleOutlined, LinkOutlined } from '@ant-design/icons';
 import api from '../api/fileApi';
 import { useSnackbar } from 'notistack';
 import {Helmet} from 'react-helmet' ;
@@ -38,7 +38,9 @@ export default function FileUpload({ onUpload, currentUserFileCount = 0}) {
   <>
     Upload complete 100%.{' '}
     <Link to="/files" className="text-green-600 font-semibold hover:text-green-800">
-      <Button type='dashed' >
+      <Button type="dashed"
+icon={<LinkOutlined />} 
+ >
       View
       </Button>
     </Link>
@@ -58,11 +60,14 @@ export default function FileUpload({ onUpload, currentUserFileCount = 0}) {
       console.error(err);
       setText(<>
     Something went wrong.{' '}
-    <Link to="/help" className="text-green-600 font-semibold underline hover:text-green-800">
-      <Button type='link' >
+      <Button type="link"
+        icon= {<InfoCircleOutlined/>} 
+        >
+        <Link to="/help" className="text-green-600 font-semibold underline hover:text-green-800">
       Learn more
+          </Link>
       </Button>
-    </Link>
+    
   </>);
       enqueueSnackbar('Upload failed.', { variant: 'error' });
     } finally {
@@ -110,7 +115,7 @@ export default function FileUpload({ onUpload, currentUserFileCount = 0}) {
         </Button>
       </Upload>
 
-      <div className="mt-2">
+      <div className="mt-6 text-[#333] ">
         <Button
           type="link"
           onClick={handleSubmit}
