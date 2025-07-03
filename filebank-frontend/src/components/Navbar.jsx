@@ -1,11 +1,12 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { Layout, Menu, Avatar, Dropdown, Space, Badge, Button, Drawer, message } from 'antd';
-import { BellOutlined, DashboardOutlined, FileOutlined, HomeOutlined, InfoCircleOutlined, MenuOutlined, UserOutlined } from '@ant-design/icons';
+import { BellOutlined, DashboardOutlined, FileOutlined, HomeOutlined, InfoCircleOutlined, MenuOutlined, UserOutlined, LogoutOutlined } from '@ant-design/icons';
 import { GoogleLogin, googleLogout } from '@react-oauth/google';
 import { Link, useNavigate } from 'react-router-dom';
 import api from '../api/fileApi';
 import NotificationsModal from './NotificationsModal';
 import logo from '/vite.svg';
+import { FaGithub, FaTwitter, FaLinkedin } from 'react-icons/fa';
 
 const { Header } = Layout;
 
@@ -19,7 +20,6 @@ export default function Navbar() {
   const playSound = () => {
     const audio = new Audio('/mix.mp3');
     audio.play().catch(() => {
-      // Fallback beep
       const ctx = new (window.AudioContext || window.webkitAudioContext)();
       const oscillator = ctx.createOscillator();
       oscillator.type = 'sine';
@@ -81,8 +81,8 @@ export default function Navbar() {
   const userMenu = (
     <Menu
       items={[
-        { key: '1', label: <span onClick={handleLogout}>Logout</span> },
-        { key: '2', label: <Link to="/profile">Profile</Link> },
+        { key: '1', icon: <LogoutOutlined />, label: 'Logout', onClick: handleLogout },
+        { key: '2', icon: <UserOutlined />, label: 'Profile', onClick: () => navigate('/profile') },
       ]}
     />
   );
@@ -107,19 +107,15 @@ export default function Navbar() {
   ].filter(Boolean);
 
   const profilePic = user?.picture;
-  const initials = user?.displayName
-    ? user.displayName.split(' ').map(n => n[0]).join('').toUpperCase()
-    : 'FB';
 
   return (
-    <Header className="bg-[#adc6df] px-4 flex justify-between items-center shadow rounded sticky top-0 z-50">
+    <Header style={{ backgroundColor: '#001529' }} className="flex justify-between items-center shadow sticky top-0 z-50">
       <Space>
-  <img
-  src={logo}
-  alt="FileBank Logo"
-  className="w-20 h-20 scale-125"
-/>
-
+        <img
+          src={logo}
+          alt="FileBank Logo"
+          className="w-10 h-10"
+        />
         <span className="hidden md:block text-white">Powered by Qurovex</span>
       </Space>
 
@@ -187,17 +183,31 @@ export default function Navbar() {
             </div>
           </Space>
         }
-        placement="right"
+        placement="left"
         onClose={() => setDrawerVisible(false)}
         open={drawerVisible}
       >
-        <Menu
-          mode="vertical"
-          items={mainMenuItems}
-          onClick={() => setDrawerVisible(false)}
-        />
+        <div style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
+          <Menu
+            mode="vertical"
+            items={mainMenuItems}
+            onClick={() => setDrawerVisible(false)}
+          />
+          <div style={{ marginTop: 'auto', textAlign: 'center', padding: '16px' }}>
+            <Space size="large">
+              <a href="https://github.com" target="_blank" rel="noopener noreferrer">
+                <FaGithub size={24} />
+              </a>
+              <a href="https://twitter.com" target="_blank" rel="noopener noreferrer">
+                <FaTwitter size={24} />
+              </a>
+              <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer">
+                <FaLinkedin size={24} />
+              </a>
+            </Space>
+          </div>
+        </div>
       </Drawer>
     </Header>
   );
 }
-
