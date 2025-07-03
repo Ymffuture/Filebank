@@ -19,7 +19,6 @@ import api from '../api/fileApi';
 import { ArrowBigLeftDashIcon } from 'lucide-react';
 import { Link, useLocation } from 'react-router-dom';
 import { useSnackbar } from 'notistack';
-// import FileUpload from './FileUpload';
 
 export default function FileList() {
   const [files, setFiles] = useState([]);
@@ -34,7 +33,7 @@ export default function FileList() {
     try {
       const res = await api.get('/files');
       setFiles(res.data);
-      console.log('Fetched files:', res.data);  // Debug: ensure downloadUrl exists
+      console.log('Fetched files:', res.data); // Debug: ensure downloadUrl exists
     } catch (err) {
       console.error(err);
       enqueueSnackbar('Failed to load files', { variant: 'error' });
@@ -74,19 +73,41 @@ export default function FileList() {
     return new Date(dateString).toLocaleString(undefined, options);
   };
 
-  const getFileType = (url) => {
-    const ext = url.split('.').pop().toLowerCase();
-    if (['jpg', 'jpeg', 'png', 'gif', 'bmp', 'webp', 'svg', 'ico', 'tiff'].includes(ext)) return 'image';
-    if (['pdf'].includes(ext)) return 'pdf';
-    if (['doc', 'docx', 'odt', 'rtf'].includes(ext)) return 'word';
-    if (['xls', 'xlsx', 'ods', 'csv'].includes(ext)) return 'excel';
-    if (['ppt', 'pptx', 'odp'].includes(ext)) return 'powerpoint';
-    if (['txt', 'md', 'json', 'xml', 'yaml', 'yml', 'log'].includes(ext)) return 'text';
-    if (['zip', 'rar', '7z', 'tar', 'gz'].includes(ext)) return 'archive';
-    if (['mp3', 'wav', 'ogg', 'flac', 'aac'].includes(ext)) return 'audio';
-    if (['mp4', 'mov', 'avi', 'wmv', 'mkv', 'webm'].includes(ext)) return 'video';
-    if (['html', 'htm', 'css', 'js', 'ts', 'jsx', 'tsx', 'php', 'py', 'java', 'c', 'cpp', 'rb', 'go', 'rs'].includes(ext)) return 'code';
-    return 'other';
+  const getFileIcon = (file) => {
+    // Use resourceType if available, otherwise fall back to URL extension
+    const resourceType = file.resourceType || '';
+    const ext = file.url.split('.').pop().toLowerCase();
+
+    switch (resourceType) {
+      case 'image':
+        return <FileImageOutlined />;
+      case 'video':
+        return <VideoCameraOutlined />;
+      case 'audio':
+        return <AudioOutlined />;
+      case 'raw':
+        if (['pdf'].includes(ext)) return <FilePdfOutlined />;
+        if (['doc', 'docx', 'odt', 'rtf'].includes(ext)) return <FileWordOutlined />;
+        if (['xls', 'xlsx', 'ods', 'csv'].includes(ext)) return <FileExcelOutlined />;
+        if (['ppt', 'pptx', 'odp'].includes(ext)) return <FilePptOutlined />;
+        if (['txt', 'md', 'json', 'xml', 'yaml', 'yml', 'log'].includes(ext)) return <FileTextOutlined />;
+        if (['zip', 'rar', '7z', 'tar', 'gz'].includes(ext)) return <FileZipOutlined />;
+        if (['html', 'htm', 'css', 'js', 'ts', 'jsx', 'tsx', 'php', 'py', 'java', 'c', 'cpp', 'rb', 'go', 'rs'].includes(ext)) return <CodeOutlined />;
+        return <FileOutlined />;
+      default:
+        // Fallback for when resourceType is not available
+        if (['jpg', 'jpeg', 'png', 'gif', 'bmp', 'webp', 'svg', 'ico', 'tiff'].includes(ext)) return <FileImageOutlined />;
+        if (['mp4', 'mov', 'avi', 'wmv', 'mkv', 'webm'].includes(ext)) return <VideoCameraOutlined />;
+        if (['mp3', 'wav', 'ogg', 'flac', 'aac'].includes(ext)) return <AudioOutlined />;
+        if (['pdf'].includes(ext)) return <FilePdfOutlined />;
+        if (['doc', 'docx', 'odt', 'rtf'].includes(ext)) return <FileWordOutlined />;
+        if (['xls', 'xlsx', 'ods', 'csv'].includes(ext)) return <FileExcelOutlined />;
+        if (['ppt', 'pptx', 'odp'].includes(ext)) return <FilePptOutlined />;
+        if (['txt', 'md', 'json', 'xml', 'yaml', 'yml', 'log'].includes(ext)) return <FileTextOutlined />;
+        if (['zip', 'rar', '7z', 'tar', 'gz'].includes(ext)) return <FileZipOutlined />;
+        if (['html', 'htm', 'css', 'js', 'ts', 'jsx', 'tsx', 'php', 'py', 'java', 'c', 'cpp', 'rb', 'go', 'rs'].includes(ext)) return <CodeOutlined />;
+        return <FileOutlined />;
+    }
   };
 
   return (
@@ -118,8 +139,7 @@ export default function FileList() {
           ))
         ) : files.length > 0 ? (
           files.map((file) => {
-            const fileType = getFileType(file.url);
-            const downloadUrl = file.downloadUrl || `${file.url}?fl=attachment:${file.originalname} `;
+            const downloadUrl = file.downloadUrl || `${file.url}?fl=attachment:${encodeURIComponent(file.filename)}`;
 
             return (
               <Card
@@ -127,17 +147,7 @@ export default function FileList() {
                 title={
                   <Tooltip title={file.slug}>
                     <Space>
-                      {fileType === 'image' && <FileImageOutlined />}
-                      {fileType === 'pdf' && <FilePdfOutlined />}
-                      {fileType === 'word' && <FileWordOutlined />}
-                      {fileType === 'excel' && <FileExcelOutlined />}
-                      {fileType === 'powerpoint' && <FilePptOutlined />}
-                      {fileType === 'text' && <FileTextOutlined />}
-                      {fileType === 'archive' && <FileZipOutlined />}
-                      {fileType === 'audio' && <AudioOutlined />}
-                      {fileType === 'video' && <VideoCameraOutlined />}
-                      {fileType === 'code' && <CodeOutlined />}
-                      {fileType === 'other' && <FileOutlined />}
+                      {getFileIcon(file)}
                       {file.filename.length > 20 ? file.filename.slice(0, 20) + '...' : file.filename}
                     </Space>
                   </Tooltip>
@@ -166,7 +176,7 @@ export default function FileList() {
                   <strong>Uploaded on:</strong> {file.createdAt ? formatDateTime(file.createdAt) : 'Unknown'}
                 </p>
 
-                {fileType === 'image' && (
+                {file.resourceType === 'image' && (
                   <img
                     src={file.url}
                     alt={file.filename}
@@ -174,14 +184,14 @@ export default function FileList() {
                   />
                 )}
 
-                {fileType === 'pdf' && (
+                {file.resourceType === 'raw' && file.filename.split('.').pop().toLowerCase() === 'pdf' && (
                   <a href={downloadUrl} target="_blank" rel="noopener noreferrer">
                     <FilePdfOutlined style={{ fontSize: 80, color: '#999' }} />
                     <p>Click to view or download</p>
                   </a>
                 )}
 
-                {fileType === 'other' && (
+                {file.resourceType !== 'image' && !['pdf'].includes(file.filename.split('.').pop().toLowerCase()) && (
                   <div
                     style={{
                       marginTop: 8,
@@ -195,7 +205,7 @@ export default function FileList() {
                       fontSize: 48,
                     }}
                   >
-                    <FileOutlined />
+                    {getFileIcon(file)}
                   </div>
                 )}
 
@@ -206,11 +216,9 @@ export default function FileList() {
         ) : (
           <Card hoverable className="text-center text-gray-400" bodyStyle={{ minHeight: 200 }}>
             <p className="text-lg text-gray-400">No files uploaded yet. Start by uploading your first file!</p>
-            
           </Card>
         )}
       </div>
     </>
   );
 }
-
