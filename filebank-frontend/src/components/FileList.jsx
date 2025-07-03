@@ -107,13 +107,18 @@ export default function FileList() {
   return (
     <>
       {location.pathname === '/files' && (
-        <div className="p-4">
-          <Link to="/dashboard">
-            <Button type="link" icon={<ArrowBigLeftDashIcon />} className="mt-8 mb-8">
-              Baaaack
-            </Button>
-          </Link>
-        </div>
+        <div className="p-4 sticky top-0 z-50 bg-*">
+  <Link to="/dashboard">
+    <Button 
+      type="link" 
+      icon={<ArrowBigLeftDashIcon />} 
+      className="mt-8 mb-8"
+    >
+      Baaaack
+    </Button>
+  </Link>
+</div>
+
       )}
 
 <Alert
