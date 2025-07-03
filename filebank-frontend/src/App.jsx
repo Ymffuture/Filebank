@@ -2,6 +2,7 @@ import React, { Suspense, lazy } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Profile from'./pages/Profile';
 // Lazy-loaded components
+const Help = lazy(() => import('./components/Help'));
 const FileList = lazy(() => import('./components/FileList'));
 const Footer = lazy(() => import('./components/Footer'));
 const Home = lazy(() => import('./pages/Home'));
@@ -61,6 +62,7 @@ export default function App() {
           <Route path="/privacy" element={<Privacy />} />
           <Route path="/admin" element={<Admin />} />
           <Route path="/about-us" element={<AboutUs />} />
+          <Route path="/help" element={<Help />} />
         </Routes>
         <Footer />
       </Suspense>
