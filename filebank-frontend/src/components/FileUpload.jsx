@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import {Link} from "react-router-dom" ;
 import { Upload, Button, Alert, Progress } from 'antd';
 import { UploadOutlined } from '@ant-design/icons';
 import api from '../api/fileApi';
@@ -33,7 +34,17 @@ export default function FileUpload({ onUpload, currentUserFileCount = 0}) {
         }
       });
 
-      setText2('Upload complete 100%.');
+      setText2(
+  <>
+    Upload complete 100%.{' '}
+    <Link to="/files" className="text-green-600 font-semibold underline hover:text-green-800">
+      <Button type='dashed' >
+      View
+      </Button>
+    </Link>
+  </>
+);
+
       enqueueSnackbar('Upload successful!', { variant: 'success' });
       setFiles([]);
 
@@ -45,7 +56,14 @@ export default function FileUpload({ onUpload, currentUserFileCount = 0}) {
 
     } catch (err) {
       console.error(err);
-      setText('Upload file failed, please try again.');
+      setText(<>
+    Something went wrong.{' '}
+    <Link to="/documents" className="text-green-600 font-semibold underline hover:text-green-800">
+      <Button type='dashed' >
+      Learn more
+      </Button>
+    </Link>
+  </>);
       enqueueSnackbar('Upload failed.', { variant: 'error' });
     } finally {
       setUploading(false);
@@ -64,10 +82,10 @@ export default function FileUpload({ onUpload, currentUserFileCount = 0}) {
     
       <Upload
         beforeUpload={(file) => {
-          const isLt2M = file.size / 1024 / 1024 < 2;
+          const isLt2M = file.size / 1024 / 1024 < 5;
           if (!isLt2M) {
             setText('something went wrong.');
-            enqueueSnackbar('File size exceeds 2MB', { variant: 'warning' });
+            enqueueSnackbar('File size exceeds 5MB', { variant: 'warning' });
             return Upload.LIST_IGNORE;
           }
           return false; // Prevent auto upload
@@ -115,7 +133,7 @@ export default function FileUpload({ onUpload, currentUserFileCount = 0}) {
           message={text}
           type="error"
           className="mt-2 select-none"
-          description="Please check the internet connection. "
+          description="Please check the internet connection, Or try Logging in."
           closable
           banner
         />
@@ -126,6 +144,7 @@ export default function FileUpload({ onUpload, currentUserFileCount = 0}) {
           message={text2}
           type="success"
           className="mt-2 select-none"
+          description="To see your file(s) please navigate to Files and manage" 
           closable
           banner
         />
