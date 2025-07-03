@@ -107,7 +107,7 @@ export default function FileList() {
   return (
     <>
       {location.pathname === '/files' && (
-        <div className="p-4 sticky top-0 z-50 bg-*">
+        <div className="p-4 sticky top-0 z-50 bg-white">
   <Link to="/dashboard">
     <Button 
       type="link" 
