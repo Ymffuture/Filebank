@@ -116,12 +116,8 @@ export default function FileList() {
         </div>
       )}
 
-<div className="bg-yellow-100 text-yellow-800 border border-yellow-300 rounded p-3 mb-4 text-sm">
-  <strong>Tip:</strong> After downloading, rename files like <code>uiey3653jvbsksvak</code> to something meaningful (e.g., <code>MyCv.pdf</code>) so you can easily find them later.
-</div>
-
 <Alert
-  message="Tip: After downloading, rename files like uiey3653jvbsksvak.pdf to something meaningful (e.g., MyCv.pdf) so you can easily find them later."
+  message="Tip: After downloading, rename files like uiey3653jvbsksvak to something meaningful (e.g., MyCv.pdf) so you can easily find them later."
   type="warning"
   showIcon
   closable
