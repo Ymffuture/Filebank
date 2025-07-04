@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Card, Button, Space, Popconfirm, Tooltip, Skeleton, Alert, Badge } from 'antd';
-import dayjs from 'dayjs';
-import relativeTime from 'dayjs/plugin/relativeTime';
+// import dayjs from 'dayjs';
+// import relativeTime from 'dayjs/plugin/relativeTime';
 import api from '../api/fileApi';
 import { Link, useLocation } from 'react-router-dom';
 import { useSnackbar } from 'notistack';
@@ -23,7 +23,7 @@ import {
 } from '@ant-design/icons';
 import { ArrowBigLeftDashIcon } from 'lucide-react';
 
-dayjs.extend(relativeTime);
+// dayjs.extend(relativeTime);
 
 export default function FileList() {
   const [files, setFiles] = useState([]);
@@ -32,7 +32,26 @@ export default function FileList() {
   const [deleting, setDeleting] = useState(null);
   const { enqueueSnackbar } = useSnackbar();
   const location = useLocation();
+  
+const getAgeInDays = (createdAt) => {
+  const created = new Date(createdAt);
+  const now = new Date();
+  const diffMs = now - created;
+  return Math.floor(diffMs / (1000 * 60 * 60 * 24));
+};
 
+const getRelativeTime = (createdAt) => {
+  const created = new Date(createdAt);
+  const now = new Date();
+  const diffSec = Math.floor((now - created) / 1000);
+
+  if (diffSec < 60) return `${diffSec}s ago`;
+  if (diffSec < 3600) return `${Math.floor(diffSec / 60)}m ago`;
+  if (diffSec < 86400) return `${Math.floor(diffSec / 3600)}h ago`;
+  return `${Math.floor(diffSec / 86400)}d ago`;
+};
+
+  
   const fetchFiles = async () => {
     setLoading(true);
     try {
@@ -43,7 +62,8 @@ export default function FileList() {
 
       // Auto-delete files older than 30 days
       data.forEach(file => {
-        const age = file.createdAt ? dayjs().diff(dayjs(file.createdAt), 'day') : 0;
+       const age = file.createdAt ? getAgeInDays, 'day') : 0;
+        
         console.log(`File: ${file.filename}, Age: ${age} days, Auto-delete: ${age >= 30}`); // Debug
         if (age >= 1) {
           handleDelete(file.slug);
@@ -151,9 +171,8 @@ export default function FileList() {
         ) : files.length > 0 ? (
           files.map((file) => {
             const downloadUrl = file.downloadUrl || `${file.url}?fl=attachment:${encodeURIComponent(file.filename)}`;
-            const ageDays = file.createdAt ? dayjs().diff(dayjs(file.createdAt), 'day') : 0;
-            console.log(`File: ${file.filename}, Age: ${ageDays} days`); // Debug: Check ageDays
-            const relative = file.createdAt ? dayjs(file.createdAt).fromNow() : 'Unknown';
+            const ageDays = getAgeInDays(file.createdAt);
+            const relative = getRelativeTime(file.createdAt);
 
             return (
               <Card
