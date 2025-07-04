@@ -18,7 +18,10 @@ import {
   DeleteOutlined,
   ClockCircleOutlined,
   DownloadOutlined,
-  CopyOutlined
+  CopyOutlined,
+  WhatsAppOutlined,
+  TwitterOutlined,
+  LinkedinOutlined
 } from '@ant-design/icons';
 import { ArrowBigLeftDashIcon } from 'lucide-react';
 
@@ -27,6 +30,8 @@ export default function FileList() {
   const [loading, setLoading] = useState(true);
   const [refresh, setRefresh] = useState(0);
   const [deleting, setDeleting] = useState(null);
+  const [time, setTime] = useState(Date.now());
+  const [displayCount, setDisplayCount] = useState(4);
   const { enqueueSnackbar } = useSnackbar();
   const location = useLocation();
 
@@ -41,7 +46,6 @@ export default function FileList() {
     if (!createdAt) return 'Unknown';
     const created = new Date(createdAt);
     const diffSec = Math.floor((new Date() - created) / 1000);
-
     if (diffSec < 60) return `${diffSec}s ago`;
     if (diffSec < 3600) return `${Math.floor(diffSec / 60)}m ago`;
     if (diffSec < 86400) return `${Math.floor(diffSec / 3600)}h ago`;
@@ -52,13 +56,14 @@ export default function FileList() {
     setLoading(true);
     try {
       const { data } = await api.get('/files');
-      setFiles(data);
-
-      await Promise.all(
-        data
-          .filter(f => getAgeInDays(f.createdAt) >= 30)
-          .map(f => handleDelete(f.slug))
-      );
+      console.log('Fetched files:', data);
+      data.forEach(file => {
+        console.log(`File ${file.slug}: createdAt=${file.createdAt}, age=${getAgeInDays(file.createdAt)} days`);
+      });
+      const toDelete = data.filter(f => getAgeInDays(f.createdAt) >= 30);
+      console.log('Files to delete:', toDelete);
+      await Promise.all(toDelete.map(f => handleDelete(f.slug)));
+      setFiles(data.filter(f => getAgeInDays(f.createdAt) < 30));
     } catch (err) {
       console.error(err);
       enqueueSnackbar('Failed to load files', { variant: 'error' });
@@ -66,16 +71,17 @@ export default function FileList() {
       setLoading(false);
     }
   };
-useEffect(() =>{
-getAgeInDays();
-getRelativeTime();
- }, 1000);
-  
+
   useEffect(() => {
     fetchFiles();
-   // const iv = setInterval(fetchFiles, 60000);
-    // return () => clearInterval(iv);
   }, [refresh]);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setTime(Date.now());
+    }, 1000);
+    return () => clearInterval(interval);
+  }, []);
 
   const handleDelete = async (slug) => {
     setDeleting(slug);
@@ -128,6 +134,8 @@ getRelativeTime();
       .catch(() => enqueueSnackbar('Failed to copy link', { variant: 'error' }));
   };
 
+  const displayedFiles = files.slice(0, displayCount);
+
   return (
     <>
       {location.pathname === '/files' && (
@@ -143,18 +151,21 @@ getRelativeTime();
         type="warning" showIcon closable className="mb-4"
       />
 
-      <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 p-4">
+      < shinesdiv className="grid gap-6 grid-cols-1 p-4">
         {loading ? (
           Array.from({ length: 4 }).map((_, i) => (
             <Card key={i} hoverable bodyStyle={{ minHeight: 200 }}>
               <Skeleton active avatar paragraph={{ rows: 4 }} />
             </Card>
           ))
-        ) : files.length > 0 ? (
-          files.map(file => {
+        ) : displayedFiles.length > 0 ? (
+          displayedFiles.map(file => {
             const age = getAgeInDays(file.createdAt);
             const rel = getRelativeTime(file.createdAt);
             const downloadUrl = file.downloadUrl || `${file.url}?fl=attachment:${encodeURIComponent(file.filename)}`;
+            const whatsappShareUrl = `https://wa.me/?text=${encodeURIComponent(downloadUrl)}`;
+            const twitterShareUrl = `https://twitter.com/intent/tweet?url=${encodeURIComponent(downloadUrl)}&text=${encodeURIComponent('Check out this file!')}`;
+            const linkedinShareUrl = `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(downloadUrl)}`;
 
             return (
               <Card
@@ -175,6 +186,21 @@ getRelativeTime();
                   <Tooltip key="copy" title="Copy link">
                     <Button type="text" icon={<CopyOutlined />} onClick={() => copyLink(downloadUrl)} />
                   </Tooltip>,
+                  <Tooltip key="share-whatsapp" title="Share on WhatsApp">
+                    <a href={whatsappShareUrl} target="_blank" rel="noopener noreferrer">
+                      <Button type="text" icon={<WhatsAppOutlined />} />
+                    </a>
+                  </Tooltip>,
+                  <Tooltip key="share-twitter" title="Share on X">
+                    <a href={twitterShareUrl} target="_blank" rel="noopener noreferrer">
+                      <Button type="text" icon={<TwitterOutlined />} />
+                    </a>
+                  </Tooltip>,
+                  <Tooltip key="share-linkedin" title="Share on LinkedIn">
+                    <a href={linkedinShareUrl} target="_blank" rel="noopener noreferrer">
+                      <Button type="text" icon={<LinkedinOutlined />} />
+                    </a>
+                  </Tooltip>,
                   <Popconfirm
                     key="delete"
                     title="Delete this file?"
@@ -182,7 +208,7 @@ getRelativeTime();
                     okText="Yes" cancelText="No"
                     disabled={deleting === file.slug}
                   >
-                    <Button danger type="text" icon={<DeleteOutlined />} loading={deleting===file.slug}>
+                    <Button danger type="text" icon={<DeleteOutlined />} loading={deleting === file.slug}>
                       Delete
                     </Button>
                   </Popconfirm>
@@ -200,7 +226,7 @@ getRelativeTime();
                     type="warning"
                     showIcon
                     className="mb-2"
-                    message={`Will be deleted in ${30-age} days for security.`}
+                    message={`Will be deleted in ${30 - age} days for security.`}
                   />
                 )}
 
@@ -208,19 +234,19 @@ getRelativeTime();
                   <img
                     src={file.url}
                     alt={file.filename}
-                    style={{ width:'100%', maxHeight:150, objectFit:'contain', marginTop:8, borderRadius:8 }}
+                    style={{ width: '100%', maxHeight: 150, objectFit: 'contain', marginTop: 8, borderRadius: 8 }}
                   />
                 ) : file.resourceType === 'raw' && file.filename.endsWith('.pdf') ? (
                   <a href={downloadUrl} target="_blank" rel="noopener noreferrer">
-                    <FilePdfOutlined style={{ fontSize:80, color:'#999' }} />
+                    <FilePdfOutlined style={{ fontSize: 80, color: '#999' }} />
                     <p>Click to view or download</p>
                   </a>
                 ) : (
                   <div
                     style={{
-                      marginTop:8, height:150,
-                      display:'flex', alignItems:'center', justifyContent:'center',
-                      background:'#fafafa', borderRadius:8, color:'#999', fontSize:48
+                      marginTop: 8, height: 150,
+                      display: 'flex', alignItems: 'center', justifyContent: 'center',
+                      background: '#fafafa', borderRadius: 8, color: '#999', fontSize: 48
                     }}
                   >
                     {getFileIcon(file)}
@@ -230,12 +256,17 @@ getRelativeTime();
             );
           })
         ) : (
-          <Card hoverable className="text-center text-gray-400" bodyStyle={{ minHeight:200 }}>
+          <Card hoverable className="text-center text-gray-400" bodyStyle={{ minHeight: 200 }}>
             <p>No files uploaded yet. Upload your first file above.</p>
           </Card>
         )}
       </div>
+
+      {displayedFiles.length < files.length && (
+        <div className="text-center mt-4">
+          <Button onClick={() => setDisplayCount(c => c + 4)}>Load More</Button>
+        </div>
+      )}
     </>
   );
 }
-
