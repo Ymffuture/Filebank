@@ -258,7 +258,7 @@ export default function FileList() {
             <p>No files uploaded yet. Upload your first file above.</p>
           </Card>
         )}
-      </div>
+      
 
       {displayedFiles.length < files.length && (
         <div className="text-center mt-4">
