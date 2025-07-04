@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useMemo } from 'react';
 import { Table, Button, message, Popconfirm, Avatar, Space, Input, Modal, Dropdown, Menu, Row, Col, Card, Statistic, List } from 'antd';
-import { Column } from '@ant-design/charts';
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'recharts'; // Import Recharts components
 import api from '../api/fileApi';
 import { useSnackbar } from 'notistack';
 import { ArrowLeftOutlined, NotificationOutlined, EllipsisOutlined } from '@ant-design/icons';
@@ -192,15 +192,19 @@ export default function AdminUsers() {
 
       {/* Chart Section */}
       <Card title="Top 5 Users by Uploads" className="mb-4">
-        <Column
+        <BarChart
+          width={500}
+          height={300}
           data={topUsers.map(user => ({ name: user.displayName, uploads: user.uploadCount }))}
-          xField="name"
-          yField="uploads"
-          meta={{
-            name: { alias: 'User' },
-            uploads: { alias: 'Uploads' },
-          }}
-        />
+          margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
+        >
+          <CartesianGrid strokeDasharray="3 3" />
+          <XAxis dataKey="name" />
+          <YAxis />
+          <Tooltip />
+          <Legend />
+          <Bar dataKey="uploads" fill="#8884d8" />
+        </BarChart>
       </Card>
 
       {/* Users Table */}
