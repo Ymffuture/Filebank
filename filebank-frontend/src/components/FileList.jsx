@@ -18,7 +18,6 @@ import {
   CodeOutlined,
   FileOutlined,
   DeleteOutlined,
-  ClockCircleOutlined, 
   DownloadOutlined
 } from '@ant-design/icons';
 import { ArrowBigLeftDashIcon } from 'lucide-react';
@@ -75,46 +74,36 @@ export default function FileList() {
     }
   };
 
+  const formatDateTime = (dateString) => dayjs(dateString).format('YYYY-MM-DD HH:mm');
+
   const getFileIcon = (file) => {
-    const ext = (file.url.split('.').pop() || '').toLowerCase();
-
-    const iconMap = {
-      image: FileImageOutlined,
-      video: VideoCameraOutlined,
-      audio: AudioOutlined,
-      pdf: FilePdfOutlined,
-      word: FileWordOutlined,
-      excel: FileExcelOutlined,
-      ppt: FilePptOutlined,
-      text: FileTextOutlined,
-      archive: FileZipOutlined,
-      code: CodeOutlined,
-    };
-
-    const fileTypeGroups = {
-      image: ['jpg', 'jpeg', 'png', 'gif', 'bmp', 'webp', 'svg', 'ico', 'tiff'],
-      video: ['mp4', 'mov', 'avi', 'wmv', 'mkv', 'webm'],
-      audio: ['mp3', 'wav', 'ogg', 'flac', 'aac'],
-      pdf: ['pdf'],
-      word: ['doc', 'docx', 'odt', 'rtf'],
-      excel: ['xls', 'xlsx', 'ods', 'csv'],
-      ppt: ['ppt', 'pptx', 'odp'],
-      text: ['txt', 'md', 'json', 'xml', 'yaml', 'yml', 'log'],
-      archive: ['zip', 'rar', '7z', 'tar', 'gz'],
-      code: ['html', 'htm', 'css', 'js', 'ts', 'jsx', 'tsx', 'php', 'py', 'java', 'c', 'cpp', 'rb', 'go', 'rs']
-    };
-
-    if (iconMap[file.resourceType]) {
-      return React.createElement(iconMap[file.resourceType]);
+    const ext = file.url.split('.').pop()?.toLowerCase() || '';
+    switch (file.resourceType) {
+      case 'image': return <FileImageOutlined />;
+      case 'video': return <VideoCameraOutlined />;
+      case 'audio': return <AudioOutlined />;
+      case 'raw':
+        if (['pdf'].includes(ext)) return <FilePdfOutlined />;
+        if (['doc','docx','odt','rtf'].includes(ext)) return <FileWordOutlined />;
+        if (['xls','xlsx','ods','csv'].includes(ext)) return <FileExcelOutlined />;
+        if (['ppt','pptx','odp'].includes(ext)) return <FilePptOutlined />;
+        if (['txt','md','json','xml','yaml','yml','log'].includes(ext)) return <FileTextOutlined />;
+        if (['zip','rar','7z','tar','gz'].includes(ext)) return <FileZipOutlined />;
+        if (['html','css','js','ts','php','py'].includes(ext)) return <CodeOutlined />;
+        return <FileOutlined />;
+      default:
+        if (['jpg','jpeg','png','gif','bmp','webp','svg'].includes(ext)) return <FileImageOutlined />;
+        if (['mp4','mov','avi','mkv'].includes(ext)) return <VideoCameraOutlined />;
+        if (['mp3','wav','ogg'].includes(ext)) return <AudioOutlined />;
+        if (['pdf'].includes(ext)) return <FilePdfOutlined />;
+        if (['doc','docx'].includes(ext)) return <FileWordOutlined />;
+        if (['xls','xlsx','csv'].includes(ext)) return <FileExcelOutlined />;
+        if (['ppt','pptx'].includes(ext)) return <FilePptOutlined />;
+        if (['txt','md'].includes(ext)) return <FileTextOutlined />;
+        if (['zip','rar'].includes(ext)) return <FileZipOutlined />;
+        if (['js','py','java','c','cpp'].includes(ext)) return <CodeOutlined />;
+        return <FileOutlined />;
     }
-
-    for (const [type, extensions] of Object.entries(fileTypeGroups)) {
-      if (extensions.includes(ext)) {
-        return React.createElement(iconMap[type] || FileOutlined);
-      }
-    }
-
-    return <FileOutlined />;
   };
 
   return (
@@ -182,11 +171,9 @@ export default function FileList() {
                 hoverable
                 bodyStyle={{ minHeight: 200 }}
               >
-                
-<p className="text-white p-1 rounded bg-[green] ">
-  <ClockCircleOutlined style={{ marginRight: 4 }} />
-  <strong>Last uploaded was:</strong> {relative}
-</p>
+                <p className="text-gray-700 p-1 rounded">
+                  <strong>Uploaded:</strong> {relative}
+                </p>
 
                 {ageDays > 0 && ageDays < 30 && (
                   <Alert
