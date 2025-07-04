@@ -49,6 +49,15 @@ export default function FileList() {
           handleDelete(file.slug);
         }
       });
+      
+setFiles([
+      { _id: '1', slug: 'img', filename: 'photo.jpg', url: 'photo.jpg', resourceType: 'image', createdAt: dayjs().subtract(1, 'day').toISOString() },
+      { _id: '2', slug: 'video', filename: 'movie.mp4', url: 'movie.mp4', resourceType: 'video', createdAt: dayjs().subtract(10, 'day').toISOString() },
+      { _id: '3', slug: 'doc', filename: 'report.pdf', url: 'report.pdf', resourceType: 'raw', createdAt: dayjs().subtract(20, 'day').toISOString() },
+      { _id: '4', slug: 'code', filename: 'script.js', url: 'script.js', resourceType: 'raw', createdAt: dayjs().subtract(3, 'day').toISOString() },
+      { _id: '5', slug: 'music', filename: 'track.mp3', url: 'track.mp3', resourceType: 'audio', createdAt: dayjs().subtract(0, 'day').toISOString() }
+    ]);
+      
     } catch (err) {
       console.error(err);
       enqueueSnackbar('Failed to load files', { variant: 'error' });
