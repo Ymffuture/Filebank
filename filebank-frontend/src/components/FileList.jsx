@@ -18,11 +18,9 @@ import {
   DeleteOutlined,
   ClockCircleOutlined,
   DownloadOutlined,
-  CopyOutlined,
-  WhatsAppOutlined,
-  TwitterOutlined,
-  LinkedinOutlined
+  CopyOutlined
 } from '@ant-design/icons';
+import { FaXTwitter, FaWhatsapp, FaLinkedin } from 'react-icons/fa6';
 import { ArrowBigLeftDashIcon } from 'lucide-react';
 
 export default function FileList() {
@@ -188,17 +186,17 @@ export default function FileList() {
                   </Tooltip>,
                   <Tooltip key="share-whatsapp" title="Share on WhatsApp">
                     <a href={whatsappShareUrl} target="_blank" rel="noopener noreferrer">
-                      <Button type="text" icon={<WhatsAppOutlined />} />
+                      <Button type="text" icon={<FaWhatsapp />} />
                     </a>
                   </Tooltip>,
                   <Tooltip key="share-twitter" title="Share on X">
                     <a href={twitterShareUrl} target="_blank" rel="noopener noreferrer">
-                      <Button type="text" icon={<TwitterOutlined />} />
+                      <Button type="text" icon={<FaXTwitter />} />
                     </a>
                   </Tooltip>,
                   <Tooltip key="share-linkedin" title="Share on LinkedIn">
                     <a href={linkedinShareUrl} target="_blank" rel="noopener noreferrer">
-                      <Button type="text" icon={<LinkedinOutlined />} />
+                      <Button type="text" icon={<FaLinkedin />} />
                     </a>
                   </Tooltip>,
                   <Popconfirm
