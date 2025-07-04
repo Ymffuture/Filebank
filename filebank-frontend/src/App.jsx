@@ -5,6 +5,7 @@ import Profile from'./pages/Profile';
 const Help = lazy(() => import('./components/Help'));
 const FileList = lazy(() => import('./components/FileList'));
 const Footer = lazy(() => import('./components/Footer'));
+const Feedback = lazy(() => import('./components/Feedback'));
 const Home = lazy(() => import('./pages/Home'));
 const Admin = lazy(() => import('./components/Admin'));
 const Hero = lazy(() => import('./pages/Hero'));
@@ -63,6 +64,7 @@ export default function App() {
           <Route path="/admin" element={<Admin />} />
           <Route path="/about-us" element={<AboutUs />} />
           <Route path="/help" element={<Help />} />
+        <Route path="/feedback" element={<Feedback />} />
         </Routes>
         <Footer />
       </Suspense>
