@@ -13,7 +13,7 @@ export default function FeedbackPage() {
   const onFinish = async (values) => {
     setSubmitting(true);
     try {
-      await api.post('/feedback', values);
+      await api.post('v0/c/feedback', values);
       message.success('Thank you for your feedback!');
       navigate('/dashboard');
     } catch (error) {
