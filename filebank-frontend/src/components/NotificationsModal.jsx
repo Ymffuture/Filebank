@@ -88,8 +88,8 @@ export default function NotificationsModal({ visible, onClose }) {
           <Badge count={notifications.filter((n) => !n.read).length} />
         </Space>
       }
-      placement="right"
-      width={400}
+      placement="bottom"
+      height={400}
       visible={visible}
       onClose={onClose}
       footer={[
@@ -98,43 +98,45 @@ export default function NotificationsModal({ visible, onClose }) {
           onClick={markAllAsRead}
           icon={<CheckOutlined />}
           loading={markAllLoading}
-        >
-          Mark All as Read
-        </Button>,
-        <Button key="close" onClick={onClose}>
-          Close
-        </Button>,
+        />,
+        <Button key="close" onClick={onClose} icon={<DeleteOutlined />}/>,
       ]}
     >
       {loading ? (
         <Spin />
       ) : (
         <List
-          itemLayout="horizontal"
-          dataSource={notifications}
+          itemLayout="vertical"
+          dataSource={[...notifications].reverse()}
           renderItem={(item) => (
             <List.Item
               style={{
                 backgroundColor: !item.read ? '#fffbe6' : 'transparent',
                 borderRadius: 4,
-                padding: '8px 12px',
-                marginBottom: 4,
+                padding: '12px 16px',
+                marginBottom: 8,
               }}
               actions={[
                 !item.read && (
-                  <Button
-                    type="link"
-                    size="small"
-                    icon={<CheckOutlined />}
-                    onClick={() => markAsRead(item._id)}
-                    loading={processing[item._id]?.markAsRead}
+                  <Popconfirm
+                    title="Mark as read?"
+                    onConfirm={() => markAsRead(item._id)}
+                    okText="Yes"
+                    cancelText="No"
                   >
-                    Mark as Read
-                  </Button>
+                    <Button
+                      type="link"
+                      size="small"
+                      icon={<CheckOutlined />}
+                      loading={processing[item._id]?.markAsRead}
+                    />
+                  </Popconfirm>
                 ),
                 <Popconfirm
                   title="Delete this notification?"
                   onConfirm={() => deleteNotification(item._id)}
+                  okText="Yes"
+                  cancelText="No"
                 >
                   <Button
                     type="link"
@@ -142,9 +144,7 @@ export default function NotificationsModal({ visible, onClose }) {
                     icon={<DeleteOutlined />}
                     size="small"
                     loading={processing[item._id]?.delete}
-                  >
-                    Delete
-                  </Button>
+                  />
                 </Popconfirm>,
               ]}
             >
