@@ -37,8 +37,7 @@ export default function FileList() {
     setLoading(true);
     try {
       const res = await api.get('/files');
-      const data = res.data;
-      setFiles(data);
+      setFiles(res.data);
 
       // Auto-delete files older than 30 days
       data.forEach(file => {
@@ -47,7 +46,6 @@ export default function FileList() {
           handleDelete(file.slug);
         }
       });
-setFiles(data) 
 
 //   setFiles([
 //  { _id: '1', slug: 'img', filename: 'photo.jpg', url: 'photo.jpg', resourceType: 'image', createdAt: dayjs().subtract(1, 'day').toISOString() },
