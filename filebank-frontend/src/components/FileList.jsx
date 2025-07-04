@@ -24,15 +24,6 @@ import { ArrowBigLeftDashIcon } from 'lucide-react';
 
 dayjs.extend(relativeTime);
 
-type FileItem = {
-  _id: string;
-  slug: string;
-  filename: string;
-  url: string;
-  resourceType: string;
-  createdAt: string;
-};
-
 export default function FileList() {
   const [files, setFiles] = useState<FileItem[]>([]);
   const [loading, setLoading] = useState(true);
