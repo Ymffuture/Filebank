@@ -160,13 +160,13 @@ export default function FileList() {
                   </Space>
                 }
                 actions={[
-                  <a key="download" href={downloadUrl} download={file.filename} target="_blank" rel="noopener noreferrer"><DownloadOutlined /> Download</a>,
+                  <a key="download" href={downloadUrl} download={file.filename} target="_blank" rel="noopener noreferrer"><DownloadOutlined /></a>,
                   <Tooltip key="copy" title="Copy link"><Button type="text" icon={<CopyOutlined />} onClick={()=>copyLink(downloadUrl)}/></Tooltip>,
                   <Tooltip key="wa" title="WhatsApp"><a href={waUrl} target="_blank" rel="noopener noreferrer"><Button type="text" icon={<FaWhatsapp/>}/></a></Tooltip>,
                   <Tooltip key="tw" title="X"><a href={twUrl} target="_blank" rel="noopener noreferrer"><Button type="text" icon={<FaXTwitter/>}/></a></Tooltip>,
                   <Tooltip key="li" title="LinkedIn"><a href={liUrl} target="_blank" rel="noopener noreferrer"><Button type="text" icon={<FaLinkedin/>}/></a></Tooltip>,
                   <Popconfirm key="delete" title="Delete this file?" onConfirm={()=>handleDelete(file.slug)} okText="Yes" cancelText="No" disabled={deleting===file.slug}>
-                    <Button danger type="text" icon={<DeleteOutlined />} loading={deleting===file.slug}>Delete</Button>
+                    <Button danger type="text" icon={<DeleteOutlined />} loading={deleting===file.slug}>X</Button>
                   </Popconfirm>
                 ]}
                 hoverable
