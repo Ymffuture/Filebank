@@ -6,7 +6,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import api from '../api/fileApi';
 import NotificationsModal from './NotificationsModal';
 import logo from '/vite.svg';
-import { FaGithub, FaTwitter, FaLinkedin } from 'react-icons/fa';
+import { MdOutlineFeedback } from 'react-icons/md';
 
 const { Header } = Layout;
 
@@ -195,15 +195,7 @@ export default function Navbar() {
           />
           <div style={{ marginTop: 'auto', textAlign: 'center', padding: '16px' }}>
             <Space size="large">
-              <a href="https://github.com" target="_blank" rel="noopener noreferrer">
-                <FaGithub size={24} />
-              </a>
-              <a href="https://twitter.com" target="_blank" rel="noopener noreferrer">
-                <FaTwitter size={24} />
-              </a>
-              <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer">
-                <FaLinkedin size={24} />
-              </a>
+              <Link to="/feedback" >< MdOutlineFeedback/>Feedback</Link>
             </Space>
           </div>
         </div>
