@@ -1,6 +1,7 @@
 import React, { Suspense, lazy } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Profile from'./pages/Profile';
+import NotFound from './components/NotFound' ;
 // Lazy-loaded components
 const Help = lazy(() => import('./components/Help'));
 const FileList = lazy(() => import('./components/FileList'));
@@ -65,6 +66,7 @@ export default function App() {
           <Route path="/about-us" element={<AboutUs />} />
           <Route path="/help" element={<Help />} />
         <Route path="/feedback" element={<Feedback />} />
+          <Route path="*" element={<NotFound />} />
         </Routes>
         <Footer />
       </Suspense>
