@@ -47,7 +47,7 @@ export default function FileList() {
           handleDelete(file.slug);
         }
       });
-
+setFiles(data) 
 
 //   setFiles([
 //  { _id: '1', slug: 'img', filename: 'photo.jpg', url: 'photo.jpg', resourceType: 'image', createdAt: dayjs().subtract(1, 'day').toISOString() },
