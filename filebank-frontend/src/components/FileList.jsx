@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from 'react';
 import { Card, Button, Space, Popconfirm, Tooltip, Skeleton, Alert, Badge } from 'antd';
 import dayjs from 'dayjs';
@@ -19,6 +18,7 @@ import {
   CodeOutlined,
   FileOutlined,
   DeleteOutlined,
+  ClockCircleOutlined,
   DownloadOutlined
 } from '@ant-design/icons';
 import { ArrowBigLeftDashIcon } from 'lucide-react';
@@ -39,10 +39,12 @@ export default function FileList() {
       const res = await api.get('/files');
       const data = res.data;
       setFiles(data);
+      console.log('Fetched files:', data); // Debug: Inspect response
 
       // Auto-delete files older than 30 days
       data.forEach(file => {
-        const age = dayjs().diff(dayjs(file.createdAt), 'day');
+        const age = file.createdAt ? dayjs().diff(dayjs(file.createdAt), 'day') : 0;
+        console.log(`File: ${file.filename}, Age: ${age} days, Auto-delete: ${age >= 30}`); // Debug
         if (age >= 30) {
           handleDelete(file.slug);
         }
@@ -75,36 +77,46 @@ export default function FileList() {
     }
   };
 
-  const formatDateTime = (dateString) => dayjs(dateString).format('YYYY-MM-DD HH:mm');
-
   const getFileIcon = (file) => {
-    const ext = file.url.split('.').pop()?.toLowerCase() || '';
-    switch (file.resourceType) {
-      case 'image': return <FileImageOutlined />;
-      case 'video': return <VideoCameraOutlined />;
-      case 'audio': return <AudioOutlined />;
-      case 'raw':
-        if (['pdf'].includes(ext)) return <FilePdfOutlined />;
-        if (['doc','docx','odt','rtf'].includes(ext)) return <FileWordOutlined />;
-        if (['xls','xlsx','ods','csv'].includes(ext)) return <FileExcelOutlined />;
-        if (['ppt','pptx','odp'].includes(ext)) return <FilePptOutlined />;
-        if (['txt','md','json','xml','yaml','yml','log'].includes(ext)) return <FileTextOutlined />;
-        if (['zip','rar','7z','tar','gz'].includes(ext)) return <FileZipOutlined />;
-        if (['html','css','js','ts','php','py'].includes(ext)) return <CodeOutlined />;
-        return <FileOutlined />;
-      default:
-        if (['jpg','jpeg','png','gif','bmp','webp','svg'].includes(ext)) return <FileImageOutlined />;
-        if (['mp4','mov','avi','mkv'].includes(ext)) return <VideoCameraOutlined />;
-        if (['mp3','wav','ogg'].includes(ext)) return <AudioOutlined />;
-        if (['pdf'].includes(ext)) return <FilePdfOutlined />;
-        if (['doc','docx'].includes(ext)) return <FileWordOutlined />;
-        if (['xls','xlsx','csv'].includes(ext)) return <FileExcelOutlined />;
-        if (['ppt','pptx'].includes(ext)) return <FilePptOutlined />;
-        if (['txt','md'].includes(ext)) return <FileTextOutlined />;
-        if (['zip','rar'].includes(ext)) return <FileZipOutlined />;
-        if (['js','py','java','c','cpp'].includes(ext)) return <CodeOutlined />;
-        return <FileOutlined />;
+    const ext = (file.url.split('.').pop() || '').toLowerCase();
+
+    const iconMap = {
+      image: FileImageOutlined,
+      video: VideoCameraOutlined,
+      audio: AudioOutlined,
+      pdf: FilePdfOutlined,
+      word: FileWordOutlined,
+      excel: FileExcelOutlined,
+      ppt: FilePptOutlined,
+      text: FileTextOutlined,
+      archive: FileZipOutlined,
+      code: CodeOutlined,
+    };
+
+    const fileTypeGroups = {
+      image: ['jpg', 'jpeg', 'png', 'gif', 'bmp', 'webp', 'svg', 'ico', 'tiff'],
+      video: ['mp4', 'mov', 'avi', 'wmv', 'mkv', 'webm'],
+      audio: ['mp3', 'wav', 'ogg', 'flac', 'aac'],
+      pdf: ['pdf'],
+      word: ['doc', 'docx', 'odt', 'rtf'],
+      excel: ['xls', 'xlsx', 'ods', 'csv'],
+      ppt: ['ppt', 'pptx', 'odp'],
+      text: ['txt', 'md', 'json', 'xml', 'yaml', 'yml', 'log'],
+      archive: ['zip', 'rar', '7z', 'tar', 'gz'],
+      code: ['html', 'htm', 'css', 'js', 'ts', 'jsx', 'tsx', 'php', 'py', 'java', 'c', 'cpp', 'rb', 'go', 'rs']
+    };
+
+    if (iconMap[file.resourceType]) {
+      return React.createElement(iconMap[file.resourceType]);
     }
+
+    for (const [type, extensions] of Object.entries(fileTypeGroups)) {
+      if (extensions.includes(ext)) {
+        return React.createElement(iconMap[type] || FileOutlined);
+      }
+    }
+
+    return <FileOutlined />;
   };
 
   return (
@@ -137,8 +149,9 @@ export default function FileList() {
         ) : files.length > 0 ? (
           files.map((file) => {
             const downloadUrl = file.downloadUrl || `${file.url}?fl=attachment:${encodeURIComponent(file.filename)}`;
-            const ageDays = dayjs().diff(dayjs(file.createdAt), 'day');
-            const relative = dayjs(file.createdAt).fromNow();
+            const ageDays = file.createdAt ? dayjs().diff(dayjs(file.createdAt), 'day') : 0;
+            console.log(`File: ${file.filename}, Age: ${ageDays} days`); // Debug: Check ageDays
+            const relative = file.createdAt ? dayjs(file.createdAt).fromNow() : 'Unknown';
 
             return (
               <Card
@@ -172,11 +185,12 @@ export default function FileList() {
                 hoverable
                 bodyStyle={{ minHeight: 200 }}
               >
-                <p className="text-gray-700 p-1 rounded">
-                  <strong>Uploaded:</strong> {relative}
+                <p className="text-white p-1 rounded bg-[green]">
+                  <ClockCircleOutlined style={{ marginRight: 4 }} />
+                  <strong>Last uploaded was:</strong> {relative}
                 </p>
 
-                {ageDays > 0 && ageDays < 30 && (
+                {file.createdAt && ageDays > 0 && ageDays < 30 && (
                   <Alert
                     message={`Will be deleted in ${30 - ageDays} days for security purposes`}
                     type="warning"
