@@ -141,7 +141,7 @@ export default function FileUpload({ onUpload, currentUserFileCount = 0 }) {
         Allowed file types: Images (JPEG, PNG, GIF, BMP, WEBP, SVG, ICO, TIFF), Audio (MP3), Video (MP4), Text/Code (TXT, JS, PY, HTML, CSS, JSON, etc.), Documents (PDF, DOCX, PPTX, XLSX). Max size: 5MB.
       </p>
     </Upload.Dragger>
-          <div className="mt-4 flex justify-center">
+          <div className="mt-4 flex justify-center mb-8">
             <Button
               type="primary"
               onClick={handleSubmit}
