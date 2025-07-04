@@ -45,7 +45,7 @@ export default function FileList() {
       data.forEach(file => {
         const age = file.createdAt ? dayjs().diff(dayjs(file.createdAt), 'day') : 0;
         console.log(`File: ${file.filename}, Age: ${age} days, Auto-delete: ${age >= 30}`); // Debug
-        if (age >= 30) {
+        if (age >= 1) {
           handleDelete(file.slug);
         }
       });
