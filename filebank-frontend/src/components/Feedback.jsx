@@ -1,24 +1,27 @@
 import React, { useState } from 'react';
-import { Form, Input, Rate, Button, Typography, Alert, message } from 'antd';
+import { Form, Input, Rate, Button, Typography, Alert } from 'antd';
 import api from '../api/fileApi';
 import { useNavigate } from 'react-router-dom';
 import { Star } from 'lucide-react';
+import { useSnackbar } from 'notistack';
 
 const { Title, Paragraph } = Typography;
 
 export default function FeedbackPage() {
   const [submitting, setSubmitting] = useState(false);
   const navigate = useNavigate();
+  const { enqueueSnackbar } = useSnackbar();
 
   const onFinish = async (values) => {
     setSubmitting(true);
     try {
-      await api.post('v0/c/feedback', values);
-      message.success('Thank you for your feedback!');
+      // Correct endpoint path
+      await api.post('/feedback', values);
+      enqueueSnackbar('Thank you for your feedback!', { variant: 'success' });
       navigate('/dashboard');
     } catch (error) {
-      console.error(error);
-      message.error('Submission failed. Please try again.');
+      console.error('Feedback submit error:', error);
+      enqueueSnackbar('Submission failed. Please try again.', { variant: 'error' });
     } finally {
       setSubmitting(false);
     }
@@ -44,18 +47,11 @@ export default function FeedbackPage() {
             label="Type"
             rules={[{ required: true, message: 'Select complaint or improvement' }]}
           >
-            <Input.Group compact>
-              <Form.Item name="type" noStyle>
-                <Button.Group>
-                  <Button type="default" htmlType="button" onClick={() => {}}>
-                    Complaint
-                  </Button>
-                  <Button type="default" htmlType="button" onClick={() => {}}>
-                    Improvement
-                  </Button>
-                </Button.Group>
-              </Form.Item>
-            </Input.Group>
+            {/* Consider using Select or Radio.Group for better UX */}
+            <Select>
+              <Select.Option value="complaint">Complaint</Select.Option>
+              <Select.Option value="improvement">Improvement</Select.Option>
+            </Select>
           </Form.Item>
 
           <Form.Item
