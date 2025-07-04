@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Form, Input, Rate, Button, Typography, Alert, message } from 'antd';
 import api from '../api/fileApi';
 import { useNavigate } from 'react-router-dom';
-import { LuckyStar } from 'lucide-react';
+import { Star } from 'lucide-react';
 
 const { Title, Paragraph } = Typography;
 
