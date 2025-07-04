@@ -79,7 +79,7 @@ export default function FeedbackPage() {
               type="primary"
               htmlType="submit"
               block
-              icon={<LuckyStar />}
+              icon={<Star />}
               loading={submitting}
               style={{ backgroundColor: '#1E90FF', borderColor: '#1E90FF' }}
             >
