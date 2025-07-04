@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://filebank.vercel.app/sitemap.xml
+
