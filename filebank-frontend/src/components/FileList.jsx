@@ -66,7 +66,11 @@ export default function FileList() {
       setLoading(false);
     }
   };
-
+useEffect(() =>{
+getAgeInDays();
+getRelativeTime();
+ }, 1000);
+  
   useEffect(() => {
     fetchFiles();
    // const iv = setInterval(fetchFiles, 60000);
