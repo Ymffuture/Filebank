@@ -1,17 +1,21 @@
-import React, { useEffect, useState } from 'react';
-import { Table, Button, message, Popconfirm, Avatar, Space, Input, Modal } from 'antd';
+import React, { useEffect, useState, useMemo } from 'react';
+import { Table, Button, message, Popconfirm, Avatar, Space, Input, Modal, Dropdown, Menu, Row, Col, Card, Statistic, List } from 'antd';
+import { Column } from '@ant-design/charts';
 import api from '../api/fileApi';
 import { useSnackbar } from 'notistack';
-import { ArrowLeftOutlined, NotificationOutlined } from '@ant-design/icons';
+import { ArrowLeftOutlined, NotificationOutlined, EllipsisOutlined } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
 
 export default function AdminUsers() {
   const [users, setUsers] = useState([]);
   const [notifModalVisible, setNotifModalVisible] = useState(false);
   const [notifText, setNotifText] = useState('');
+  const [feedbackModalVisible, setFeedbackModalVisible] = useState(false);
+  const [selectedUserFeedback, setSelectedUserFeedback] = useState([]);
   const { enqueueSnackbar } = useSnackbar();
   const navigate = useNavigate();
 
+  // Fetch users from the API
   const fetchUsers = async () => {
     try {
       const res = await api.get('/admin/users');
@@ -21,6 +25,7 @@ export default function AdminUsers() {
     }
   };
 
+  // Handle user deletion
   const handleDelete = async (id) => {
     try {
       await api.delete(`/admin/users/${id}`);
@@ -31,12 +36,55 @@ export default function AdminUsers() {
     }
   };
 
+  // Handle blocking/unblocking a user
+  const handleBlock = async (id, isBlocked) => {
+    try {
+      if (isBlocked) {
+        await api.post(`/admin/users/${id}/unblock`);
+        enqueueSnackbar('User unblocked', { variant: 'success' });
+      } else {
+        await api.post(`/admin/users/${id}/block`);
+        enqueueSnackbar('User blocked', { variant: 'success' });
+      }
+      fetchUsers();
+    } catch {
+      enqueueSnackbar('Operation failed', { variant: 'error' });
+    }
+  };
+
+  // Handle marking/unmarking a user as an issue
+  const handleIssue = async (id, isIssue) => {
+    try {
+      if (isIssue) {
+        await api.post(`/admin/users/${id}/remove-issue`);
+        enqueueSnackbar('Issue removed', { variant: 'success' });
+      } else {
+        await api.post(`/admin/users/${id}/mark-as-issue`);
+        enqueueSnackbar('Marked as issue', { variant: 'success' });
+      }
+      fetchUsers();
+    } catch {
+      enqueueSnackbar('Operation failed', { variant: 'error' });
+    }
+  };
+
+  // Fetch feedback for a specific user
+  const fetchFeedback = async (userId) => {
+    try {
+      const res = await api.get(`/v0/c/feedback`);
+      setSelectedUserFeedback(res.data);
+      setFeedbackModalVisible(true);
+    } catch {
+      enqueueSnackbar('Failed to load feedback', { variant: 'error' });
+    }
+  };
+
+  // Send notification to all users
   const handleSendNotification = async () => {
     if (!notifText.trim()) {
       message.warning('Notification text cannot be empty');
       return;
     }
-
     try {
       await api.post('/admin/notify-all', { message: notifText });
       enqueueSnackbar('Notification sent to all users', { variant: 'success' });
@@ -51,73 +99,120 @@ export default function AdminUsers() {
     fetchUsers();
   }, []);
 
+  // Compute statistics using useMemo for performance
+  const totalUsers = useMemo(() => users.length, [users]);
+  const totalUploads = useMemo(() => users.reduce((sum, user) => sum + user.uploadCount, 0), [users]);
+  const averageUploads = useMemo(() => (totalUsers > 0 ? totalUploads / totalUsers : 0), [totalUsers, totalUploads]);
+  const usersWithUploads = useMemo(() => users.filter(user => user.uploadCount > 0).length, [users]);
+  const percentageWithUploads = useMemo(() => (totalUsers > 0 ? (usersWithUploads / totalUsers) * 100 : 0), [totalUsers, usersWithUploads]);
+
+  // Prepare data for the chart (top 5 users by uploads)
+  const topUsers = useMemo(() => {
+    return [...users].sort((a, b) => b.uploadCount - a.uploadCount).slice(0, 5);
+  }, [users]);
+
+  // Define table columns
   const columns = [
     {
       title: 'Picture',
       dataIndex: 'picture',
       key: 'picture',
-      render: (pic) => (
-        <Avatar src={pic} alt="Profile" />
+      render: (pic) => <Avatar src={pic} alt="Profile" />,
+    },
+    { title: 'Name', dataIndex: 'displayName', key: 'displayName' },
+    { title: 'Email', dataIndex: 'email', key: 'email' },
+    { title: 'Uploads', dataIndex: 'uploadCount', key: 'uploadCount' },
+    {
+      title: 'Feedback',
+      key: 'feedback',
+      render: (_, record) => (
+        <Button onClick={() => fetchFeedback(record._id)}>View Feedback</Button>
       ),
-    },
-    { 
-      title: 'Name', 
-      dataIndex: 'displayName', 
-      key: 'displayName' 
-    },
-    { 
-      title: 'Email', 
-      dataIndex: 'email', 
-      key: 'email' 
-    },
-    { 
-      title: 'Uploads', 
-      dataIndex: 'uploadCount', 
-      key: 'uploadCount' 
     },
     {
       title: 'Actions',
       key: 'actions',
-      render: (_, record) => (
-        <Popconfirm
-          title="Delete user?"
-          onConfirm={() => handleDelete(record._id)}
-          okText="Yes"
-          cancelText="No"
-        >
-          <Button danger type="link">Delete</Button>
-        </Popconfirm>
-      ),
+      render: (_, record) => {
+        const menu = (
+          <Menu>
+            <Menu.Item key="delete">
+              <Popconfirm
+                title="Delete user?"
+                onConfirm={() => handleDelete(record._id)}
+                okText="Yes"
+                cancelText="No"
+              >
+                Delete
+              </Popconfirm>
+            </Menu.Item>
+            <Menu.Item key="block" onClick={() => handleBlock(record._id, record.isBlocked)}>
+              {record.isBlocked ? 'Unblock' : 'Block'}
+            </Menu.Item>
+            <Menu.Item key="issue" onClick={() => handleIssue(record._id, record.isIssue)}>
+              {record.isIssue ? 'Remove Issue' : 'Mark as Issue'}
+            </Menu.Item>
+          </Menu>
+        );
+        return (
+          <Dropdown overlay={menu} trigger={['click']}>
+            <Button icon={<EllipsisOutlined />}>Actions</Button>
+          </Dropdown>
+        );
+      },
     },
   ];
 
   return (
     <div className="p-4">
+      {/* Navigation and Notification Buttons */}
       <Space className="mb-4">
-        <Button
-          icon={<ArrowLeftOutlined />}
-          onClick={() => navigate('/dashboard')}
-        >
+        <Button icon={<ArrowLeftOutlined />} onClick={() => navigate('/dashboard')}>
           Back to Dashboard
         </Button>
-
-        <Button
-          icon={<NotificationOutlined />}
-          type="primary"
-          onClick={() => setNotifModalVisible(true)}
-        >
+        <Button icon={<NotificationOutlined />} type="primary" onClick={() => setNotifModalVisible(true)}>
           Send Update to All Users
         </Button>
       </Space>
 
-      <Table 
-        dataSource={users} 
-        columns={columns} 
+      {/* Statistics Section */}
+      <Row gutter={16} className="mb-4">
+        <Col span={6}>
+          <Statistic title="Total Users" value={totalUsers} />
+        </Col>
+        <Col span={6}>
+          <Statistic title="Total Uploads" value={totalUploads} />
+        </Col>
+        <Col span={6}>
+          <Statistic title="Average Uploads" value={averageUploads.toFixed(2)} />
+        </Col>
+        <Col span={6}>
+          <Statistic title="Users with Uploads" value={`${usersWithUploads} (${percentageWithUploads.toFixed(2)}%)`} />
+        </Col>
+      </Row>
+
+      {/* Chart Section */}
+      <Card title="Top 5 Users by Uploads" className="mb-4">
+        <Column
+          data={topUsers.map(user => ({ name: user.displayName, uploads: user.uploadCount }))}
+          xField="name"
+          yField="uploads"
+          meta={{
+            name: { alias: 'User' },
+            uploads: { alias: 'Uploads' },
+          }}
+        />
+      </Card>
+
+      {/* Users Table */}
+      <Table
+        dataSource={users}
+        columns={columns}
         rowKey="_id"
         bordered
         pagination={{ pageSize: 10 }}
       />
 
+      {/* Notification Modal */}
       <Modal
         title="Send Update Notification"
         open={notifModalVisible}
@@ -125,14 +220,30 @@ export default function AdminUsers() {
         onCancel={() => setNotifModalVisible(false)}
         okText="Send"
       >
-        <Input.TextArea 
-          rows={4} 
+        <Input.TextArea
+          rows={4}
           placeholder="Enter your update message here"
           value={notifText}
           onChange={(e) => setNotifText(e.target.value)}
         />
       </Modal>
+
+      {/* Feedback Modal */}
+      <Modal
+        title="User Feedback"
+        open={feedbackModalVisible}
+        onCancel={() => setFeedbackModalVisible(false)}
+        footer={null}
+      >
+        <List
+          dataSource={selectedUserFeedback}
+          renderItem={item => (
+            <List.Item>
+              {item.content} {/* Assuming feedback has a 'content' field */}
+            </List.Item>
+          )}
+        />
+      </Modal>
     </div>
   );
 }
-
