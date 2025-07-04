@@ -195,7 +195,7 @@ export default function Navbar() {
           />
           <div style={{ marginTop: 'auto', textAlign: 'center', padding: '16px' }}>
             <Space size="large">
-              <Link to="/feedback" >< MdOutlineFeedback/>Feedback</Link>
+              <Link to="/feedback" >Feedback</Link>
             </Space>
           </div>
         </div>
