@@ -37,7 +37,8 @@ export default function FileList() {
     setLoading(true);
     try {
       const res = await api.get('/files');
-      setFiles(res.data);
+      const data = res.data;
+      setFiles(data);
 
       // Auto-delete files older than 30 days
       data.forEach(file => {
