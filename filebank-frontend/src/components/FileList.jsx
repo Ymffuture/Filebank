@@ -33,17 +33,15 @@ export default function FileList() {
     if (!createdAt) return 0;
     const created = new Date(createdAt);
     const now = new Date();
-    const diffMs = now - created;
-    return Math.floor(diffMs / (1000 * 60 * 60 * 24));
+    return Math.floor((now - created) / (1000 * 60 * 60 * 24));
   };
 
   const getRelativeTime = (createdAt) => {
     if (!createdAt) return 'Unknown';
     const created = new Date(createdAt);
-    const now = new Date();
-    const diffSec = Math.floor((now - created) / 1000);
+    const diffSec = Math.floor((new Date() - created) / 1000);
 
-    if (diffSec < 60) return `${diffSec}s ago`;
+    if (diffSec < 60)   return `${diffSec}s ago`;
     if (diffSec < 3600) return `${Math.floor(diffSec / 60)}m ago`;
     if (diffSec < 86400) return `${Math.floor(diffSec / 3600)}h ago`;
     return `${Math.floor(diffSec / 86400)}d ago`;
@@ -52,17 +50,17 @@ export default function FileList() {
   const fetchFiles = async () => {
     setLoading(true);
     try {
-      const res = await api.get('/files');
-      const data = res.data;
+      const { data } = await api.get('/files');
       setFiles(data);
 
       // Auto-delete files older than 30 days
-      const deletionPromises = data
-        .filter(file => getAgeInDays(file.createdAt) >= 30)
-        .map(file => handleDelete(file.slug));
-      await Promise.all(deletionPromises);
+      await Promise.all(
+        data
+          .filter(f => getAgeInDays(f.createdAt) >= 30)
+          .map(f => handleDelete(f.slug))
+      );
     } catch (err) {
-      console.error('Error fetching files:', err);
+      console.error(err);
       enqueueSnackbar('Failed to load files', { variant: 'error' });
     } finally {
       setLoading(false);
@@ -71,8 +69,8 @@ export default function FileList() {
 
   useEffect(() => {
     fetchFiles();
-    const interval = setInterval(fetchFiles, 60000);
-    return () => clearInterval(interval);
+    const iv = setInterval(fetchFiles, 60000);
+    return () => clearInterval(iv);
   }, [refresh]);
 
   const handleDelete = async (slug) => {
@@ -80,9 +78,9 @@ export default function FileList() {
     try {
       await api.delete(`/files/${slug}`);
       enqueueSnackbar('File deleted', { variant: 'success' });
-      setRefresh(prev => prev + 1);
+      setRefresh(r => r + 1);
     } catch (err) {
-      console.error(`Error deleting file ${slug}:`, err);
+      console.error(err);
       enqueueSnackbar('Delete failed', { variant: 'error' });
     } finally {
       setDeleting(null);
@@ -90,97 +88,142 @@ export default function FileList() {
   };
 
   const getFileIcon = (file) => {
-    // ...your optimized icon logic...
+    const ext = (file.url.split('.').pop() || '').toLowerCase();
+    const iconMap = {
+      image: FileImageOutlined, video: VideoCameraOutlined, audio: AudioOutlined,
+      pdf: FilePdfOutlined, word: FileWordOutlined, excel: FileExcelOutlined,
+      ppt: FilePptOutlined, text: FileTextOutlined, archive: FileZipOutlined,
+      code: CodeOutlined,
+    };
+    const groups = {
+      image: ['jpg','jpeg','png','gif','bmp','webp','svg','ico','tiff'],
+      video: ['mp4','mov','avi','wmv','mkv','webm'],
+      audio: ['mp3','wav','ogg','flac','aac'],
+      pdf: ['pdf'], word: ['doc','docx','odt','rtf'],
+      excel: ['xls','xlsx','ods','csv'], ppt: ['ppt','pptx','odp'],
+      text: ['txt','md','json','xml','yaml','yml','log'],
+      archive: ['zip','rar','7z','tar','gz'],
+      code: ['html','htm','css','js','ts','jsx','tsx','php','py','java','c','cpp','rb','go','rs']
+    };
+    // priority by resourceType
+    if (iconMap[file.resourceType]) {
+      return React.createElement(iconMap[file.resourceType]);
+    }
+    // fallback by extension
+    for (let [type, exts] of Object.entries(groups)) {
+      if (exts.includes(ext)) {
+        return React.createElement(iconMap[type] || FileOutlined);
+      }
+    }
+    return <FileOutlined />;
   };
 
   return (
     <>
       {location.pathname === '/files' && (
-        <div className="p-4 sticky top-0 z-50 bg-white">
+        <div className="p-4 sticky top-0 bg-white z-50">
           <Link to="/dashboard">
-            <Button type="link" icon={<ArrowBigLeftDashIcon />} className="mt-8 mb-8">
-              Baaaack
-            </Button>
+            <Button type="link" icon={<ArrowBigLeftDashIcon />}>Back to Dashboard</Button>
           </Link>
         </div>
       )}
 
       <Alert
-        message="Tip: Before downloading, rename files like gdyD6-my-cvpdf to something meaningful (e.g., MyCv.pdf) so you can easily find them later."
-        type="warning"
-        showIcon
-        closable
-        className="mb-4"
+        message="Tip: Rename downloads from `<slug>myfilepdf` → `myfile.pdf` for clarity."
+        type="warning" showIcon closable className="mb-4"
       />
 
       <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 p-4">
-        {loading ? (
-          Array.from({ length: 4 }).map((_, idx) => (
-            <Card key={idx} hoverable bodyStyle={{ minHeight: 200 }}>
-              <Skeleton active avatar paragraph={{ rows: 4 }} />
-            </Card>
-          ))
-        ) : files.length > 0 ? (
-          files.map((file) => {
-            const ageDays = getAgeInDays(file.createdAt);
-            const relative = getRelativeTime(file.createdAt);
-            const downloadUrl = file.downloadUrl || `${file.url}?fl=attachment:${encodeURIComponent(file.filename)}`;
-
-            return (
-              <Card
-                key={file._id}
-                title={
-                  <Space>
-                    {getFileIcon(file)}
-                    <Tooltip title={file.slug}>
-                      {file.filename.length > 20 ? file.filename.slice(0, 20) + '...' : file.filename}
-                    </Tooltip>
-                    {ageDays <= 2 && <Badge count="New" style={{ backgroundColor: '#52c41a' }} />}
-                  </Space>
-                }
-                actions={[
-                  <a href={downloadUrl} download={file.filename} key="download" target="_blank" rel="noopener noreferrer">
-                    <DownloadOutlined /> Download
-                  </a>,
-                  <Popconfirm
-                    title="Are you sure to delete this file?"
-                    onConfirm={() => handleDelete(file.slug)}
-                    okText="Yes"
-                    cancelText="No"
-                    key="delete"
-                    disabled={deleting === file.slug}
-                  >
-                    <Button danger type="text" icon={<DeleteOutlined />} loading={deleting === file.slug}>
-                      Delete
-                    </Button>
-                  </Popconfirm>
-                ]}
-                hoverable
-                bodyStyle={{ minHeight: 200 }}
-              >
-                <p className="text-gray-700 p-1 rounded">
-                  <ClockCircleOutlined style={{ marginRight: 4 }} />
-                  <strong>Uploaded:</strong> {relative}
-                </p>
-
-                {ageDays > 0 && ageDays < 30 && (
-                  <Alert
-                    message={`Will be deleted in ${30 - ageDays} days for security purposes`}
-                    type="warning"
-                    showIcon
-                    className="mb-2"
-                  />
-                )}
-
-                {/* ...rest of your preview logic */}
+        {loading
+          ? Array.from({ length: 4 }).map((_, i) => (
+              <Card key={i} hoverable bodyStyle={{ minHeight: 200 }}>
+                <Skeleton active avatar paragraph={{ rows: 4 }} />
               </Card>
-            );
-          })
-        ) : (
-          <Card hoverable className="text-center text-gray-400" bodyStyle={{ minHeight: 200 }}>
-            <p className="text-lg text-gray-400">No files uploaded yet. Start by uploading your first file!</p>
-          </Card>
-        )}
+            ))
+          : files.length > 0
+            ? files.map(file => {
+                const age = getAgeInDays(file.createdAt);
+                const rel = getRelativeTime(file.createdAt);
+                const downloadUrl = file.downloadUrl || `${file.url}?fl=attachment:${encodeURIComponent(file.filename)}`;
+
+                return (
+                  <Card
+                    key={file._id}
+                    title={
+                      <Space>
+                        {getFileIcon(file)}
+                        <Tooltip title={file.slug}>
+                          {file.filename.length > 20
+                            ? file.filename.slice(0,20) + '…'
+                            : file.filename}
+                        </Tooltip>
+                        {age <= 2 && <Badge count="New" style={{ background: '#52c41a' }} />}
+                      </Space>
+                    }
+                    actions={[
+                      <a key="download" href={downloadUrl} download={file.filename} target="_blank" rel="noopener noreferrer">
+                        <DownloadOutlined /> Download
+                      </a>,
+                      <Popconfirm
+                        key="delete"
+                        title="Delete this file?"
+                        onConfirm={() => handleDelete(file.slug)}
+                        okText="Yes" cancelText="No"
+                        disabled={deleting === file.slug}
+                      >
+                        <Button danger type="text" icon={<DeleteOutlined />} loading={deleting===file.slug}>
+                          Delete
+                        </Button>
+                      </Popconfirm>
+                    ]}
+                    hoverable
+                    bodyStyle={{ minHeight: 200 }}
+                  >
+                    <p className="text-gray-700 p-1 rounded">
+                      <ClockCircleOutlined style={{ marginRight: 4 }} />
+                      <strong>Uploaded:</strong> {rel}
+                    </p>
+
+                    {age > 0 && age < 30 && (
+                      <Alert
+                        type="warning"
+                        showIcon
+                        className="mb-2"
+                        message={`Will be deleted in ${30-age} days for security.`}
+                      />
+                    )}
+
+                    {file.resourceType === 'image' ? (
+                      <img
+                        src={file.url}
+                        alt={file.filename}
+                        style={{ width:'100%', maxHeight:150, objectFit:'contain', marginTop:8, borderRadius:8 }}
+                      />
+                    ) : file.resourceType === 'raw' && file.filename.endsWith('.pdf') ? (
+                      <a href={downloadUrl} target="_blank" rel="noopener noreferrer">
+                        <FilePdfOutlined style={{ fontSize:80, color:'#999' }} />
+                        <p>Click to view or download</p>
+                      </a>
+                    ) : (
+                      <div
+                        style={{
+                          marginTop:8, height:150,
+                          display:'flex', alignItems:'center', justifyContent:'center',
+                          background:'#fafafa', borderRadius:8, color:'#999', fontSize:48
+                        }}
+                      >
+                        {getFileIcon(file)}
+                      </div>
+                    )}
+                  </Card>
+                );
+            })
+            : (
+              <Card hoverable className="text-center text-gray-400" bodyStyle={{ minHeight:200 }}>
+                <p>No files uploaded yet. Upload your first file above.</p>
+              </Card>
+            )
+        }
       </div>
     </>
   );
