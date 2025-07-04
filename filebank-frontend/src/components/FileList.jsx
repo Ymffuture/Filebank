@@ -166,7 +166,7 @@ export default function FileList() {
                   <Tooltip key="tw" title="X"><a href={twUrl} target="_blank" rel="noopener noreferrer"><Button type="text" icon={<FaXTwitter/>}/></a></Tooltip>,
                   <Tooltip key="li" title="LinkedIn"><a href={liUrl} target="_blank" rel="noopener noreferrer"><Button type="text" icon={<FaLinkedin/>}/></a></Tooltip>,
                   <Popconfirm key="delete" title="Delete this file?" onConfirm={()=>handleDelete(file.slug)} okText="Yes" cancelText="No" disabled={deleting===file.slug}>
-                    <Button danger type="text" icon={<DeleteOutlined />} loading={deleting===file.slug}>X</Button>
+                    <Button danger type="text" icon={<DeleteOutlined />} loading={deleting===file.slug}></Button>
                   </Popconfirm>
                 ]}
                 hoverable
