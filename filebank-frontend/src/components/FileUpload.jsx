@@ -85,42 +85,63 @@ export default function FileUpload({ onUpload, currentUserFileCount = 0 }) {
         <div className="bg-white p-8 rounded-lg shadow-md max-w-lg w-full">
           <h2 className="text-2xl font-bold mb-4 text-center text-gray-800">Upload Files</h2>
           <Upload.Dragger
-            beforeUpload={(file) => {
-              const allowedTypes = ['image/jpeg', 'image/png', 'application/pdf'];
-              const isAllowedType = allowedTypes.includes(file.type);
-              if (!isAllowedType) {
-                setText('Invalid file type. Only JPEG, PNG, and PDF are allowed.');
-                enqueueSnackbar('Invalid file type', { variant: 'warning' });
-                return Upload.LIST_IGNORE;
-              }
-              const isLt5M = file.size / 1024 / 1024 < 5;
-              if (!isLt5M) {
-                setText('File size exceeds 5MB');
-                enqueueSnackbar('File size exceeds 5MB', { variant: 'warning' });
-                return Upload.LIST_IGNORE;
-              }
-              return false; // Prevent auto upload
-            }}
-            onChange={({ fileList }) => {
-              setFiles(fileList);
-              setText("");
-              setText2("");
-            }}
-            fileList={files}
-            multiple
-            showUploadList={{
-              showPreviewIcon: true,
-              showRemoveIcon: true,
-              showDownloadIcon: true
-            }}
-            disabled={uploading}
-          >
-            <p className="ant-upload-drag-icon">
-              <UploadOutlined />
-            </p>
-            <p className="ant-upload-text">Click or drag file to this area to upload</p>
-            <p className="ant-upload-hint">Allowed file types: JPEG, PNG, PDF. Max size: 5MB.</p>
-          </Upload.Dragger>
+      beforeUpload={(file) => {
+        const allowedTypes = [
+          // Image types
+          'image/jpeg', 'image/png', 'image/gif', 'image/bmp', 'image/webp',
+          'image/svg+xml', 'image/x-icon', 'image/tiff',
+          // Audio types
+          'audio/mpeg', // mp3
+          // Video types
+          'video/mp4',
+          // Text and code types
+          'text/plain', 'text/html', 'text/css', 'application/javascript',
+          'text/x-python', 'application/typescript', 'text/jsx', 'text/x-jsx',
+          'application/json', 'application/xml', 'text/yaml', 'text/markdown',
+          'text/x-log',
+          // Document types
+          'application/pdf',
+          'application/vnd.openxmlformats-officedocument.wordprocessingml.document', // docx
+          'application/vnd.openxmlformats-officedocument.presentationml.presentation', // pptx
+          'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', // xlsx
+        ];
+        const isAllowedType = allowedTypes.includes(file.type);
+        if (!isAllowedType) {
+          setText('Invalid file type. Only images (JPEG, PNG, GIF, BMP, WEBP, SVG, ICO, TIFF), audio (MP3), video (MP4), text/code (TXT, JS, PY, HTML, etc.), PDF, DOCX, PPTX, and XLSX are allowed.');
+          enqueueSnackbar('Invalid file type', { variant: 'warning' });
+          return Upload.LIST_IGNORE;
+        }
+        const isLt5M = file.size / 1024 / 1024 < 5;
+        if (!isLt5M) {
+          setText('File size exceeds 5MB');
+          enqueueSnackbar('File sizeыск
+
+System: size exceeds 5MB', { variant: 'warning' });
+          return Upload.LIST_IGNORE;
+        }
+        return false; // Prevent auto upload
+      }}
+      onChange={({ fileList }) => {
+        setFiles(fileList);
+        setText("");
+      }}
+      fileList={files}
+      multiple
+      showUploadList={{
+        showPreviewIcon: true,
+        showRemoveIcon: true,
+        showDownloadIcon: true,
+      }}
+      disabled={uploading}
+    >
+      <p className="ant-upload-drag-icon">
+        <UploadOutlined />
+      </p>
+      <p className="ant-upload-text">Click or drag file to this area to upload</p>
+      <p className="ant-upload-hint">
+        Allowed file types: Images (JPEG, PNG, GIF, BMP, WEBP, SVG, ICO, TIFF), Audio (MP3), Video (MP4), Text/Code (TXT, JS, PY, HTML, CSS, JSON, etc.), Documents (PDF, DOCX, PPTX, XLSX). Max size: 5MB.
+      </p>
+    </Upload.Dragger>
           <div className="mt-4 flex justify-center">
             <Button
               type="primary"
