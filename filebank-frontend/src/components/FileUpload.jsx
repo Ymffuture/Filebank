@@ -114,9 +114,7 @@ export default function FileUpload({ onUpload, currentUserFileCount = 0 }) {
         const isLt5M = file.size / 1024 / 1024 < 5;
         if (!isLt5M) {
           setText('File size exceeds 5MB');
-          enqueueSnackbar('File sizeыск
-
-System: size exceeds 5MB', { variant: 'warning' });
+          enqueueSnackbar('File sizeыск System: size exceeds 5MB', { variant: 'warning' });
           return Upload.LIST_IGNORE;
         }
         return false; // Prevent auto upload
@@ -124,6 +122,7 @@ System: size exceeds 5MB', { variant: 'warning' });
       onChange={({ fileList }) => {
         setFiles(fileList);
         setText("");
+        setText2("");
       }}
       fileList={files}
       multiple
