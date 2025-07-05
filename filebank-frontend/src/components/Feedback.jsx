@@ -15,8 +15,8 @@ export default function FeedbackPage() {
   const onFinish = async (values) => {
     setSubmitting(true);
     try {
-      // Correct endpoint path
-      await api.post('/v0/c/feedback', values);
+      // Fixed endpoint to match backend route: /api/v0/c/feedback
+      await api.post('/api/v0/c/feedback', values);
       enqueueSnackbar('Thank you for your feedback!', { variant: 'success' });
       navigate('/dashboard');
     } catch (error) {
@@ -42,12 +42,20 @@ export default function FeedbackPage() {
           onFinish={onFinish}
           initialValues={{ type: 'complaint', rating: 0 }}
         >
+          {/* Added title field to match backend requirements */}
+          <Form.Item
+            name="title"
+            label="Title"
+            rules={[{ required: true, message: 'Please enter a title' }]}
+          >
+            <Input placeholder="Enter a brief title for your feedback" />
+          </Form.Item>
+
           <Form.Item
             name="type"
             label="Type"
             rules={[{ required: true, message: 'Select complaint or improvement' }]}
           >
-            {/* Consider using Select or Radio.Group for better UX */}
             <Select>
               <Select.Option value="complaint">Complaint</Select.Option>
               <Select.Option value="improvement">Improvement</Select.Option>
@@ -94,4 +102,3 @@ export default function FeedbackPage() {
     </div>
   );
 }
-
