@@ -27,7 +27,7 @@ export default function AdminUsers() {
   // Fetch all feedback
   const fetchAllFeedback = async () => {
     try {
-      const res = await api.get('/api/v0/c/feedback');
+      const res = await api.get('/v0/c/feedback');
       setFeedbacks(res.data);
     } catch {
       enqueueSnackbar('Failed to load feedback', { variant: 'error' });
