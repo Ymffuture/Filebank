@@ -1,9 +1,8 @@
-import React, { createContext, useState, useContext } from 'react';
 
-// Create the Auth context
-const AuthContext = createContext();
+import React, { createContext, useContext, useState } from 'react';
 
-// Provider component
+export const AuthContext = createContext();
+
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
 
@@ -14,7 +13,6 @@ export function AuthProvider({ children }) {
   );
 }
 
-// Custom hook to consume AuthContext
 export function useAuth() {
   return useContext(AuthContext);
 }
