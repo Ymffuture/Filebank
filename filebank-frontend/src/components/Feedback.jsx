@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { Form, Input, Select, Rate, Button, Typography, Alert } from 'antd';
-import api from '../api/fileApi';
-import { useNavigate } from 'react-router-dom';
 import { Star } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 import { useSnackbar } from 'notistack';
+import api from '../api/fileApi';
 import { useAuth } from '../context/AuthContext';
 
 const { Title, Paragraph } = Typography;
@@ -17,20 +17,17 @@ export default function FeedbackPage() {
   const onFinish = async (values) => {
     setSubmitting(true);
     try {
-      if (!user?._id) {
+      if (!user || !user._id) {
         throw new Error('You must be logged in to submit feedback');
       }
-      const payload = {
-        ...values,
-        userId: user._id,
-      };
-      await api.post('/feedback', payload); // Corrected endpoint to match backend
+      const payload = { ...values, userId: user._id };
+      await api.post('/feedback', payload);
       enqueueSnackbar('Thank you for your feedback!', { variant: 'success' });
       navigate('/dashboard');
-    } catch (error) {
-      console.error('Feedback submit error:', error.response?.data || error.message);
+    } catch (err) {
+      console.error('Feedback submit error:', err);
       enqueueSnackbar(
-        error.response?.data?.message || 'Submission failed. Please try again.',
+        err.response?.data?.message || err.message || 'Submission failed',
         { variant: 'error' }
       );
     } finally {
@@ -58,7 +55,7 @@ export default function FeedbackPage() {
             label="Title"
             rules={[
               { required: true, message: 'Please enter a title' },
-              { max: 100, message: 'Title must be 100 characters or less' },
+              { max: 100, message: 'Title must be 100 characters or less' }
             ]}
           >
             <Input placeholder="Enter a brief title for your feedback" />
@@ -80,7 +77,7 @@ export default function FeedbackPage() {
             label="Description"
             rules={[
               { required: true, message: 'Please describe your feedback' },
-              { max: 2000, message: 'Description must be 2000 characters or less' },
+              { max: 2000, message: 'Description must be 2000 characters or less' }
             ]}
           >
             <Input.TextArea rows={4} placeholder="Enter details here..." />
