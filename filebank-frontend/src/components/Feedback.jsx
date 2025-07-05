@@ -4,7 +4,7 @@ import api from '../api/fileApi';
 import { useNavigate } from 'react-router-dom';
 import { Star } from 'lucide-react';
 import { useSnackbar } from 'notistack';
-import { AuthContext } from '../context/AuthContext'; // Example context for user ID
+import  AuthContext  from '../context/AuthContext'; // Example context for user ID
 
 const { Title, Paragraph } = Typography;
 
