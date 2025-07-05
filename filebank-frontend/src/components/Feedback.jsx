@@ -27,7 +27,7 @@ export default function FeedbackPage() {
         userId: user._id, // Add userId from authenticated user
       };
       // Corrected endpoint to match backend
-      await api.post('/api/v0/c/feedback', payload);
+      await api.post('/v0/c/feedback', payload);
       enqueueSnackbar('Thank you for your feedback!', { variant: 'success' });
       navigate('/dashboard');
     } catch (error) {
