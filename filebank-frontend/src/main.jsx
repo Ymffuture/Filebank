@@ -7,7 +7,7 @@ import {SnackbarProvider} from 'notistack';
 import 'antd/dist/reset.css';  // optional reset
 import { ConfigProvider } from 'antd';
 import theme from './theme';
-import { AuthProvider } from './context/AuthContext';
+// import { AuthProvider } from './context/AuthContext';
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>  
   <GoogleOAuthProvider clientId="815421801782-jkj6h92h24uo1nhe03hvqfhctebhnaht.apps.googleusercontent.com">
@@ -23,9 +23,9 @@ ReactDOM.createRoot(document.getElementById('root')).render(
       }
     }}
   >
-    <AuthProvider>
+    
     <App />
-  </AuthProvider>
+  
   </ConfigProvider>
 </SnackbarProvider>
     </GoogleOAuthProvider>
