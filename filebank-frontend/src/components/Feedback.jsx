@@ -1,9 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from '
+
+react';
 import { Form, Input, Select, Rate, Button, Typography, Alert } from 'antd';
 import api from '../api/fileApi';
 import { useNavigate } from 'react-router-dom';
 import { Star } from 'lucide-react';
 import { useSnackbar } from 'notistack';
+import { AuthContext } from '../context/AuthContext'; // Example context for user ID
 
 const { Title, Paragraph } = Typography;
 
@@ -11,17 +14,28 @@ export default function FeedbackPage() {
   const [submitting, setSubmitting] = useState(false);
   const navigate = useNavigate();
   const { enqueueSnackbar } = useSnackbar();
+  const { user } = useContext(AuthContext); // Get authenticated user
 
   const onFinish = async (values) => {
     setSubmitting(true);
     try {
-      // Fixed endpoint to match backend route: /api/v0/c/feedback
-      await api.post('/v0/c/feedback', values);
+      if (!user?._id) {
+        throw new Error('You must be logged in to submit feedback');
+      }
+      const payload = {
+        ...values,
+        userId: user._id, // Add userId from authenticated user
+      };
+      // Corrected endpoint to match backend
+      await api.post('/api/v0/c/feedback', payload);
       enqueueSnackbar('Thank you for your feedback!', { variant: 'success' });
       navigate('/dashboard');
     } catch (error) {
-      console.error('Feedback submit error:', error);
-      enqueueSnackbar('Submission failed. Please try again.', { variant: 'error' });
+      console.error('Feedback submit error:', error.response?.data || error.message);
+      enqueueSnackbar(
+        error.response?.data?.message || 'Submission failed. Please try again.',
+        { variant: 'error' }
+      );
     } finally {
       setSubmitting(false);
     }
@@ -42,11 +56,13 @@ export default function FeedbackPage() {
           onFinish={onFinish}
           initialValues={{ type: 'complaint', rating: 0 }}
         >
-          {/* Added title field to match backend requirements */}
           <Form.Item
             name="title"
             label="Title"
-            rules={[{ required: true, message: 'Please enter a title' }]}
+            rules={[
+              { required: true, message: 'Please enter a title' },
+              { max: 100, message: 'Title must be 100 characters or less' },
+            ]}
           >
             <Input placeholder="Enter a brief title for your feedback" />
           </Form.Item>
@@ -65,7 +81,10 @@ export default function FeedbackPage() {
           <Form.Item
             name="description"
             label="Description"
-            rules={[{ required: true, message: 'Please describe your feedback' }]}
+            rules={[
+              { required: true, message: 'Please describe your feedback' },
+              { max: 2000, message: 'Description must be 2000 characters or less' },
+            ]}
           >
             <Input.TextArea rows={4} placeholder="Enter details here..." />
           </Form.Item>
