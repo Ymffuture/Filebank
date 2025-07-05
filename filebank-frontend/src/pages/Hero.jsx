@@ -110,7 +110,7 @@ export default function Hero() {
               onSuccess={handleLoginSuccess}
               onError={() => message.error('Google login failed.')}
               useOneTap
-              shape="circle"
+              shape="rounded"
               size="large"
             />
             <Button type="primary" onClick={showModal} style={{ backgroundColor: ratColors.blue, borderColor: ratColors.blue }}>
@@ -192,7 +192,7 @@ export default function Hero() {
         onOk={handleOk}
         onCancel={handleCancel}
         footer={[
-          <Button key="ok" type="primary" onClick={handleOk} style={{ backgroundColor: ratColors.blue, borderColor: ratColors.blue }}>
+          <Button key="ok" type="link" onClick={handleOk} style={{ backgroundColor: ratColors.blue, borderColor: ratColors.blue }}>
             OK
           </Button>,
         ]}
