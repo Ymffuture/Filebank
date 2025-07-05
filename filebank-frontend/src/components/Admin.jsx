@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useMemo } from 'react';
 import { Table, Button, message, Popconfirm, Avatar, Space, Input, Modal, Dropdown, Menu, Row, Col, Card, Statistic, List } from 'antd';
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'recharts'; // Import Recharts components
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'recharts';
 import api from '../api/fileApi';
 import { useSnackbar } from 'notistack';
 import { ArrowLeftOutlined, NotificationOutlined, EllipsisOutlined } from '@ant-design/icons';
@@ -8,10 +8,9 @@ import { useNavigate } from 'react-router-dom';
 
 export default function AdminUsers() {
   const [users, setUsers] = useState([]);
+  const [feedbacks, setFeedbacks] = useState([]); // New state for all feedback
   const [notifModalVisible, setNotifModalVisible] = useState(false);
   const [notifText, setNotifText] = useState('');
-  const [feedbackModalVisible, setFeedbackModalVisible] = useState(false);
-  const [selectedUserFeedback, setSelectedUserFeedback] = useState([]);
   const { enqueueSnackbar } = useSnackbar();
   const navigate = useNavigate();
 
@@ -22,6 +21,16 @@ export default function AdminUsers() {
       setUsers(res.data);
     } catch {
       enqueueSnackbar('Failed to load users', { variant: 'error' });
+    }
+  };
+
+  // Fetch all feedback
+  const fetchAllFeedback = async () => {
+    try {
+      const res = await api.get('/api/v0/c/feedback');
+      setFeedbacks(res.data);
+    } catch {
+      enqueueSnackbar('Failed to load feedback', { variant: 'error' });
     }
   };
 
@@ -68,17 +77,6 @@ export default function AdminUsers() {
     }
   };
 
-  // Fetch feedback for a specific user
-  const fetchFeedback = async (userId) => {
-    try {
-      const res = await api.get(`/v0/c/feedback`);
-      setSelectedUserFeedback(res.data);
-      setFeedbackModalVisible(true);
-    } catch {
-      enqueueSnackbar('Failed to load feedback', { variant: 'error' });
-    }
-  };
-
   // Send notification to all users
   const handleSendNotification = async () => {
     if (!notifText.trim()) {
@@ -97,6 +95,7 @@ export default function AdminUsers() {
 
   useEffect(() => {
     fetchUsers();
+    fetchAllFeedback(); // Fetch feedback on mount
   }, []);
 
   // Compute statistics using useMemo for performance
@@ -111,7 +110,7 @@ export default function AdminUsers() {
     return [...users].sort((a, b) => b.uploadCount - a.uploadCount).slice(0, 5);
   }, [users]);
 
-  // Define table columns
+  // Define table columns (removed Feedback column)
   const columns = [
     {
       title: 'Picture',
@@ -122,13 +121,6 @@ export default function AdminUsers() {
     { title: 'Name', dataIndex: 'displayName', key: 'displayName' },
     { title: 'Email', dataIndex: 'email', key: 'email' },
     { title: 'Uploads', dataIndex: 'uploadCount', key: 'uploadCount' },
-    {
-      title: 'Feedback',
-      key: 'feedback',
-      render: (_, record) => (
-        <Button onClick={() => fetchFeedback(record._id)}>View Feedback</Button>
-      ),
-    },
     {
       title: 'Actions',
       key: 'actions',
@@ -163,12 +155,13 @@ export default function AdminUsers() {
   ];
 
   return (
-    <div className="p-4">
+    <div className="p-4" style={{ overflow: 'hidden' }}>
       {/* Navigation and Notification Buttons */}
       <Space className="mb-4">
         <Button icon={<ArrowLeftOutlined />} onClick={() => navigate('/dashboard')}>
           Back to Dashboard
         </Button>
+       .cookies
         <Button icon={<NotificationOutlined />} type="primary" onClick={() => setNotifModalVisible(true)}>
           Send Update to All Users
         </Button>
@@ -207,14 +200,33 @@ export default function AdminUsers() {
         </BarChart>
       </Card>
 
-      {/* Users Table */}
-      <Table
-        dataSource={users}
-        columns={columns}
-        rowKey="_id"
-        bordered
-        pagination={{ pageSize: 10 }}
-      />
+      {/* Responsive Users Table */}
+      <div style={{ overflowX: 'auto' }}>
+        <Table
+          dataSource={users}
+          columns={columns}
+          rowKey="_id"
+          bordered
+          pagination={{ pageSize: 10 }}
+        />
+      </div>
+
+      {/* All Feedback Section */}
+      <Card title="All Feedback" className="mb-4">
+        <List
+          dataSource={feedbacks}
+          renderItem={item => (
+            <List.Item>
+              <div>
+                <strong>Title:</strong> {item.title}<br />
+                <strong>Type:</strong> {item.type}<br />
+                <strong>Description:</strong> {item.description}<br />
+                <strong>Rating:</strong> {item.rating}/5
+              </div>
+            </List.Item>
+          )}
+        />
+      </Card>
 
       {/* Notification Modal */}
       <Modal
@@ -222,6 +234,7 @@ export default function AdminUsers() {
         open={notifModalVisible}
         onOk={handleSendNotification}
         onCancel={() => setNotifModalVisible(false)}
+        ok编写
         okText="Send"
       >
         <Input.TextArea
@@ -229,23 +242,6 @@ export default function AdminUsers() {
           placeholder="Enter your update message here"
           value={notifText}
           onChange={(e) => setNotifText(e.target.value)}
-        />
-      </Modal>
-
-      {/* Feedback Modal */}
-      <Modal
-        title="User Feedback"
-        open={feedbackModalVisible}
-        onCancel={() => setFeedbackModalVisible(false)}
-        footer={null}
-      >
-        <List
-          dataSource={selectedUserFeedback}
-          renderItem={item => (
-            <List.Item>
-              {item.content} {/* Assuming feedback has a 'content' field */}
-            </List.Item>
-          )}
         />
       </Modal>
     </div>
