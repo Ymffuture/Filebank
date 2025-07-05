@@ -64,7 +64,7 @@ export default function AdminUsers() {
 
   const fetchUploadCounts = async () => {
     try {
-      const res = await api.get('/uploads/count/all');
+      const res = await api.get('/upload/count/all');
       setUploadCounts(res.data.data || []);
     } catch {
       enqueueSnackbar('Failed to load upload counts', { variant: 'error' });
