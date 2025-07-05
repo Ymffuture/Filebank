@@ -1,10 +1,10 @@
-import React, { useState, useContext } from 'react';
+import React, { useState } from 'react';
 import { Form, Input, Select, Rate, Button, Typography, Alert } from 'antd';
 import api from '../api/fileApi';
 import { useNavigate } from 'react-router-dom';
 import { Star } from 'lucide-react';
 import { useSnackbar } from 'notistack';
-import  AuthContext  from '../context/AuthContext'; // Example context for user ID
+import { AuthContext, useAuth } from '../context/AuthContext'; // Use named imports
 
 const { Title, Paragraph } = Typography;
 
@@ -12,7 +12,7 @@ export default function FeedbackPage() {
   const [submitting, setSubmitting] = useState(false);
   const navigate = useNavigate();
   const { enqueueSnackbar } = useSnackbar();
-  const { user } = useContext(AuthContext); // Get authenticated user
+  const { user } = useAuth(); // Use custom hook for cleaner access
 
   const onFinish = async (values) => {
     setSubmitting(true);
@@ -22,10 +22,9 @@ export default function FeedbackPage() {
       }
       const payload = {
         ...values,
-        userId: user._id, // Add userId from authenticated user
+        userId: user._id,
       };
-      // Corrected endpoint to match backend
-      await api.post('/v0/c/feedback', payload);
+      await api.post('/api/v0/c/feedback', payload); // Corrected endpoint
       enqueueSnackbar('Thank you for your feedback!', { variant: 'success' });
       navigate('/dashboard');
     } catch (error) {
