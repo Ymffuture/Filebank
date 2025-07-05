@@ -134,7 +134,7 @@ export default function FileList() {
       <div className="grid gap-6 grid-cols-1 p-4">
         {loading ? (
           Array.from({ length: 4 }).map((_, i) => (
-            <Card key={i} hoverable bodyStyle={{ minHeight: 200 }}>
+            <Card key={i} hoverable bodyStyle={{ minHeight: 300 }}>
               <Skeleton active avatar paragraph={{ rows: 4 }} />
             </Card>
           ))
@@ -185,12 +185,12 @@ export default function FileList() {
             );
           })
         ) : (
-          <Card hoverable className="text-center text-gray-400" bodyStyle={{minHeight:200}}><p>No files uploaded yet.</p></Card>
+          <Card hoverable className="text-center text-[gray]" bodyStyle={{minHeight:200}}><p>No files uploaded yet.</p></Card>
         )}
       </div>
 
       {displayedFiles.length < files.length && (
-        <div className="text-center mt-4"><Button onClick={()=>setDisplayCount(c=>c+4)}>Load More</Button></div>
+        <div className="text-center mt-4"><Button type="link" onClick={()=>setDisplayCount(c=>c+4)}>Load More</Button></div>
       )}
     </>
   );
