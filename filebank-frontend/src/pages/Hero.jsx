@@ -49,7 +49,17 @@ export default function Hero() {
       enqueueSnackbar('Login successful!', { variant: 'success' });
       fetchNotifications();
       navigate('/dashboard');
-      setUser(res.data.user);
+    //  setUser(res.data.user);
+      const dbUser = res.data.user;
+
+      // ✅ RIGHT HERE: Update context with essential user data
+      setUser({
+        _id: dbUser._id,
+        email: dbUser.email,
+        name: dbUser.name
+      });
+
+      
     } catch {
       console.error('Error message: Failed');
       enqueueSnackbar('Google login failed.', { variant: 'error' });
