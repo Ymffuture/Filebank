@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
-import { Form, Input, Select, Rate, Button, Typography, Alert } from 'antd';
-import { Star } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
-import { useSnackbar } from 'notistack';
+import { Form, Input, Rate, Button, Typography, Alert } from 'antd';
 import api from '../api/fileApi';
-import { useAuth } from '../context/AuthContext';
+import { useNavigate } from 'react-router-dom';
+import { Star } from 'lucide-react';
+import { useSnackbar } from 'notistack';
 
 const { Title, Paragraph } = Typography;
 
@@ -12,24 +11,17 @@ export default function FeedbackPage() {
   const [submitting, setSubmitting] = useState(false);
   const navigate = useNavigate();
   const { enqueueSnackbar } = useSnackbar();
-  const { user } = useAuth();
 
   const onFinish = async (values) => {
     setSubmitting(true);
     try {
-      if (!user || !user._id) {
-        throw new Error('You must be logged in to submit feedback');
-      }
-      const payload = { ...values, userId: user._id };
-      await api.post('/v0/c/feedback', payload);
+      // Correct endpoint path
+      await api.post('/v0/c/feedback', values);
       enqueueSnackbar('Thank you for your feedback!', { variant: 'success' });
       navigate('/dashboard');
-    } catch (err) {
-      console.error('Feedback submit error:', err);
-      enqueueSnackbar(
-        err.response?.data?.message || err.message || 'Submission failed',
-        { variant: 'error' }
-      );
+    } catch (error) {
+      console.error('Feedback submit error:', error);
+      enqueueSnackbar('Submission failed. Please try again.', { variant: 'error' });
     } finally {
       setSubmitting(false);
     }
@@ -51,21 +43,11 @@ export default function FeedbackPage() {
           initialValues={{ type: 'complaint', rating: 0 }}
         >
           <Form.Item
-            name="title"
-            label="Title"
-            rules={[
-              { required: true, message: 'Please enter a title' },
-              { max: 100, message: 'Title must be 100 characters or less' }
-            ]}
-          >
-            <Input placeholder="Enter a brief title for your feedback" />
-          </Form.Item>
-
-          <Form.Item
             name="type"
             label="Type"
             rules={[{ required: true, message: 'Select complaint or improvement' }]}
           >
+            {/* Consider using Select or Radio.Group for better UX */}
             <Select>
               <Select.Option value="complaint">Complaint</Select.Option>
               <Select.Option value="improvement">Improvement</Select.Option>
@@ -75,10 +57,7 @@ export default function FeedbackPage() {
           <Form.Item
             name="description"
             label="Description"
-            rules={[
-              { required: true, message: 'Please describe your feedback' },
-              { max: 2000, message: 'Description must be 2000 characters or less' }
-            ]}
+            rules={[{ required: true, message: 'Please describe your feedback' }]}
           >
             <Input.TextArea rows={4} placeholder="Enter details here..." />
           </Form.Item>
