@@ -16,7 +16,7 @@ export default function FeedbackPage() {
     setSubmitting(true);
     try {
       // Correct endpoint path
-      await api.post('v1/feedback', values);
+      await api.post('/v1/feedback', values);
       enqueueSnackbar('Thank you for your feedback!', { variant: 'success' });
       navigate('/dashboard');
     } catch (error) {
