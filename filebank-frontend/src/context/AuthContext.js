@@ -1,18 +1,29 @@
+import React, { createContext, useContext, useState, useEffect } from 'react';
 
-import React, { createContext, useContext, useState } from 'react';
+const AuthContext = createContext();
 
-export const AuthContext = createContext();
+export const AuthProvider = ({ children }) => {
+  const [user, setUser] = useState(() => {
+    // Load from localStorage
+    const stored = localStorage.getItem('user');
+    return stored ? JSON.parse(stored) : null;
+  });
 
-export function AuthProvider({ children }) {
-  const [user, setUser] = useState(null);
+  useEffect(() => {
+    // Save to localStorage on change
+    if (user) {
+      localStorage.setItem('user', JSON.stringify(user));
+    } else {
+      localStorage.removeItem('user');
+    }
+  }, [user]);
 
   return (
     <AuthContext.Provider value={{ user, setUser }}>
       {children}
     </AuthContext.Provider>
   );
-}
+};
 
-export function useAuth() {
-  return useContext(AuthContext);
-}
+export const useAuth = () => useContext(AuthContext);
+
