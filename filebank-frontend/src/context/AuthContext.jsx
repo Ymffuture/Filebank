@@ -1,7 +1,8 @@
+// src/context/AuthContext.jsx
 import React, { createContext, useState, useContext } from 'react';
 
 // Create the context
-const AuthContext = createContext();
+export const AuthContext = createContext();
 
 // Create a provider component
 export const AuthProvider = ({ children }) => {
@@ -16,4 +17,3 @@ export const AuthProvider = ({ children }) => {
 
 // Custom hook for easier consumption
 export const useAuth = () => useContext(AuthContext);
-
