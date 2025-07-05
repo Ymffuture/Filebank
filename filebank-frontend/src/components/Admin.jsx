@@ -38,6 +38,7 @@ import { useNavigate } from 'react-router-dom';
 export default function AdminUsers() {
   const [users, setUsers] = useState([]);
   const [feedbacks, setFeedbacks] = useState([]);
+  const [uploadCounts, setUploadCounts] = useState([]);
   const [notifModalVisible, setNotifModalVisible] = useState(false);
   const [notifText, setNotifText] = useState('');
   const { enqueueSnackbar } = useSnackbar();
@@ -60,23 +61,29 @@ export default function AdminUsers() {
       enqueueSnackbar('Failed to load feedback', { variant: 'error' });
     }
   };
-  
-const fetchFeedbackById = async (id) => {
-  try {
-    const res = await api.get(`/v1/feedback/${id}`);
-    // res.data.data is a single feedback object
-    console.log('Fetched one:', res.data.data);
-  } catch (err) {
-    enqueueSnackbar('Failed to load feedback item', { variant: 'error' });
-  }
-};
 
+  const fetchUploadCounts = async () => {
+    try {
+      const res = await api.get('/uploads/count/all');
+      setUploadCounts(res.data.data || []);
+    } catch {
+      enqueueSnackbar('Failed to load upload counts', { variant: 'error' });
+    }
+  };
+
+  const mergedUsers = useMemo(() => {
+    return users.map(user => {
+      const countObj = uploadCounts.find(c => c._id === user._id) || { uploadCount: 0 };
+      return { ...user, uploadCount: countObj.uploadCount };
+    });
+  }, [users, uploadCounts]);
 
   const handleDelete = async (id) => {
     try {
       await api.delete(`/admin/users/${id}`);
       enqueueSnackbar('User deleted', { variant: 'success' });
       fetchUsers();
+      fetchUploadCounts();
     } catch {
       enqueueSnackbar('Delete failed', { variant: 'error' });
     }
@@ -122,14 +129,15 @@ const fetchFeedbackById = async (id) => {
   useEffect(() => {
     fetchUsers();
     fetchAllFeedback();
+    fetchUploadCounts();
   }, []);
 
-  const totalUsers = useMemo(() => users.length, [users]);
-  const totalUploads = useMemo(() => users.reduce((sum, u) => sum + u.uploadCount, 0), [users]);
+  const totalUsers = useMemo(() => mergedUsers.length, [mergedUsers]);
+  const totalUploads = useMemo(() => mergedUsers.reduce((sum, u) => sum + u.uploadCount, 0), [mergedUsers]);
   const averageUploads = useMemo(() => (totalUsers ? totalUploads / totalUsers : 0), [totalUsers, totalUploads]);
-  const usersWithUploads = useMemo(() => users.filter(u => u.uploadCount > 0).length, [users]);
+  const usersWithUploads = useMemo(() => mergedUsers.filter(u => u.uploadCount > 0).length, [mergedUsers]);
   const percentageWithUploads = useMemo(() => (totalUsers ? (usersWithUploads / totalUsers) * 100 : 0), [totalUsers, usersWithUploads]);
-  const topUsers = useMemo(() => [...users].sort((a, b) => b.uploadCount - a.uploadCount).slice(0, 5), [users]);
+  const topUsers = useMemo(() => [...mergedUsers].sort((a, b) => b.uploadCount - a.uploadCount).slice(0, 5), [mergedUsers]);
 
   const columns = [
     {
@@ -197,7 +205,7 @@ const fetchFeedbackById = async (id) => {
       </Card>
 
       <div style={{ overflowX: 'auto' }}>
-        <Table dataSource={users} columns={columns} rowKey="_id" bordered pagination={{ pageSize: 10 }} />
+        <Table dataSource={mergedUsers} columns={columns} rowKey="_id" bordered pagination={{ pageSize: 10 }} />
       </div>
 
       <Card title="All Feedback" className="mb-4">
