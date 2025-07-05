@@ -4,7 +4,7 @@ import api from '../api/fileApi';
 import { useNavigate } from 'react-router-dom';
 import { Star } from 'lucide-react';
 import { useSnackbar } from 'notistack';
-import { AuthContext, useAuth } from '../context/AuthContext'; // Use named imports
+import { useAuth } from '../context/AuthContext';
 
 const { Title, Paragraph } = Typography;
 
@@ -12,7 +12,7 @@ export default function FeedbackPage() {
   const [submitting, setSubmitting] = useState(false);
   const navigate = useNavigate();
   const { enqueueSnackbar } = useSnackbar();
-  const { user } = useAuth(); // Use custom hook for cleaner access
+  const { user } = useAuth();
 
   const onFinish = async (values) => {
     setSubmitting(true);
@@ -24,7 +24,7 @@ export default function FeedbackPage() {
         ...values,
         userId: user._id,
       };
-      await api.post('/v0/c/feedback', payload); // Corrected endpoint
+      await api.post('/v0/c/feedback', payload); // Corrected endpoint to match backend
       enqueueSnackbar('Thank you for your feedback!', { variant: 'success' });
       navigate('/dashboard');
     } catch (error) {
