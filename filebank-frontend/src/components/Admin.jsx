@@ -54,12 +54,23 @@ export default function AdminUsers() {
 
   const fetchAllFeedback = async () => {
     try {
-      const res = await api.get('v1/feedback');
+      const res = await api.get('/v1/feedback');
       setFeedbacks(res.data.data || res.data);
     } catch {
       enqueueSnackbar('Failed to load feedback', { variant: 'error' });
     }
   };
+  
+const fetchFeedbackById = async (id) => {
+  try {
+    const res = await api.get(`/v1/feedback/${id}`);
+    // res.data.data is a single feedback object
+    console.log('Fetched one:', res.data.data);
+  } catch (err) {
+    enqueueSnackbar('Failed to load feedback item', { variant: 'error' });
+  }
+};
+
 
   const handleDelete = async (id) => {
     try {
