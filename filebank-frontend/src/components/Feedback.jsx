@@ -21,7 +21,7 @@ export default function FeedbackPage() {
         throw new Error('You must be logged in to submit feedback');
       }
       const payload = { ...values, userId: user._id };
-      await api.post('/feedback', payload);
+      await api.post('/v0/c/feedback', payload);
       enqueueSnackbar('Thank you for your feedback!', { variant: 'success' });
       navigate('/dashboard');
     } catch (err) {
