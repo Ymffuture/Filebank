@@ -5,9 +5,9 @@ import { BellOutlined, DashboardFilled, DownOutlined, LogoutOutlined, LockOutlin
 import { Link, useNavigate } from 'react-router-dom';
 import api from '../api/fileApi';
 import { useSnackbar } from 'notistack';
-import { useAuth } from '../context/AuthContext';
+// import { useAuth } from '../context/AuthContext';
 const { Title, Paragraph } = Typography;
-const { setUser } = useAuth();
+// const { setUser } = useAuth();
 const ratColors = {
   blue: '#1E90FF',
   gold: '#FFD700',
@@ -49,15 +49,6 @@ export default function Hero() {
       enqueueSnackbar('Login successful!', { variant: 'success' });
       fetchNotifications();
       navigate('/dashboard');
-    //  setUser(res.data.user);
-      const dbUser = res.data.user;
-
-      // ✅ RIGHT HERE: Update context with essential user data
-      setUser({
-        _id: dbUser._id,
-        email: dbUser.email,
-        name: dbUser.name
-      });
 
       
     } catch {
