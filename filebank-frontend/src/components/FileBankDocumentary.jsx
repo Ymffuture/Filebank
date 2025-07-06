@@ -8,7 +8,7 @@ const { Panel } = Collapse;
 
 export default function FileBankDocumentary() {
   return (
-    <div className="min-h-screen bg-[#f9f9f9] py-10 px-4">
+    <div className="min-h-screen bg-[#fff] py-10 px-4">
       <Helmet>
         <title>FileBank Documentary | Qurovex</title>
         <meta name="description" content="Discover how FileBank saves your important files, like CVs, certificates, and more, accessible anytime, anywhere with just internet access." />
