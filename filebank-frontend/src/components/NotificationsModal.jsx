@@ -151,7 +151,7 @@ export default function NotificationsModal({ visible, onClose }) {
               <List.Item.Meta
   title={
     <Space>
-      <span>{ tem.fromUser?.role === 'admin'? 'Filebank' : item.fromUser?.name }</span>
+      <span>{item.fromUser?.role === 'admin'? 'Filebank' : item.fromUser?.name }</span>
       {item.fromUser?.role === 'admin' && (
         <CheckCircle style={{ color: '#1E90FF' }} title="Admin" />
       )}
