@@ -156,7 +156,7 @@ export default function FileList() {
                     <Tooltip title={file.slug}>
                       {file.filename.length>20?file.filename.slice(0,20)+'…':file.filename}
                     </Tooltip>
-                    {age<=2 && <Badge count="New" style={{ background:'#52c41a' }}/>}   
+                    {age<=1 && <Badge count="New" style={{ background:'#52c41a' }}/>}   
                   </Space>
                 }
                 actions={[
@@ -173,7 +173,7 @@ export default function FileList() {
                 bodyStyle={{ minHeight:200 }}
               >
                 <p className="text-gray-700 p-1 rounded"><ClockCircleOutlined style={{marginRight:4}}/><strong>Uploaded:</strong> {rel}</p>
-                {age>0 && age<30 && (<Alert type="warning" showIcon className="mb-2" message={`Will be deleted in ${30-age} days for security.`}/>)}
+                {age>0 && age<30 && (<Alert type="warning" showIcon className="mb-3 mt-3" message={`Will be deleted in ${30-age} days for security.`}/>)}
                 {file.resourceType==='image'?(
                   <img src={file.url} alt={file.filename} style={{width:'100%',maxHeight:150,objectFit:'contain',marginTop:8,borderRadius:8}}/>
                 ):(file.resourceType==='raw'&&file.filename.endsWith('.pdf'))?(
