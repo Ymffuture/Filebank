@@ -148,20 +148,19 @@ export default function NotificationsModal({ visible, onClose }) {
                 </Popconfirm>,
               ]}
             >
-  <List.Item.Meta
+<List.Item.Meta
   title={
-    <Space>
-      <span>{item.fromUser?.role === 'admin'? 'Filebank' : item.fromUser?.name }</span>
-      
-      {item.fromUser?.role === 'admin' && (
-        <CheckCircle style={{ color: '#1E90FF' }} title="Admin" className='text-[10px]'/>
-      )}
-      <br/>
-      <span style={{ fontWeight: item.read ? 'normal' : 'bold' }}>
+    <div>
+      <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+        <span>{item.fromUser?.role === 'admin' ? 'Filebank' : item.fromUser?.name}</span>
+        {item.fromUser?.role === 'admin' && (
+          <CheckCircle style={{ color: '#1E90FF', fontSize: 12 }} title="Admin" />
+        )}
+      </div>
+      <div style={{ fontWeight: item.read ? 'normal' : 'bold', marginTop: 2 }}>
         {item.message}
-      </span>
-      
-    </Space>
+      </div>
+    </div>
   }
   description={new Date(item.createdAt).toLocaleString()}
 />
