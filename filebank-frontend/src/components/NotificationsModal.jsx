@@ -107,7 +107,7 @@ export default function NotificationsModal({ visible, onClose }) {
       ) : (
         <List
           itemLayout="vertical"
-          dataSource={[...notifications].reverse()}
+          dataSource={notifications}
           renderItem={(item) => (
             <List.Item
               style={{
