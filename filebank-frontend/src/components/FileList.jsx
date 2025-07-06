@@ -119,7 +119,7 @@ export default function FileList() {
   return (
     <>
       {location.pathname === '/files' && (
-        <div className="p-4 sticky top-0 bg-white z-50">
+        <div className="p-2 sticky top-0 bg-white z-50">
           <Link to="/dashboard">
             <Button type="link" icon={<ArrowBigLeftDashIcon />}>Back to Dashboard</Button>
           </Link>
@@ -127,8 +127,8 @@ export default function FileList() {
       )}
 
       <Alert
-        message="Tip: Rename downloads from `<slug>myfilepdf` → `myfile.pdf`."
-        type="warning" showIcon closable className="mb-4"
+        message="Tip: Rename downloads from `<slug> <b>myfilepdf</b>` → `myfile.pdf`."
+        type="warning" showIcon closable className="m-4"
       />
 
       <div className="grid gap-6 grid-cols-1 p-4">
@@ -173,7 +173,7 @@ export default function FileList() {
                 bodyStyle={{ minHeight:200 }}
               >
                 <p className="text-gray-700 p-1 rounded"><ClockCircleOutlined style={{marginRight:4}}/><strong>Uploaded:</strong> {rel}</p>
-                {age>0 && age<30 && (<Alert type="warning" showIcon className="mb-3 mt-3" message={`Will be deleted in ${30-age} days for security.`}/>)}
+                {age>0 && age<30 && (<Alert type="warning" showIcon className="m-4" message={`Will be deleted in ${30-age} days for security.`}/>)}
                 {file.resourceType==='image'?(
                   <img src={file.url} alt={file.filename} style={{width:'100%',maxHeight:150,objectFit:'contain',marginTop:8,borderRadius:8}}/>
                 ):(file.resourceType==='raw'&&file.filename.endsWith('.pdf'))?(
