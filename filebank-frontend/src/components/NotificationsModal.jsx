@@ -148,13 +148,15 @@ export default function NotificationsModal({ visible, onClose }) {
                 </Popconfirm>,
               ]}
             >
-              <List.Item.Meta
+  <List.Item.Meta
   title={
     <Space>
       <span>{item.fromUser?.role === 'admin'? 'Filebank' : item.fromUser?.name }</span>
+      
       {item.fromUser?.role === 'admin' && (
-        <CheckCircle style={{ color: '#1E90FF' }} title="Admin" />
+        <CheckCircle style={{ color: '#1E90FF' }} title="Admin" className='text-[10px]'/>
       )}
+      <br/>
       <span style={{ fontWeight: item.read ? 'normal' : 'bold' }}>
         {item.message}
       </span>
