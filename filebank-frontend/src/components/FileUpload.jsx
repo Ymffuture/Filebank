@@ -81,9 +81,9 @@ export default function FileUpload({ onUpload, currentUserFileCount = 0 }) {
         <meta name="description" content="Securely upload your files to FileBank." />
       </Helmet>
 
-      <div className="flex items-center justify-center min-h-screen bg-white">
-        <div className="bg-white p-8 rounded-lg shadow-md max-w-lg w-full">
-          <h2 className="text-2xl font-bold mb-4 text-center text-gray-800">Upload Files</h2>
+      <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-[#fff] to-[gray] ">
+        <div className="p-2 rounded-lg max-w-lg w-full">
+          <h2 className="text-2xl font-bold mb-2 text-center text-gray-800">Upload your files</h2>
           <Upload.Dragger
       beforeUpload={(file) => {
         const allowedTypes = [
