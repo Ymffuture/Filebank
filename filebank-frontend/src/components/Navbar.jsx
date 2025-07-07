@@ -87,14 +87,15 @@ export default function Navbar() {
     <Menu
       items={[
         { key: '1', icon: <UserOutlined />, label: 'Profile', onClick: () => navigate('/profile') },
-        { key: '2', icon: <LogoutOutlined />, label: 'Logout',  onClick: handleLogout }
+        { key: '2', icon: <MdOutlineFeedback />, label: 'Feedback', onClick: () => navigate('/feedback') },
+        { key: '3', icon: <LogoutOutlined />, label: 'Logout', onClick: handleLogout }
       ]}
     />
   );
 
   // Main nav items
   const mainMenuItems = [
-    { key: 'home',  label: <Link to="/"><HomeOutlined /> Home</Link> },
+    { key: 'home', label: <Link to="/"><HomeOutlined /> Home</Link> },
     { key: 'about', label: <Link to="/about-us"><InfoCircleOutlined /> About Us</Link> },
     { key: 'files', label: <Link to="/files"><FileOutlined /> Files</Link> },
     user?.role === 'admin' && { key: 'admin', label: <Link to="/admin"><DashboardOutlined /> Admin Panel</Link> }
@@ -112,7 +113,7 @@ export default function Navbar() {
 
         {/* Desktop menu */}
         <div className="hidden md:flex flex-1 justify-center">
-          <Menu mode="horizontal" theme="light" items={mainMenuItems} className="bg-transparent" />
+          <Menu mode="horizontal" theme="light" items={mainMenuItems} className="bg-transparent google-menu" />
         </div>
 
         {/* Desktop right icons */}
@@ -123,7 +124,7 @@ export default function Navbar() {
               <Badge
                 count={notifications}
                 offset={[0, 5]}
-                style={{ backgroundColor: '#333', color: '#fff' }}
+                style={{ backgroundColor: '#DB4437', color: '#fff' }}
                 className="cursor-pointer"
               >
                 <BellOutlined
@@ -134,9 +135,7 @@ export default function Navbar() {
 
               {/* Profile dropdown */}
               <Dropdown overlay={userMenu} trigger={['click']}>
-                {profilePic
-                  ? <Avatar src={profilePic} size="large" />
-                  : <Avatar size="large" icon={<UserOutlined />} />}
+                {profilePic ? <Avatar src={profilePic} size="large" /> : <Avatar size="large" icon={<UserOutlined />} />}
               </Dropdown>
             </>
           ) : (
@@ -169,9 +168,7 @@ export default function Navbar() {
       >
         {/* Drawer header */}
         <div className="p-4 border-b flex items-center space-x-3">
-          {profilePic
-            ? <Avatar src={profilePic} size="large" />
-            : <Avatar size="large" icon={<UserOutlined />} />}
+          {profilePic ? <Avatar src={profilePic} size="large" /> : <Avatar size="large" icon={<UserOutlined />} />}
           <div>
             <div className="font-semibold">{user?.displayName || 'Guest'}</div>
             <div className="text-sm text-gray-500">{user?.email}</div>
@@ -192,6 +189,7 @@ export default function Navbar() {
           {/* Notifications */}
           <Button
             block
+            type="text"
             icon={<BellOutlined />}
             onClick={() => {
               setNotifModalVisible(true);
@@ -202,21 +200,33 @@ export default function Navbar() {
             <Badge
               count={notifications}
               offset={[6, 0]}
-              style={{ backgroundColor: '#333', color: '#fff' }}
+              style={{ backgroundColor: '#DB4437', color: '#fff' }}
             />
           </Button>
 
           {/* Logout / Login */}
           {user ? (
-            <Button block icon={<LogoutOutlined />} danger onClick={handleLogout}>
+            <Button
+              block
+              type="text"
+              style={{ color: '#DB4437' }}
+              onClick={handleLogout}
+            >
               Logout
             </Button>
           ) : (
-            <GoogleLogin onSuccess={handleLoginSuccess} onError={() => {}} />
+            <GoogleLogin onSuccess={handleLoginSuccess} onError={() => message.error('Login failed.')} />
           )}
 
           {/* Feedback */}
-          <Button block type="default" onClick={() => { navigate('/feedback'); setDrawerVisible(false); }}>
+          <Button
+            block
+            type="text"
+            onClick={() => {
+              navigate('/feedback');
+              setDrawerVisible(false);
+            }}
+          >
             Feedback
           </Button>
         </div>
@@ -227,17 +237,6 @@ export default function Navbar() {
         visible={notifModalVisible}
         onClose={() => setNotifModalVisible(false)}
       />
-
-      {/* Floating feedback button on large screens */}
-      <Button
-        type="primary"
-        shape="circle"
-        size="large"
-        className="hidden lg:flex fixed bottom-6 right-6 items-center justify-center shadow-xl"
-        icon={<MdOutlineFeedback size={24} />}
-        onClick={() => navigate('/feedback')}
-      />
     </>
   );
 }
-
