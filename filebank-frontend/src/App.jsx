@@ -1,6 +1,6 @@
 import React, { Suspense, lazy, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import { SnackbarProvider, useSnackbar } from 'notistack';
+import { useSnackbar } from 'notistack';
 import Profile from './pages/Profile';
 import NotFound from './components/NotFound';
 
@@ -142,11 +142,10 @@ function AppContent() {
 
 export default function App() {
   return (
-    <SnackbarProvider maxSnack={1}>
       <Router>
         <AppContent />
       </Router>
-    </SnackbarProvider>
+    
   );
 }
 
