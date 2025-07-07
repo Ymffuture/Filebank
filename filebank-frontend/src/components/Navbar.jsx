@@ -78,7 +78,7 @@ export default function Navbar() {
         </div>
 
         {/* Right icons on desktop only */}
-        <Space size="large" className="hidden md:flex items-center">
+        <Space size="large" className="hidden md:hidden items-center">
           {user ? (
             <>
               {/* Notifications */}
@@ -147,6 +147,17 @@ export default function Navbar() {
           <Space direction="vertical" size="large" className="w-full">
             <Button block icon={<BellOutlined />} onClick={() => { setNotifModalVisible(true); setDrawerVisible(false); }}>
               Notifications
+              <Badge
+                count={notifications}
+                offset={[0, 5]}
+                style={{ backgroundColor: '#333' }}
+                className="cursor-pointer"
+              >
+                <BellOutlined
+                  className="text-2xl"
+                  onClick={() => setNotifModalVisible(true)}
+                />
+              </Badge>
             </Button>
             {user ? (
               <Button block icon={<LogoutOutlined />} danger onClick={handleLogout}>
@@ -173,7 +184,7 @@ export default function Navbar() {
         type="primary"
         shape="circle"
         size="large"
-        className="hidden lg:flex fixed bottom-6 right-6 items-center justify-center shadow-xl"
+        className="md:hidden lg:flex fixed bottom-6 right-6 items-center justify-center shadow-xl"
         icon={<MdOutlineFeedback size={24} />}
         onClick={() => navigate('/feedback')}
       />
