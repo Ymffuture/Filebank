@@ -95,11 +95,12 @@ export default function NotificationsModal({ visible, onClose }) {
       footer={[
         <Button
           key="markAll"
+          title="Mark as read"
           onClick={markAllAsRead}
           icon={<CheckOutlined />}
           loading={markAllLoading}
         />,
-        <Button key="close" onClick={onClose} icon={<DeleteOutlined />}/>,
+        <Button key="close" onClick={onClose} title="Close" />,
       ]}
     >
       {loading ? (
