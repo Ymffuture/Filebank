@@ -56,7 +56,7 @@ function useContentLock() {
         variant: 'error',
         anchorOrigin: { vertical: 'top', horizontal: 'center' },
         style: {
-          background: 'linear-gradient(135deg, #1E90FF, #32CD32)',
+          background: 'linear-gradient(-117deg, pink, red)',
           color: '#fff',
           fontWeight: 'bold',
           fontSize: '1rem',
@@ -69,7 +69,7 @@ function useContentLock() {
 
     const handleContextMenu = (e) => {
       e.preventDefault();
-      showError("Right-click is disabled.");
+     // showError("Right-click is disabled.");
     };
 
     const handleKeyDown = (e) => {
@@ -78,7 +78,7 @@ function useContentLock() {
         e.key === "F12"
       ) {
         e.preventDefault();
-        showError("Copy/inspect is disabled.");
+      //  showError("Copy/inspect is disabled.");
       }
     };
 
