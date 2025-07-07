@@ -205,6 +205,19 @@ export default function Navbar() {
             />
           </Button>
 
+          
+          {/* Feedback */}
+          <Button
+            block
+            type="text"
+            onClick={() => {
+              navigate('/feedback');
+              setDrawerVisible(false);
+            }}
+          >
+            Feedback
+          </Button>
+
           {/* Logout / Login */}
           {user ? (
             <Button
@@ -246,18 +259,7 @@ export default function Navbar() {
 />
 
           )}
-
-          {/* Feedback */}
-          <Button
-            block
-            type="text"
-            onClick={() => {
-              navigate('/feedback');
-              setDrawerVisible(false);
-            }}
-          >
-            Feedback
-          </Button>
+ 
         </div>
       </Drawer>
 
