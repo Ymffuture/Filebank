@@ -1,19 +1,20 @@
-import React, { Suspense, lazy, useEffect } from 'react';
+import React, { Suspense, lazy } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { useSnackbar } from 'notistack';
+// import { SnackbarProvider } from 'notistack';
 import Profile from './pages/Profile';
 import NotFound from './components/NotFound';
 
-const Help = lazy(() => import('./components/Help'));
+const Help     = lazy(() => import('./components/Help'));
 const FileList = lazy(() => import('./components/FileList'));
-const Footer = lazy(() => import('./components/Footer'));
+const Footer   = lazy(() => import('./components/Footer'));
 const Feedback = lazy(() => import('./components/Feedback'));
-const Home = lazy(() => import('./pages/Home'));
-const Admin = lazy(() => import('./components/Admin'));
-const Hero = lazy(() => import('./pages/Hero'));
-const Privacy = lazy(() => import('./pages/Privacy'));
-const Terms = lazy(() => import('./pages/Terms'));
-const AboutUs = lazy(() => import('./pages/AboutUs'));
+const Home     = lazy(() => import('./pages/Home'));
+const Admin    = lazy(() => import('./components/Admin'));
+const Hero     = lazy(() => import('./pages/Hero'));
+const Privacy  = lazy(() => import('./pages/Privacy'));
+const Terms    = lazy(() => import('./pages/Terms'));
+const AboutUs  = lazy(() => import('./pages/AboutUs'));
 
 const Loader = () => (
   <div style={{
@@ -49,11 +50,11 @@ const Loader = () => (
 function useContentLock() {
   const { enqueueSnackbar } = useSnackbar();
 
-  useEffect(() => {
+  React.useEffect(() => {
     const showError = (msg) => {
       enqueueSnackbar(msg, {
         variant: 'error',
-        anchorOrigin: { vertical: 'center', horizontal: 'center' },
+        anchorOrigin: { vertical: 'top', horizontal: 'center' },
         style: {
           background: 'linear-gradient(135deg, #1E90FF, #32CD32)',
           color: '#fff',
@@ -68,7 +69,7 @@ function useContentLock() {
 
     const handleContextMenu = (e) => {
       e.preventDefault();
-      showError("Right-click is disabled on this site.");
+      showError("Right-click is disabled.");
     };
 
     const handleKeyDown = (e) => {
@@ -77,27 +78,22 @@ function useContentLock() {
         e.key === "F12"
       ) {
         e.preventDefault();
-        showError("Copying or inspecting is disabled.");
+        showError("Copy/inspect is disabled.");
       }
     };
 
     let touchStartTime = 0;
-    const handleTouchStart = () => {
-      touchStartTime = new Date().getTime();
-    };
-
+    const handleTouchStart = () => { touchStartTime = Date.now(); };
     const handleTouchEnd = () => {
-      if (new Date().getTime() - touchStartTime > 500) {
+      if (Date.now() - touchStartTime > 500) {
         showError("Long press is disabled.");
       }
     };
 
     let lastTap = 0;
     const handleDoubleTap = () => {
-      const now = new Date().getTime();
-      if (now - lastTap < 300) {
-        showError("Double tap is disabled.");
-      }
+      const now = Date.now();
+      if (now - lastTap < 300) showError("Double tap is disabled.");
       lastTap = now;
     };
 
@@ -124,16 +120,16 @@ function AppContent() {
     <Suspense fallback={<Loader />}>
       <Routes>
         <Route path="/dashboard" element={<Home />} />
-        <Route path="/files" element={<FileList />} />
-        <Route path="/profile" element={<Profile />} />
-        <Route path="/" element={<Hero />} />
-        <Route path="/terms" element={<Terms />} />
-        <Route path="/privacy" element={<Privacy />} />
-        <Route path="/admin" element={<Admin />} />
-        <Route path="/about-us" element={<AboutUs />} />
-        <Route path="/help" element={<Help />} />
-        <Route path="/feedback" element={<Feedback />} />
-        <Route path="*" element={<NotFound />} />
+        <Route path="/files"     element={<FileList />} />
+        <Route path="/profile"   element={<Profile />} />
+        <Route path="/"          element={<Hero />} />
+        <Route path="/terms"     element={<Terms />} />
+        <Route path="/privacy"   element={<Privacy />} />
+        <Route path="/admin"     element={<Admin />} />
+        <Route path="/about-us"  element={<AboutUs />} />
+        <Route path="/help"      element={<Help />} />
+        <Route path="/feedback"  element={<Feedback />} />
+        <Route path="*"          element={<NotFound />} />
       </Routes>
       <Footer />
     </Suspense>
@@ -142,10 +138,10 @@ function AppContent() {
 
 export default function App() {
   return (
+    
       <Router>
         <AppContent />
       </Router>
     
   );
 }
-
