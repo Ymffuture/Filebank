@@ -154,7 +154,15 @@ export default function NotificationsModal({ visible, onClose }) {
       <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
         <span className='text-[13px]'>{item.fromUser?.role === 'admin' ? 'Filebank' : item.fromUser?.name}</span>
         {item.fromUser?.role === 'admin' && (
-          <CheckCircle className='text-[#1E90FF] text-[8px]' title="Admin" />
+          <CheckCircle 
+      className='text-[8px]' 
+      title="Admin" 
+      style={{
+               color: '#1E90FF',
+               transform: 'scale(0.6)',
+               transformOrigin: 'center center',  
+               display: 'inline-block' 
+            }} />
         )}
       </div>
       <div style={{ fontWeight: item.read ? 'normal' : 'bold', marginTop: 2 }}>
