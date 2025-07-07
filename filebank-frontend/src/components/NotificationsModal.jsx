@@ -152,7 +152,7 @@ export default function NotificationsModal({ visible, onClose }) {
   title={
     <div>
       <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
-        <span className='text-[13px]'>{item.fromUser?.role === 'admin' ? 'Filebank' : 'Filebank notification'}</span>
+        <span className='text-[13px]'>{item.fromUser?.role === 'admin' ? 'Filebank' : 'Filebank File notification'}</span>
         {item.fromUser?.role === 'admin' && (
           <CheckCircle 
       className='text-[8px]' 
