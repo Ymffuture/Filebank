@@ -148,7 +148,7 @@ export default function Navbar() {
             />
 
             <Dropdown overlay={userMenu} placement="bottomRight" trigger={['click']}>
-              <Space className="cursor-pointer">
+              <Space className="cursor-pointer right-0">
                 {profilePic
                   ? <Avatar src={profilePic} size="large" />
                   : <Avatar size="large" icon={<UserOutlined />} />}
