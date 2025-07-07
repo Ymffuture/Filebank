@@ -86,7 +86,7 @@ export default function Navbar() {
                 count={notifications}
                 offset={[0, 5]}
                 style={{ backgroundColor: '#333' }}
-                className="cursor-pointer ms:hidden"
+                className="cursor-pointer md:hidden hidden "
               >
                 <BellOutlined
                   className="text-2xl"
@@ -114,7 +114,7 @@ export default function Navbar() {
             <>
               <MenuOutlined />
               {notifications > 0 && (
-                <span className="absolute top-[10px] right-0 block w-2 h-2 bg-red-500 rounded-full" />
+                <span className="absolute top-[5px] right-[5px] block w-2 h-2 bg-red-500 rounded-full" />
               )}
             </>
           }
@@ -153,10 +153,7 @@ export default function Navbar() {
                 style={{ backgroundColor: '#333' }}
                 className="cursor-pointer"
               >
-                <BellOutlined
-                  className="text-2xl"
-                  onClick={() => setNotifModalVisible(true)}
-                />
+        
               </Badge>
             </Button>
             {user ? (
