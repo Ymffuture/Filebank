@@ -78,7 +78,7 @@ export default function Navbar() {
         </div>
 
         {/* Right icons on desktop only */}
-        <Space size="large" className="hidden md:hidden items-center">
+        <Space size="large" className="items-center">
           {user ? (
             <>
               {/* Notifications */}
@@ -86,7 +86,7 @@ export default function Navbar() {
                 count={notifications}
                 offset={[0, 5]}
                 style={{ backgroundColor: '#333' }}
-                className="cursor-pointer"
+                className="cursor-pointer ms:hidden"
               >
                 <BellOutlined
                   className="text-2xl"
@@ -114,7 +114,7 @@ export default function Navbar() {
             <>
               <MenuOutlined />
               {notifications > 0 && (
-                <span className="absolute top-0 right-0 block w-2 h-2 bg-red-500 rounded-full" />
+                <span className="absolute top-[10px] right-0 block w-2 h-2 bg-red-500 rounded-full" />
               )}
             </>
           }
