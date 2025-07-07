@@ -77,11 +77,11 @@ export default function Navbar() {
           <Menu mode="horizontal" theme="light" items={mainMenuItems} className="bg-transparent" />
         </div>
 
-        {/* Right icons on desktop only */}
+        {/* Right icons on desktop only 
         <Space size="large" className="items-center hidden md:flex">
       {user ? (
     <>
-      {/* Notifications */}
+      
       <Badge
         count={notifications}
         offset={[0, 5]}
@@ -94,7 +94,7 @@ export default function Navbar() {
         />
       </Badge>
 
-      {/* Profile */}
+      
       <Dropdown overlay={userMenu} trigger={['click']}>
         {profilePic
           ? <Avatar src={profilePic} size="large" />
@@ -105,7 +105,8 @@ export default function Navbar() {
     <GoogleLogin onSuccess={handleLoginSuccess} onError={() => message.error('Login failed.')} />
   )}
 </Space>
-
+*/} 
+        
         {/* Mobile menu button */}
         <Button
           type="text"
@@ -168,6 +169,7 @@ export default function Navbar() {
               Feedback
             </Button>
           </Space>
+          
         </div>
       </Drawer>
 
