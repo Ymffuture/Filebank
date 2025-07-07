@@ -179,7 +179,7 @@ export default function Navbar() {
         onClose={() => setNotifModalVisible(false)}
       />
 
-      {/* Floating feedback button on large screens */}
+      {/* Floating feedback button on large screens 
       <Button
         type="primary"
         shape="circle"
@@ -188,6 +188,7 @@ export default function Navbar() {
         icon={<MdOutlineFeedback size={24} />}
         onClick={() => navigate('/feedback')}
       />
+      */} 
     </>
   );
 }
