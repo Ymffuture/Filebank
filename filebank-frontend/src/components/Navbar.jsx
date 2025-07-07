@@ -113,14 +113,14 @@ export default function Navbar() {
       <Space>
         <img
           src={logo}
-          alt="FileBank Logo"
-          className="w-20 h-20 scale-125"
+          alt="Filebank Logo"
+          className="w-20 h-20 scale-150"
         />
         <span className="hidden md:block text-white">Powered by Qurovex</span>
       </Space>
 
       <div className="hidden md:flex">
-        <Menu mode="horizontal" theme="dark" items={mainMenuItems} className="bg-transparent text-white" />
+        <Menu mode="vertical" theme="light" items={mainMenuItems} className="bg-transparent" />
       </div>
 
       <Space className="md:flex hidden">
@@ -130,10 +130,11 @@ export default function Navbar() {
               count={notifications}
               offset={[0, 5]}
               style={{
-                backgroundColor: '#ADD8E6',
+                backgroundColor: '#333',
                 color: '#fff',
                 boxShadow: '0 0 0 1px #fff inset'
               }}
+              className="select-none" 
             >
               <BellOutlined
                 className="text-white text-[30px] cursor-pointer select-none"
@@ -151,7 +152,7 @@ export default function Navbar() {
                 {profilePic
                   ? <Avatar src={profilePic} size="large" />
                   : <Avatar size="large" icon={<UserOutlined />} />}
-                <span className="text-[#333] text-[10px]">{user.role?.toUpperCase()}</span>
+                
               </Space>
             </Dropdown>
           </>
