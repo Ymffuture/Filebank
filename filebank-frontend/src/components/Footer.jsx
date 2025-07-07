@@ -1,14 +1,15 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { FacebookIcon, GithubIcon, LinkedinIcon } from 'lucide-react';
 import { Tooltip } from 'antd';
 
 const Footer = () => {
   return (
     <footer className="bg-white border-t border-gray-200 dark:bg-gray-900 dark:border-gray-700 py-6">
-      <div className="max-w-7xl mx-auto px-4 flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
+      <div className="max-w-7xl mx-auto px-4 flex flex-col items-center space-y-4 md:space-y-0 md:flex-row md:justify-between md:items-center">
         
         {/* Social + Powered by */}
-        <div className="flex flex-col md:flex-row md:items-center md:space-x-6 text-gray-700 dark:text-gray-300 text-sm">
+        <div className="flex flex-col items-center md:flex-row md:items-center md:space-x-4">
           <div className="flex space-x-4 mb-2 md:mb-0">
             <Tooltip title="Facebook">
               <a
@@ -44,26 +45,26 @@ const Footer = () => {
               </a>
             </Tooltip>
           </div>
-          <span className="text-gray-500 dark:text-gray-400 text-xs">
+          <span className="text-gray-500 dark:text-gray-400 text-xs text-center md:text-left">
             Powered by <span className="font-semibold">Quorvex Institute</span>
           </span>
         </div>
 
         {/* Links + Copyright */}
-        <div className="flex flex-col md:flex-row md:items-center md:space-x-4 text-gray-500 dark:text-gray-400 text-xs">
-          <a
-            href="/terms"
+        <div className="flex flex-col items-center md:flex-row md:space-x-4 text-gray-500 dark:text-gray-400 text-xs">
+          <Link
+            to="/terms"
             className="hover:text-blue-600 dark:hover:text-blue-400 transition"
           >
             Terms of Service
-          </a>
-          <a
-            href="/privacy"
+          </Link>
+          <Link
+            to="/privacy"
             className="hover:text-blue-600 dark:hover:text-blue-400 transition"
           >
             Privacy Policy
-          </a>
-          <span className="select-none">
+          </Link>
+          <span className="select-none text-center md:text-left">
             © {new Date().getFullYear()} <span className="font-semibold">FileBank</span>. All rights reserved.
           </span>
         </div>
