@@ -3,7 +3,7 @@ import { Drawer, List, Badge, Button, Space, Popconfirm, Spin } from 'antd';
 import { DeleteOutlined, CheckOutlined, BellOutlined } from '@ant-design/icons';
 import { useSnackbar } from 'notistack';
 import api from '../api/fileApi';
-import { ShieldCheck, CheckCircle } from 'lucide-react';
+import { ShieldCheck, CheckCircle, Bell} from 'lucide-react';
 export default function NotificationsModal({ visible, onClose }) {
   const { enqueueSnackbar } = useSnackbar();
   const [notifications, setNotifications] = useState([]);
@@ -152,9 +152,21 @@ export default function NotificationsModal({ visible, onClose }) {
   title={
     <div>
       <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
-        <span className='text-[13px]'>{item.fromUser?.role === 'admin' ? 'Filebank' : item.fromUser.name}</span>
+        <span className='text-[13px]'>{item.fromUser?.role === 'admin' ? 'Filebank' : 'Filebank notification'}</span>
         {item.fromUser?.role === 'admin' && (
           <CheckCircle 
+      className='text-[8px]' 
+      title="Admin" 
+      style={{
+               color: '#1E90FF',
+               transform: 'scale(0.6)',
+               transformOrigin: 'center center',  
+               display: 'inline-block' 
+            }} />
+        )}
+
+        {item.fromUser?.role !== 'admin' && (
+          <Bell 
       className='text-[8px]' 
       title="Admin" 
       style={{
