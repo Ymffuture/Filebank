@@ -66,10 +66,10 @@ export default function Navbar() {
 
   return (
     <>
-      <Header className="flex justify-between items-center bg-white shadow sticky top-0 z-50 px-4">
+      <Header className="flex justify-between items-center shadow sticky top-0 z-50 px-4">
         {/* Logo */}
         <Link to="/" className="flex items-center">
-          <img src={logo} alt="FileBank" className="w-12 h-12 md:w-16 md:h-16" />
+          <img src={logo} alt="Filebank" className="w-16 h-16 md:w-16 md:h-16 scale-150" />
         </Link>
 
         {/* Desktop menu */}
