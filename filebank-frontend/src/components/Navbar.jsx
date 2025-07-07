@@ -8,6 +8,7 @@ import {
   InfoCircleOutlined,
   MenuOutlined,
   UserOutlined,
+  GoogleOutlined, 
   LogoutOutlined
 } from '@ant-design/icons';
 import { GoogleLogin, googleLogout } from '@react-oauth/google';
@@ -108,7 +109,7 @@ export default function Navbar() {
       <Header className="flex justify-between items-center bg-white shadow sticky top-0 z-50 px-4">
         {/* Logo */}
         <Link to="/" className="flex items-center">
-          <img src={logo} alt="FileBank Logo" className="w-12 h-12 md:w-16 md:h-16" />
+          <img src={logo} alt="FileBank Logo" className="w-16 h-16 md:w-16 md:h-16 scale-150" />
         </Link>
 
         {/* Desktop menu */}
@@ -116,11 +117,11 @@ export default function Navbar() {
           <Menu mode="horizontal" theme="light" items={mainMenuItems} className="bg-transparent google-menu" />
         </div>
 
-        {/* Desktop right icons */}
+        {/* Desktop right icons 
         <Space size="large" className="hidden md:flex items-center">
           {user ? (
             <>
-              {/* Notification bell */}
+              
               <Badge
                 count={notifications}
                 offset={[0, 5]}
@@ -133,7 +134,7 @@ export default function Navbar() {
                 />
               </Badge>
 
-              {/* Profile dropdown */}
+              
               <Dropdown overlay={userMenu} trigger={['click']}>
                 {profilePic ? <Avatar src={profilePic} size="large" /> : <Avatar size="large" icon={<UserOutlined />} />}
               </Dropdown>
@@ -142,7 +143,7 @@ export default function Navbar() {
             <GoogleLogin onSuccess={handleLoginSuccess} onError={() => message.error('Login failed.')} />
           )}
         </Space>
-
+*/} 
         {/* Mobile menu button */}
         <Button
           type="text"
@@ -215,7 +216,35 @@ export default function Navbar() {
               Logout
             </Button>
           ) : (
-            <GoogleLogin onSuccess={handleLoginSuccess} onError={() => message.error('Login failed.')} />
+            <GoogleLogin
+  onSuccess={handleLoginSuccess}
+  onError={() => message.error('Login failed.')}
+  render={(renderProps) => (
+    <Button
+      onClick={renderProps.onClick}
+      disabled={renderProps.disabled}
+      icon={<GoogleOutlined />}
+      style={{
+        backgroundColor: '#1E90FF',  // Rat lucky blue
+        borderColor: '#FFD700',      // Rat lucky gold border
+        color: '#fff',
+        fontWeight: 'bold',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        gap: '8px',
+        padding: '6px 16px',
+        borderRadius: '8px',
+        boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
+      }}
+      size="large"
+      className="hover:shadow-lg transition-all duration-200"
+    >
+      Sign in with Google
+    </Button>
+  )}
+/>
+
           )}
 
           {/* Feedback */}
