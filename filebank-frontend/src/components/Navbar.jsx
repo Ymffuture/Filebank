@@ -78,32 +78,33 @@ export default function Navbar() {
         </div>
 
         {/* Right icons on desktop only */}
-        <Space size="large" className="items-center">
-          {user ? (
-            <>
-              {/* Notifications */}
-              <Badge
-                count={notifications}
-                offset={[0, 5]}
-                style={{ backgroundColor: '#333' }}
-                className="cursor-pointer md:hidden hidden "
-              >
-                <BellOutlined
-                  className="text-2xl"
-                  onClick={() => setNotifModalVisible(true)}
-                />
-              </Badge>
-              {/* Profile */}
-              <Dropdown overlay={userMenu} trigger={['click']}>
-                {profilePic
-                  ? <Avatar src={profilePic} size="large" />
-                  : <Avatar size="large" icon={<UserOutlined />} />}
-              </Dropdown>
-            </>
-          ) : (
-            <GoogleLogin onSuccess={handleLoginSuccess} onError={() => message.error('Login failed.')} />
-          )}
-        </Space>
+        <Space size="large" className="items-center hidden md:flex">
+      {user ? (
+    <>
+      {/* Notifications */}
+      <Badge
+        count={notifications}
+        offset={[0, 5]}
+        style={{ backgroundColor: '#333' }}
+        className="cursor-pointer"
+      >
+        <BellOutlined
+          className="text-2xl"
+          onClick={() => setNotifModalVisible(true)}
+        />
+      </Badge>
+
+      {/* Profile */}
+      <Dropdown overlay={userMenu} trigger={['click']}>
+        {profilePic
+          ? <Avatar src={profilePic} size="large" />
+          : <Avatar size="large" icon={<UserOutlined />} />}
+      </Dropdown>
+    </>
+  ) : (
+    <GoogleLogin onSuccess={handleLoginSuccess} onError={() => message.error('Login failed.')} />
+  )}
+</Space>
 
         {/* Mobile menu button */}
         <Button
@@ -114,7 +115,7 @@ export default function Navbar() {
             <>
               <MenuOutlined />
               {notifications > 0 && (
-                <span className="absolute top-[5px] right-[5px] block w-2 h-2 bg-red-500 rounded-full" />
+                <span className="absolute top-[6px] right-[6px] block w-2 h-2 bg-red-500 rounded-full" />
               )}
             </>
           }
