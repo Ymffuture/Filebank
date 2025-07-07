@@ -56,11 +56,11 @@ function useContentLock() {
         variant: 'error',
         anchorOrigin: { vertical: 'top', horizontal: 'center' },
         style: {
-          background: 'linear-gradient(-117deg, pink, red)',
+          background: 'linear-gradient(-117deg, pink, pink)',
           color: '#fff',
           fontWeight: 'bold',
           fontSize: '1rem',
-          padding: '12px 20px',
+          padding: '8px 16px',
           borderRadius: '8px',
           boxShadow: '0 4px 12px rgba(0,0,0,0.2)'
         }
