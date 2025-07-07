@@ -14,7 +14,7 @@ export default function FileBankDocumentary() {
         <meta name="description" content="Discover how FileBank saves your important files, like CVs, certificates, and more, accessible anytime, anywhere with just internet access." />
       </Helmet>
 
-      <main className="container mx-auto max-w-4xl bg-white shadow-lg rounded-lg p-8">
+      <main className="mx-auto max-w-4xl bg-white shadow-lg rounded-lg p-8">
         <Typography>
           <Title level={2} className="text-center text-[#1E90FF] mb-6">The Story & Vision of FileBank</Title>
           
