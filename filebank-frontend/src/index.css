@@ -11,3 +11,9 @@
 .ant-layout-header{
     background: #fff;
 }
+
+body {
+  user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+}
