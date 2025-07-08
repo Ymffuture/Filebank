@@ -17,3 +17,12 @@ body {
   -webkit-user-select: none;
   -ms-user-select: none;
 }
+.fade-in {
+  animation: fadeFlash 0.6s ease-in-out;
+}
+
+@keyframes fadeFlash {
+  0% { background-color: #fff7d6; opacity: 0.1; }
+  30% { background-color: #e1ffd9; }
+  100% { background-color: white; opacity: 1; }
+}
