@@ -62,7 +62,10 @@ function useContentLock() {
           <AlertTitle>Heads Up!</AlertTitle>
           {msg}
         </Alert>,
-        { variant: 'default' }
+        {
+          variant: 'default',
+          anchorOrigin: { vertical: 'center', horizontal: 'center' }
+        }
       );
     };
 
@@ -82,10 +85,7 @@ function useContentLock() {
     };
 
     let touchStartTime = 0;
-    const handleTouchStart = () => {
-      touchStartTime = Date.now();
-    };
-
+    const handleTouchStart = () => { touchStartTime = Date.now(); };
     const handleTouchEnd = () => {
       if (Date.now() - touchStartTime > 500) {
         // showError("Long press is disabled.");
@@ -102,10 +102,16 @@ function useContentLock() {
     };
 
     const handleBlur = () => {
-      document.body.style.filter = 'blur(10px)';
+      // if Google login popup is open, skip blur
+      const googleIframe = document.querySelector('iframe[src*="accounts.google.com"]');
+      if (!googleIframe) {
+        document.body.style.transition = 'filter 0.3s ease-in-out';
+        document.body.style.filter = 'blur(10px)';
+      }
     };
 
     const handleFocus = () => {
+      document.body.style.transition = 'filter 0.3s ease-in-out';
       document.body.style.filter = 'none';
     };
 
@@ -114,8 +120,8 @@ function useContentLock() {
     document.addEventListener("touchstart", handleTouchStart);
     document.addEventListener("touchend", handleTouchEnd);
     document.addEventListener("touchstart", handleDoubleTap);
-    window.addEventListener('blur', handleBlur);
-    window.addEventListener('focus', handleFocus);
+    window.addEventListener("blur", handleBlur);
+    window.addEventListener("focus", handleFocus);
 
     return () => {
       document.removeEventListener("contextmenu", handleContextMenu);
@@ -123,8 +129,8 @@ function useContentLock() {
       document.removeEventListener("touchstart", handleTouchStart);
       document.removeEventListener("touchend", handleTouchEnd);
       document.removeEventListener("touchstart", handleDoubleTap);
-      window.removeEventListener('blur', handleBlur);
-      window.removeEventListener('focus', handleFocus);
+      window.removeEventListener("blur", handleBlur);
+      window.removeEventListener("focus", handleFocus);
     };
   }, [enqueueSnackbar]);
 }
