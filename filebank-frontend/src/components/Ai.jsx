@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Box, Button, Input, Text, VStack } from '@chakra-ui/react';
 import axios from 'axios';
-import api from '../api/apiFile.js';
+import api from '../api/fileApi';
 const ChatBot = () => {
   const [messages, setMessages] = useState([{ from: 'bot', text: 'Hi! Ask me anything.' }]);
   const [input, setInput] = useState('');
