@@ -1,7 +1,8 @@
-import React, { Suspense, lazy } from 'react';
+import React, { Suspense, lazy, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { useSnackbar } from 'notistack';
-// import { SnackbarProvider } from 'notistack';
+import { Alert, AlertTitle } from '@mui/material';
+import WarningAmberIcon from '@mui/icons-material/WarningAmber';
 import Profile from './pages/Profile';
 import NotFound from './components/NotFound';
 
@@ -50,29 +51,24 @@ const Loader = () => (
 function useContentLock() {
   const { enqueueSnackbar } = useSnackbar();
 
-  React.useEffect(() => {
+  useEffect(() => {
     const showError = (msg) => {
       enqueueSnackbar(
-  <Alert
-    severity="warning"
-    icon={<WarningAmberIcon fontSize="inherit" />}
-    sx={{ width: '100%' }}
-  >
-    <AlertTitle>Heads Up!</AlertTitle>
-    This action is restricted.
-  </Alert>,
-  { variant: 'default' }  // use 'default' so it accepts JSX
-);
-      });
+        <Alert
+          severity="warning"
+          icon={<WarningAmberIcon fontSize="inherit" />}
+          sx={{ width: '100%' }}
+        >
+          <AlertTitle>Heads Up!</AlertTitle>
+          {msg}
+        </Alert>,
+        { variant: 'default' }
+      );
     };
-
-
-
-    
 
     const handleContextMenu = (e) => {
       e.preventDefault();
-     // showError("Right-click is disabled.");
+      showError("Right-click is disabled on this site.");
     };
 
     const handleKeyDown = (e) => {
@@ -81,7 +77,7 @@ function useContentLock() {
         e.key === "F12"
       ) {
         e.preventDefault();
-      //  showError("Copy/inspect is disabled.");
+        showError("Copying or inspecting is disabled.");
       }
     };
 
@@ -96,8 +92,17 @@ function useContentLock() {
     let lastTap = 0;
     const handleDoubleTap = () => {
       const now = Date.now();
-      if (now - lastTap < 300) showError("Double tap is disabled.");
+      if (now - lastTap < 300) {
+        showError("Double tap is disabled.");
+      }
       lastTap = now;
+    };
+
+    const handleBlur = () => {
+      document.body.style.filter = 'blur(10px)';
+    };
+    const handleFocus = () => {
+      document.body.style.filter = 'none';
     };
 
     document.addEventListener("contextmenu", handleContextMenu);
@@ -105,6 +110,8 @@ function useContentLock() {
     document.addEventListener("touchstart", handleTouchStart);
     document.addEventListener("touchend", handleTouchEnd);
     document.addEventListener("touchstart", handleDoubleTap);
+    window.addEventListener('blur', handleBlur);
+    window.addEventListener('focus', handleFocus);
 
     return () => {
       document.removeEventListener("contextmenu", handleContextMenu);
@@ -112,27 +119,11 @@ function useContentLock() {
       document.removeEventListener("touchstart", handleTouchStart);
       document.removeEventListener("touchend", handleTouchEnd);
       document.removeEventListener("touchstart", handleDoubleTap);
+      window.removeEventListener('blur', handleBlur);
+      window.removeEventListener('focus', handleFocus);
     };
   }, [enqueueSnackbar]);
 }
-
-useEffect(() => {
-  const handleBlur = () => {
-    document.body.style.filter = 'blur(10px)';
-  };
-  const handleFocus = () => {
-    document.body.style.filter = 'none';
-  };
-
-  window.addEventListener('blur', handleBlur);
-  window.addEventListener('focus', handleFocus);
-
-  return () => {
-    window.removeEventListener('blur', handleBlur);
-    window.removeEventListener('focus', handleFocus);
-  };
-}, []);
-
 
 function AppContent() {
   useContentLock();
@@ -159,10 +150,9 @@ function AppContent() {
 
 export default function App() {
   return (
-    
-      <Router>
-        <AppContent />
-      </Router>
-    
+    <Router>
+      <AppContent />
+    </Router>
   );
 }
+
