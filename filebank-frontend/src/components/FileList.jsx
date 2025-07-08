@@ -11,7 +11,6 @@ import {
 } from '@ant-design/icons';
 import { FaXTwitter, FaWhatsapp, FaLinkedin } from 'react-icons/fa6';
 import { ArrowBigLeftDashIcon } from 'lucide-react';
-import './FileList.css'; // Add this CSS for animation
 
 export default function FileList() {
   const [files, setFiles] = useState([]);
