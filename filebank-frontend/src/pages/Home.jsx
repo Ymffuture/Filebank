@@ -3,7 +3,7 @@ import Navbar from '../components/Navbar';
 import FileUpload from '../components/FileUpload';
 import FileList from '../components/FileList';
 import FileBankDocumentary from '../components/FileBankDocumentary';
-
+import Ai from '../components/Ai' ;
 export default function Home() {
   const [refresh, setRefresh] = useState(0);
 
@@ -15,7 +15,12 @@ export default function Home() {
           <h1 className="text-3xl font-bold text-gray-700 mb-2">Start uploading Your Files</h1>
           <FileUpload onUpload={() => setRefresh((r) => r + 1)} />
         </section>
-
+<section>
+<h1>Ask AI</h1>
+  <Ai/>
+</section>
+  
+  
         <section>
           <h1 className="text-3xl font-bold text-[#222] mb-2">FileBank Documentary</h1>
           <FileBankDocumentary />
