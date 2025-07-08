@@ -68,7 +68,7 @@ function useContentLock() {
 
     const handleContextMenu = (e) => {
       e.preventDefault();
-   //   showError("Right-click is disabled on this site.");
+      // showError("Right-click is disabled on this site.");
     };
 
     const handleKeyDown = (e) => {
@@ -77,15 +77,18 @@ function useContentLock() {
         e.key === "F12"
       ) {
         e.preventDefault();
-   //     showError("Copying or inspecting is disabled.");
+        // showError("Copying or inspecting is disabled.");
       }
     };
 
     let touchStartTime = 0;
-    const handleTouchStart = () => { touchStartTime = Date.now(); };
+    const handleTouchStart = () => {
+      touchStartTime = Date.now();
+    };
+
     const handleTouchEnd = () => {
       if (Date.now() - touchStartTime > 500) {
-   //     showError("Long press is disabled.");
+        // showError("Long press is disabled.");
       }
     };
 
@@ -94,13 +97,14 @@ function useContentLock() {
       const now = Date.now();
       if (now - lastTap < 300) {
         showError('This action is restricted.');
-      
+      }
       lastTap = now;
     };
 
     const handleBlur = () => {
       document.body.style.filter = 'blur(10px)';
     };
+
     const handleFocus = () => {
       document.body.style.filter = 'none';
     };
