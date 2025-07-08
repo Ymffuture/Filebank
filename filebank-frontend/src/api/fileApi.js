@@ -1,72 +1,53 @@
-// src/api/fileApi.js
+import React from 'react';
 import axios from 'axios';
 import { Alert, AlertTitle } from '@mui/material';
 import WarningAmberIcon from '@mui/icons-material/WarningAmber';
 
-/**
- * Create your axios instance (no interceptors yet)
- */
 const api = axios.create({
   baseURL: 'https://filebankserver.onrender.com/api',
 });
 
-/**
- * Call this once in your App (after SnackbarProvider)
- * 
- * @param {function} enqueueSnackbar from notistack
- * @param {function} navigate optional: a function to navigate (e.g. from react-router)
- */
 export function setupInterceptors(enqueueSnackbar, navigate) {
-  // Request: attach token
+  // Attach token
   api.interceptors.request.use(
     (config) => {
       const token = localStorage.getItem('filebankToken');
-      if (token) {
-        config.headers.Authorization = `Bearer ${token}`;
-      }
+      if (token) config.headers.Authorization = `Bearer ${token}`;
       return config;
     },
-    (error) => Promise.reject(error)
+    (err) => Promise.reject(err)
   );
 
-  // Response: handle errors
+  // Handle responses
   api.interceptors.response.use(
-    (response) => response,
+    (res) => res,
     (error) => {
       const { response } = error;
-      // Network error (no response)
-      if (!response) {
-        enqueueSnackbar(
-          <Alert severity="error" icon={<WarningAmberIcon fontSize="inherit" />}>
-            <AlertTitle>Network Error</AlertTitle>
-            Could not connect to server.
-          </Alert>,
-          { variant: 'default', anchorOrigin: { vertical: 'top', horizontal: 'center' } }
+
+      // Helper to show MUI Alert in notistack
+      const showAlert = (title, msg, severity = 'error') => {
+        const content = React.createElement(
+          Alert,
+          { severity, icon: React.createElement(WarningAmberIcon, { fontSize: 'inherit' }), sx: { width: '100%' } },
+          React.createElement(AlertTitle, null, title),
+          msg
         );
+        enqueueSnackbar(content, {
+          variant: 'default',
+          anchorOrigin: { vertical: 'top', horizontal: 'center' },
+        });
+      };
+
+      if (!response) {
+        showAlert('Network Error', 'Could not connect to server.', 'error');
       } else if (response.status === 401) {
-        // Unauthorized
         localStorage.removeItem('filebankToken');
         localStorage.removeItem('filebankUser');
-
-        enqueueSnackbar(
-          <Alert severity="warning" icon={<WarningAmberIcon fontSize="inherit" />}>
-            <AlertTitle>Session Expired</AlertTitle>
-            Please log in again.
-          </Alert>,
-          { variant: 'default', anchorOrigin: { vertical: 'top', horizontal: 'center' } }
-        );
-
-        if (navigate) navigate('/');  // redirect to home/login
+        showAlert('Session Expired', 'Please log in again.', 'warning');
+        if (navigate) navigate('/');
       } else {
-        // Other HTTP errors
-        const message = response.data?.message || 'An error occurred.';
-        enqueueSnackbar(
-          <Alert severity="error" icon={<WarningAmberIcon fontSize="inherit" />}>
-            <AlertTitle>Error {response.status}</AlertTitle>
-            {message}
-          </Alert>,
-          { variant: 'default', anchorOrigin: { vertical: 'top', horizontal: 'center' } }
-        );
+        const msg = response.data?.message || 'An error occurred.';
+        showAlert(`Error ${response.status}`, msg, 'error');
       }
 
       return Promise.reject(error);
