@@ -52,20 +52,23 @@ function useContentLock() {
 
   React.useEffect(() => {
     const showError = (msg) => {
-      enqueueSnackbar(msg, {
-        variant: 'error',
-        anchorOrigin: { vertical: 'top', horizontal: 'center' },
-        style: {
-          background: 'linear-gradient(-117deg, pink, pink)',
-          color: '#fff',
-          fontWeight: 'bold',
-          fontSize: '1rem',
-          padding: '8px 16px',
-          borderRadius: '8px',
-          boxShadow: '0 4px 12px rgba(0,0,0,0.2)'
-        }
+      enqueueSnackbar(
+  <Alert
+    severity="warning"
+    icon={<WarningAmberIcon fontSize="inherit" />}
+    sx={{ width: '100%' }}
+  >
+    <AlertTitle>Heads Up!</AlertTitle>
+    This action is restricted.
+  </Alert>,
+  { variant: 'default' }  // use 'default' so it accepts JSX
+);
       });
     };
+
+
+
+    
 
     const handleContextMenu = (e) => {
       e.preventDefault();
@@ -112,6 +115,24 @@ function useContentLock() {
     };
   }, [enqueueSnackbar]);
 }
+
+useEffect(() => {
+  const handleBlur = () => {
+    document.body.style.filter = 'blur(10px)';
+  };
+  const handleFocus = () => {
+    document.body.style.filter = 'none';
+  };
+
+  window.addEventListener('blur', handleBlur);
+  window.addEventListener('focus', handleFocus);
+
+  return () => {
+    window.removeEventListener('blur', handleBlur);
+    window.removeEventListener('focus', handleFocus);
+  };
+}, []);
+
 
 function AppContent() {
   useContentLock();
