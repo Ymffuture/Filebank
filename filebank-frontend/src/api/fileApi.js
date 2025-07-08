@@ -1,59 +1,39 @@
-import React from 'react';
 import axios from 'axios';
-import { Alert, AlertTitle } from '@mui/material';
-import WarningAmberIcon from '@mui/icons-material/WarningAmber';
 
 const api = axios.create({
-  baseURL: 'https://filebankserver.onrender.com/api',
+  // baseURL: 'http://localhost:5000/api',
+     baseURL: 'https://filebankserver.onrender.com/api',
+  
 });
 
-export function setupInterceptors(enqueueSnackbar, navigate) {
-  // Attach token
-  api.interceptors.request.use(
-    (config) => {
-      const token = localStorage.getItem('filebankToken');
-      if (token) config.headers.Authorization = `Bearer ${token}`;
-      return config;
-    },
-    (err) => Promise.reject(err)
-  );
-
-  // Handle responses
-  api.interceptors.response.use(
-    (res) => res,
-    (error) => {
-      const { response } = error;
-
-      // Helper to show MUI Alert in notistack
-      const showAlert = (title, msg, severity = 'error') => {
-        const content = React.createElement(
-          Alert,
-          { severity, icon: React.createElement(WarningAmberIcon, { fontSize: 'inherit' }), sx: { width: '100%' } },
-          React.createElement(AlertTitle, null, title),
-          msg
-        );
-        enqueueSnackbar(content, {
-          variant: 'default',
-          anchorOrigin: { vertical: 'top', horizontal: 'center' },
-        });
-      };
-
-      if (!response) {
-        showAlert('Network Error', 'Could not connect to server.', 'error');
-      } else if (response.status === 401) {
-        localStorage.removeItem('filebankToken');
-        localStorage.removeItem('filebankUser');
-        showAlert('Session Expired', 'Please log in again.', 'warning');
-        if (navigate) navigate('/');
-      } else {
-        const msg = response.data?.message || 'An error occurred.';
-        showAlert(`Error ${response.status}`, msg, 'error');
-      }
-
-      return Promise.reject(error);
+// Request interceptor: Attach token
+api.interceptors.request.use(
+  (config) => {
+    const token = localStorage.getItem('filebankToken');
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
     }
-  );
-}
+    return config;
+  },
+  (error) => Promise.reject(error)
+);
+
+// Response interceptor: Handle 401 unauthorized
+api.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    if (error.response && error.response.status === 401) {
+      console.warn('Unauthorized or expired token, clearing storage...');
+      localStorage.removeItem('filebankToken');
+      localStorage.removeItem('filebankUser');
+
+      // Optional: Trigger a reload or navigate
+      window.location.href = '/';  // You could navigate programmatically if in a React component
+      // Or optionally show a message (if you're inside a React context)
+     // console.error('Session expired, please log in again');
+    }
+    return Promise.reject(error);
+  }
+);
 
 export default api;
-
