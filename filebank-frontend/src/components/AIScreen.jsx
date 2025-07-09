@@ -19,22 +19,21 @@ export default function AIScreen() {
   const [darkMode, setDarkMode] = useState(false);
   const containerRef = useRef(null);
 
+  // Scroll to bottom whenever messages change
   useEffect(() => {
-    if (containerRef.current) {
-      containerRef.current.scrollTop = containerRef.current.scrollHeight;
-    }
+    containerRef.current?.scrollTo(0, containerRef.current.scrollHeight);
   }, [messages]);
 
   const sendMessage = async () => {
     if (!input.trim()) return;
     const userMsg = { from: 'user', text: input };
-    setMessages(prev => [...prev, userMsg]);
+    setMessages(m => [...m, userMsg]);
     setLoading(true);
     try {
       const res = await api.post('/chat', { message: input });
-      setMessages(prev => [...prev, { from: 'bot', text: res.data.reply }]);
+      setMessages(m => [...m, { from: 'bot', text: res.data.reply }]);
     } catch {
-      setMessages(prev => [...prev, { from: 'bot', text: '⚠️ Error contacting AI.' }]);
+      setMessages(m => [...m, { from: 'bot', text: '⚠️ Error contacting AI.' }]);
     } finally {
       setLoading(false);
       setInput('');
@@ -42,16 +41,17 @@ export default function AIScreen() {
   };
 
   const renderMessage = (msg, idx) => {
+    // Split into code and text segments
     const parts = msg.text.split(/```([\s\S]*?)```/g);
     return parts.map((part, i) => {
       if (i % 2 === 1) {
-        // CODE block
+        // Code block
         return (
-          <div key={`${idx}-code-${i}`} className="relative group my-2">
+          <div key={i} className="relative group my-2">
             <SyntaxHighlighter
               language="javascript"
               style={darkMode ? atomOneDark : atomOneLight}
-              customStyle={{ borderRadius: 8, fontSize: 14 }}
+              customStyle={{ borderRadius: 6, padding: '12px', fontSize: 14 }}
             >
               {part.trim()}
             </SyntaxHighlighter>
@@ -60,25 +60,21 @@ export default function AIScreen() {
                 type="text"
                 icon={<CopyOutlined />}
                 onClick={() => copy(part.trim())}
-                className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition"
+                className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity"
               />
             </Tooltip>
           </div>
         );
       } else {
-        // TEXT block: bold, line breaks
+        // Text block: handle **bold** and line breaks
         const html = part
-          .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
-          .replace(/\n/g, '<br/>');
-
+          .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')  // bold
+          .replace(/\n/g, '<br/>');                          // new lines
+        const alignment = msg.from === 'user' ? 'self-end bg-blue-600 text-white' : 'self-start bg-gray-200 dark:bg-gray-700 dark:text-white';
         return (
           <div
-            key={`${idx}-text-${i}`}
-            className={`my-2 p-3 rounded-lg max-w-[80%] ${
-              msg.from === 'user'
-                ? 'bg-blue-600 text-white self-end ml-auto'
-                : 'bg-gray-200 dark:bg-gray-700 dark:text-white'
-            }`}
+            key={i}
+            className={`my-2 p-3 max-w-[80%] rounded-lg ${alignment}`}
             dangerouslySetInnerHTML={{ __html: html }}
           />
         );
@@ -89,8 +85,8 @@ export default function AIScreen() {
   return (
     <div className={`${darkMode ? 'dark' : ''} h-screen flex flex-col bg-white dark:bg-gray-900`}>
       {/* Header */}
-      <header className="flex justify-between items-center p-4 bg-gray-100 dark:bg-gray-800">
-        <h1 className="text-xl font-bold text-gray-800 dark:text-gray-200">FileBank AI</h1>
+      <header className="flex items-center justify-between p-4 bg-gray-100 dark:bg-gray-800">
+        <h1 className="text-lg font-semibold text-gray-800 dark:text-gray-200">FileBank AI</h1>
         <Space>
           <Switch
             checked={darkMode}
@@ -101,40 +97,45 @@ export default function AIScreen() {
         </Space>
       </header>
 
-      {/* Chat area */}
-      <main ref={containerRef} className="flex-1 overflow-auto p-4 flex flex-col space-y-4">
+      {/* Chat Window */}
+      <main
+        ref={containerRef}
+        className="flex-1 overflow-y-auto p-4 flex flex-col space-y-4"
+      >
         {messages.map((msg, idx) => (
           <div key={idx} className="flex flex-col">
-            {msg.from === 'bot' && idx === messages.length - 1 && loading ? (
-              <div className="my-2 p-3 rounded-lg max-w-[80%] bg-gray-200 dark:bg-gray-700 dark:text-white">
-                <Typing
-                  text={[msg.text]}
-                  speed={35}
-                  eraseDelay={100000000}
-                  cursorRenderer={(cursor) => <span>{cursor}</span>}
-                  displayTextRenderer={(text) => <span>{text}</span>}
-                />
-              </div>
-            ) : (
-              renderMessage(msg, idx)
+            {msg.from === 'bot' && (
+              <Typing
+                text={[msg.text]}
+                speed={25}
+                eraseDelay={Infinity}
+                cursor="_"
+                displayTextRenderer={(text) => (
+                  <div className="my-2 p-3 max-w-[80%] rounded-lg bg-gray-200 dark:bg-gray-700 dark:text-white">
+                    {/* The typing effect */}
+                    {text.split('\n').map((line, i) => (
+                      <p key={i} className="whitespace-pre-wrap">{line}</p>
+                    ))}
+                  </div>
+                )}
+              />
             )}
+            {renderMessage(msg, idx)}
           </div>
         ))}
       </main>
 
-      {/* Footer Input */}
+      {/* Input */}
       <footer className="p-4 bg-gray-100 dark:bg-gray-800">
         <Space.Compact className="w-full">
           <Input
+            placeholder="Type your question..."
             value={input}
             onChange={e => setInput(e.target.value)}
             onKeyDown={e => e.key === 'Enter' && sendMessage()}
-            placeholder="Type your question..."
             className="flex-1"
           />
-          <Button type="primary" loading={loading} onClick={sendMessage}>
-            Send
-          </Button>
+          <Button type="primary" loading={loading} onClick={sendMessage}>Send</Button>
         </Space.Compact>
       </footer>
     </div>
