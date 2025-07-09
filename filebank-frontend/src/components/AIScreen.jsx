@@ -117,7 +117,7 @@ export default function AIScreen() {
             {msg.from === 'bot' && idx === messages.length - 1 && loading ? (
               <div className="my-2 p-3 rounded-lg max-w-[80%] bg-sky-100 dark:bg-gray-700 dark:text-white flex items-center">
                 <svg
-                  className="animate-spin h-5 w-5 text-gray-500 mr-2"
+                  className="animate-spin h-10 w-10 text-black mr-2"
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"
                   viewBox="0 0 24 24"
@@ -145,19 +145,18 @@ export default function AIScreen() {
         ))}
       </main>
 
-      <footer className="p-4 bg-white dark:bg-gray-800 shadow-md">
-        <div className="w-full flex">
+      <footer className="p-4 bg-white dark:bg-gray-800 shadow-MD gap-3 flex">
+        <div className="w-full flex gap-3 ">
           <input
             value={input}
             onChange={e => setInput(e.target.value)}
             onKeyDown={e => e.key === 'Enter' && sendMessage()}
             placeholder="Type your question..."
-            className="flex-1 rounded-l-full px-4 py-2 border border-gray-300 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-sky-500 dark:bg-gray-700 dark:text-white"
-            aria-label="Type your question"
+            className="flex-1 rounded px-4 py-6 border border-gray-300 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-sky-500 dark:bg-gray-700 dark:text-white"
+            aria-label="Ask filebank Al..."
           />
           <Button
-            type="primary"
-            loading={loading}
+            type="link"
             onClick={sendMessage}
             className="rounded-r-full px-4 py-2 bg-[#555] hover:bg-[#333] text-white"
             aria-label="Send message"
