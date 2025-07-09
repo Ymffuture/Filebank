@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Button, Input, Typography, Modal, Space } from 'antd';
 import { MessageOutlined } from '@ant-design/icons';
 import api from '../api/fileApi';
-import { ArrowRight, ArrowLeft,  ArrowUp} from 'lucide-react';
+import { ArrowUp} from 'lucide-react';
 import { Light as SyntaxHighlighter } from 'react-syntax-highlighter';
 import js from 'react-syntax-highlighter/dist/esm/languages/hljs/javascript';
 import { atomOneLight } from 'react-syntax-highlighter/dist/esm/styles/hljs';
@@ -74,7 +74,7 @@ const ChatBotModal = () => {
               display: 'inline-block',
               padding: '8px 12px',
               borderRadius: 10,
-              background: msg.from === 'user' ? '#1E90FF' : '#f5f5f5',
+              background: msg.from === 'user' ? '#f5f5f5' : '#f5f5f5',
               color: msg.from === 'user' ? '#fff' : '#000',
               maxWidth: '90%',
               wordBreak: 'break-word',
@@ -135,7 +135,7 @@ const ChatBotModal = () => {
             onChange={(e) => setInput(e.target.value)}
             onKeyDown={(e) => e.key === 'Enter' && sendMessage()}
           />
-          <Button type="primary" loading={loading} onClick={sendMessage}>
+          <Button type="primary" loading={loading} onClick={sendMessage} shape='circle'>
             <ArrowUp/>
           </Button>
         </Space.Compact>
