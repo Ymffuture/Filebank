@@ -6,7 +6,7 @@ import { Light as SyntaxHighlighter } from 'react-syntax-highlighter';
 import js from 'react-syntax-highlighter/dist/esm/languages/hljs/javascript';
 import { atomOneLight, atomOneDark } from 'react-syntax-highlighter/dist/esm/styles/hljs';
 import copy from 'copy-to-clipboard';
-import { SendHorizonal, Mic } from 'lucide-react';
+import { SendHorizonal, Mic, ArrowUp} from 'lucide-react';
 const { Text } = Typography;
 
 SyntaxHighlighter.registerLanguage('javascript', js);
@@ -73,7 +73,7 @@ export default function AIScreen() {
     return parts.map((part, i) => {
       if (i % 2 === 1) {
         return (
-  <div key={`${idx}-code-${i}`} className="relative my-4 group animate-fade-in border rounded-lg overflow-hidden shadow-sm">
+  <div key={`${idx}-code-${i}`} className="relative my-4 group animate-fade-in border rounded-lg overflow-hidden">
   <SyntaxHighlighter
     language="javascript"
     showLineNumbers={true}
@@ -116,7 +116,7 @@ export default function AIScreen() {
         return (
           <div
             key={`${idx}-text-${i}`}
-            className={`my-2 p-3 rounded-lg max-w-[80%] whitespace-pre-wrap break-words text-[15px] leading-relaxed shadow-md animate-fade-in ${
+            className={`my-2 p-3 rounded-lg max-w-[80%] whitespace-pre-wrap break-words text-[15px] leading-relaxed animate-fade-in ${
               msg.from === 'user'
                 ? 'bg-[#333] text-white self-end ml-auto'
                 : 'bg-sky-100 text-[#333] dark:bg-gray-700 dark:text-white'
@@ -129,9 +129,9 @@ export default function AIScreen() {
   };
 
   return (
-    <div className={`${darkMode ? 'dark' : ''} h-screen flex flex-col bg-gradient-to-br from-sky-100 to-white dark:from-gray-800 dark:to-gray-900`}>
+    <div className={`${darkMode ? 'dark' : ''} h-screen flex flex-col bg-gradient-to-br from-white to-white dark:from-gray-800 dark:to-gray-900`}>
       <header className="flex justify-between items-center p-4 bg-white dark:bg-gray-800">
-        <h1 className="text-xl font-bold text-[#333] dark:text-white">FileBank AI</h1>
+        <h1 className="text-xl font-bold text-[#333] dark:text-white">Filebank cloud AI</h1>
         <Space>
           <Switch
             checked={darkMode}
@@ -197,10 +197,10 @@ export default function AIScreen() {
         <button
           type="button"
           onClick={sendMessage}
-          className="bg-sky-500 hover:bg-sky-600 text-white p-2 rounded-lg shadow transition flex items-center justify-center"
+          className="bg-[#333] hover:bg-[gray] text-white p-2 rounded-full transition flex items-center justify-center"
           aria-label="Send message"
         >
-          <SendHorizonal size={18} className="transform rotate-45" />
+          <ArrowUp size={18} className="transform rotate-45" />
         </button>
       </div>
     </div>
