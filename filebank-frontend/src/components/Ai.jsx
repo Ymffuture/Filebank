@@ -6,7 +6,7 @@ import { ArrowUp} from 'lucide-react';
 import { Light as SyntaxHighlighter } from 'react-syntax-highlighter';
 import js from 'react-syntax-highlighter/dist/esm/languages/hljs/javascript';
 import { atomOneLight } from 'react-syntax-highlighter/dist/esm/styles/hljs';
-
+import {Link} from 'react-router-dom' ;
 SyntaxHighlighter.registerLanguage('javascript', js);
 
 const { Text } = Typography;
@@ -110,7 +110,7 @@ const ChatBotModal = () => {
         title="Filebank Chat Assistant"
         open={visible}
         onCancel={() => setVisible(false)}
-        footer={'Filebank' }
+        footer={<Link to='/full-screen-ai' >Full screen</Link> }
         width={500}
         bodyStyle={{ maxHeight: '80vh', overflowY: 'auto', paddingBottom: 0 }}
       >
