@@ -3,8 +3,8 @@ const Ai =() =>{
 return (
 <div>AI</div>
  ) 
-} 
+} ;
 
 
 
-Export default Ai;
+export default Ai;
