@@ -26,3 +26,13 @@ body {
   30% { background-color: #e1ffd9; }
   100% { background-color: white; opacity: 1; }
 }
+.dot-flash {
+  font-weight: bold;
+  font-size: 1.2rem;
+}
+.delay-200 {
+  animation-delay: 0.2s;
+}
+.delay-400 {
+  animation-delay: 0.4s;
+}
