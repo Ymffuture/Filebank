@@ -110,7 +110,7 @@ const ChatBotModal = () => {
         title="Filebank Chat Assistant"
         open={visible}
         onCancel={() => setVisible(false)}
-        footer={null}
+        footer={'Filebank' }
         width={500}
         bodyStyle={{ maxHeight: '80vh', overflowY: 'auto', paddingBottom: 0 }}
       >
