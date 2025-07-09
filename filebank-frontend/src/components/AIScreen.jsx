@@ -18,13 +18,15 @@ export default function AIScreen() {
   const [input, setInput] = useState('');
   const [loading, setLoading] = useState(false);
   const [darkMode, setDarkMode] = useState(false);
+  const [botTypingText, setBotTypingText] = useState('');
+  const [isTyping, setIsTyping] = useState(false);
   const containerRef = useRef(null);
 
   useEffect(() => {
     if (containerRef.current) {
       containerRef.current.scrollTop = containerRef.current.scrollHeight;
     }
-  }, [messages]);
+  }, [messages, botTypingText]);
 
   const sendMessage = async () => {
     if (!input.trim()) return;
@@ -33,9 +35,26 @@ export default function AIScreen() {
     setLoading(true);
     try {
       const res = await api.post('/chat', { message: input });
-      setMessages(prev => [...prev, { from: 'bot', text: res.data.reply }]);
+      const fullReply = res.data.reply;
+
+      setIsTyping(true);
+      let current = '';
+      let i = 0;
+
+      const typeInterval = setInterval(() => {
+        current += fullReply[i];
+        setBotTypingText(current);
+        i++;
+        if (i >= fullReply.length) {
+          clearInterval(typeInterval);
+          setMessages(prev => [...prev, { from: 'bot', text: fullReply }]);
+          setBotTypingText('');
+          setIsTyping(false);
+        }
+      }, 20);
     } catch {
       setMessages(prev => [...prev, { from: 'bot', text: '⚠️ Error contacting AI.' }]);
+      setIsTyping(false);
     } finally {
       setLoading(false);
       setInput('');
@@ -98,7 +117,7 @@ export default function AIScreen() {
 
   return (
     <div className={`${darkMode ? 'dark' : ''} h-screen flex flex-col bg-gradient-to-br from-sky-100 to-white dark:from-gray-800 dark:to-gray-900`}>
-      <header className="flex justify-between items-center p-4 bg-white dark:bg-gray-800 shadow-md">
+      <header className="flex justify-between items-center p-4 bg-white dark:bg-gray-800">
         <h1 className="text-xl font-bold text-[#333] dark:text-white">FileBank AI</h1>
         <Space>
           <Switch
@@ -114,38 +133,28 @@ export default function AIScreen() {
       <main ref={containerRef} className="flex-1 overflow-auto p-4 flex flex-col space-y-4">
         {messages.map((msg, idx) => (
           <div key={idx} className="flex flex-col">
-            {msg.from === 'bot' && idx === messages.length - 1 && loading ? (
-              <div className="my-2 p-3 rounded-lg max-w-[80%] bg-sky-100 dark:bg-gray-700 dark:text-white flex items-center">
-                <svg
-                  className="animate-spin h-10 w-10 text-black mr-2"
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                >
-                  <circle
-                    className="opacity-25"
-                    cx="12"
-                    cy="12"
-                    r="10"
-                    stroke="currentColor"
-                    strokeWidth="4"
-                  ></circle>
-                  <path
-                    className="opacity-75"
-                    fill="currentColor"
-                    d="M4 12a8 8 0 018-8V0c-4.418 0-8 3.582-8 8z"
-                  ></path>
-                </svg>
-                <span>Thinking...</span>
-              </div>
-            ) : (
-              renderMessage(msg, idx)
-            )}
+            {renderMessage(msg, idx)}
           </div>
         ))}
+
+        {/* 🔥 Typing Effect Preview */}
+        {isTyping && (
+  <div className="flex flex-col">
+    {renderMessage({ from: 'bot', text: botTypingText }, 'typing')}
+
+    {/* Animated typing dots */}
+    <div className="my-2 p-3 rounded-lg max-w-[80%] bg-sky-100 dark:bg-gray-700 dark:text-white text-sm font-medium flex items-center gap-2">
+      <span>Typing...</span>
+      <span className="dot-flash animate-blink">.</span>
+      <span className="dot-flash animate-blink delay-200">.</span>
+      <span className="dot-flash animate-blink delay-400">.</span>
+    </div>
+  </div>
+)}
+
       </main>
 
-      <footer className="p-4 bg-white dark:bg-gray-800 shadow-MD gap-3 flex">
+      <footer className="p-4 bg-white dark:bg-gray-800 gap-3 flex">
         <div className="w-full flex gap-3 ">
           <input
             value={input}
