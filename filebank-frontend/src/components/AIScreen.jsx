@@ -51,7 +51,7 @@ export default function AIScreen() {
           setBotTypingText('');
           setIsTyping(false);
         }
-      }, 20);
+      }, 10);
     } catch {
       setMessages(prev => [...prev, { from: 'bot', text: '⚠️ Error contacting AI.' }]);
       setIsTyping(false);
@@ -130,18 +130,21 @@ export default function AIScreen() {
         );
       } else {
         const html = highlightKeywords(
-          part
-            .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
-            .replace(/\n/g, '<br/>')
-        );
-
+  part
+    .replace(/~~(.*?)~~/g, '<span style="text-decoration: line-through;">$1</span>')
+    .replace(/\*\*(.*?)\*\*/g, '<strong style="font-weight:600;">$1</strong>')
+    .replace(/(^|[^*])_([^_]+)_/g, '$1<em style="font-style: italic;">$2</em>')
+    .replace(/`([^`]+)`/g, '<code style="background:#f6f8fa;border-radius:4px;padding:2px 6px;font-size:13px;color:#c7254e;">$1</code>')
+    .replace(/^\*\s+/gm, '– ')
+    .replace(/\n/g, '<br/>')
+);
         return (
           <div
             key={`${idx}-text-${i}`}
             className={`my-2 p-3 rounded-lg max-w-[80%] whitespace-pre-wrap break-words text-[15px] leading-relaxed animate-fade-in ${
               msg.from === 'user'
                 ? 'bg-[#333] text-white self-end ml-auto'
-                : 'bg-sky-100 text-[#333] dark:bg-gray-700 dark:text-white'
+                : 'bg-[#fff] text-[#333] dark:bg-gray-700 dark:text-white'
             }`}
             dangerouslySetInnerHTML={{ __html: html }}
           />
@@ -212,7 +215,7 @@ export default function AIScreen() {
           className="text-gray-400 hover:text-sky-500 transition"
           aria-label="Voice input"
         >
-          <Mic size={20} />
+          <Mic size={20} disable/>
         </button>
 
         {/* Send icon */}
@@ -222,7 +225,7 @@ export default function AIScreen() {
           className="bg-[#333] hover:bg-[gray] text-white p-2 rounded-full transition flex items-center justify-center"
           aria-label="Send message"
         >
-          <ArrowUp size={18} className="transform rotate-45" />
+          <ArrowUp size={18} className="transform rotate-45 text-white" />
         </button>
       </div>
     </div>
