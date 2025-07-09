@@ -7,6 +7,7 @@ import js from 'react-syntax-highlighter/dist/esm/languages/hljs/javascript';
 import { atomOneLight, atomOneDark } from 'react-syntax-highlighter/dist/esm/styles/hljs';
 import copy from 'copy-to-clipboard';
 import { SendHorizonal, Mic, ArrowUp} from 'lucide-react';
+import {Link} from 'react-router-dom';
 const { Text } = Typography;
 
 SyntaxHighlighter.registerLanguage('javascript', js);
@@ -157,6 +158,7 @@ export default function AIScreen() {
     <div className={`${darkMode ? 'dark' : ''} h-screen flex flex-col bg-gradient-to-br from-white to-white dark:from-gray-800 dark:to-gray-900`}>
       <header className="flex justify-between items-center p-4 bg-white dark:bg-gray-800">
         <h1 className="text-xl font-bold text-[#333] dark:text-white">Filebank cloud AI</h1>
+        <Link to='/dashboard' >Dashboard</Link>
         <Space>
           <Switch
             checked={darkMode}
@@ -181,7 +183,7 @@ export default function AIScreen() {
     {renderMessage({ from: 'bot', text: botTypingText }, 'typing')}
 
     <div className="ai-typing-bubble dark:bg-gray-700 dark:text-white">
-      <span>Typing</span>
+      <span className='animate-pulse text-[gray]' >Typing</span>
       <div className="flex ml-2 gap-1">
         <span className="ai-dot"></span>
         <span className="ai-dot"></span>
@@ -193,7 +195,7 @@ export default function AIScreen() {
       </main>
 <footer className="w-full px-4 pb-6 pt-2 bg-white dark:bg-gray-900 border-t border-gray-200 dark:border-gray-700">
   <div className="max-w-3xl mx-auto flex flex-col gap-2">
-    <div className="relative border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 rounded-xl shadow-sm flex items-end focus-within:ring-2 focus-within:ring-sky-500 transition">
+    <div className="relative border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 rounded-xl flex items-end focus-within:ring-2 focus-within:ring-sky-500 transition">
       <textarea
         value={input}
         onChange={(e) => setInput(e.target.value)}
@@ -206,7 +208,7 @@ export default function AIScreen() {
         rows={1}
         placeholder="Send a message"
         className="w-full resize-none border-0 bg-transparent px-4 py-3 text-sm text-gray-900 dark:text-white focus:outline-none"
-        aria-label="Type your message"
+        aria-label="Ask filebank AI..."
       />
       <div className="flex items-center gap-2 px-3 py-2">
         {/* Mic icon (optional) */}
@@ -230,8 +232,8 @@ export default function AIScreen() {
       </div>
     </div>
 
-    <p className="text-xs text-center text-gray-500 dark:text-gray-400 mt-1">
-      Filebank AI may produce errors. Verify answers before using.
+    <p className="text-xs text-center text-gray-500 dark:text-gray-400 mt-2">
+      <b>Filebank could AI</b> may produce errors. Verify answers before using.
     </p>
   </div>
 </footer>
