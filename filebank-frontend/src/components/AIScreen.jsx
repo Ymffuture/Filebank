@@ -7,7 +7,6 @@ import { Light as SyntaxHighlighter } from 'react-syntax-highlighter';
 import js from 'react-syntax-highlighter/dist/esm/languages/hljs/javascript';
 import { atomOneLight, atomOneDark } from 'react-syntax-highlighter/dist/esm/styles/hljs';
 import copy from 'copy-to-clipboard';
-import 'react-typing-effect/dist/index.css';
 
 SyntaxHighlighter.registerLanguage('javascript', js);
 
@@ -20,13 +19,10 @@ export default function AIScreen() {
   const [darkMode, setDarkMode] = useState(false);
   const containerRef = useRef(null);
 
-  // Auto-scroll on new messages
+  // Auto-scroll
   useEffect(() => {
     if (containerRef.current) {
-      containerRef.current.scrollTo({
-        top: containerRef.current.scrollHeight,
-        behavior: 'smooth'
-      });
+      containerRef.current.scrollTo({ top: containerRef.current.scrollHeight, behavior: 'smooth' });
     }
   }, [messages]);
 
@@ -47,17 +43,15 @@ export default function AIScreen() {
   };
 
   const renderText = (text, from) => {
-    // handle **bold** and line breaks
     const html = text
       .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
       .replace(/\n/g, '<br/>');
+    const alignment = from === 'user'
+      ? 'self-end bg-blue-600 text-white ml-auto'
+      : 'self-start bg-gray-200 dark:bg-gray-700 dark:text-white';
     return (
       <div
-        className={`p-3 rounded-lg max-w-[70%] ${
-          from === 'user'
-            ? 'bg-blue-600 text-white self-end ml-auto'
-            : 'bg-gray-200 dark:bg-gray-700 dark:text-white self-start'
-        }`}
+        className={`p-3 max-w-[70%] rounded-lg ${alignment}`}
         dangerouslySetInnerHTML={{ __html: html }}
       />
     );
@@ -67,7 +61,6 @@ export default function AIScreen() {
     const parts = msg.text.split(/```([\s\S]*?)```/g);
     return parts.map((part, i) => {
       if (i % 2 === 1) {
-        // code block
         return (
           <div key={i} className="relative group my-2">
             <SyntaxHighlighter
@@ -88,10 +81,9 @@ export default function AIScreen() {
           </div>
         );
       } else {
-        // text block
         return (
           <div key={i} className="my-2">
-            {msg.from === 'bot' && idx === messages.length - 1 && loading ? (
+            {msg.from === 'bot' && i === 0 && loading ? (
               <Typing
                 text={[part]}
                 speed={30}
@@ -110,7 +102,7 @@ export default function AIScreen() {
   };
 
   return (
-    <div className={`${darkMode ? 'dark' : ''} h-screen flex flex-col bg-white dark:bg-gray-900`}>
+    <div className={`${darkMode ? 'dark' : ''} h-screen flex flex-col bg-white dark:bg-gray-900`}>      
       <header className="flex items-center justify-between p-4 bg-gray-100 dark:bg-gray-800">
         <h1 className="text-xl font-semibold text-gray-800 dark:text-gray-200">FileBank AI</h1>
         <Space>
@@ -123,10 +115,7 @@ export default function AIScreen() {
         </Space>
       </header>
 
-      <main
-        ref={containerRef}
-        className="flex-1 overflow-y-auto p-4 flex flex-col space-y-2"
-      >
+      <main ref={containerRef} className="flex-1 overflow-y-auto p-4 flex flex-col space-y-2">
         {messages.map((msg, idx) => (
           <div key={idx} className="flex flex-col">
             {renderMessage(msg, idx)}
@@ -143,12 +132,11 @@ export default function AIScreen() {
             onKeyDown={e => e.key === 'Enter' && sendMessage()}
             className="flex-1"
           />
-          <Button type="primary" loading={loading} onClick={sendMessage}>
-            Send
-          </Button>
+          <Button type="primary" loading={loading} onClick={sendMessage}>Send</Button>
         </Space.Compact>
       </footer>
     </div>
   );
 }
+``
 
