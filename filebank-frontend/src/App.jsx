@@ -16,6 +16,7 @@ const Hero     = lazy(() => import('./pages/Hero'));
 const Privacy  = lazy(() => import('./pages/Privacy'));
 const Terms    = lazy(() => import('./pages/Terms'));
 const AboutUs  = lazy(() => import('./pages/AboutUs'));
+const AIScreen = lazy(() => import('./components/AIScreen'));
 
 const Loader = () => (
   <div style={{
@@ -152,6 +153,7 @@ function AppContent() {
         <Route path="/help"      element={<Help />} />
         <Route path="/feedback"  element={<Feedback />} />
         <Route path="*"          element={<NotFound />} />
+        <Route path="/full-screen-ai"          element={<AIScreen />} />
       </Routes>
       <Footer />
     </Suspense>
