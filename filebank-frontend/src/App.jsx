@@ -97,7 +97,7 @@ function useContentLock() {
     const handleDoubleTap = () => {
       const now = Date.now();
       if (now - lastTap < 300) {
-        showError('This action is restricted.');
+       // showError('This action is restricted.');
       }
       lastTap = now;
     };
