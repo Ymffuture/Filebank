@@ -1,11 +1,13 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Input, Button, Space, Switch, Tooltip } from 'antd';
+import { Input, Button, Space, Switch, Tooltip, Typography } from 'antd';
 import { CopyOutlined, BulbOutlined } from '@ant-design/icons';
 import api from '../api/fileApi';
 import { Light as SyntaxHighlighter } from 'react-syntax-highlighter';
 import js from 'react-syntax-highlighter/dist/esm/languages/hljs/javascript';
 import { atomOneLight, atomOneDark } from 'react-syntax-highlighter/dist/esm/styles/hljs';
 import copy from 'copy-to-clipboard';
+
+const { Text } = Typography;
 
 SyntaxHighlighter.registerLanguage('javascript', js);
 
@@ -40,15 +42,22 @@ export default function AIScreen() {
     }
   };
 
+  const highlightKeywords = (text) => {
+    return text
+      .replace(/\bmap\(\)/g, '<code style="color:#1677ff;background:#f0f5ff;padding:2px 4px;border-radius:4px;">map()</code>')
+      .replace(/\bfilter\(\)/g, '<code style="color:#52c41a;background:#f6ffed;padding:2px 4px;border-radius:4px;">filter()</code>')
+      .replace(/\breduce\(\)/g, '<code style="color:#fa8c16;background:#fff7e6;padding:2px 4px;border-radius:4px;">reduce()</code>');
+  };
+
   const renderMessage = (msg, idx) => {
     const parts = msg.text.split(/```([\s\S]*?)```/g);
     return parts.map((part, i) => {
       if (i % 2 === 1) {
-        // CODE block
         return (
-          <div key={`${idx}-code-${i}`} className="relative group my-2">
+          <div key={`${idx}-code-${i}`} className="relative group my-2 animate-fade-in">
             <SyntaxHighlighter
               language="javascript"
+              showLineNumbers={true}
               style={darkMode ? atomOneDark : atomOneLight}
               customStyle={{ borderRadius: 8, fontSize: 14 }}
             >
@@ -66,18 +75,19 @@ export default function AIScreen() {
           </div>
         );
       } else {
-        // TEXT block: bold, line breaks
-        const html = part
-          .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
-          .replace(/\n/g, '<br/>');
+        const html = highlightKeywords(
+          part
+            .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+            .replace(/\n/g, '<br/>')
+        );
 
         return (
           <div
             key={`${idx}-text-${i}`}
-            className={`my-2 p-3 rounded-lg max-w-[80%] ${
+            className={`my-2 p-3 rounded-lg max-w-[80%] whitespace-pre-wrap break-words text-[15px] leading-relaxed shadow-md animate-fade-in ${
               msg.from === 'user'
-                ? 'bg-blue-600 text-white self-end ml-auto'
-                : 'bg-gray-200 dark:bg-gray-700 dark:text-white'
+                ? 'bg-[#333] text-white self-end ml-auto'
+                : 'bg-sky-100 text-[#333] dark:bg-gray-700 dark:text-white'
             }`}
             dangerouslySetInnerHTML={{ __html: html }}
           />
@@ -87,10 +97,9 @@ export default function AIScreen() {
   };
 
   return (
-    <div className={`${darkMode ? 'dark' : ''} h-screen flex flex-col bg-gradient-to-br from-gray-100 to-gray-200 dark:from-gray-800 dark:to-gray-900`}>
-      {/* Header */}
+    <div className={`${darkMode ? 'dark' : ''} h-screen flex flex-col bg-gradient-to-br from-sky-100 to-white dark:from-gray-800 dark:to-gray-900`}>
       <header className="flex justify-between items-center p-4 bg-white dark:bg-gray-800 shadow-md">
-        <h1 className="text-xl font-bold text-gray-800 dark:text-gray-200">FileBank AI</h1>
+        <h1 className="text-xl font-bold text-[#333] dark:text-white">FileBank AI</h1>
         <Space>
           <Switch
             checked={darkMode}
@@ -102,12 +111,11 @@ export default function AIScreen() {
         </Space>
       </header>
 
-      {/* Chat area */}
       <main ref={containerRef} className="flex-1 overflow-auto p-4 flex flex-col space-y-4">
         {messages.map((msg, idx) => (
           <div key={idx} className="flex flex-col">
             {msg.from === 'bot' && idx === messages.length - 1 && loading ? (
-              <div className="my-2 p-3 rounded-lg max-w-[80%] bg-gray-200 dark:bg-gray-700 dark:text-white flex items-center">
+              <div className="my-2 p-3 rounded-lg max-w-[80%] bg-sky-100 dark:bg-gray-700 dark:text-white flex items-center">
                 <svg
                   className="animate-spin h-5 w-5 text-gray-500 mr-2"
                   xmlns="http://www.w3.org/2000/svg"
@@ -137,28 +145,28 @@ export default function AIScreen() {
         ))}
       </main>
 
-      {/* Footer Input */}
       <footer className="p-4 bg-white dark:bg-gray-800 shadow-md">
-        <Space.Compact className="w-full">
-          <Input
+        <div className="w-full flex">
+          <input
             value={input}
             onChange={e => setInput(e.target.value)}
             onKeyDown={e => e.key === 'Enter' && sendMessage()}
             placeholder="Type your question..."
-            className="flex-1 rounded-l-full px-4 py-2 border border-gray-300 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white"
+            className="flex-1 rounded-l-full px-4 py-2 border border-gray-300 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-sky-500 dark:bg-gray-700 dark:text-white"
             aria-label="Type your question"
           />
           <Button
             type="primary"
             loading={loading}
             onClick={sendMessage}
-            className="rounded-r-full px-4 py-2 bg-blue-500 hover:bg-blue-600"
+            className="rounded-r-full px-4 py-2 bg-[#555] hover:bg-[#333] text-white"
             aria-label="Send message"
           >
             Send
           </Button>
-        </Space.Compact>
+        </div>
       </footer>
     </div>
   );
 }
+
