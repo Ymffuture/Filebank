@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Input, Button, Space, Switch, Tooltip } from 'antd';
 import { CopyOutlined, BulbOutlined } from '@ant-design/icons';
-import Typing from 'react-typing-effect';
 import api from '../api/fileApi';
 import { Light as SyntaxHighlighter } from 'react-syntax-highlighter';
 import js from 'react-syntax-highlighter/dist/esm/languages/hljs/javascript';
@@ -61,6 +60,7 @@ export default function AIScreen() {
                 icon={<CopyOutlined />}
                 onClick={() => copy(part.trim())}
                 className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition"
+                aria-label="Copy code"
               />
             </Tooltip>
           </div>
@@ -87,9 +87,9 @@ export default function AIScreen() {
   };
 
   return (
-    <div className={`${darkMode ? 'dark' : ''} h-screen flex flex-col bg-white dark:bg-gray-900`}>
+    <div className={`${darkMode ? 'dark' : ''} h-screen flex flex-col bg-gradient-to-br from-gray-100 to-gray-200 dark:from-gray-800 dark:to-gray-900`}>
       {/* Header */}
-      <header className="flex justify-between items-center p-4 bg-gray-100 dark:bg-gray-800">
+      <header className="flex justify-between items-center p-4 bg-white dark:bg-gray-800 shadow-md">
         <h1 className="text-xl font-bold text-gray-800 dark:text-gray-200">FileBank AI</h1>
         <Space>
           <Switch
@@ -97,6 +97,7 @@ export default function AIScreen() {
             onChange={setDarkMode}
             checkedChildren={<BulbOutlined />}
             unCheckedChildren={<BulbOutlined />}
+            aria-label="Toggle dark mode"
           />
         </Space>
       </header>
@@ -106,14 +107,28 @@ export default function AIScreen() {
         {messages.map((msg, idx) => (
           <div key={idx} className="flex flex-col">
             {msg.from === 'bot' && idx === messages.length - 1 && loading ? (
-              <div className="my-2 p-3 rounded-lg max-w-[80%] bg-gray-200 dark:bg-gray-700 dark:text-white">
-                <Typing
-                  text={[msg.text]}
-                  speed={35}
-                  eraseDelay={100000000}
-                  cursorRenderer={(cursor) => <span>{cursor}</span>}
-                  displayTextRenderer={(text) => <span>{text}</span>}
-                />
+              <div className="my-2 p-3 rounded-lg max-w-[80%] bg-gray-200 dark:bg-gray-700 dark:text-white flex items-center">
+                <svg
+                  className="animate-spin h-5 w-5 text-gray-500 mr-2"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                >
+                  <circle
+                    className="opacity-25"
+                    cx="12"
+                    cy="12"
+                    r="10"
+                    stroke="currentColor"
+                    strokeWidth="4"
+                  ></circle>
+                  <path
+                    className="opacity-75"
+                    fill="currentColor"
+                    d="M4 12a8 8 0 018-8V0c-4.418 0-8 3.582-8 8z"
+                  ></path>
+                </svg>
+                <span>Thinking...</span>
               </div>
             ) : (
               renderMessage(msg, idx)
@@ -123,16 +138,23 @@ export default function AIScreen() {
       </main>
 
       {/* Footer Input */}
-      <footer className="p-4 bg-gray-100 dark:bg-gray-800">
+      <footer className="p-4 bg-white dark:bg-gray-800 shadow-md">
         <Space.Compact className="w-full">
           <Input
             value={input}
             onChange={e => setInput(e.target.value)}
             onKeyDown={e => e.key === 'Enter' && sendMessage()}
             placeholder="Type your question..."
-            className="flex-1"
+            className="flex-1 rounded-l-full px-4 py-2 border border-gray-300 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white"
+            aria-label="Type your question"
           />
-          <Button type="primary" loading={loading} onClick={sendMessage}>
+          <Button
+            type="primary"
+            loading={loading}
+            onClick={sendMessage}
+            className="rounded-r-full px-4 py-2 bg-blue-500 hover:bg-blue-600"
+            aria-label="Send message"
+          >
             Send
           </Button>
         </Space.Compact>
