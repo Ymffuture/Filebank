@@ -74,7 +74,7 @@ const ChatBotModal = () => {
               display: 'inline-block',
               padding: '8px 12px',
               borderRadius: 10,
-              background: msg.from === 'user' ? '#f5f5f5' : '#f5f5f5',
+              background: msg.from === 'user' ? '#333' : '#f5f5f5',
               color: msg.from === 'user' ? '#fff' : '#000',
               maxWidth: '90%',
               wordBreak: 'break-word',
@@ -134,8 +134,9 @@ const ChatBotModal = () => {
             value={input}
             onChange={(e) => setInput(e.target.value)}
             onKeyDown={(e) => e.key === 'Enter' && sendMessage()}
+            style={{border:'none', padding:'5px' }} 
           />
-          <Button type="primary" loading={loading} onClick={sendMessage} shape='circle'>
+          <Button type="dashed" loading={loading} onClick={sendMessage} shape='circle'>
             <ArrowUp/>
           </Button>
         </Space.Compact>
