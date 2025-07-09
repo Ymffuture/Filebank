@@ -138,14 +138,20 @@ export default function AIScreen() {
     .replace(/`([^`]+)`/g, '<code style="background:#f6f8fa;border-radius:4px;padding:2px 6px;font-size:13px;color:#c7254e;">$1</code>')
     .replace(/^\*\s+/gm, '– ')
     .replace(/\n/g, '<br/>')
+    .replace(/((https?:\/\/|www\.)[^\s<]+)/g, (match) => {
+    const url = match.startsWith('http') ? match : `https://${match}`;
+    return `<a href="${url}" target="_blank" rel="noopener noreferrer" style="color:#1677ff;text-decoration:underline;">${match}</a>`;
+  }
+)
+
 );
         return (
           <div
             key={`${idx}-text-${i}`}
-            className={`my-2 p-3 rounded-lg max-w-[80%] whitespace-pre-wrap break-words text-[15px] leading-relaxed animate-fade-in ${
+            className={`my-2 p-3 rounded-lg max-w-[100%] whitespace-pre-wrap break-words text-[15px] leading-relaxed animate-fade-in ${
               msg.from === 'user'
-                ? 'bg-[#333] text-white self-end ml-auto'
-                : 'bg-[#fff] text-[#333] dark:bg-gray-700 dark:text-white'
+                ? 'bg-gray-400 text-white self-end ml-auto'
+                : 'bg-gray-200 text-[#333] dark:bg-gray-700 dark:text-white'
             }`}
             dangerouslySetInnerHTML={{ __html: html }}
           />
@@ -193,7 +199,7 @@ export default function AIScreen() {
   </div>
 )}
       </main>
-<footer className="w-full px-4 pb-6 pt-2 bg-white dark:bg-gray-900 border-t border-gray-200 dark:border-gray-700">
+<footer className="w-full px-4 pb-6 pt-2 bg-white dark:bg-gray-900 dark:border-gray-700">
   <div className="max-w-3xl mx-auto flex flex-col gap-2">
     <div className="relative border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 rounded-xl flex items-end focus-within:ring-2 focus-within:ring-sky-500 transition">
       <textarea
@@ -227,7 +233,7 @@ export default function AIScreen() {
           className="bg-[#333] hover:bg-[gray] text-white p-2 rounded-full transition flex items-center justify-center"
           aria-label="Send message"
         >
-          <ArrowUp size={18} className="transform rotate-45 text-white" />
+          <ArrowUp size={18} className="transform text-white" />
         </button>
       </div>
     </div>
