@@ -73,8 +73,7 @@ export default function AIScreen() {
     return parts.map((part, i) => {
       if (i % 2 === 1) {
         return (
-          <div key={`${idx}-code-${i}`} className="relative group my-2 animate-fade-in">
-          <div key={`${idx}-code-${i}`} className="relative my-4 group animate-fade-in border rounded-lg overflow-hidden shadow-sm">
+  <div key={`${idx}-code-${i}`} className="relative my-4 group animate-fade-in border rounded-lg overflow-hidden shadow-sm">
   <SyntaxHighlighter
     language="javascript"
     showLineNumbers={true}
@@ -104,9 +103,8 @@ export default function AIScreen() {
         aria-label="Copy code"
       />
     </Tooltip>
+    </div>
   </div>
-</div>
-
         );
       } else {
         const html = highlightKeywords(
