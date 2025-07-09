@@ -78,7 +78,7 @@ export default function AIScreen() {
                 <div
                   className={`p-3 max-w-[70%] rounded-lg ${
                     msg.from === 'user'
-                      ? 'bg-blue-600 text-white'
+                      ? 'bg-[#555] text-white right'
                       : 'bg-gray-200 dark:bg-gray-700 dark:text-white'
                   }`}
                   dangerouslySetInnerHTML={{
