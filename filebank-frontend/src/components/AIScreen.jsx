@@ -12,7 +12,7 @@ SyntaxHighlighter.registerLanguage('javascript', js);
 
 export default function AIScreen() {
   const [messages, setMessages] = useState([
-    { from: 'bot', text: 'Welcome to FileBank AI Assistant!' }
+    { from: 'bot', text: 'Welcome to **FileBank AI Assistant**!\n\nAsk me anything about FileBank.' }
   ]);
   const [input, setInput] = useState('');
   const [loading, setLoading] = useState(false);
@@ -20,7 +20,6 @@ export default function AIScreen() {
   const containerRef = useRef(null);
 
   useEffect(() => {
-    // Scroll to bottom on new message
     if (containerRef.current) {
       containerRef.current.scrollTop = containerRef.current.scrollHeight;
     }
@@ -35,7 +34,7 @@ export default function AIScreen() {
       const res = await api.post('/chat', { message: input });
       setMessages(prev => [...prev, { from: 'bot', text: res.data.reply }]);
     } catch {
-      setMessages(prev => [...prev, { from: 'bot', text: 'Error contacting AI.' }]);
+      setMessages(prev => [...prev, { from: 'bot', text: '⚠️ Error contacting AI.' }]);
     } finally {
       setLoading(false);
       setInput('');
@@ -46,12 +45,13 @@ export default function AIScreen() {
     const parts = msg.text.split(/```([\s\S]*?)```/g);
     return parts.map((part, i) => {
       if (i % 2 === 1) {
+        // CODE block
         return (
           <div key={`${idx}-code-${i}`} className="relative group my-2">
             <SyntaxHighlighter
               language="javascript"
               style={darkMode ? atomOneDark : atomOneLight}
-              customStyle={{ borderRadius: 8 }}
+              customStyle={{ borderRadius: 8, fontSize: 14 }}
             >
               {part.trim()}
             </SyntaxHighlighter>
@@ -66,13 +66,19 @@ export default function AIScreen() {
           </div>
         );
       } else {
+        // TEXT block: bold, line breaks
         const html = part
           .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
           .replace(/\n/g, '<br/>');
+
         return (
           <div
             key={`${idx}-text-${i}`}
-            className={`my-2 p-2 rounded-lg ${msg.from === 'user' ? 'bg-blue-500 text-white self-end' : 'bg-gray-200 dark:bg-gray-700 dark:text-white self-start'}`}
+            className={`my-2 p-3 rounded-lg max-w-[80%] ${
+              msg.from === 'user'
+                ? 'bg-blue-600 text-white self-end ml-auto'
+                : 'bg-gray-200 dark:bg-gray-700 dark:text-white'
+            }`}
             dangerouslySetInnerHTML={{ __html: html }}
           />
         );
@@ -81,7 +87,8 @@ export default function AIScreen() {
   };
 
   return (
-    <div className={`${darkMode ? 'dark' : ''} h-screen flex flex-col bg-white dark:bg-gray-900 transition-colors`}>      
+    <div className={`${darkMode ? 'dark' : ''} h-screen flex flex-col bg-white dark:bg-gray-900`}>
+      {/* Header */}
       <header className="flex justify-between items-center p-4 bg-gray-100 dark:bg-gray-800">
         <h1 className="text-xl font-bold text-gray-800 dark:text-gray-200">FileBank AI</h1>
         <Space>
@@ -94,24 +101,28 @@ export default function AIScreen() {
         </Space>
       </header>
 
-      <main ref={containerRef} className="flex-1 overflow-auto p-4 space-y-4">
+      {/* Chat area */}
+      <main ref={containerRef} className="flex-1 overflow-auto p-4 flex flex-col space-y-4">
         {messages.map((msg, idx) => (
           <div key={idx} className="flex flex-col">
-            {msg.from === 'bot' ? (
-              <Typing
-                speed={50}
-                text={[msg.text]}
-                cursorRenderer={cursor => <span>{cursor}</span>}
-                displayTextRenderer={(text, i) => (
-                  <>{/* render entire message at once */}</>
-                )}
-              />
-            ) : null}
-            {renderMessage(msg, idx)}
+            {msg.from === 'bot' && idx === messages.length - 1 && loading ? (
+              <div className="my-2 p-3 rounded-lg max-w-[80%] bg-gray-200 dark:bg-gray-700 dark:text-white">
+                <Typing
+                  text={[msg.text]}
+                  speed={35}
+                  eraseDelay={100000000}
+                  cursorRenderer={(cursor) => <span>{cursor}</span>}
+                  displayTextRenderer={(text) => <span>{text}</span>}
+                />
+              </div>
+            ) : (
+              renderMessage(msg, idx)
+            )}
           </div>
         ))}
       </main>
 
+      {/* Footer Input */}
       <footer className="p-4 bg-gray-100 dark:bg-gray-800">
         <Space.Compact className="w-full">
           <Input
@@ -121,7 +132,9 @@ export default function AIScreen() {
             placeholder="Type your question..."
             className="flex-1"
           />
-          <Button type="primary" loading={loading} onClick={sendMessage}>Send</Button>
+          <Button type="primary" loading={loading} onClick={sendMessage}>
+            Send
+          </Button>
         </Space.Compact>
       </footer>
     </div>
