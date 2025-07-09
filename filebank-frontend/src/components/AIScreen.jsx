@@ -1,12 +1,12 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Input, Button, Space, Switch, Tooltip, Typography } from 'antd';
+import { Input, Button, Space, Switch, Tooltip, Typography, message} from 'antd';
 import { CopyOutlined, BulbOutlined } from '@ant-design/icons';
 import api from '../api/fileApi';
 import { Light as SyntaxHighlighter } from 'react-syntax-highlighter';
 import js from 'react-syntax-highlighter/dist/esm/languages/hljs/javascript';
 import { atomOneLight, atomOneDark } from 'react-syntax-highlighter/dist/esm/styles/hljs';
 import copy from 'copy-to-clipboard';
-
+import { SendHorizonal, Mic } from 'lucide-react';
 const { Text } = Typography;
 
 SyntaxHighlighter.registerLanguage('javascript', js);
@@ -74,24 +74,39 @@ export default function AIScreen() {
       if (i % 2 === 1) {
         return (
           <div key={`${idx}-code-${i}`} className="relative group my-2 animate-fade-in">
-            <SyntaxHighlighter
-              language="javascript"
-              showLineNumbers={true}
-              style={darkMode ? atomOneDark : atomOneLight}
-              customStyle={{ borderRadius: 8, fontSize: 14 }}
-            >
-              {part.trim()}
-            </SyntaxHighlighter>
-            <Tooltip title="Copy code">
-              <Button
-                type="text"
-                icon={<CopyOutlined />}
-                onClick={() => copy(part.trim())}
-                className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition"
-                aria-label="Copy code"
-              />
-            </Tooltip>
-          </div>
+          <div key={`${idx}-code-${i}`} className="relative my-4 group animate-fade-in border rounded-lg overflow-hidden shadow-sm">
+  <SyntaxHighlighter
+    language="javascript"
+    showLineNumbers={true}
+    style={darkMode ? atomOneDark : atomOneLight}
+    customStyle={{
+      borderRadius: 0,
+      margin: 0,
+      padding: '16px',
+      fontSize: 14,
+      background: 'transparent',
+    }}
+  >
+    {part.trim()}
+  </SyntaxHighlighter>
+
+  <div className="absolute top-2 right-2 z-10">
+    <Tooltip title="Copy code">
+      <Button
+        type="default"
+        size="small"
+        icon={<CopyOutlined />}
+        onClick={() => {
+          copy(part.trim());
+          message.success('Code copied to clipboard');
+        }}
+        className="bg-white dark:bg-gray-800 text-gray-800 dark:text-white border border-gray-300 dark:border-gray-600 hover:border-sky-500 hover:text-sky-600 transition duration-200"
+        aria-label="Copy code"
+      />
+    </Tooltip>
+  </div>
+</div>
+
         );
       } else {
         const html = highlightKeywords(
@@ -139,41 +154,65 @@ export default function AIScreen() {
 
         {/* 🔥 Typing Effect Preview */}
         {isTyping && (
-  <div className="flex flex-col">
+  <div className="flex flex-col gap-1">
     {renderMessage({ from: 'bot', text: botTypingText }, 'typing')}
 
-    {/* Animated typing dots */}
-    <div className="my-2 p-3 rounded-lg max-w-[80%] bg-sky-100 dark:bg-gray-700 dark:text-white text-sm font-medium flex items-center gap-2">
-      <span>Typing...</span>
-      <span className="dot-flash animate-blink">.</span>
-      <span className="dot-flash animate-blink delay-200">.</span>
-      <span className="dot-flash animate-blink delay-400">.</span>
+    <div className="ai-typing-bubble dark:bg-gray-700 dark:text-white">
+      <span>Typing</span>
+      <div className="flex ml-2 gap-1">
+        <span className="ai-dot"></span>
+        <span className="ai-dot"></span>
+        <span className="ai-dot"></span>
+      </div>
     </div>
   </div>
 )}
-
       </main>
+<footer className="w-full px-4 pb-6 pt-2 bg-white dark:bg-gray-900 border-t border-gray-200 dark:border-gray-700">
+  <div className="max-w-3xl mx-auto flex flex-col gap-2">
+    <div className="relative border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 rounded-xl shadow-sm flex items-end focus-within:ring-2 focus-within:ring-sky-500 transition">
+      <textarea
+        value={input}
+        onChange={(e) => setInput(e.target.value)}
+        onKeyDown={(e) => {
+          if (e.key === 'Enter' && !e.shiftKey) {
+            e.preventDefault();
+            sendMessage();
+          }
+        }}
+        rows={1}
+        placeholder="Send a message"
+        className="w-full resize-none border-0 bg-transparent px-4 py-3 text-sm text-gray-900 dark:text-white focus:outline-none"
+        aria-label="Type your message"
+      />
+      <div className="flex items-center gap-2 px-3 py-2">
+        {/* Mic icon (optional) */}
+        <button
+          type="button"
+          className="text-gray-400 hover:text-sky-500 transition"
+          aria-label="Voice input"
+        >
+          <Mic size={20} />
+        </button>
 
-      <footer className="p-4 bg-white dark:bg-gray-800 gap-3 flex">
-        <div className="w-full flex gap-3 ">
-          <input
-            value={input}
-            onChange={e => setInput(e.target.value)}
-            onKeyDown={e => e.key === 'Enter' && sendMessage()}
-            placeholder="Type your question..."
-            className="flex-1 rounded px-4 py-6 border border-gray-300 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-sky-500 dark:bg-gray-700 dark:text-white"
-            aria-label="Ask filebank Al..."
-          />
-          <Button
-            type="link"
-            onClick={sendMessage}
-            className="rounded-r-full px-4 py-2 bg-[#555] hover:bg-[#333] text-white"
-            aria-label="Send message"
-          >
-            Send
-          </Button>
-        </div>
-      </footer>
+        {/* Send icon */}
+        <button
+          type="button"
+          onClick={sendMessage}
+          className="bg-sky-500 hover:bg-sky-600 text-white p-2 rounded-lg shadow transition flex items-center justify-center"
+          aria-label="Send message"
+        >
+          <SendHorizonal size={18} className="transform rotate-45" />
+        </button>
+      </div>
+    </div>
+
+    <p className="text-xs text-center text-gray-500 dark:text-gray-400 mt-1">
+      Filebank AI may produce errors. Verify answers before using.
+    </p>
+  </div>
+</footer>
+
     </div>
   );
 }
