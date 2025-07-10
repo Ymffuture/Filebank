@@ -52,7 +52,7 @@ export default function AIScreen() {
           setBotTypingText('');
           setIsTyping(false);
         }
-      }, 10);
+      }, 20);
     } catch {
       setMessages(prev => [...prev, { from: 'bot', text: '⚠️ Error contacting AI.' }]);
       setIsTyping(false);
@@ -182,7 +182,16 @@ export default function AIScreen() {
             {renderMessage(msg, idx)}
           </div>
         ))}
-
+        {/* loading  */}
+{loading && !isTyping && (
+  <div className="flex items-center gap-2 px-3 py-2 bg-gray-100 dark:bg-gray-700 rounded-lg w-fit text-sm text-gray-700 dark:text-gray-100 animate-pulse">
+    <svg className="animate-spin h-4 w-4 text-sky-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4l3-3-3-3v4a8 8 0 000 16z" />
+    </svg>
+    <span></span>
+  </div>
+)}    
         {/* 🔥 Typing Effect Preview */}
         {isTyping && (
   <div className="flex flex-col gap-1">
