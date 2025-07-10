@@ -165,7 +165,7 @@ export default function AIScreen() {
             key={`${idx}-text-${i}`}
             className={`my-2 p-3 rounded-lg max-w-[100%] whitespace-pre-wrap break-words text-[15px] leading-relaxed animate-fade-in ${
               msg.from === 'user'
-                ? 'bg-gray-100 text-white self-end ml-auto'
+                ? 'bg-gray-100 text-[#333] self-end ml-auto'
                 : 'bg-* text-[#333] dark:bg-gray-700 dark:text-white'
             }`}
             dangerouslySetInnerHTML={{ __html: html }}
