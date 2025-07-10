@@ -23,6 +23,21 @@ export default function AIScreen() {
   const [isTyping, setIsTyping] = useState(false);
   const containerRef = useRef(null);
 
+
+    // Load chat history on mount
+  useEffect(() => {
+    const savedHistory = localStorage.getItem("chatHistory");
+    if (savedHistory) {
+      setMessages(JSON.parse(savedHistory));
+    }
+  }, []);
+
+  // Save chat history on change
+  useEffect(() => {
+    localStorage.setItem("chatHistory", JSON.stringify(messages));
+  }, [messages]);
+
+  
   useEffect(() => {
     if (containerRef.current) {
       containerRef.current.scrollTop = containerRef.current.scrollHeight;
