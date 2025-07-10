@@ -1,0 +1,23 @@
+{
+  "name": "Filebank Cloud",
+  "short_name": "Filebank",
+  "start_url": ".",
+  "display": "standalone",
+  "theme_color": "#1E90FF",
+  "background_color": "#F0F8FF",
+  "description": "Secure, fast file sharing & storage powered by AI.",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/icons/icon1.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/icons/icon2.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
+
