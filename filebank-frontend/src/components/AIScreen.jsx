@@ -121,7 +121,7 @@ export default function AIScreen() {
       margin: 0,
       padding: '16px',
       fontSize: 14,
-      background: 'transparent',
+      background: '#333',
     }}
   >
     {part.trim()}
@@ -153,9 +153,32 @@ export default function AIScreen() {
     .replace(/`([^`]+)`/g, '<code style="background:#f6f8fa;border-radius:4px;padding:2px 6px;font-size:13px;color:#c7254e;">$1</code>')
     .replace(/^\*\s+/gm, '– ')
     .replace(/\n/g, '<br/>')
-    .replace(/((https?:\/\/|www\.)[^\s<]+)/g, (match) => {
+    .replace(/((https?:\/\/|www\.)[^\s<]+)/g,(match) => {
     const url = match.startsWith('http') ? match : `https://${match}`;
-    return `<a href="${url}" target="_blank" rel="noopener noreferrer" style="color:#1677ff;text-decoration:underline;">${match}</a>`;
+    // Truncate display text if very long
+    let display = match;
+    if (match.length > 40) {
+      display = match.slice(0, 30) + '...' + match.slice(-7);
+    }
+    // Inline SVG for external link icon (Lucide “external-link”)
+    const extIcon = `
+      <svg xmlns="http://www.w3.org/2000/svg" class="inline-block ml-1 w-4 h-4 text-sky-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M18 13v6a2 2 0 01-2 2H6a2 2 0 01-2-2V8a2 2 0 012-2h6m4-1l5 5m0 0l-5 5m5-5H9"/>
+      </svg>
+    `;
+    return `
+      <a 
+        href="${url}" 
+        target="_blank" 
+        rel="noopener noreferrer" 
+        class="text-sky-500 hover:underline break-all inline-flex items-center"
+      >
+        ${display}
+        ${extIcon}
+      </a>`;
+  }
+)
+
   }
 )
 
@@ -176,7 +199,7 @@ export default function AIScreen() {
   };
 
   return (
-    <div className={`${darkMode ? 'bg-[#333] ' : ''} h-screen flex flex-col bg-gradient-to-br from-white to-white dark:from-gray-800 dark:to-gray-900`}>
+    <div className={`${darkMode ? 'bg-[#333] ' : ''} h-screen flex flex-col bg-gradient-to-br from-white to-black dark:from-gray-800 dark:to-gray-900`}>
       <header className="flex justify-between items-center p-4 bg-white dark:bg-gray-800">
         <h1 className="text-xl font-bold text-[#333] dark:text-white">Filebank cloud AI</h1>
         <Link to='/dashboard' >Dashboard</Link>
