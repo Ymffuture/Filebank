@@ -194,7 +194,7 @@ export default function AIScreen() {
   };
 
   return (
-    <div className={`${darkMode ? 'bg-[#333] ' : ''} h-screen flex flex-col bg-gradient-to-br from-white to-black dark:from-gray-800 dark:to-gray-900`}>
+    <div className={`${darkMode ? 'bg-[#333] ' : ''} h-screen flex flex-col bg-gradient-to-br from-white to-white dark:from-gray-800 dark:to-gray-900`}>
       <header className="flex justify-between items-center p-4 bg-white dark:bg-gray-800">
         <h1 className="text-[14px] font-bold text-[gray] dark:text-white">FBC AI 3.1.0v</h1>
         <Link to='/dashboard' >Dashboard</Link>
