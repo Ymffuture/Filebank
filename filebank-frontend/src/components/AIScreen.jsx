@@ -176,7 +176,7 @@ export default function AIScreen() {
         ${display}
         ${extIcon}
       </a>`;
-  })));
+  }));
         
         return (
           <div
