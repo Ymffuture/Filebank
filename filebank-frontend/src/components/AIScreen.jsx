@@ -4,7 +4,7 @@ import { CopyOutlined, BulbOutlined } from '@ant-design/icons';
 import api from '../api/fileApi';
 import { Light as SyntaxHighlighter } from 'react-syntax-highlighter';
 import js from 'react-syntax-highlighter/dist/esm/languages/hljs/javascript';
-import { atomOneLight, atomOneDark } from 'react-syntax-highlighter/dist/esm/styles/hljs';
+import { dracula, github } from 'react-syntax-highlighter/dist/esm/styles/hljs';
 import copy from 'copy-to-clipboard';
 import { SendHorizonal, Mic, ArrowUp} from 'lucide-react';
 import {Link} from 'react-router-dom';
@@ -115,7 +115,7 @@ export default function AIScreen() {
   <SyntaxHighlighter
     language="javascript"
     showLineNumbers={true}
-    style={darkMode ? atomOneDark : atomOneLight}
+    style={darkMode ? dracula : github}
     customStyle={{
       borderRadius: 0,
       margin: 0,
@@ -176,7 +176,7 @@ export default function AIScreen() {
   };
 
   return (
-    <div className={`${darkMode ? 'dark' : ''} h-screen flex flex-col bg-gradient-to-br from-white to-white dark:from-gray-800 dark:to-gray-900`}>
+    <div className={`${darkMode ? 'bg-[#333] ' : ''} h-screen flex flex-col bg-gradient-to-br from-white to-white dark:from-gray-800 dark:to-gray-900`}>
       <header className="flex justify-between items-center p-4 bg-white dark:bg-gray-800">
         <h1 className="text-xl font-bold text-[#333] dark:text-white">Filebank cloud AI</h1>
         <Link to='/dashboard' >Dashboard</Link>
@@ -236,7 +236,7 @@ export default function AIScreen() {
           }
         }}
         rows={1}
-        placeholder="Send a message"
+        placeholder="Ask filebank AI..."
         className="w-full resize-none border-0 bg-transparent px-4 py-3 text-sm text-gray-900 dark:text-white focus:outline-none"
         aria-label="Ask filebank AI..."
       />
