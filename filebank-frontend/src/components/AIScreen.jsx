@@ -115,11 +115,11 @@ export default function AIScreen() {
   <SyntaxHighlighter
     language="javascript"
     showLineNumbers={true}
-    style={darkMode ? dracula : github}
+    style={darkMode ? github : dracula }
     customStyle={{
       padding: '20px',
       margin: 0,
-      background: 'transparent',
+      background: '#0d1117' ,
       fontSize: 14,
       fontFamily: `'Fira Code', 'JetBrains Mono', monospace`,
       overflowX: 'auto',
