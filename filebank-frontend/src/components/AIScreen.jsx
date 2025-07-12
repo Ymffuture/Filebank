@@ -176,13 +176,8 @@ export default function AIScreen() {
         ${display}
         ${extIcon}
       </a>`;
-  }
-)
-
-  }
-)
-
-);
+  })));
+        
         return (
           <div
             key={`${idx}-text-${i}`}
