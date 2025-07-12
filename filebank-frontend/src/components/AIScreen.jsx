@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Input, Button, Space, Switch, Tooltip, Typography, message} from 'antd';
 import { CopyOutlined, BulbOutlined } from '@ant-design/icons';
 import api from '../api/fileApi';
-import { Light as SyntaxHighlighter } from 'react-syntax-highlighter';
+import { Dark as SyntaxHighlighter } from 'react-syntax-highlighter';
 import js from 'react-syntax-highlighter/dist/esm/languages/hljs/javascript';
 import { dracula, github } from 'react-syntax-highlighter/dist/esm/styles/hljs';
 import copy from 'copy-to-clipboard';
@@ -114,15 +114,24 @@ export default function AIScreen() {
   <div key={`${idx}-code-${i}`} className="relative my-4 group animate-fade-in border rounded-lg overflow-hidden">
   <SyntaxHighlighter
     language="javascript"
-    showLineNumbers={true}
-    style={darkMode ? dracula : github}
+    showLineNumbers
+    style={darkMode ? github : dracula} // You can switch to dracula/github/nord
     customStyle={{
-      borderRadius: 0,
-      margin: 0,
-      padding: '16px',
+      background: darkMode ? '#1E1E1E' : '#FAFAFA',
+      padding: '20px 16px',
       fontSize: 14,
-      background: '#333',
+      fontFamily: "'Fira Code', 'Consolas', monospace",
+      lineHeight: '1.6',
+      borderRadius: '16px',
+      margin: 0,
     }}
+    lineNumberStyle={{
+      color: darkMode ? '#777' : '#aaa',
+      marginRight: '12px',
+      fontSize: '12px',
+    }}
+    wrapLines={true}
+    wrapLongLines={true}
   >
     {part.trim()}
   </SyntaxHighlighter>
