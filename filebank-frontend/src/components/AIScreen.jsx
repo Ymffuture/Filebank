@@ -117,11 +117,18 @@ export default function AIScreen() {
     showLineNumbers={true}
     style={darkMode ? dracula : github}
     customStyle={{
-      borderRadius: 0,
+      padding: '20px',
       margin: 0,
-      padding: '16px',
+      background: 'transparent',
       fontSize: 14,
-      background: '#333',
+      fontFamily: `'Fira Code', 'JetBrains Mono', monospace`,
+      overflowX: 'auto',
+      lineHeight: '1.6',
+    }}
+    lineNumberStyle={{
+      color: darkMode ? '#999' : '#aaa',
+      fontSize: 12,
+      paddingRight: 16,
     }}
   >
     {part.trim()}
