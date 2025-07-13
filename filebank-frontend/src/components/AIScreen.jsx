@@ -21,7 +21,45 @@ export default function AIScreen() {
   const [darkMode, setDarkMode] = useState(false);
   const [botTypingText, setBotTypingText] = useState('');
   const [isTyping, setIsTyping] = useState(false);
+  const [isRecording, setIsRecording] = useState(false);
+  const recognitionRef = useRef(null);
   const containerRef = useRef(null);
+// Define the Speech Recognition setup
+const initSpeechRecognition = () => {
+  const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+  if (!SpeechRecognition) {
+    message.error("Speech Recognition not supported in this browser");
+    return;
+  }
+
+  const recognition = new SpeechRecognition();
+  recognition.lang = 'en-US';
+  recognition.interimResults = false;
+  recognition.maxAlternatives = 1;
+
+  recognition.onstart = () => setIsRecording(true);
+  recognition.onerror = (event) => {
+    message.error("Speech error: " + event.error);
+    setIsRecording(false);
+  };
+  recognition.onend = () => setIsRecording(false);
+  recognition.onresult = (event) => {
+    const transcript = event.results[0][0].transcript;
+    setInput(transcript);
+    sendMessage(transcript);
+  };
+
+  recognitionRef.current = recognition;
+};
+useEffect(() => {
+  initSpeechRecognition();
+}, []);
+  // fullreply
+const speak = (text) => {
+  const utterance = new SpeechSynthesisUtterance(text);
+  utterance.lang = 'en-US';
+  window.speechSynthesis.speak(utterance);
+};
 
 
     // Load chat history on mount
@@ -61,6 +99,9 @@ export default function AIScreen() {
         current += fullReply[i];
         setBotTypingText(current);
         i++;
+        // new code
+        speak(fullReply);
+        // end here
         if (i >= fullReply.length) {
           clearInterval(typeInterval);
           setMessages(prev => [...prev, { from: 'bot', text: fullReply }]);
@@ -164,8 +205,8 @@ export default function AIScreen() {
     const url = match.startsWith('http') ? match : `https://${match}`;
     // Truncate display text if very long
     let display = match;
-    if (match.length > 40) {
-      display = match.slice(0, 30) + '...' + match.slice(-7);
+    if (match.length > 100) {
+      display = match.slice(0, 40) + '...' + match.slice(-7);
     }
     // Inline SVG for external link icon (Lucide “external-link”)
     const extIcon = `
@@ -268,12 +309,20 @@ export default function AIScreen() {
       <div className="flex items-center gap-2 px-3 py-2">
         {/* Mic icon (optional) */}
         <button
-          type="button"
-          className="text-gray-400 hover:text-sky-500 transition"
-          aria-label="Voice input"
-        >
-          <Mic size={20} disable/>
-        </button>
+  type="button"
+  onClick={() => {
+    if (isRecording) {
+      recognitionRef.current.stop();
+    } else {
+      recognitionRef.current.start();
+    }
+  }}
+  className={`transition p-2 rounded-full ${isRecording ? 'bg-red-500 text-white' : 'text-gray-400 hover:text-sky-500'}`}
+  aria-label="Voice input"
+>
+  <Mic size={20} className={isRecording ? 'animate-pulse text-[red] ' : ''} />
+</button>
+
 
         {/* Send icon */}
         <button
