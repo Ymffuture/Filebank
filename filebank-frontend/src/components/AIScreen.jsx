@@ -260,8 +260,8 @@ const sendMessage = async (overrideInput) => {
         </Space>
       </header>
 
-      <AnimatePresence>
-  {showSuggestions && <QuickSuggestionsHero sendMessage={sendMessage} />}
+    <AnimatePresence>
+  <QuickSuggestionsHero sendMessage={sendMessage} />
 </AnimatePresence>
 
 
