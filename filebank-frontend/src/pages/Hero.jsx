@@ -63,11 +63,11 @@ export default function Hero() {
   const onFinish = async (values) => {
     try {
       if (isRegistering) {
-        await api.post('/auth/register', values);
+        await api.post('/auth/v1751876089/register', values);
         enqueueSnackbar('Registration successful! You can now login.', { variant: 'success' });
         setIsRegistering(false);
       } else {
-        const res = await api.post('/auth/login', values);
+        const res = await api.post('/auth/v1751876089/login', values);
         setUser(res.data.user);
         localStorage.setItem('filebankUser', JSON.stringify(res.data.user));
         localStorage.setItem('filebankToken', res.data.token);
