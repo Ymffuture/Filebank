@@ -229,10 +229,10 @@ const { Text } = Typography;
           <List.Item className="flex flex-col md:flex-row md:items-center md:justify-between p-4 hover:bg-gray-50 dark:hover:bg-gray-800 transition-all">
             <div className="flex-1">
               <div className="flex items-center gap-2 mb-2">
-                <Tag color={f.type === 'Bug' ? 'red' : f.type === 'Feature' ? 'blue' : 'green'}>
+                <Tag color={f.type === 'complaint' ? 'red' : f.type === 'improvement' ? 'blue' : 'green'}>
                   {f.type}
                 </Tag>
-                <Text className="text-sm text-gray-500 dark:text-gray-400">
+                <Text code className="text-sm text-gray-500 dark:text-gray-400">
                   <ClockCircleOutlined className="mr-1" />
                   {new Date(f.createdAt).toLocaleString()}
                 </Text>
@@ -258,7 +258,7 @@ const { Text } = Typography;
 
 
       <Modal title="Send Update" open={notifModalVisible} onOk={handleSendNotification} onCancel={() => setNotifModalVisible(false)} okText="Send">
-        <Input.TextArea rows={4} value={notifText} onChange={e => setNotifText(e.target.value)} placeholder="Message..." />
+        <Input.TextArea rows={4} value={notifText} onChange={e => setNotifText(e.target.value)} placeholder="send notifications..." />
       </Modal>
     </div>
   );
