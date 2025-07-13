@@ -14,7 +14,8 @@ import {
   Card,
   Statistic,
   List,
-  message
+  message, 
+  Tag, Rate,Typography, Divider, Empty
 } from 'antd';
 import {
   BarChart,
@@ -31,7 +32,8 @@ import { useSnackbar } from 'notistack';
 import {
   ArrowLeftOutlined,
   NotificationOutlined,
-  EllipsisOutlined
+  EllipsisOutlined, 
+  MessageOutlined, StarOutlined, ClockCircleOutlined
 } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
 
@@ -43,7 +45,7 @@ export default function AdminUsers() {
   const [notifText, setNotifText] = useState('');
   const { enqueueSnackbar } = useSnackbar();
   const navigate = useNavigate();
-
+const { Text } = Typography;
   const fetchUsers = async () => {
     try {
       const res = await api.get('/admin/users');
@@ -208,16 +210,48 @@ export default function AdminUsers() {
         <Table dataSource={mergedUsers} columns={columns} rowKey="_id" bordered pagination={{ pageSize: 10 }} />
       </div>
 
-      <Card title="All Feedback" className="mb-4">
-        <List dataSource={feedbacks} renderItem={f => (
-          <List.Item>
-            <div><strong>Type:</strong> {f.type}</div>
-            <div><strong>Description:</strong> {f.description}</div>
-            <div><strong>Rating:</strong> {f.rating}/5</div>
-            <div><strong>Submitted:</strong> {new Date(f.createdAt).toLocaleString()}</div>
+<Card
+  title={<div className="flex items-center gap-2 text-lg font-semibold"><MessageOutlined /> All Feedback</div>}
+  className="mb-6 shadow-md rounded-xl border border-gray-200 dark:border-gray-700"
+  bodyStyle={{ padding: 0 }}
+>
+  {feedbacks.length === 0 ? (
+    <Empty description="No feedback yet" className="my-8" />
+  ) : (
+    <List
+      dataSource={feedbacks}
+      renderItem={(f, idx) => (
+        <>
+          <List.Item className="flex flex-col md:flex-row md:items-center md:justify-between p-4 hover:bg-gray-50 dark:hover:bg-gray-800 transition-all">
+            <div className="flex-1">
+              <div className="flex items-center gap-2 mb-2">
+                <Tag color={f.type === 'Bug' ? 'red' : f.type === 'Feature' ? 'blue' : 'green'}>
+                  {f.type}
+                </Tag>
+                <Text className="text-sm text-gray-500 dark:text-gray-400">
+                  <ClockCircleOutlined className="mr-1" />
+                  {new Date(f.createdAt).toLocaleString()}
+                </Text>
+              </div>
+
+              <Text className="block text-base text-gray-800 dark:text-white mb-1 leading-relaxed">
+                {f.description}
+              </Text>
+
+              <div className="flex items-center gap-2 mt-2">
+                <StarOutlined className="text-yellow-500" />
+                <Rate allowHalf disabled defaultValue={f.rating} style={{ fontSize: 14 }} />
+                <Text className="text-xs text-gray-500 dark:text-gray-400">({f.rating}/5)</Text>
+              </div>
+            </div>
           </List.Item>
-        )} />
-      </Card>
+          {idx < feedbacks.length - 1 && <Divider style={{ margin: 0 }} />}
+        </>
+      )}
+    />
+  )}
+</Card>
+
 
       <Modal title="Send Update" open={notifModalVisible} onOk={handleSendNotification} onCancel={() => setNotifModalVisible(false)} okText="Send">
         <Input.TextArea rows={4} value={notifText} onChange={e => setNotifText(e.target.value)} placeholder="Message..." />
