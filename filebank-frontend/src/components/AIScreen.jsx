@@ -45,11 +45,13 @@ const initSpeechRecognition = () => {
     setIsRecording(false);
   };
   recognition.onend = () => setIsRecording(false);
+  
   recognition.onresult = (event) => {
-    const transcript = event.results[0][0].transcript;
-    setInput(transcript);
-    sendMessage(transcript);
-  };
+  const transcript = event.results[0][0].transcript;
+  setInput(transcript);
+  setTimeout(() => sendMessage(transcript), 100); // delay ensures proper state sync
+};
+
 
   recognitionRef.current = recognition;
 };
@@ -62,10 +64,14 @@ const speak = (text) => {
   utterance.lang = 'en-US';
   window.speechSynthesis.speak(utterance);
 };
-if (recognitionRef.current && isRecording) {
-  recognitionRef.current.abort();
-  setIsRecording(false);
-}
+  
+useEffect(() => {
+  if (recognitionRef.current && isRecording) {
+    recognitionRef.current.abort();
+    setIsRecording(false);
+  }
+}, [isRecording]);
+
 
 
     // Load chat history on mount
@@ -272,9 +278,16 @@ if (recognitionRef.current && isRecording) {
 
       <main ref={containerRef} className="flex-1 overflow-auto p-4 flex flex-col space-y-4">
         {messages.map((msg, idx) => (
-          <div key={idx} className="flex flex-col">
-            {renderMessage(msg, idx)}
-          </div>
+          
+<motion.div
+  key={idx}
+className="flex flex-cold" 
+  initial={{ opacity: 0, y: 10 }}
+  animate={{ opacity: 1, y: 0 }}
+  transition={{ duration: 0.3 }}
+>
+  {renderMessage(msg, idx)}
+</motion.div>
         ))}
         {/* loading  */}
 {loading && !isTyping && (
@@ -288,7 +301,7 @@ if (recognitionRef.current && isRecording) {
 )}    
         {/* 🔥 Typing Effect Preview */}
         {isTyping && (
-  <div className="flex flex-col gap-1">
+  <div className="flex flex-col gap-1" aria-live="polite" >
     {renderMessage({ from: 'bot', text: botTypingText }, 'typing')}
 
     <div className="ai-typing-bubble dark:bg-gray-700 dark:text-white">
