@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { GoogleLogin, googleLogout } from '@react-oauth/google';
 import { Button, Typography, message, Avatar, Dropdown, Menu, Badge, Space, Row, Col, Modal, Form, Input } from 'antd';
-import { BellOutlined, DashboardFilled, DownOutlined, LogoutOutlined } from '@ant-design/icons';
+import { BellOutlined, DashboardFilled, DownOutlined, LogoutOutlined, LockOutlined, CloudUploadOutlined, ClockCircleOutlined } from '@ant-design/icons';
 import { Link, useNavigate } from 'react-router-dom';
 import api from '../api/fileApi';
 import { useSnackbar } from 'notistack';
@@ -25,7 +25,7 @@ export default function Hero() {
     } catch {}
   };
 
-  const handleLoginSuccess = async (credentialResponse) => {
+  const handleGoogleLoginSuccess = async (credentialResponse) => {
     try {
       const { credential } = credentialResponse;
       const res = await api.post('/auth/google-login', { credential });
@@ -34,7 +34,7 @@ export default function Hero() {
       localStorage.setItem('filebankUser', JSON.stringify(res.data.user));
       localStorage.setItem('filebankToken', res.data.token);
 
-      enqueueSnackbar('Login successful!', { variant: 'success' });
+      enqueueSnackbar('Google login successful!', { variant: 'success' });
       fetchNotifications();
       navigate('/dashboard');
     } catch {
@@ -60,7 +60,6 @@ export default function Hero() {
     />
   );
 
-  // === Form Submit ===
   const onFinish = async (values) => {
     try {
       if (isRegistering) {
@@ -92,8 +91,8 @@ export default function Hero() {
       justifyContent: 'space-between',
       padding: '2rem',
     }}>
-      {/* Nav */}
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', backdropFilter: 'blur(6px)', padding: '1rem', borderRadius: '12px', background: 'rgba(255,255,255,0.8)' }}>
+      {/* Navigation */}
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', backdropFilter: 'blur(6px)', padding: '1rem', borderRadius: '12px', background: 'rgba(255,255,255,0.85)' }}>
         <Title level={3} style={{ margin: 0, color: '#0B3D91' }}>FileBank</Title>
         {user ? (
           <Space>
@@ -111,7 +110,7 @@ export default function Hero() {
         ) : (
           <Space>
             <GoogleLogin
-              onSuccess={handleLoginSuccess}
+              onSuccess={handleGoogleLoginSuccess}
               onError={() => message.error('Google login failed')}
               useOneTap
               shape="circle"
@@ -123,9 +122,9 @@ export default function Hero() {
         )}
       </div>
 
-      {/* Hero Content */}
+      {/* Hero Banner */}
       <div style={{
-        background: 'rgba(255,255,255,0.95)',
+        background: 'rgba(255,255,255,0.96)',
         padding: '4rem 2rem',
         textAlign: 'center',
         borderRadius: '16px',
@@ -133,9 +132,9 @@ export default function Hero() {
         maxWidth: '900px',
         margin: '4rem auto'
       }}>
-        <Title style={{ color: '#0B3D91', fontSize: '3rem', marginBottom: '1rem' }}>Secure File Storage</Title>
+        <Title style={{ color: '#0B3D91', fontSize: '3rem', marginBottom: '1rem' }}>Your Cloud, Your Control</Title>
         <Paragraph style={{ fontSize: '1.2rem', color: '#444' }}>
-          Upload, manage and access your files anywhere with <strong>FileBank</strong>.
+          Upload, manage, and access your files anywhere with <strong>FileBank</strong>.
         </Paragraph>
         <Button size="large" style={{
           marginTop: '2rem',
@@ -146,8 +145,42 @@ export default function Hero() {
           fontWeight: 500,
           boxShadow: '0 4px 12px rgba(30,144,255,0.4)'
         }} onClick={() => setIsModalVisible(true)}>
-          Get Started
+          Get Started Free
         </Button>
+      </div>
+
+      {/* Overview Section */}
+      <div style={{
+        background: 'rgba(255,255,255,0.85)',
+        padding: '3rem 2rem',
+        borderRadius: '16px',
+        maxWidth: '1000px',
+        margin: '2rem auto'
+      }}>
+        <Title level={2} style={{ textAlign: 'center', color: '#0B3D91' }}>Overview</Title>
+        <Row gutter={[32, 32]} justify="center" style={{ marginTop: '2rem' }}>
+          <Col xs={24} sm={12} md={8}>
+            <Space direction="vertical" align="center">
+              <LockOutlined style={{ fontSize: 40, color: '#1E90FF' }} />
+              <Text strong>End-to-End Encryption</Text>
+              <Text type="secondary">All files are encrypted for maximum security.</Text>
+            </Space>
+          </Col>
+          <Col xs={24} sm={12} md={8}>
+            <Space direction="vertical" align="center">
+              <CloudUploadOutlined style={{ fontSize: 40, color: '#1E90FF' }} />
+              <Text strong>Unlimited Uploads</Text>
+              <Text type="secondary">Upload images, videos, PDFs, code, and more.</Text>
+            </Space>
+          </Col>
+          <Col xs={24} sm={12} md={8}>
+            <Space direction="vertical" align="center">
+              <ClockCircleOutlined style={{ fontSize: 40, color: '#1E90FF' }} />
+              <Text strong>Auto Expiry</Text>
+              <Text type="secondary">Files expire after 30 days for safety, unless renewed.</Text>
+            </Space>
+          </Col>
+        </Row>
       </div>
 
       {/* Footer */}
@@ -159,37 +192,40 @@ export default function Hero() {
         </Space>
       </div>
 
-      {/* Modal */}
+      {/* Login/Register Modal */}
       <Modal
-        title={isRegistering ? "Create Account" : "Login to FileBank"}
+        title={isRegistering ? "Create Your FileBank Account" : "Login to FileBank"}
         open={isModalVisible}
         onCancel={() => setIsModalVisible(false)}
         footer={null}
         centered
       >
-        <Form layout="vertical" onFinish={onFinish}>
-          {isRegistering && (
-            <Form.Item name="name" label="Full Name" rules={[{ required: true }]}>
-              <Input placeholder="Enter your name" />
+        {/* Only show forms if user is NOT logged in via Google */}
+        {!user && (
+          <Form layout="vertical" onFinish={onFinish}>
+            {isRegistering && (
+              <Form.Item name="name" label="Full Name" rules={[{ required: true }]}>
+                <Input placeholder="Your Name" />
+              </Form.Item>
+            )}
+            <Form.Item name="email" label="Email" rules={[{ required: true, type: 'email' }]}>
+              <Input placeholder="you@example.com" />
             </Form.Item>
-          )}
-          <Form.Item name="email" label="Email" rules={[{ required: true, type: 'email' }]}>
-            <Input placeholder="Enter your email" />
-          </Form.Item>
-          <Form.Item name="password" label="Password" rules={[{ required: true, min: 6 }]}>
-            <Input.Password placeholder="Enter password" />
-          </Form.Item>
-          <Form.Item>
-            <Button type="primary" htmlType="submit" style={{ width: '100%', background: '#1E90FF' }}>
-              {isRegistering ? "Register" : "Login"}
-            </Button>
-          </Form.Item>
-          <Form.Item>
-            <Text type="secondary" style={{ cursor: 'pointer' }} onClick={() => setIsRegistering(!isRegistering)}>
-              {isRegistering ? "Already have an account? Login" : "Don't have an account? Register"}
-            </Text>
-          </Form.Item>
-        </Form>
+            <Form.Item name="password" label="Password" rules={[{ required: true, min: 6 }]}>
+              <Input.Password placeholder="Minimum 6 characters" />
+            </Form.Item>
+            <Form.Item>
+              <Button type="primary" htmlType="submit" style={{ width: '100%', background: '#1E90FF' }}>
+                {isRegistering ? "Register" : "Login"}
+              </Button>
+            </Form.Item>
+            <Form.Item>
+              <Text type="secondary" style={{ cursor: 'pointer' }} onClick={() => setIsRegistering(!isRegistering)}>
+                {isRegistering ? "Already have an account? Login" : "Don't have an account? Register"}
+              </Text>
+            </Form.Item>
+          </Form>
+        )}
       </Modal>
     </div>
   );
