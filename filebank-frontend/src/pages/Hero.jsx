@@ -216,6 +216,9 @@ export default function Hero() {
               <Text type="secondary" style={{ cursor: 'pointer' }} onClick={() => setIsRegistering(!isRegistering)}>
                 {isRegistering ? "Already have an account? Login" : "Don't have an account? Register"}
               </Text>
+              <Text type="secondary" style={{ cursor: 'pointer' }} onClick={() => setIsRegistering(!isRegistering)}>
+                {isRegistering ? "" : "Forgot password?"}
+              </Text>
             </Form.Item>
           </Form>
         )}
