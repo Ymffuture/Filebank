@@ -163,7 +163,6 @@ export default function Hero() {
           padding: '4rem 2rem',
           textAlign: 'center',
           borderRadius: '16px',
-          boxShadow: '0 8px 24px rgba(0,0,0,0.08)',
           maxWidth: '900px',
           margin: '4rem auto'
         }}
