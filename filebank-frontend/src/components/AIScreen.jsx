@@ -9,6 +9,8 @@ import copy from 'copy-to-clipboard';
 import { SendHorizonal, Mic, ArrowUp} from 'lucide-react';
 import {Link} from 'react-router-dom';
 import DOMPurify from 'dompurify';
+import { motion } from 'framer-motion';
+
 const { Text } = Typography;
 
 SyntaxHighlighter.registerLanguage('javascript', js);
@@ -72,6 +74,10 @@ useEffect(() => {
   }
 }, [isRecording]);
 
+const hasMountedRef = useRef(false);
+useEffect(() => {
+  hasMountedRef.current = true;
+}, []);
 
 
     // Load chat history on mount
@@ -94,6 +100,23 @@ useEffect(() => {
     }
   }, [messages, botTypingText]);
 
+const clearChat = () => {
+  setMessages([{ from: 'bot', text: 'Hello I’m FBC-AI, your assistant. Ask me anything!' }]);
+  localStorage.removeItem("chatHistory");
+};
+
+  const firstRenderRef = useRef(true);
+useEffect(() => {
+  if (firstRenderRef.current) {
+    firstRenderRef.current = false;
+    return;
+  }
+  if (containerRef.current) {
+    containerRef.current.scrollTop = containerRef.current.scrollHeight;
+  }
+}, [messages, botTypingText]);
+
+  
   const sendMessage = async () => {
     if (!input.trim()) return;
     const userMsg = { from: 'user', text: input };
@@ -265,6 +288,8 @@ useEffect(() => {
       <header className="flex justify-between items-center p-4 bg-white dark:bg-gray-800">
         <h1 className="text-[14px] font-bold text-[gray] dark:text-white">FBC AI 3.1.0v</h1>
         <Link to='/dashboard' >Dashboard</Link>
+        <Button onClick={clearChat} size="small">Clear</Button>
+
         <Space>
           <Switch
             checked={darkMode}
@@ -281,7 +306,7 @@ useEffect(() => {
           
 <motion.div
   key={idx}
-className="flex flex-cold" 
+className="flex flex-col" 
   initial={{ opacity: 0, y: 10 }}
   animate={{ opacity: 1, y: 0 }}
   transition={{ duration: 0.3 }}
