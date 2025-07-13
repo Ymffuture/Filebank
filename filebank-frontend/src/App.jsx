@@ -5,6 +5,9 @@ import { Alert, AlertTitle } from '@mui/material';
 import WarningAmberIcon from '@mui/icons-material/WarningAmber';
 import Profile from './pages/Profile';
 import NotFound from './components/NotFound';
+import VerifyEmail from './pages/VerifyEmail';
+import RequestReset from './pages/RequestReset';
+import ResetPassword from './pages/ResetPassword';
 
 const Help     = lazy(() => import('./components/Help'));
 const FileList = lazy(() => import('./components/FileList'));
@@ -154,6 +157,9 @@ function AppContent() {
         <Route path="/feedback"  element={<Feedback />} />
         <Route path="*"          element={<NotFound />} />
         <Route path="/full-screen-ai"          element={<AIScreen />} />
+        <Route path="/verify-email" element={<VerifyEmail />} />
+<Route path="/request-reset" element={<RequestReset />} />
+<Route path="/reset-password" element={<ResetPassword />} />
       </Routes>
       <Footer />
     </Suspense>
