@@ -97,10 +97,10 @@ export default function Hero() {
     setLoading(true);
     try {
       await api.post('/auth/forgot-password', { email: forgotEmail });
-      message.success('Password reset email sent.');
+      enqueueSnackbar('Password reset email sent.', {variant:'success'} );
       setForgotModalVisible(false);
     } catch (err) {
-      message.error(err.response?.data?.message || 'Failed to send reset email.');
+      enqueueSnackbar(err.response?.data?.message || 'Failed to send reset email.', {variant:'error'} );
     } finally {
       setLoading(false);
     }
