@@ -8,6 +8,7 @@ import { dracula, github } from 'react-syntax-highlighter/dist/esm/styles/hljs';
 import copy from 'copy-to-clipboard';
 import { SendHorizonal, Mic, ArrowUp} from 'lucide-react';
 import {Link} from 'react-router-dom';
+import DOMPurify from 'dompurify';
 const { Text } = Typography;
 
 SyntaxHighlighter.registerLanguage('javascript', js);
@@ -61,6 +62,10 @@ const speak = (text) => {
   utterance.lang = 'en-US';
   window.speechSynthesis.speak(utterance);
 };
+if (recognitionRef.current && isRecording) {
+  recognitionRef.current.abort();
+  setIsRecording(false);
+}
 
 
     // Load chat history on mount
@@ -242,7 +247,7 @@ const speak = (text) => {
                 ? 'bg-gray-100 text-[#333] self-end ml-auto max-w-[80%] '
                 : 'bg-* text-[#333] dark:bg-gray-700 dark:text-white'
             }`}
-            dangerouslySetInnerHTML={{ __html: html }}
+            dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(html) }}
           />
         );
       }
