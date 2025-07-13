@@ -93,7 +93,7 @@ export default function Hero() {
     }}>
       {/* Navigation */}
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', backdropFilter: 'blur(6px)', padding: '1rem', borderRadius: '12px', background: 'rgba(255,255,255,0.85)' }}>
-        <Title level={3} style={{ margin: 0, color: '#0B3D91' }}>FileBank</Title>
+        <Title level={3} style={{ margin: 0, color: '#0B3D91' }}></Title>
         {user ? (
           <Space>
             <Badge count={notifications} size="small">
@@ -183,14 +183,7 @@ export default function Hero() {
         </Row>
       </div>
 
-      {/* Footer */}
-      <div style={{ textAlign: 'center', color: '#555', fontSize: '0.85rem', marginTop: '2rem' }}>
-        <Space>
-          <Link to="/terms">Terms</Link>
-          <Link to="/privacy">Privacy</Link>
-          <span>© {new Date().getFullYear()} Quorvex Institute</span>
-        </Space>
-      </div>
+    
 
       {/* Login/Register Modal */}
       <Modal
