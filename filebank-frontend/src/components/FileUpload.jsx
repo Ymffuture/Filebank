@@ -39,7 +39,7 @@ export default function FileUpload({ onUpload, currentUserFileCount = 0 }) {
         <>
           Upload complete 100%.{' '}
           <Link to="/files" className="text-green-600 font-semibold hover:text-green-800">
-            <Button type="dashed" icon={<LinkOutlined />}>
+            <Button type="link" icon={<LinkOutlined />}>
               View
             </Button>
           </Link>
@@ -86,20 +86,15 @@ export default function FileUpload({ onUpload, currentUserFileCount = 0 }) {
           <h2 className="text-2xl font-bold mb-2 text-center text-gray-800">Upload your files</h2>
           <Upload.Dragger
       beforeUpload={(file) => {
-        const allowedTypes = [
-          // Image types
+        const allowedTypes = [ 
           'image/jpeg', 'image/png', 'image/gif', 'image/bmp', 'image/webp',
-          'image/svg+xml', 'image/x-icon', 'image/tiff',
-          // Audio types
-          'audio/mpeg', // mp3
-          // Video types
-          'video/mp4',
-          // Text and code types
+          'image/svg+xml', 'image/x-icon', 'image/tiff', 
+          'audio/mpeg',       
+          'video/mp4', 
           'text/plain', 'text/html', 'text/css', 'application/javascript',
           'text/x-python', 'application/typescript', 'text/jsx', 'text/x-jsx',
           'application/json', 'application/xml', 'text/yaml', 'text/markdown',
           'text/x-log',
-          // Document types
           'application/pdf',
           'application/vnd.openxmlformats-officedocument.wordprocessingml.document', // docx
           'application/vnd.openxmlformats-officedocument.presentationml.presentation', // pptx
@@ -138,7 +133,7 @@ export default function FileUpload({ onUpload, currentUserFileCount = 0 }) {
       </p>
       <p className="ant-upload-text">Click or drag file to this area to upload</p>
       <p className="ant-upload-hint">
-        Allowed file types: Images (JPEG, PNG, GIF, BMP, WEBP, SVG, ICO, TIFF), Audio (MP3), Video (MP4), Text/Code (TXT, JS, PY, HTML, CSS, JSON, etc.), Documents (PDF, DOCX, PPTX, XLSX). Max size: 5MB.
+        Allowed file types: Images (JPEG, PNG, GIF, BMP, WEBP, SVG, ICO, TIFF), Text/Code (TXT, HTML, CSS, JSON, etc.), Documents (PDF, DOCX, PPTX, XLSX). Max size: 5MB.
       </p>
     </Upload.Dragger>
           <div className="mt-4 flex justify-center mb-8">
