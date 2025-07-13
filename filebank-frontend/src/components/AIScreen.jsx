@@ -1,12 +1,12 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Button, Space, Switch, Tooltip, Typography, message } from 'antd';
+import { Input, Button, Space, Switch, Tooltip, Typography, message } from 'antd';
 import { CopyOutlined, BulbOutlined } from '@ant-design/icons';
 import api from '../api/fileApi';
 import { Light as SyntaxHighlighter } from 'react-syntax-highlighter';
 import js from 'react-syntax-highlighter/dist/esm/languages/hljs/javascript';
 import { dracula, github } from 'react-syntax-highlighter/dist/esm/styles/hljs';
 import copy from 'copy-to-clipboard';
-import { Mic, ArrowUp } from 'lucide-react';
+import { SendHorizonal, Mic, ArrowUp } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import DOMPurify from 'dompurify';
 import { motion } from 'framer-motion';
@@ -46,7 +46,6 @@ export default function AIScreen() {
       setIsRecording(false);
     };
     recognition.onend = () => setIsRecording(false);
-
     recognition.onresult = (event) => {
       const transcript = event.results[0][0].transcript;
       setInput(transcript);
@@ -67,6 +66,12 @@ export default function AIScreen() {
   };
 
   useEffect(() => {
+    if (recognitionRef.current && isRecording && !isTyping) {
+      recognitionRef.current.abort();
+    }
+  }, [isRecording, isTyping]);
+
+  useEffect(() => {
     const savedHistory = localStorage.getItem("chatHistory");
     if (savedHistory) {
       setMessages(JSON.parse(savedHistory));
@@ -75,6 +80,9 @@ export default function AIScreen() {
 
   useEffect(() => {
     localStorage.setItem("chatHistory", JSON.stringify(messages));
+  }, [messages]);
+
+  useEffect(() => {
     if (containerRef.current) {
       containerRef.current.scrollTop = containerRef.current.scrollHeight;
     }
@@ -85,19 +93,14 @@ export default function AIScreen() {
     localStorage.removeItem("chatHistory");
   };
 
-  const sendMessage = async (overrideInput) => {
-    const userInput = overrideInput || input;
-    if (!userInput.trim()) return;
-    const userMsg = { from: 'user', text: userInput };
+  const sendMessage = async (customInput) => {
+    const messageToSend = customInput || input;
+    if (!messageToSend.trim()) return;
+    const userMsg = { from: 'user', text: messageToSend };
     setMessages(prev => [...prev, userMsg]);
     setLoading(true);
-
-    if (recognitionRef.current && isRecording) {
-      recognitionRef.current.abort();
-    }
-
     try {
-      const res = await api.post('/chat', { message: userInput });
+      const res = await api.post('/chat', { message: messageToSend });
       const fullReply = res.data.reply;
 
       setIsTyping(true);
@@ -189,27 +192,31 @@ export default function AIScreen() {
                     message.success('Code copied to clipboard');
                   }}
                   className="bg-white dark:bg-gray-800 text-gray-800 dark:text-white border border-gray-300 dark:border-gray-600 hover:border-sky-500 hover:text-sky-600 transition duration-200"
+                  aria-label="Copy code"
                 />
               </Tooltip>
             </div>
           </div>
         );
       } else {
-        const html = highlightKeywords(part)
+        const html = highlightKeywords(part
           .replace(/~~(.*?)~~/g, '<span style="text-decoration: line-through;">$1</span>')
-          .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
-          .replace(/(^|[^*])_([^_]+)_/g, '$1<em>$2</em>')
-          .replace(/`([^`]+)`/g, '<code>$1</code>')
-          .replace(/\n/g, '<br/>');
+          .replace(/\*\*(.*?)\*\*/g, '<strong style="font-weight:600;">$1</strong>')
+          .replace(/(^|[^*])_([^_]+)_/g, '$1<em style="font-style: italic;">$2</em>')
+          .replace(/`([^`]+)`/g, '<code style="background:#f6f8fa;border-radius:4px;padding:2px 6px;font-size:13px;color:#c7254e;">$1</code>')
+          .replace(/\n/g, '<br/>')
+          .replace(/((https?:\/\/|www\.)[^\s<]+)/g, (match) => {
+            const url = match.startsWith('http') ? match : `https://${match}`;
+            return `<a href="${url}" target="_blank" rel="noopener noreferrer" class="text-sky-500 hover:underline break-all inline-flex items-center">${match}</a>`;
+          }));
 
         return (
           <div
             key={`${idx}-text-${i}`}
-            aria-live="polite"
             className={`my-2 p-3 rounded-lg max-w-[100%] whitespace-pre-wrap break-words text-[15px] leading-relaxed animate-fade-in ${
               msg.from === 'user'
                 ? 'bg-gray-100 text-[#333] self-end ml-auto max-w-[80%]'
-                : 'bg-gray-200 dark:bg-gray-700 dark:text-white'
+                : 'bg-* text-[#333] dark:bg-gray-700 dark:text-white'
             }`}
             dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(html) }}
           />
@@ -230,6 +237,7 @@ export default function AIScreen() {
             onChange={setDarkMode}
             checkedChildren={<BulbOutlined />}
             unCheckedChildren={<BulbOutlined />}
+            aria-label="Toggle dark mode"
           />
         </Space>
       </header>
@@ -238,6 +246,7 @@ export default function AIScreen() {
         {messages.map((msg, idx) => (
           <motion.div
             key={idx}
+            className="flex flex-col"
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.3 }}
@@ -245,9 +254,32 @@ export default function AIScreen() {
             {renderMessage(msg, idx)}
           </motion.div>
         ))}
+
+        {loading && !isTyping && (
+          <div className="flex items-center gap-2 px-3 py-2 rounded-lg w-fit text-sm text-gray-700 dark:text-gray-100 animate-pulse">
+            <svg className="animate-spin h-6 w-6 text-sky-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+              <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+              <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4l3-3-3-3v4a8 8 0 000 16z" />
+            </svg>
+          </div>
+        )}
+
+        {isTyping && (
+          <div className="flex flex-col gap-1" aria-live="polite">
+            {renderMessage({ from: 'bot', text: botTypingText }, 'typing')}
+            <div className="ai-typing-bubble dark:bg-gray-700 dark:text-white">
+              <span className='animate-pulse text-[gray]'>Typing</span>
+              <div className="flex ml-2 gap-1">
+                <span className="ai-dot"></span>
+                <span className="ai-dot"></span>
+                <span className="ai-dot"></span>
+              </div>
+            </div>
+          </div>
+        )}
       </main>
 
-      <footer className="w-full px-4 pb-6 pt-2 bg-white dark:bg-gray-900">
+      <footer className="w-full px-4 pb-6 pt-2 bg-white dark:bg-gray-900 dark:border-gray-700">
         <div className="max-w-3xl mx-auto flex flex-col gap-2">
           <div className="relative border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 rounded-xl flex items-end focus-within:ring-2 focus-within:ring-sky-500 transition">
             <textarea
@@ -262,6 +294,7 @@ export default function AIScreen() {
               rows={1}
               placeholder="Ask filebank AI..."
               className="w-full resize-none border-0 bg-transparent px-4 py-3 text-sm text-gray-900 dark:text-white focus:outline-none"
+              aria-label="Ask filebank AI..."
             />
             <div className="flex items-center gap-2 px-3 py-2">
               <button
@@ -274,24 +307,25 @@ export default function AIScreen() {
                   }
                 }}
                 className={`transition p-2 rounded-full ${isRecording ? '' : 'text-gray-400 hover:text-sky-500'}`}
+                aria-label="Voice input"
               >
                 <Mic size={20} className={isRecording ? 'animate-pulse text-[red]' : ''} />
               </button>
 
               <button
                 type="button"
-                disabled={loading || isTyping}
+                disabled={loading}
                 onClick={() => sendMessage()}
-                className={`${
-                  loading || isTyping ? 'opacity-50 animate-pulse' : ''
-                } bg-[#333] hover:bg-[gray] text-white p-2 rounded-full transition`}
+                className={`${loading ? 'opacity-50 animate-pulse' : ""} bg-[#333] hover:bg-[gray] text-white p-2 rounded-full transition flex items-center justify-center`}
+                aria-label="Send message"
               >
-                <ArrowUp size={18} />
+                <ArrowUp size={18} className="transform text-white" />
               </button>
             </div>
           </div>
+
           <p className="text-xs text-center text-gray-500 dark:text-gray-400 mt-2">
-            <b>Filebank AI</b> may produce errors. Verify answers before using.
+            <b>Filebank cloud AI</b> may produce errors. Verify answers before using.
           </p>
         </div>
       </footer>
