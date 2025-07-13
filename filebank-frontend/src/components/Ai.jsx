@@ -107,7 +107,7 @@ const ChatBotModal = () => {
       />
 
       <Modal
-        title="Filebank Chat Assistant"
+        title="Quick Assistant"
         open={visible}
         onCancel={() => setVisible(false)}
         footer={<Link to='/full-screen-ai' >Full screen</Link> }
@@ -134,9 +134,9 @@ const ChatBotModal = () => {
             value={input}
             onChange={(e) => setInput(e.target.value)}
             onKeyDown={(e) => e.key === 'Enter' && sendMessage()}
-            style={{border:'none', padding:'5px' }} 
+            style={{border:'none', padding:'8px' }} 
           />
-          <Button type="dashed" loading={loading} onClick={sendMessage} shape='circle'>
+          <Button type="link" loading={loading} onClick={sendMessage} >
             <ArrowUp/>
           </Button>
         </Space.Compact>
