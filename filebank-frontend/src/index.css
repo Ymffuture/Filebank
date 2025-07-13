@@ -16,8 +16,6 @@ body {
   user-select: none;
   -webkit-user-select: none;
   -ms-user-select: none;
-    color:white ;
-    background:#014e14 !important;
 }
 .fade-in {
   animation: fadeFlash 0.6s ease-in-out;
