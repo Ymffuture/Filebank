@@ -12,17 +12,16 @@ export default function Home() {
       <Navbar />
       <main className="container mx-auto py-10 space-y-12 px-4">
         <section>
-          <h1 className="text-3xl font-bold text-gray-700 mb-2">Start uploading Your Files</h1>
+          <h1 className="text-3xl font-bold text-gray-700 mb-0">Start uploading Your Files</h1>
           <FileUpload onUpload={() => setRefresh((r) => r + 1)} />
         </section>
 <section>
-<h1>Ask AI</h1>
   <Ai/>
 </section>
   
   
         <section>
-          <h1 className="text-3xl font-bold text-[#222] mb-2">FileBank Documentary</h1>
+          <h1 className="text-3xl font-bold text-[#222]">Documentary</h1>
           <FileBankDocumentary />
         </section>
       </main>
