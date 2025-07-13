@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Card, Button, Space, Popconfirm, Tooltip, Skeleton, Alert, Badge } from 'antd';
+import { Card, Button, Space, Popconfirm, Tooltip, Skeleton, Alert, Badge, Input, Select, DatePicker } from 'antd';
 import api from '../api/fileApi';
 import { Link, useLocation } from 'react-router-dom';
 import { useSnackbar } from 'notistack';
@@ -11,6 +11,9 @@ import {
 } from '@ant-design/icons';
 import { FaXTwitter, FaWhatsapp, FaLinkedin } from 'react-icons/fa6';
 import { ArrowBigLeftDashIcon } from 'lucide-react';
+import dayjs from 'dayjs';
+
+const { Option } = Select;
 
 export default function FileList() {
   const [files, setFiles] = useState([]);
@@ -18,6 +21,10 @@ export default function FileList() {
   const [refresh, setRefresh] = useState(0);
   const [deleting, setDeleting] = useState(null);
   const [displayCount, setDisplayCount] = useState(4);
+  const [searchName, setSearchName] = useState('');
+  const [searchFormat, setSearchFormat] = useState('all');
+  const [searchDate, setSearchDate] = useState(null);
+
   const { enqueueSnackbar } = useSnackbar();
   const location = useLocation();
 
@@ -28,12 +35,7 @@ export default function FileList() {
 
     return isToday
       ? `Today at ${date.toLocaleTimeString('en-ZA', { hour: 'numeric', minute: '2-digit', hour12: true })}`
-      : date.toLocaleString('en-ZA', {
-          weekday: 'short',
-          hour: 'numeric',
-          minute: 'numeric',
-          hour12: true
-        });
+      : date.toLocaleString('en-ZA', { weekday: 'short', hour: 'numeric', minute: 'numeric', hour12: true });
   };
 
   const getAgeInDays = (createdAt) => {
@@ -108,7 +110,45 @@ export default function FileList() {
       .catch(() => enqueueSnackbar('Copy failed', { variant: 'error' }));
   };
 
-  const displayedFiles = files.slice(0, displayCount);
+  // === NEW: Filtered Files ===
+  const filteredFiles = files.filter(file => {
+    const matchesName = file.filename.toLowerCase().includes(searchName.toLowerCase());
+
+    const ext = (file.url.split('.').pop() || '').toLowerCase();
+    const groups = {
+      image: ['jpg','jpeg','png','gif','bmp','webp'],
+      video: ['mp4','mov','avi','wmv'],
+      audio: ['mp3','wav','ogg'],
+      pdf: ['pdf'],
+      word: ['doc','docx'],
+      excel: ['xls','xlsx','csv'],
+      ppt: ['ppt','pptx'],
+      text: ['txt','md'],
+      archive: ['zip','rar'],
+      code: ['js','jsx','ts','tsx','php','py','java']
+    };
+
+    let matchesFormat = searchFormat === 'all';
+    if (!matchesFormat) {
+      for (let group in groups) {
+        if (groups[group].includes(ext) && searchFormat === group) {
+          matchesFormat = true;
+          break;
+        }
+      }
+    }
+
+    let matchesDate = true;
+    if (searchDate) {
+      const fileDate = dayjs(file.createdAt).format('YYYY-MM-DD');
+      const selectedDate = dayjs(searchDate).format('YYYY-MM-DD');
+      matchesDate = fileDate === selectedDate;
+    }
+
+    return matchesName && matchesFormat && matchesDate;
+  });
+
+  const displayedFiles = filteredFiles.slice(0, displayCount);
 
   return (
     <>
@@ -124,6 +164,46 @@ export default function FileList() {
         message="Tip: Rename downloads from `<slug>myfilepdf` → `myfile.pdf`."
         type="warning" showIcon closable className="m-6"
       />
+
+      {/* === NEW: Filters UI === */}
+      <div className="p-4 bg-white shadow-sm rounded-md mb-4 flex flex-wrap gap-4">
+        <Input
+          placeholder="Search by name"
+          value={searchName}
+          onChange={e => setSearchName(e.target.value)}
+          style={{ width: 200 }}
+        />
+        <Select
+          value={searchFormat}
+          onChange={v => setSearchFormat(v)}
+          style={{ width: 150 }}
+        >
+          <Option value="all">All Formats</Option>
+          <Option value="image">Images</Option>
+          <Option value="video">Videos</Option>
+          <Option value="audio">Audio</Option>
+          <Option value="pdf">PDF</Option>
+          <Option value="word">Word</Option>
+          <Option value="excel">Excel/CSV</Option>
+          <Option value="ppt">PPT</Option>
+          <Option value="text">Text</Option>
+          <Option value="archive">Zip/Rar</Option>
+          <Option value="code">Code</Option>
+        </Select>
+        <DatePicker
+          value={searchDate}
+          onChange={d => setSearchDate(d)}
+          placeholder="Filter by date"
+          style={{ width: 180 }}
+        />
+        <Button onClick={() => {
+          setSearchName('');
+          setSearchFormat('all');
+          setSearchDate(null);
+        }}>
+          Reset
+        </Button>
+      </div>
 
       <div className="grid gap-6 grid-cols-1 p-4">
         {loading ? (
@@ -185,12 +265,12 @@ export default function FileList() {
           })
         ) : (
           <Card className="text-center text-[gray]" bodyStyle={{ minHeight: 200 }}>
-            <p>No files uploaded yet.</p>
+            <p>No files match your search.</p>
           </Card>
         )}
       </div>
 
-      {displayedFiles.length < files.length && (
+      {displayedFiles.length < filteredFiles.length && (
         <div className="text-center m-6">
           <Button type="link" onClick={() => setDisplayCount(c => c + 4)}>Load More</Button>
         </div>
