@@ -254,6 +254,24 @@ const sendMessage = async (overrideInput) => {
         </Space>
       </header>
 
+      
+<div className="p-4 bg-gradient-to-r from-[#1E90FF] via-[#FFD700] to-[#32CD32] rounded-xl shadow-xl mb-4">
+  <h2 className="text-xl md:text-2xl font-bold text-white mb-3 animate-fade-in-down">👋 Welcome back, Future!</h2>
+  <p className="text-sm md:text-base text-white/90 mb-4">Here are some quick suggestions you can try:</p>
+
+  <div className="flex flex-wrap gap-2">
+    {['Show me today\'s uploads', 'Help me with JavaScript', 'Summarize last week\'s files', 'Best AI prompts', 'List recent files'].map((suggestion, idx) => (
+      <button
+        key={idx}
+        onClick={() => sendMessage(suggestion)}
+        className="bg-white hover:bg-gray-100 text-[#1E90FF] font-semibold px-4 py-2 rounded-full text-xs md:text-sm transition-all shadow-md hover:shadow-lg animate-fade-in"
+      >
+        {suggestion}
+      </button>
+    ))}
+  </div>
+</div>
+
       <main ref={containerRef} className="flex-1 overflow-auto p-4 flex flex-col space-y-4">
         {messages.map((msg, idx) => (
           <motion.div
