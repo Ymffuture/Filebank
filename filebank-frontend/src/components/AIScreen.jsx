@@ -314,12 +314,13 @@ export default function AIScreen() {
 
               <button
                 type="button"
-                disabled={loading}
+                disabled={loading || isTyping}
                 onClick={() => sendMessage()}
-                className={`${loading ? 'opacity-50 animate-pulse' : ""} bg-[#333] hover:bg-[gray] text-white p-2 rounded-full transition flex items-center justify-center`}
-                aria-label="Send message"
+                className={`${
+                  loading || isTyping ? 'opacity-50 animate-pulse' : ''
+                } bg-[#333] hover:bg-[gray] text-white p-2 rounded-full transition`}
               >
-                <ArrowUp size={18} className="transform text-white" />
+                <ArrowUp size={18} />
               </button>
             </div>
           </div>
