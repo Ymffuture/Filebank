@@ -27,111 +27,123 @@ export default function AIScreen() {
   const [isRecording, setIsRecording] = useState(false);
   const recognitionRef = useRef(null);
   const containerRef = useRef(null);
-
+// start 
   const initSpeechRecognition = () => {
-    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-    if (!SpeechRecognition) {
-      message.error("Speech Recognition not supported in this browser");
-      return;
-    }
+  const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+  if (!SpeechRecognition) {
+    message.error("Speech Recognition not supported in this browser");
+    return;
+  }
 
-    const recognition = new SpeechRecognition();
-    recognition.lang = 'en-US';
-    recognition.interimResults = false;
-    recognition.maxAlternatives = 1;
+  const recognition = new SpeechRecognition();
+  recognition.lang = 'en-US';
+  recognition.interimResults = false;
+  recognition.maxAlternatives = 1;
 
-    recognition.onstart = () => setIsRecording(true);
-    recognition.onerror = (event) => {
-      message.error("Speech error: " + event.error);
-      setIsRecording(false);
-    };
-    recognition.onend = () => setIsRecording(false);
-    recognition.onresult = (event) => {
-      const transcript = event.results[0][0].transcript;
-      setInput(transcript);
-      setTimeout(() => sendMessage(transcript), 100);
-    };
+  recognition.onstart = () => setIsRecording(true);
+  recognition.onerror = (event) => {
+    message.error("Speech error: " + event.error);
+    setIsRecording(false);
+  };
+  recognition.onend = () => setIsRecording(false);
 
-    recognitionRef.current = recognition;
+  recognition.onresult = (event) => {
+    const transcript = event.results[0][0].transcript;
+    setInput(transcript);
+    setTimeout(() => sendMessage(transcript), 100);
   };
 
-  useEffect(() => {
-    initSpeechRecognition();
-  }, []);
+  recognitionRef.current = recognition;
+};
 
-  const speak = (text) => {
-    const utterance = new SpeechSynthesisUtterance(text);
-    utterance.lang = 'en-US';
-    window.speechSynthesis.speak(utterance);
-  };
+useEffect(() => {
+  initSpeechRecognition();
+}, []);
 
-  useEffect(() => {
-    if (recognitionRef.current && isRecording && !isTyping) {
-      recognitionRef.current.abort();
+const speak = (text) => {
+  window.speechSynthesis.cancel(); // Prevent overlapping speech
+  const utterance = new SpeechSynthesisUtterance(text);
+  utterance.lang = 'en-US';
+  window.speechSynthesis.speak(utterance);
+};
+
+useEffect(() => {
+  const savedHistory = localStorage.getItem("chatHistory");
+  if (savedHistory) {
+    setMessages(JSON.parse(savedHistory));
+  }
+}, []);
+
+useEffect(() => {
+  localStorage.setItem("chatHistory", JSON.stringify(messages));
+  if (containerRef.current) {
+    containerRef.current.scrollTop = containerRef.current.scrollHeight;
+  }
+}, [messages, botTypingText]);
+
+const clearChat = () => {
+  setMessages([{ from: 'bot', text: 'Hello I’m FBC-AI, your assistant. Ask me anything!' }]);
+  localStorage.removeItem("chatHistory");
+};
+
+const sendMessage = async (overrideInput) => {
+  const userInput = overrideInput || input;
+  if (!userInput.trim()) return;
+
+  const userMsg = { from: 'user', text: userInput };
+  setMessages(prev => [...prev, userMsg]);
+  setLoading(true);
+
+  try {
+    if (recognitionRef.current && isRecording) {
+      try {
+        recognitionRef.current.stop(); // Use stop() for graceful ending
+      } catch (err) {
+        console.error("Speech recognition stop error:", err);
+      }
     }
-  }, [isRecording, isTyping]);
 
-  useEffect(() => {
-    const savedHistory = localStorage.getItem("chatHistory");
-    if (savedHistory) {
-      setMessages(JSON.parse(savedHistory));
-    }
-  }, []);
+    const res = await api.post('/chat', { message: userInput });
+    const fullReply = res.data.reply;
 
-  useEffect(() => {
-    localStorage.setItem("chatHistory", JSON.stringify(messages));
-  }, [messages]);
+    setIsTyping(true);
+    let current = '';
+    let i = 0;
 
-  useEffect(() => {
-    if (containerRef.current) {
-      containerRef.current.scrollTop = containerRef.current.scrollHeight;
-    }
-  }, [messages, botTypingText]);
+    const typeInterval = setInterval(() => {
+      current += fullReply[i];
+      setBotTypingText(current);
+      i++;
 
-  const clearChat = () => {
-    setMessages([{ from: 'bot', text: 'Hello I’m FBC-AI, your assistant. Ask me anything!' }]);
-    localStorage.removeItem("chatHistory");
-  };
+      if (i === 1) {
+        speak(fullReply); // Start TTS only once
+      }
 
-  const sendMessage = async (customInput) => {
-    const messageToSend = customInput || input;
-    if (!messageToSend.trim()) return;
-    const userMsg = { from: 'user', text: messageToSend };
-    setMessages(prev => [...prev, userMsg]);
-    setLoading(true);
-    try {
-      const res = await api.post('/chat', { message: messageToSend });
-      const fullReply = res.data.reply;
+      if (i >= fullReply.length) {
+        clearInterval(typeInterval);
+        setMessages(prev => [...prev, { from: 'bot', text: fullReply }]);
+        setBotTypingText('');
+        setIsTyping(false);
+      }
+    }, 20);
 
-      setIsTyping(true);
-      let current = '';
-      let i = 0;
+    // Cleanup interval on unmount
+    const cleanup = () => clearInterval(typeInterval);
+    window.addEventListener('beforeunload', cleanup);
+    return () => window.removeEventListener('beforeunload', cleanup);
 
-      const typeInterval = setInterval(() => {
-        current += fullReply[i];
-        setBotTypingText(current);
-        i++;
+  } catch (err) {
+    console.error(err);
+    setMessages(prev => [...prev, { from: 'bot', text: '⚠️ Error contacting AI.' }]);
+    setIsTyping(false);
+  } finally {
+    setLoading(false);
+    setInput('');
+  }
+};
 
-        if (i === 1) {
-          speak(fullReply);
-        }
-
-        if (i >= fullReply.length) {
-          clearInterval(typeInterval);
-          setMessages(prev => [...prev, { from: 'bot', text: fullReply }]);
-          setBotTypingText('');
-          setIsTyping(false);
-        }
-      }, 20);
-    } catch {
-      setMessages(prev => [...prev, { from: 'bot', text: '⚠️ Error contacting AI.' }]);
-      setIsTyping(false);
-    } finally {
-      setLoading(false);
-      setInput('');
-    }
-  };
-
+      
+// end
   const highlightKeywords = (text) => {
     return text
       .replace(/\bmap\(\)/g, '<code style="color:#1677ff;background:#f0f5ff;padding:2px 4px;border-radius:4px;">map()</code>')
@@ -320,7 +332,7 @@ export default function AIScreen() {
                   loading || isTyping ? 'opacity-50 animate-pulse' : ''
                 } bg-[#333] hover:bg-[gray] text-white p-2 rounded-full transition`}
               >
-                <ArrowUp size={18} />
+                <ArrowUp size={18} className="text-white" />
               </button>
             </div>
           </div>
