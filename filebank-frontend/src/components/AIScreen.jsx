@@ -368,7 +368,7 @@ className="flex flex-col"
       recognitionRef.current.start();
     }
   }}
-  className={`transition p-2 rounded-full ${isRecording ? 'bg-red-500 text-white' : 'text-gray-400 hover:text-sky-500'}`}
+  className={`transition p-2 rounded-full ${isRecording ? '' : 'text-gray-400 hover:text-sky-500'}`}
   aria-label="Voice input"
 >
   <Mic size={20} className={isRecording ? 'animate-pulse text-[red] ' : ''} />
@@ -378,6 +378,7 @@ className="flex flex-col"
         {/* Send icon */}
         <button
           type="button"
+          disabled={loading}
           onClick={sendMessage}
           className="bg-[#333] hover:bg-[gray] text-white p-2 rounded-full transition flex items-center justify-center"
           aria-label="Send message"
