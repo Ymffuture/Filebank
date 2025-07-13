@@ -380,7 +380,7 @@ className="flex flex-col"
           type="button"
           disabled={loading}
           onClick={sendMessage}
-          className="bg-[#333] hover:bg-[gray] text-white p-2 rounded-full transition flex items-center justify-center"
+          className={`${loading? 'opacity-50 animate-pulse':""} bg-[#333] hover:bg-[gray] text-white p-2 rounded-full transition flex items-center justify-center`} 
           aria-label="Send message"
         >
           <ArrowUp size={18} className="transform text-white" />
