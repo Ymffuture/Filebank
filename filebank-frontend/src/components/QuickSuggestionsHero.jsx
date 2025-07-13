@@ -30,7 +30,7 @@ const itemVariants = {
   visible: { opacity: 1, y: 0, transition: { type: 'spring', stiffness: 120 } }
 };
 
-export function QuickSuggestionsHero({ sendMessage }) {
+const QuickSuggestionsHero =({ sendMessage }) => {
   const [visible, setVisible] = useState(true);
   const greeting = useMemo(() => getGreeting(), []);
 
@@ -50,7 +50,7 @@ export function QuickSuggestionsHero({ sendMessage }) {
       variants={containerVariants}
     >
       <h2 className="text-xl md:text-2xl font-semibold text-gray-800 dark:text-white mb-2 animate-fade-in-down">
-        👋 {greeting}, Future!
+        👋 {greeting}!
       </h2>
       <p className="text-sm md:text-base text-gray-600 dark:text-gray-300 mb-4">
         Quick actions to get started:
@@ -71,3 +71,5 @@ export function QuickSuggestionsHero({ sendMessage }) {
     </motion.div>
   );
 }
+
+export default QuickSuggestionsHero;
