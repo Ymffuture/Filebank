@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { GoogleLogin, googleLogout } from '@react-oauth/google';
-import { Button, Typography, message, Avatar, Dropdown, Menu, Badge, Space, Row, Col, Modal, Form, Input } from 'antd';
+import { Button, Typography, message, Avatar, Dropdown, Menu, Badge, Space, Row, Col, Modal, Form, Input, Spin } from 'antd';
 import { BellOutlined, DashboardFilled, DownOutlined, LogoutOutlined, LockOutlined, CloudUploadOutlined, ClockCircleOutlined } from '@ant-design/icons';
 import { Link, useNavigate } from 'react-router-dom';
 import api from '../api/fileApi';
 import { useSnackbar } from 'notistack';
+import { motion } from 'framer-motion';
 
 const { Title, Paragraph, Text } = Typography;
 
@@ -14,6 +15,9 @@ export default function Hero() {
   const [notifications, setNotifications] = useState(0);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [isRegistering, setIsRegistering] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [forgotModalVisible, setForgotModalVisible] = useState(false);
+  const [forgotEmail, setForgotEmail] = useState('');
   const navigate = useNavigate();
 
   useEffect(() => { if (user) fetchNotifications(); }, [user]);
@@ -28,6 +32,7 @@ export default function Hero() {
   const handleGoogleLoginSuccess = async (credentialResponse) => {
     try {
       const { credential } = credentialResponse;
+      setLoading(true);
       const res = await api.post('/auth/google-login', { credential });
 
       setUser(res.data.user);
@@ -39,6 +44,8 @@ export default function Hero() {
       navigate('/dashboard');
     } catch {
       enqueueSnackbar('Google login failed.', { variant: 'error' });
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -61,10 +68,11 @@ export default function Hero() {
   );
 
   const onFinish = async (values) => {
+    setLoading(true);
     try {
       if (isRegistering) {
         await api.post('/auth/register', values);
-        enqueueSnackbar('Registration successful! You can now login.', { variant: 'success' });
+        enqueueSnackbar('Registration successful! Please verify your email.', { variant: 'success' });
         setIsRegistering(false);
       } else {
         const res = await api.post('/auth/login', values);
@@ -77,23 +85,46 @@ export default function Hero() {
       setIsModalVisible(false);
     } catch (err) {
       enqueueSnackbar(err.response?.data?.message || 'Failed', { variant: 'error' });
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleForgotSubmit = async () => {
+    if (!forgotEmail) {
+      return message.error('Please enter your email.');
+    }
+    setLoading(true);
+    try {
+      await api.post('/auth/forgot-password', { email: forgotEmail });
+      message.success('Password reset email sent.');
+      setForgotModalVisible(false);
+    } catch (err) {
+      message.error(err.response?.data?.message || 'Failed to send reset email.');
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
-    <div style={{
-      minHeight: '100vh',
-      backgroundImage: `url('/IMG-20250713-WA0042.jpg')`,
-      backgroundSize: 'cover',
-      backgroundPosition: 'center',
-      display: 'flex',
-      flexDirection: 'column',
-      justifyContent: 'space-between',
-      padding: '2rem',
-    }}>
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5 }}
+      style={{
+        minHeight: '100vh',
+        backgroundImage: `url('/IMG-20250713-WA0042.jpg')`,
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'space-between',
+        padding: '2rem',
+      }}
+    >
       {/* Navigation */}
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', backdropFilter: 'blur(6px)', padding: '1rem', borderRadius: '12px', background: 'rgba(255,255,255,0.85)' }}>
-        <Title level={3} style={{ margin: 0, color: '#0B3D91' }}></Title>
+        <Title level={3} style={{ margin: 0, color: '#0B3D91' }}>FileBank</Title>
         {user ? (
           <Space>
             <Badge count={notifications} size="small">
@@ -123,15 +154,20 @@ export default function Hero() {
       </div>
 
       {/* Hero Banner */}
-      <div style={{
-        background: 'rgba(255,255,255,0.96)',
-        padding: '4rem 2rem',
-        textAlign: 'center',
-        borderRadius: '16px',
-        boxShadow: '0 8px 24px rgba(0,0,0,0.08)',
-        maxWidth: '900px',
-        margin: '4rem auto'
-      }}>
+      <motion.div
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.3 }}
+        style={{
+          background: 'rgba(255,255,255,0.96)',
+          padding: '4rem 2rem',
+          textAlign: 'center',
+          borderRadius: '16px',
+          boxShadow: '0 8px 24px rgba(0,0,0,0.08)',
+          maxWidth: '900px',
+          margin: '4rem auto'
+        }}
+      >
         <Title style={{ color: '#0B3D91', fontSize: '3rem', marginBottom: '1rem' }}>Your Cloud, Your Control</Title>
         <Paragraph style={{ fontSize: '1.2rem', color: '#444' }}>
           Upload, manage, and access your files anywhere with <strong>FileBank</strong>.
@@ -147,7 +183,7 @@ export default function Hero() {
         }} onClick={() => setIsModalVisible(true)}>
           Get Started Free
         </Button>
-      </div>
+      </motion.div>
 
       {/* Overview Section */}
       <div style={{
@@ -177,13 +213,11 @@ export default function Hero() {
             <Space direction="vertical" align="center">
               <ClockCircleOutlined style={{ fontSize: 40, color: '#1E90FF' }} />
               <Text strong>Auto Expiry</Text>
-              <Text type="secondary">Files expire after 30 days for safety, unless renewed.</Text>
+              <Text type="secondary">Files auto-expire after 30 days for safety, unless renewed.</Text>
             </Space>
           </Col>
         </Row>
       </div>
-
-    
 
       {/* Login/Register Modal */}
       <Modal
@@ -193,8 +227,11 @@ export default function Hero() {
         footer={null}
         centered
       >
-        {/* Only show forms if user is NOT logged in via Google */}
-        {!user && (
+        {loading ? (
+          <div style={{ textAlign: 'center', padding: '2rem' }}>
+            <Spin size="large" />
+          </div>
+        ) : !user && (
           <Form layout="vertical" onFinish={onFinish}>
             {isRegistering && (
               <Form.Item name="name" label="Full Name" rules={[{ required: true }]}>
@@ -212,18 +249,38 @@ export default function Hero() {
                 {isRegistering ? "Register" : "Login"}
               </Button>
             </Form.Item>
-            <Form.Item>
+            <Form.Item style={{ textAlign: 'center' }}>
               <Text type="secondary" style={{ cursor: 'pointer' }} onClick={() => setIsRegistering(!isRegistering)}>
                 {isRegistering ? "Already have an account? Login" : "Don't have an account? Register"}
               </Text>
-              <Text type="secondary" style={{ cursor: 'pointer' }} onClick={() => setIsRegistering(!isRegistering)}>
-                {isRegistering ? "" : "Forgot password?"}
+              <br />
+              <Text type="secondary" style={{ cursor: 'pointer', display: isRegistering ? 'none' : 'inline-block', marginTop: '1rem' }} onClick={() => setForgotModalVisible(true)}>
+                Forgot password?
               </Text>
+              <div style={{ marginTop: '1rem' }}>
+                <Link to="/terms" style={{ marginRight: 10 }}>Terms</Link> |
+                <Link to="/privacy" style={{ marginLeft: 10 }}>Privacy</Link>
+              </div>
             </Form.Item>
           </Form>
         )}
       </Modal>
-    </div>
+
+      {/* Forgot Password Modal */}
+      <Modal
+        title="Reset Password"
+        open={forgotModalVisible}
+        onOk={handleForgotSubmit}
+        onCancel={() => setForgotModalVisible(false)}
+        okText="Send Reset Link"
+      >
+        <Input
+          placeholder="Enter your email"
+          value={forgotEmail}
+          onChange={(e) => setForgotEmail(e.target.value)}
+        />
+      </Modal>
+    </motion.div>
   );
 }
 
