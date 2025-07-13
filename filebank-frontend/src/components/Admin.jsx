@@ -14,8 +14,12 @@ import {
   Card,
   Statistic,
   List,
-  message, 
-  Tag, Rate,Typography, Divider, Empty
+  Message, 
+  Tag, 
+  Rate,
+  Typography, 
+  Divider,
+  Empty
 } from 'antd';
 import {
   BarChart,
