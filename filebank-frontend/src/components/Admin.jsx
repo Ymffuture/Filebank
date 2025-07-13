@@ -14,7 +14,7 @@ import {
   Card,
   Statistic,
   List,
-  Message, 
+  message, 
   Tag, 
   Rate,
   Typography, 
