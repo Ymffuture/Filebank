@@ -10,7 +10,7 @@ import { SendHorizonal, Mic, ArrowUp } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import DOMPurify from 'dompurify';
 import { motion } from 'framer-motion';
-
+import QuickSuggestionsHero from './QuickSuggestionsHero';
 const { Text } = Typography;
 
 SyntaxHighlighter.registerLanguage('javascript', js);
@@ -254,33 +254,9 @@ const sendMessage = async (overrideInput) => {
         </Space>
       </header>
 
-      
-<div className="p-6 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-2xl shadow-sm mb-6">
-  <h2 className="text-xl md:text-2xl font-semibold text-gray-800 dark:text-white mb-2 animate-fade-in-down">
-    👋 Welcome back, Future!
-  </h2>
-  <p className="text-sm md:text-base text-gray-600 dark:text-gray-300 mb-4">
-    Quick actions to get started:
-  </p>
+      <QuickSuggestionsHero sendMessage={sendMessage} />
 
-  <div className="flex flex-wrap gap-3">
-    {[
-      "Show me today's uploads",
-      "Help me with JavaScript",
-      "Summarize last week’s files",
-      "Best AI prompts",
-      "List recent files"
-    ].map((suggestion, idx) => (
-      <button
-        key={idx}
-        onClick={() => sendMessage(suggestion)}
-        className="px-4 py-2 text-sm font-medium rounded-lg bg-gray-100 hover:bg-gray-200 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-800 dark:text-gray-200 transition-all shadow-sm hover:shadow-md focus:outline-none focus:ring-2 focus:ring-sky-500"
-      >
-        {suggestion}
-      </button>
-    ))}
-  </div>
-</div>
+
 
       <main ref={containerRef} className="flex-1 overflow-auto p-4 flex flex-col space-y-4">
         {messages.map((msg, idx) => (
