@@ -14,7 +14,8 @@ SyntaxHighlighter.registerLanguage('javascript', js);
 
 export default function AIScreen() {
   const [messages, setMessages] = useState([
-    { from: 'bot', text: 'Welcome to **FileBank AI Assistant**!\n\nAsk me anything about FileBank.' }
+    { from: 'bot', text: 'Hello I’m FBC-AI, your assistant. Ask me anything!' }
+
   ]);
   const [input, setInput] = useState('');
   const [loading, setLoading] = useState(false);
@@ -100,8 +101,15 @@ const speak = (text) => {
         setBotTypingText(current);
         i++;
         // new code
-        speak(fullReply);
+        if (i === 1) {
+  speak(fullReply); // only once, when typing starts
+}
+
         // end here
+        if (recognitionRef.current && isRecording) {
+  recognitionRef.current.abort(); // instead of .stop()
+}
+
         if (i >= fullReply.length) {
           clearInterval(typeInterval);
           setMessages(prev => [...prev, { from: 'bot', text: fullReply }]);
@@ -231,7 +239,7 @@ const speak = (text) => {
             key={`${idx}-text-${i}`}
             className={`my-2 p-3 rounded-lg max-w-[100%] whitespace-pre-wrap break-words text-[15px] leading-relaxed animate-fade-in ${
               msg.from === 'user'
-                ? 'bg-gray-100 text-[#333] self-end ml-auto'
+                ? 'bg-gray-100 text-[#333] self-end ml-auto max-w-[80%] '
                 : 'bg-* text-[#333] dark:bg-gray-700 dark:text-white'
             }`}
             dangerouslySetInnerHTML={{ __html: html }}
