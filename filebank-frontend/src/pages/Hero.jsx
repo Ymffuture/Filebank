@@ -83,7 +83,7 @@ export default function Hero() {
   return (
     <div style={{
       minHeight: '100vh',
-      backgroundImage: `url('/hero-bg.jpg')`,
+      backgroundImage: `url('/IMG-20250713-WA0042.jpg')`,
       backgroundSize: 'cover',
       backgroundPosition: 'center',
       display: 'flex',
