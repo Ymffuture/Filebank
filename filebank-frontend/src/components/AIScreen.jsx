@@ -4,16 +4,22 @@ import { CopyOutlined, BulbOutlined } from '@ant-design/icons';
 import api from '../api/fileApi';
 import { Light as SyntaxHighlighter } from 'react-syntax-highlighter';
 import js from 'react-syntax-highlighter/dist/esm/languages/hljs/javascript';
+import html from 'react-syntax-highlighter/dist/esm/languages/hljs/xml';  // for HTML
+import css from 'react-syntax-highlighter/dist/esm/languages/hljs/css';
+import python from 'react-syntax-highlighter/dist/esm/languages/hljs/python';
 import { dracula, github } from 'react-syntax-highlighter/dist/esm/styles/hljs';
 import copy from 'copy-to-clipboard';
 import { SendHorizonal, Mic, ArrowUp } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import DOMPurify from 'dompurify';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import QuickSuggestionsHero from './QuickSuggestionsHero';
 const { Text } = Typography;
 
 SyntaxHighlighter.registerLanguage('javascript', js);
+SyntaxHighlighter.registerLanguage('html', html);
+SyntaxHighlighter.registerLanguage('css', css);
+SyntaxHighlighter.registerLanguage('python', python);
 
 export default function AIScreen() {
   const [messages, setMessages] = useState([
@@ -254,8 +260,9 @@ const sendMessage = async (overrideInput) => {
         </Space>
       </header>
 
-      <QuickSuggestionsHero sendMessage={sendMessage} />
-
+      <AnimatePresence>
+  {showSuggestions && <QuickSuggestionsHero sendMessage={sendMessage} />}
+</AnimatePresence>
 
 
       <main ref={containerRef} className="flex-1 overflow-auto p-4 flex flex-col space-y-4">
