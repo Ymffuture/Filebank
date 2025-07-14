@@ -131,7 +131,7 @@ export default function Hero() {
     >
       {/* Navigation */}
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', backdropFilter: 'blur(6px)', padding: '1rem', borderRadius: '12px', background: 'rgba(255,255,255,0.85)' }}>
-        {user ? <Title level={3} style={{ margin: 0, color: '#0B3D91' }}>FileBank</Title> : null}
+        <Title level={3} style={{ margin: 0, color: '#0B3D91' }}>FileBank</Title>
         {user ? (
           <Space>
             <Badge count={notifications} size="small">
@@ -191,6 +191,7 @@ export default function Hero() {
         <Paragraph style={{ fontSize: '1.2rem', color: '#444' }}>
           Upload, manage, and access your files anywhere with <strong>FileBank</strong>.
         </Paragraph>
+        {!user? 
         <Button size="large" style={{
           marginTop: '2rem',
           padding: '0 2rem',
@@ -201,7 +202,17 @@ export default function Hero() {
           boxShadow: '0 4px 12px rgba(30,144,255,0.4)'
         }} onClick={() => setIsModalVisible(true)}>
           Get Started Free
-        </Button>
+        </Button> : <Button size="large" style={{
+          marginTop: '2rem',
+          padding: '0 2rem',
+          background: '#1E90FF',
+          borderRadius: '30px',
+          color: '#fff',
+          fontWeight: 500,
+          boxShadow: '0 4px 12px rgba(30,144,255,0.4)'
+        }} >
+         <Link to="/about-us" >About Us</Link>
+        </Button>} 
       </motion.div>
 
       {/* Overview Section */}
