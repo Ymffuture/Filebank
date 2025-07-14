@@ -90,7 +90,7 @@ export default function Navbar() {
   const mainMenuItems = [
     { key: 'home', label: <Link to="/"><HomeOutlined /> Home</Link> },
     { key: 'about', label: <Link to="/about-us"><InfoCircleOutlined /> About Us</Link> },
-    { key: 'files', label: <Link to="/files"><FileOutlined /> Files</Link> },
+    { key: 'files', label: <Link to="/files"><FileOutlined />My Files</Link> },
     user?.role === 'admin' && { key: 'admin', label: <Link to="/admin"><DashboardOutlined /> Admin Panel</Link> },
   ].filter(Boolean);
 
@@ -130,7 +130,7 @@ export default function Navbar() {
         bodyStyle={{ padding: 0, display: 'flex', flexDirection: 'column', height: '100%' }}
       >
         {/* Profile header with gradient */}
-        <div className="p-6 bg-gradient-to-r from-[#1E90FF] via-[#FFD700] to-[#32CD32] flex items-center gap-4">
+        <div className="p-2 bg-gradient-to-r from-[#000] via-[#333] to-[gray] flex items-center gap-4">
           {profilePic ? (
             <Avatar src={profilePic} size={64} />
           ) : (
