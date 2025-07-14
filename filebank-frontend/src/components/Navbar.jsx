@@ -90,7 +90,7 @@ export default function Navbar() {
   const mainMenuItems = [
     { key: 'home', label: <Link to="/"><HomeOutlined /> Home</Link> },
     { key: 'about', label: <Link to="/about-us"><InfoCircleOutlined /> About Us</Link> },
-    { key: 'files', label: <Link to="/files"><FileOutlined />My Files</Link> },
+    { key: 'files', label: <Link to="/files"><FileOutlined /> Files</Link> },
     user?.role === 'admin' && { key: 'admin', label: <Link to="/admin"><DashboardOutlined /> Admin Panel</Link> },
   ].filter(Boolean);
 
@@ -101,6 +101,7 @@ export default function Navbar() {
       <Header className="flex justify-between items-center bg-white shadow sticky top-0 z-50 px-4">
         <Link to="/" className="flex items-center">
           <img src={logo} alt="FileBank Logo" className="w-20 h-20 md:w-20 md:h-20 scale-200" />
+          <span className="text-[gray] text-[10px]">Filebank Cloud</span>
         </Link>
 
         <div className="hidden md:flex flex-1 justify-center">
@@ -110,13 +111,13 @@ export default function Navbar() {
         {/* Mobile menu button */}
         <Button
           type="text"
-          className="md:hidden text-xl relative"
+          className="md:hidden text-[22px] relative text-white"
           onClick={() => setDrawerVisible(true)}
           icon={
             <>
-              <MenuOutlined />
+              <MenuOutlined className="text-white" />
               {notifications > 0 && (
-                <span className="absolute top-1 right-1 block w-2 h-2 bg-[#0B3D91] rounded-full" />
+                <span className="absolute top-1 right-1 block w-3 h-3 bg-[royalblue] rounded-full" />
               )}
             </>
           }
@@ -155,10 +156,10 @@ export default function Navbar() {
         />
 
         {/* Footer buttons */}
-        <div className="p-2 space-y-6 bg-[#0B3D91] dark:bg-gray-900">
+        <div className="p-2 space-y-4 bg-[#0B3D91] dark:bg-gray-900 text-white ">
           <Button
             block
-            type="text"
+            type="dashed"
             icon={<BellOutlined style={{ color: '#DB4437' }} />}
             onClick={() => {
               setNotifModalVisible(true);
@@ -176,7 +177,7 @@ export default function Navbar() {
 
           <Button
             block
-            type="link"
+            type="dashed"
             onClick={() => {
               navigate('/feedback');
               setDrawerVisible(false);
@@ -190,7 +191,7 @@ export default function Navbar() {
             <Button
                 block
               type="link" 
-                danger
+    
                 icon={<LogoutOutlined />}
                 onClick={handleLogout}
                 className="bg-red-600 hover:bg-red-700 text-white font-bold rounded-lg m-3"
