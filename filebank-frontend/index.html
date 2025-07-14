@@ -2,64 +2,94 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5" />
+    <title>FileBank - Secure Cloud File Management & Storage</title>
+
+    <!-- Favicon -->
+    <link rel="icon" href="/vite.svg" type="image/svg+xml" />
+
+    <!-- Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <!-- Recommended: Inter -->
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- Primary Meta Tags -->
+    <meta name="title" content="FileBank - Secure Cloud File Management & Storage" />
+    <meta name="description" content="FileBank by Qurovex Institute lets you securely upload, organize, and manage your files from anywhere. Encrypted, fast, and easy." />
+    <meta name="keywords" content="FileBank, cloud storage, secure file management, file sharing, encrypted uploads, Qurovex, file storage South Africa" />
+    <meta name="author" content="Kgomotso Nkosi (Future)" />
+    <meta name="robots" content="index, follow" />
     <meta name="google-site-verification" content="xXWElQQdEb1YSMqAy524N-B58KqSZqsf5zc0O8fWg3A" />
-    <title>File Bank - Secure File Management Platform</title>
-    <meta name="description" content="File Bank is a secure platform for uploading, organizing, and accessing your files from anywhere. Powered by Qurovex technology." />
-    <meta name="keywords" content="file management, secure file upload, cloud storage, Qurovex, File Bank" />
-    <!-- Open Graph Meta Tags for Social Media -->
-    <meta property="og:title" content="File Bank - Secure File Management" />
-    <meta property="og:description" content="Securely upload, organize, and access your files anywhere, anytime with File Bank." />
-    <meta property="og:image" content="https://filebank.example.com/images/og-image.jpg" />
-    <meta property="og:url" content="https://filebank.example.com" />
+
+    <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website" />
-    <!-- Twitter Card Meta Tags -->
+    <meta property="og:url" content="https://filebank.vercel.app/" />
+    <meta property="og:title" content="FileBank - Secure Cloud File Management & Storage" />
+    <meta property="og:description" content="Securely upload, organize, and manage your files from anywhere with FileBank." />
+    <meta property="og:image" content="https://filebank.vercel.app/images/og-image.jpg" />
+    
+    <!-- Twitter -->
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="File Bank - Secure File Management" />
-    <meta name="twitter:description" content="Securely upload, organize, and access your files anywhere, anytime with File Bank." />
-    <meta name="twitter:image" content="https://filebank.example.com/images/twitter-image.jpg" />
-    <!-- Structured Data for SEO -->
-    <!-- Theme Colors for Android & Chrome -->
-<meta name="theme-color" content="#0B3D91" />
-<meta name="background-color" content="#1E90FF" />
+    <meta name="twitter:url" content="https://filebank.vercel.app/" />
+    <meta name="twitter:title" content="FileBank - Secure Cloud File Management & Storage" />
+    <meta name="twitter:description" content="Securely upload, organize, and manage your files from anywhere with FileBank." />
+    <meta name="twitter:image" content="https://filebank.vercel.app/images/twitter-image.jpg" />
 
-<!-- Progressive Web App Support -->
-<link rel="manifest" href="/manifest.json" />
+    <!-- Progressive Web App -->
+    <link rel="manifest" href="/manifest.json" />
+    <meta name="theme-color" content="#0B3D91" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="FileBank" />
+    <link rel="apple-touch-icon" href="/icons/icon-192.png" />
 
-<!-- iOS Safari Support -->
-<meta name="apple-mobile-web-app-capable" content="yes" />
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-<meta name="apple-mobile-web-app-title" content="FileBank" />
-<link rel="apple-touch-icon" href="/icons/icon-192.png" />
-
-
+    <!-- Structured Data (Advanced Schema) -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
-      "@type": "WebSite",
-      "name": "File Bank",
-      "url": "https://filebank.example.com",
-      "description": "A secure platform for managing your files.",
+      "@type": "WebApplication",
+      "name": "FileBank",
+      "url": "https://filebank.vercel.app/",
+      "description": "Secure cloud storage platform for managing, uploading, and sharing files.",
+      "applicationCategory": "CloudStorage",
+      "operatingSystem": "All",
+      "inLanguage": "en-ZA",
+      "creator": {
+        "@type": "Person",
+        "name": "Kgomotso Nkosi",
+        "email": "futurekgomotso@gmail.com",
+        "jobTitle": "Software Engineer",
+        "affiliation": {
+          "@type": "Organization",
+          "name": "Qurovex Institute",
+          "url": "https://filebank.vercel.app"
+        }
+      },
       "publisher": {
         "@type": "Organization",
         "name": "Qurovex Institute",
         "logo": {
           "@type": "ImageObject",
-          "url": "https://filebank.example.com/images/logo.png"
+          "url": "https://filebank.vercel.app/images/logo.png"
         }
-      }
+      },
+      "screenshot": "https://filebank.vercel.app/images/screenshot.jpg",
+      "datePublished": "2025-07-13",
+      "keywords": "file storage, cloud storage, secure file sharing, encrypted uploads, FileBank"
     }
     </script>
+
+    <!-- Performance & Prefetch -->
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
+    <link rel="dns-prefetch" href="https://fonts.gstatic.com" />
   </head>
   <body>
+    <noscript>You need to enable JavaScript to run FileBank.</noscript>
     <div id="root"></div>
     <script type="module" src="/src/main.jsx"></script>
   </body>
 </html>
+
