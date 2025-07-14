@@ -199,7 +199,7 @@ export default function Navbar() {
                 Logout
               </Button>
           ) : (
-        <hr/>
+        
             <GoogleLogin
                 onSuccess={handleLoginSuccess}
                 onError={() => message.error('Login failed.')}
