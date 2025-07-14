@@ -127,7 +127,7 @@ export default function Navbar() {
         placement="left"
         open={drawerVisible}
         onClose={() => setDrawerVisible(false)}
-        bodyStyle={{ padding: 0, display: 'flex', flexDirection: 'column', height: '100%' }}
+        bodyStyle={{ padding: 0, display: 'flex', flexDirection: 'column', height: '100%',backgroundColor:'#0B3D91' }}
       >
         {/* Profile header with gradient */}
         <div className="p-2 bg-gradient-to-r from-[#000] via-[#333] to-[gray] flex items-center gap-4">
@@ -137,7 +137,7 @@ export default function Navbar() {
             <Avatar size={64} icon={<UserOutlined />} />
           )}
           <div>
-            <div className="font-semibold text-white text-lg">{user?.displayName || 'Guest'}</div>
+            <div className="font-semibold text-white text-[18px]">{user?.displayName || 'Guest'}</div>
             <div className="text-sm text-white/80">{user?.email}</div>
           </div>
         </div>
@@ -145,7 +145,7 @@ export default function Navbar() {
         {/* Navigation */}
         <Menu
           mode="inline"
-          theme="light"
+          theme="dark"
           items={mainMenuItems.map(item => ({
             ...item,
             onClick: () => setDrawerVisible(false),
