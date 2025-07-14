@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { GoogleLogin, googleLogout } from '@react-oauth/google';
+import { GoogleLogin, useGoogleLogin, googleLogout } from '@react-oauth/google';
 import { Button, Typography, message, Avatar, Dropdown, Menu, Badge, Space, Row, Col, Modal, Form, Input, Spin } from 'antd';
-import { BellOutlined, DashboardFilled, DownOutlined, LogoutOutlined, LockOutlined, CloudUploadOutlined, ClockCircleOutlined } from '@ant-design/icons';
+import { BellOutlined, DashboardFilled, DownOutlined, LogoutOutlined, LockOutlined, CloudUploadOutlined, ClockCircleOutlined, GoogleOutlined } from '@ant-design/icons';
 import { Link, useNavigate } from 'react-router-dom';
 import api from '../api/fileApi';
 import { useSnackbar } from 'notistack';
@@ -29,9 +29,9 @@ export default function Hero() {
     } catch {}
   };
 
-  const handleGoogleLoginSuccess = async (credentialResponse) => {
+  const handleGoogleLoginSuccess = async (tokenResponse) => {
     try {
-      const { credential } = credentialResponse;
+      const { credential } = tokenResponse;
       setLoading(true);
       const res = await api.post('/auth/google-login', { credential });
 
@@ -49,6 +49,12 @@ export default function Hero() {
     }
   };
 
+  const googleLogin = useGoogleLogin({
+    onSuccess: handleGoogleLoginSuccess,
+    onError: () => message.error('Google login failed'),
+    flow: 'implicit'
+  });
+
   const handleLogout = () => {
     googleLogout();
     localStorage.removeItem('filebankUser');
@@ -63,8 +69,7 @@ export default function Hero() {
       items={[
         { key: '1', label: <Link to="/profile" >Profile (coming soon) </Link> },
         { key: '2', label: <Link to="/dashboard"><DashboardFilled /> Dashboard</Link> },
-        { key: '1', label: <span onClick={handleLogout}><LogoutOutlined /> Logout</span> },
-        
+        { key: '3', label: <span onClick={handleLogout}><LogoutOutlined /> Logout</span> },
       ]}
     />
   );
@@ -126,7 +131,7 @@ export default function Hero() {
     >
       {/* Navigation */}
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', backdropFilter: 'blur(6px)', padding: '1rem', borderRadius: '12px', background: 'rgba(255,255,255,0.85)' }}>
-        {user? <Title level={3} style={{ margin: 0, color: '#0B3D91' }}>FileBank</Title>:null} 
+        {user ? <Title level={3} style={{ margin: 0, color: '#0B3D91' }}>FileBank</Title> : null}
         {user ? (
           <Space>
             <Badge count={notifications} size="small">
@@ -142,13 +147,28 @@ export default function Hero() {
           </Space>
         ) : (
           <Space>
-            <GoogleLogin
-              onSuccess={handleGoogleLoginSuccess}
-              onError={() => message.error('Google login failed')}
-              useOneTap
-              shape="circle"
-            />
-            
+            <Button
+              icon={<GoogleOutlined />}
+              size="large"
+              onClick={() => googleLogin()}
+              style={{
+                background: '#1E90FF',
+                color: '#fff',
+                borderRadius: '50px',
+                padding: '0 24px',
+                fontWeight: 600,
+                boxShadow: '0 4px 12px rgba(30,144,255,0.4)',
+                transition: 'all 0.3s ease',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                minWidth: '180px'
+              }}
+              onMouseEnter={(e) => e.currentTarget.style.boxShadow = '0 8px 20px rgba(30,144,255,0.5)'}
+              onMouseLeave={(e) => e.currentTarget.style.boxShadow = '0 4px 12px rgba(30,144,255,0.4)'}
+            >
+              Sign in with Google
+            </Button>
           </Space>
         )}
       </div>
