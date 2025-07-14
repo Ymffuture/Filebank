@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import {
-  Card, Avatar, Descriptions, Skeleton, Upload, Button, message,
-  Input, Typography, Space, Spin
+  Card, Avatar, Descriptions, Spin, Upload, Button, message,
+  Input, Typography, Space
 } from 'antd';
 import {
   UserOutlined, UploadOutlined, EditOutlined, SaveOutlined,
@@ -10,13 +10,14 @@ import {
 import { Link } from 'react-router-dom';
 import api from '../api/fileApi';
 
-const { Title, Text } = Typography;
+const { Title } = Typography;
 
 export default function Profile() {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const [editing, setEditing] = useState(false);
-  const [form, setForm] = useState({ name: '', email: '', picture: '' });
+  const [form, setForm] = useState({ name: '', email: '', picture: null });
+  const [file, setFile] = useState(null);
   const [uploading, setUploading] = useState(false);
 
   useEffect(() => { fetchUser(); }, []);
@@ -39,32 +40,25 @@ export default function Profile() {
   };
 
   const handleUpdate = async () => {
-  try {
-    const res = await api.put('/auth/update-profile', {
-      displayName: form.name,
-      picture: form.picture
-    });
-
-    setUser(res.data);
-    localStorage.setItem('filebankUser', JSON.stringify(res.data));
-    message.success('Profile updated!');
-    setEditing(false);
-  } catch (err) {
-    message.error('Failed to update profile');
-  }
-};
-
-
-  const handleUpload = async ({ file }) => {
-    const data = new FormData();
-    data.append('image', file);
-    setUploading(true);
     try {
-      const res = await api.post('/auth/upload-avatar', data);
-      setForm({ ...form, picture: res.data.url });
-      message.success('Avatar updated');
-    } catch {
-      message.error('Upload failed');
+      const formData = new FormData();
+      formData.append('name', form.name);
+      if (file) {
+        formData.append('image', file);
+      }
+
+      setUploading(true);
+
+      const res = await api.put('/auth/update-profile', formData, {
+        headers: { 'Content-Type': 'multipart/form-data' }
+      });
+
+      setUser(res.data.data); // <- Updated backend sends `data`
+      localStorage.setItem('filebankUser', JSON.stringify(res.data.data));
+      message.success('Profile updated!');
+      setEditing(false);
+    } catch (err) {
+      message.error(err.response?.data?.message || 'Update failed');
     } finally {
       setUploading(false);
     }
@@ -85,7 +79,7 @@ export default function Profile() {
           maxWidth: 500,
           width: '100%',
           borderRadius: '16px',
-          boxShadow: '0 6px 24px rgba(0,0,0,0.05)',
+          boxShadow: '0 6px 24px rgba(0,0,0,0.08)',
           transition: 'all 0.3s ease-in-out'
         }}
         hoverable
@@ -99,28 +93,29 @@ export default function Profile() {
               style={{
                 border: '4px solid #f0f0f0',
                 transition: 'transform 0.3s',
-                cursor: 'pointer'
+                cursor: editing ? 'pointer' : 'default'
               }}
-              onMouseEnter={(e) => e.currentTarget.style.transform = 'scale(1.05)'}
-              onMouseLeave={(e) => e.currentTarget.style.transform = 'scale(1)'}
             />
-            <Upload
-              name="image"
-              showUploadList={false}
-              customRequest={handleUpload}
-              accept="image/*"
-              disabled={uploading}
-              style={{ position: 'absolute', bottom: 0, right: 0 }}
-            >
-              <Button
-                size="small"
-                icon={<UploadOutlined />}
-                loading={uploading}
-                style={{ marginTop: 8 }}
+            {editing && (
+              <Upload
+                showUploadList={false}
+                accept="image/*"
+                beforeUpload={(file) => {
+                  setFile(file);
+                  setForm({ ...form, picture: URL.createObjectURL(file) });
+                  return false; // Prevent auto upload
+                }}
               >
-                Change
-              </Button>
-            </Upload>
+                <Button
+                  size="small"
+                  icon={<UploadOutlined />}
+                  loading={uploading}
+                  style={{ position: 'absolute', bottom: -10, right: -10 }}
+                >
+                  Change
+                </Button>
+              </Upload>
+            )}
           </div>
         </Space>
 
@@ -143,7 +138,9 @@ export default function Profile() {
               style={{ marginBottom: 12 }}
             />
             <Space style={{ width: '100%', justifyContent: 'space-between' }}>
-              <Button icon={<SaveOutlined />} type="primary" onClick={handleUpdate}>Save</Button>
+              <Button icon={<SaveOutlined />} type="primary" onClick={handleUpdate} loading={uploading}>
+                Save
+              </Button>
               <Button icon={<CloseOutlined />} onClick={() => setEditing(false)}>Cancel</Button>
             </Space>
           </>
