@@ -146,9 +146,7 @@ export default function Hero() {
               useOneTap
               shape="circle"
             />
-            <Button type="primary" onClick={() => setIsModalVisible(true)} style={{ background: '#0B3D91', borderRadius: '30px' }}>
-              Login / Register
-            </Button>
+            
           </Space>
         )}
       </div>
