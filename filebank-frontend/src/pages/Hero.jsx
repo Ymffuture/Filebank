@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { GoogleLogin, useGoogleLogin, googleLogout } from '@react-oauth/google';
+import { GoogleLogin, googleLogout } from '@react-oauth/google';
 import { Button, Typography, message, Avatar, Dropdown, Menu, Badge, Space, Row, Col, Modal, Form, Input, Spin } from 'antd';
-import { BellOutlined, DashboardFilled, DownOutlined, LogoutOutlined, LockOutlined, CloudUploadOutlined, ClockCircleOutlined, GoogleOutlined } from '@ant-design/icons';
+import { BellOutlined, DashboardFilled, DownOutlined, LogoutOutlined, LockOutlined, CloudUploadOutlined, ClockCircleOutlined } from '@ant-design/icons';
 import { Link, useNavigate } from 'react-router-dom';
 import api from '../api/fileApi';
 import { useSnackbar } from 'notistack';
@@ -29,9 +29,9 @@ export default function Hero() {
     } catch {}
   };
 
-  const handleGoogleLoginSuccess = async (tokenResponse) => {
+  const handleGoogleLoginSuccess = async (credentialResponse) => {
     try {
-      const { credential } = tokenResponse;
+      const { credential } = credentialResponse;
       setLoading(true);
       const res = await api.post('/auth/google-login', { credential });
 
@@ -49,32 +49,6 @@ export default function Hero() {
     }
   };
 
-const googleLogin = useGoogleLogin({
-  onSuccess: async (response) => {
-    try {
-      const { code } = response;
-      setLoading(true);
-      
-      // Send the code to your backend
-      const res = await api.post('/auth/google-login', { code });
-
-      setUser(res.data.user);
-      localStorage.setItem('filebankUser', JSON.stringify(res.data.user));
-      localStorage.setItem('filebankToken', res.data.token);
-
-      enqueueSnackbar('Google login successful!', { variant: 'success' });
-      navigate('/dashboard');
-    } catch (err) {
-      enqueueSnackbar(err.response?.data?.message || 'Google login failed.', { variant: 'error' });
-    } finally {
-      setLoading(false);
-    }
-  },
-  onError: () => message.error('Google login failed'),
-  flow: 'auth-code',
-});
-
-  
   const handleLogout = () => {
     googleLogout();
     localStorage.removeItem('filebankUser');
@@ -90,6 +64,7 @@ const googleLogin = useGoogleLogin({
         { key: '1', label: <Link to="/profile" >Profile (coming soon) </Link> },
         { key: '2', label: <Link to="/dashboard"><DashboardFilled /> Dashboard</Link> },
         { key: '3', label: <span onClick={handleLogout}><LogoutOutlined /> Logout</span> },
+        
       ]}
     />
   );
@@ -167,28 +142,28 @@ const googleLogin = useGoogleLogin({
           </Space>
         ) : (
           <Space>
-            <Button
-              icon={<GoogleOutlined />}
-              size="large"
-              onClick={() => googleLogin()}
-              style={{
-                background: '#1E90FF',
-                color: '#fff',
-                borderRadius: '50px',
-                padding: '0 24px',
-                fontWeight: 600,
-                boxShadow: '0 4px 12px rgba(30,144,255,0.4)',
-                transition: 'all 0.3s ease',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                minWidth: '180px'
-              }}
-              onMouseEnter={(e) => e.currentTarget.style.boxShadow = '0 8px 20px rgba(30,144,255,0.5)'}
-              onMouseLeave={(e) => e.currentTarget.style.boxShadow = '0 4px 12px rgba(30,144,255,0.4)'}
-            >
-              Sign in with Google
-            </Button>
+            <motion.div
+  whileHover={{ scale: 1.05 }}
+  whileTap={{ scale: 0.95 }}
+  style={{
+    width: '100%',
+    display: 'flex',
+    justifyContent: 'center',
+    marginTop: '1rem'
+  }}
+>
+  <GoogleLogin
+    onSuccess={handleGoogleLoginSuccess}
+    onError={() => message.error('Google login failed')}
+    useOneTap
+    theme="filled_blue"
+    size="large"
+    text="continue_with"
+    shape="circle"
+    logo_alignment="left"
+  />
+</motion.div>
+            
           </Space>
         )}
       </div>
@@ -211,7 +186,7 @@ const googleLogin = useGoogleLogin({
         <Paragraph style={{ fontSize: '1.2rem', color: '#444' }}>
           Upload, manage, and access your files anywhere with <strong>FileBank</strong>.
         </Paragraph>
-        {!user? 
+        {!user ? 
         <Button size="large" style={{
           marginTop: '2rem',
           padding: '0 2rem',
@@ -231,7 +206,7 @@ const googleLogin = useGoogleLogin({
           fontWeight: 500,
           boxShadow: '0 4px 12px rgba(30,144,255,0.4)'
         }} >
-         <Link to="/about-us" >About Us</Link>
+          <Link to="/about-us" >About Us</Link>
         </Button>} 
       </motion.div>
 
@@ -333,4 +308,3 @@ const googleLogin = useGoogleLogin({
     </motion.div>
   );
 }
-
