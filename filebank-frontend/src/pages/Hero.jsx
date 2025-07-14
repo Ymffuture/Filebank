@@ -61,8 +61,10 @@ export default function Hero() {
   const userMenu = (
     <Menu
       items={[
-        { key: '1', label: <span onClick={handleLogout}><LogoutOutlined /> Logout</span> },
+        { key: '1', label: <Link to="/profile" >Profile (coming soon) </Link> },
         { key: '2', label: <Link to="/dashboard"><DashboardFilled /> Dashboard</Link> },
+        { key: '1', label: <span onClick={handleLogout}><LogoutOutlined /> Logout</span> },
+        
       ]}
     />
   );
