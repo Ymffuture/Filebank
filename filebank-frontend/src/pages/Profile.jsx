@@ -39,19 +39,21 @@ export default function Profile() {
   };
 
   const handleUpdate = async () => {
-    try {
-      const res = await api.put('/auth/update-profile', {
-        name: form.name,
-        picture: form.picture
-      });
-      setUser(res.data.data);
-      localStorage.setItem('filebankUser', JSON.stringify(res.data.data));
-      message.success('Profile updated successfully');
-      setEditing(false);
-    } catch {
-      message.error('Update failed');
-    }
-  };
+  try {
+    const res = await api.put('/auth/update-profile', {
+      displayName: form.name,
+      picture: form.picture
+    });
+
+    setUser(res.data);
+    localStorage.setItem('filebankUser', JSON.stringify(res.data));
+    message.success('Profile updated!');
+    setEditing(false);
+  } catch (err) {
+    message.error('Failed to update profile');
+  }
+};
+
 
   const handleUpload = async ({ file }) => {
     const data = new FormData();
