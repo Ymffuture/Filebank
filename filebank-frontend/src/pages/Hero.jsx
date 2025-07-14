@@ -49,12 +49,32 @@ export default function Hero() {
     }
   };
 
-  const googleLogin = useGoogleLogin({
-    onSuccess: handleGoogleLoginSuccess,
-    onError: () => message.error('Google login failed'),
-    flow: 'auth-code'
-  });
+const googleLogin = useGoogleLogin({
+  onSuccess: async (response) => {
+    try {
+      const { code } = response;
+      setLoading(true);
+      
+      // Send the code to your backend
+      const res = await api.post('/auth/google-login', { code });
 
+      setUser(res.data.user);
+      localStorage.setItem('filebankUser', JSON.stringify(res.data.user));
+      localStorage.setItem('filebankToken', res.data.token);
+
+      enqueueSnackbar('Google login successful!', { variant: 'success' });
+      navigate('/dashboard');
+    } catch (err) {
+      enqueueSnackbar(err.response?.data?.message || 'Google login failed.', { variant: 'error' });
+    } finally {
+      setLoading(false);
+    }
+  },
+  onError: () => message.error('Google login failed'),
+  flow: 'auth-code',
+});
+
+  
   const handleLogout = () => {
     googleLogout();
     localStorage.removeItem('filebankUser');
