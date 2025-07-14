@@ -33,7 +33,7 @@ export default function VerifyEmail() {
       title={status.success ? 'Email Verified' : 'Verification Failed'}
       subTitle={status.message}
       extra={[
-        <Button type="primary" onClick={() => navigate('/login')}>
+        <Button type="primary" onClick={() => navigate('/')}>
           Go to Login
         </Button>
       ]}
