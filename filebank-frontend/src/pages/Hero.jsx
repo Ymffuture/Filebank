@@ -52,7 +52,7 @@ export default function Hero() {
   const googleLogin = useGoogleLogin({
     onSuccess: handleGoogleLoginSuccess,
     onError: () => message.error('Google login failed'),
-    flow: 'implicit'
+    flow: 'auth-code'
   });
 
   const handleLogout = () => {
