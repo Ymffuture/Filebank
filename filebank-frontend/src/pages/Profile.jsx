@@ -1,23 +1,21 @@
-// components/Profile.jsx
 import React, { useEffect, useState } from 'react';
-import { Card, Avatar, Descriptions, Spin, message, Input, Button } from 'antd';
-import { UserOutlined, MailOutlined, IdcardOutlined } from '@ant-design/icons';
-import api from '../api/fileApi';
+import { Card, Avatar, Descriptions, Skeleton, Upload, Button, message, Input, Typography, Space } from 'antd';
+import { UserOutlined, UploadOutlined, EditOutlined, SaveOutlined, CloseOutlined, MailOutlined, IdcardOutlined, ArrowLeftOutlined } from '@ant-design/icons';
 import { Link } from 'react-router-dom';
-import { ArrowBigLeftDashIcon } from 'lucide-react';
+import api from '../api/fileApi';
+
+const { Title } = Typography;
 
 export default function Profile() {
-  const [user, setUser] = useState(() => JSON.parse(localStorage.getItem('filebankUser')));
-  const [loading, setLoading] = useState(false);
+  const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
   const [editing, setEditing] = useState(false);
   const [form, setForm] = useState({ name: '', email: '', picture: '' });
+  const [uploading, setUploading] = useState(false);
 
-  useEffect(() => {
-    fetchUser();
-  }, []);
+  useEffect(() => { fetchUser(); }, []);
 
   const fetchUser = async () => {
-    setLoading(true);
     try {
       const res = await api.get('/auth/me');
       setUser(res.data);
@@ -27,99 +25,114 @@ export default function Profile() {
         picture: res.data.picture,
       });
       localStorage.setItem('filebankUser', JSON.stringify(res.data));
-    } catch (err) {
-      console.error(err);
+    } catch {
       message.error('Failed to load profile');
     } finally {
       setLoading(false);
     }
   };
 
-  const handleUpdateProfile = async () => {
+  const handleUpdate = async () => {
     try {
       const res = await api.put('/auth/update-profile', form);
       setUser(res.data);
       localStorage.setItem('filebankUser', JSON.stringify(res.data));
-      message.success('Profile updated!');
+      message.success('Profile updated');
       setEditing(false);
-    } catch (err) {
-      console.error(err);
-      message.error('Failed to update profile');
+    } catch {
+      message.error('Update failed');
+    }
+  };
+
+  const handleUpload = async ({ file }) => {
+    const data = new FormData();
+    data.append('image', file);
+    setUploading(true);
+    try {
+      const res = await api.post('/auth/upload-avatar', data);
+      setForm({ ...form, picture: res.data.url });
+      message.success('Image uploaded');
+    } catch {
+      message.error('Upload failed');
+    } finally {
+      setUploading(false);
     }
   };
 
   if (loading || !user) {
     return (
       <div className="flex justify-center items-center min-h-[50vh]">
-        <Spin size="large" />
+        <Skeleton.Avatar size={100} active />
+        <Skeleton.Input style={{ width: 200, marginTop: 20 }} active />
+        <Skeleton paragraph={{ rows: 4 }} active />
       </div>
     );
   }
 
   return (
-    <>
-      <Button type="link" className="mt-4">
-        <ArrowBigLeftDashIcon />
-        <Link to="/dashboard">Back</Link>
-      </Button>
+    <div className="flex justify-center items-center min-h-[80vh] p-4">
+      <Card style={{ maxWidth: 500, width: '100%', borderRadius: '16px', boxShadow: '0 4px 24px rgba(0,0,0,0.05)' }}>
+        <Space direction="vertical" style={{ width: '100%' }} align="center">
+          <Avatar size={100} src={form.picture} icon={<UserOutlined />} />
+          <Upload
+            name="image"
+            showUploadList={false}
+            customRequest={handleUpload}
+            accept="image/*"
+            disabled={uploading}
+          >
+            <Button icon={<UploadOutlined />} size="small" loading={uploading}>Change Avatar</Button>
+          </Upload>
+        </Space>
 
-      <div className="flex justify-center items-center min-h-[60vh] p-4">
-        <Card title="Profile" style={{ maxWidth: 500, width: '100%' }} bordered>
-          <div className="flex justify-center mb-4">
-            <Avatar size={100} src={form.picture} icon={<UserOutlined />} />
-          </div>
+        <Title level={4} style={{ textAlign: 'center', marginTop: 16 }}>My Profile</Title>
 
-          {editing ? (
-            <>
-              <Input
-                placeholder="Name"
-                value={form.name}
-                onChange={(e) => setForm({ ...form, name: e.target.value })}
-                className="mb-2"
-              />
-              <Input
-                placeholder="Email"
-                value={form.email}
-                onChange={(e) => setForm({ ...form, email: e.target.value })}
-                className="mb-2"
-              />
-              <Input
-                placeholder="Profile picture URL"
-                value={form.picture}
-                onChange={(e) => setForm({ ...form, picture: e.target.value })}
-                className="mb-2"
-              />
-              <div className="flex gap-2">
-                <Button type="primary" onClick={handleUpdateProfile}>
-                  Save Changes
-                </Button>
-                <Button onClick={() => setEditing(false)}>Cancel</Button>
-              </div>
-            </>
-          ) : (
-            <>
-              <Descriptions column={1} bordered>
-                <Descriptions.Item label="Name">
-                  {user.displayName || user.name}
-                </Descriptions.Item>
-                <Descriptions.Item label="Email">
-                  <MailOutlined /> {user.email}
-                </Descriptions.Item>
-                <Descriptions.Item label="Role">
-                  <IdcardOutlined /> {user.role ? user.role.toUpperCase() : 'USER'}
-                </Descriptions.Item>
-                <Descriptions.Item label="Google ID">
-                  {user.googleId}
-                </Descriptions.Item>
-              </Descriptions>
-              <Button type="primary" ghost block className="mt-4" onClick={() => setEditing(true)}>
-                Edit Profile
+        {editing ? (
+          <>
+            <Input
+              prefix={<UserOutlined />}
+              placeholder="Name"
+              value={form.name}
+              onChange={(e) => setForm({ ...form, name: e.target.value })}
+              style={{ marginBottom: 12 }}
+            />
+            <Input
+              prefix={<MailOutlined />}
+              placeholder="Email"
+              value={form.email}
+              disabled
+              style={{ marginBottom: 12 }}
+            />
+            <Space style={{ width: '100%', justifyContent: 'space-between' }}>
+              <Button icon={<SaveOutlined />} type="primary" onClick={handleUpdate}>Save</Button>
+              <Button icon={<CloseOutlined />} onClick={() => setEditing(false)}>Cancel</Button>
+            </Space>
+          </>
+        ) : (
+          <>
+            <Descriptions column={1} size="small" bordered style={{ marginTop: 16 }}>
+              <Descriptions.Item label="Name">{user.displayName || user.name}</Descriptions.Item>
+              <Descriptions.Item label="Email"><MailOutlined /> {user.email}</Descriptions.Item>
+              <Descriptions.Item label="Role"><IdcardOutlined /> {user.role?.toUpperCase() || 'USER'}</Descriptions.Item>
+            </Descriptions>
+            <Button
+              icon={<EditOutlined />}
+              type="default"
+              block
+              style={{ marginTop: 16 }}
+              onClick={() => setEditing(true)}
+            >
+              Edit Profile
+            </Button>
+            <Link to="/dashboard">
+              <Button icon={<ArrowLeftOutlined />} type="link" block style={{ marginTop: 8 }}>
+                Back to Dashboard
               </Button>
-            </>
-          )}
-        </Card>
-      </div>
-    </>
+            </Link>
+          </>
+        )}
+      </Card>
+    </div>
   );
 }
 
