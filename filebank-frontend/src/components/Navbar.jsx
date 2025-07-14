@@ -101,11 +101,11 @@ export default function Navbar() {
       <Header className="flex justify-between items-center bg-white shadow sticky top-0 z-50 px-4">
         <Link to="/" className="flex items-center">
           <img src={logo} alt="FileBank Logo" className="w-20 h-20 md:w-20 md:h-20 scale-200" />
-          <span className="text-[gray] text-[10px]">Filebank Cloud</span>
+          <span className="text-[gray] text-[18px]">Filebank Cloud</span>
         </Link>
 
         <div className="hidden md:flex flex-1 justify-center">
-          <Menu mode="horizontal" theme="light" items={mainMenuItems} className="bg-transparent google-menu" />
+          <Menu mode="horizontal"  items={mainMenuItems} className="bg-transparent google-menu" />
         </div>
 
         {/* Mobile menu button */}
@@ -117,7 +117,7 @@ export default function Navbar() {
             <>
               <MenuOutlined className="text-white" />
               {notifications > 0 && (
-                <span className="absolute top-1 right-1 block w-3 h-3 bg-[royalblue] rounded-full" />
+                <span className="absolute top-1 right-1 block w-2 h-2 bg-[royalblue] rounded-full" />
               )}
             </>
           }
@@ -156,11 +156,11 @@ export default function Navbar() {
         />
 
         {/* Footer buttons */}
-        <div className="p-2 space-y-4 bg-[#0B3D91] dark:bg-gray-900 text-white ">
+        <div className="p-4 space-y-4 bg-[#0B3D91] dark:bg-gray-900 text-white ">
           <Button
             block
-            type="dashed"
-            icon={<BellOutlined style={{ color: '#DB4437' }} />}
+            type="link"
+            icon={<BellOutlined style={{ color: '#fff' }} />}
             onClick={() => {
               setNotifModalVisible(true);
               setDrawerVisible(false);
@@ -177,7 +177,7 @@ export default function Navbar() {
 
           <Button
             block
-            type="dashed"
+            type="link"
             onClick={() => {
               navigate('/feedback');
               setDrawerVisible(false);
@@ -199,6 +199,7 @@ export default function Navbar() {
                 Logout
               </Button>
           ) : (
+        <hr/>
             <GoogleLogin
                 onSuccess={handleLoginSuccess}
                 onError={() => message.error('Login failed.')}
