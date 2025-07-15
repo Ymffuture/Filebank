@@ -1,10 +1,36 @@
-<svg width="200" height="60" viewBox="0 0 200 60" xmlns="http://www.w3.org/2000/svg">
-  <!-- Cloud icon -->
-  <path d="M30 20c-5.5 0-10 4.5-10 10s4.5 10 10 10h20c3.3 0 6-2.7 6-6 0-2.2-1.2-4.1-3-5.1 0-0.6 0.1-1.2 0.1-1.9 0-5.5-4.5-10-10-10s-10 4.5-10 10c0 0.7 0.1 1.4 0.2 2.1-1.8 0.8-3.3 2.3-4.3 4.1H30z" fill="#1E90FF"/>
-  <!-- File icon -->
-  <path d="M55 25h10v20h-10z" fill="#4682B4"/>
-  <path d="M60 20l10 5v-5z" fill="#4682B4"/>
-  <!-- Text -->
-  <text x="75" y="40" font-family="Arial, sans-serif" font-size="20" font-weight="bold" fill="#333">FileBank</text>
-  <text x="75" y="50" font-family="Arial, sans-serif" font-size="10" fill="#666">Cloud</text>
+<svg width="220" height="60" viewBox="0 0 220 60" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="globeGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1E90FF"/>
+      <stop offset="100%" stop-color="#0B53ff"/>
+    </linearGradient>
+    <linearGradient id="textGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#1E90FF "/>
+      <stop offset="100%" stop-color="#1E90FF"/>
+    </linearGradient>
+    <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+      <feDropShadow dx="0" dy="0" stdDeviation="2" flood-color="#1E90FF" flood-opacity="0.3"/>
+    </filter>
+  </defs>
+
+  <!-- Globe Shape -->
+  <circle cx="50" cy="30" r="18" fill="url(#globeGrad)" stroke="#fff" stroke-width="1" filter="url(#glow)" />
+  
+  <!-- Globe lines -->
+  <path d="M50 12 A18 18 0 1 1 49.99 12" stroke="#fff" stroke-width="0.8" fill="none" opacity="0.3"/>
+  <path d="M32 30 H68" stroke="#fff" stroke-width="0.8" opacity="0.3"/>
+  <path d="M50 12 C55 22, 55 38, 50 48 C45 38, 45 22, 50 12" stroke="#fff" stroke-width="0.8" opacity="0.3" fill="none"/>
+
+  <!-- Phi Symbol in Center -->
+  <text x="41" y="36" font-family="Georgia, serif" font-size="20" fill="#fff" font-weight="bold">Φ</text>
+
+  <!-- Brand Text -->
+  <text x="80" y="38" font-family="Inter, Poppins, sans-serif" font-size="22" font-weight="700" fill="#333">
+    Famacloud
+  </text>
+
+  <!-- Tagline -->
+  <text x="80" y="50" font-family="Manrope, Arial, sans-serif" font-size="8" fill="#4B5563">
+    Secure. Store. Access Anywhere.
+  </text>
 </svg>
