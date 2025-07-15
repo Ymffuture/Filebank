@@ -1,47 +1,23 @@
-<svg width="400" height="300" viewBox="0 0 160 100" xmlns="http://www.w3.org/2000/svg">
+<svg width="60" height="60" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg">
   <defs>
-    <linearGradient id="outerCubeGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+    <linearGradient id="globeGrad" x1="0%" y1="0%" x2="100%" y2="100%">
       <stop offset="0%" stop-color="#1E90FF"/>
       <stop offset="100%" stop-color="#32CD32"/>
     </linearGradient>
-    <linearGradient id="innerCubeGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#FFD700" stop-opacity="0.8"/>
-      <stop offset="100%" stop-color="#1E90FF" stop-opacity="1"/>
-    </linearGradient>
-    <radialGradient id="cloudGlow" cx="60%" cy="40%" r="50%">
-      <stop offset="0%" stop-color="#1E90FF" stop-opacity="0.3"/>
-      <stop offset="100%" stop-color="#32CD32" stop-opacity="0"/>
-    </radialGradient>
+    <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+      <feDropShadow dx="0" dy="0" stdDeviation="2" flood-color="#1E90FF" flood-opacity="0.3"/>
+    </filter>
   </defs>
 
-  <!-- Soft cloud backdrop -->
-  <ellipse cx="80" cy="60" rx="45" ry="18" fill="url(#cloudGlow)" />
+  <!-- Globe Circle -->
+  <circle cx="30" cy="30" r="18" fill="url(#globeGrad)" stroke="#fff" stroke-width="1" filter="url(#glow)" />
 
-  <!-- Cloud shape -->
-  <path d="M60 65
-           q-10 0 -10 -10
-           q0 -10 10 -10
-           q5 -10 15 -10
-           q10 0 15 10
-           q10 0 10 10
-           q0 10 -10 10z"
-        fill="#1E90FF" opacity="0.2" />
+  <!-- Globe longitude & latitude lines -->
+  <path d="M30 12 A18 18 0 1 1 29.99 12" stroke="#fff" stroke-width="0.8" fill="none" opacity="0.3"/>
+  <path d="M12 30 H48" stroke="#fff" stroke-width="0.8" opacity="0.3"/>
+  <path d="M30 12 C35 22, 35 38, 30 48 C25 38, 25 22, 30 12" stroke="#fff" stroke-width="0.8" opacity="0.3" fill="none"/>
 
-  <!-- Outer cube -->
-  <rect x="70" y="30" width="20" height="20" transform="rotate(45 80 40)"
-        fill="url(#outerCubeGrad)" stroke="#32CD32" stroke-width="1.5" rx="3" ry="3" opacity="0.85"/>
-
-  <!-- Inner cube -->
-  <rect x="74" y="34" width="12" height="12" transform="rotate(45 80 40)"
-        fill="url(#innerCubeGrad)" stroke="#FFD700" stroke-width="1" rx="2" ry="2"/>
-
-  <!-- Upload arrow -->
-  <path d="M80 25 L85 35 H82 V45 H78 V35 H75 Z"
-        fill="#FFD700" opacity="0.9"/>
-
-  <!-- Shadow -->
-  <ellipse cx="80" cy="62" rx="18" ry="5" fill="#000" opacity="0.15"/>
-
-  <!-- Sparkle dot -->
-  <circle cx="95" cy="25" r="2" fill="#FFD700" opacity="0.8"/>
+  <!-- Phi Symbol -->
+  <text x="21" y="36" font-family="Georgia, serif" font-size="20" fill="#fff" font-weight="bold">Φ</text>
 </svg>
+
