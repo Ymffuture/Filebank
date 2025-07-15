@@ -126,7 +126,7 @@ export default function Hero() {
     >
       {/* Navigation */}
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', backdropFilter: 'blur(6px)', padding: '1rem', borderRadius: '12px', background: 'rgba(255,255,255,0.85)' }}>
-        <Title level={3} style={{ margin: 0, color: '#0B3D91' }}>FileBank</Title>
+        <Title level={3} style={{ margin: 0, color: '#0B3D91' }}>Famacloud</Title>
         {user ? (
           <Space>
             <Badge count={notifications} size="small">
@@ -182,9 +182,9 @@ export default function Hero() {
           margin: '4rem auto'
         }}
       >
-        <Title style={{ color: '#0B3D91', fontSize: '3rem', marginBottom: '1rem' }}>Your Files, Your Control</Title>
+        <Title style={{ color: '#0B3D91', fontSize: '3rem', marginBottom: '1rem' }}>Store with Renown, Access Anywhere </Title>
         <Paragraph style={{ fontSize: '1.2rem', color: '#444' }}>
-          Upload, manage, and access your files anywhere with <strong>FileBank</strong>.
+          Upload, manage, and access your files anywhere with <strong>Famacloud</strong>.
         </Paragraph>
         {!user ? 
         <Button size="large" style={{
