@@ -20,19 +20,19 @@ const Privacy  = lazy(() => import('./pages/Privacy'));
 const Terms    = lazy(() => import('./pages/Terms'));
 const AboutUs  = lazy(() => import('./pages/AboutUs'));
 const AIScreen = lazy(() => import('./components/AIScreen'));
-
+// #0B3D91 #1E90FF
 const Loader = () => (
   <div style={{
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
     minHeight: '100vh',
-    background: '#fff'
+    background: '#1E90FF'
   }}>
     <svg width="80" height="80" viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg">
       <circle
         cx="40" cy="40" r="35"
-        stroke="#1E90FF"
+        stroke="#0B3D91"
         strokeWidth="6"
         strokeLinecap="round"
         strokeDasharray="165"
