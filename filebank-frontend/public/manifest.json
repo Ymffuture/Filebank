@@ -18,6 +18,31 @@
       "sizes": "512x512",
       "type": "image/png"
     }
-  ]
+  ], 
+  
+  "shortcuts": [
+  {
+    "name": "Upload Files",
+    "short_name": "Upload",
+    "description": "Quickly upload new files",
+    "url": "/upload",
+    "icons": [{ "src": "/Branded.svg", "sizes": "96x96", "type": "image/png" }]
+  },
+  {
+    "name": "My Files",
+    "short_name": "Files",
+    "description": "Access your stored files",
+    "url": "/files",
+    "icons": [{ "src": "/Branded.svg", "sizes": "96x96", "type": "image/png" }]
+  },
+  {
+    "name": "Profile",
+    "short_name": "Profile",
+    "description": "View your profile",
+    "url": "/profile",
+    "icons": [{ "src": "/Branded.svg", "sizes": "96x96", "type": "image/png" }]
+  }
+]
+
 }
 
