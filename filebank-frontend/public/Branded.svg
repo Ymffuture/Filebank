@@ -1,0 +1,10 @@
+<svg width="200" height="60" viewBox="0 0 200 60" xmlns="http://www.w3.org/2000/svg">
+  <!-- Cloud icon -->
+  <path d="M30 20c-5.5 0-10 4.5-10 10s4.5 10 10 10h20c3.3 0 6-2.7 6-6 0-2.2-1.2-4.1-3-5.1 0-0.6 0.1-1.2 0.1-1.9 0-5.5-4.5-10-10-10s-10 4.5-10 10c0 0.7 0.1 1.4 0.2 2.1-1.8 0.8-3.3 2.3-4.3 4.1H30z" fill="#1E90FF"/>
+  <!-- File icon -->
+  <path d="M55 25h10v20h-10z" fill="#4682B4"/>
+  <path d="M60 20l10 5v-5z" fill="#4682B4"/>
+  <!-- Text -->
+  <text x="75" y="40" font-family="Arial, sans-serif" font-size="20" font-weight="bold" fill="#333">FileBank</text>
+  <text x="75" y="50" font-family="Arial, sans-serif" font-size="10" fill="#666">Cloud</text>
+</svg>
