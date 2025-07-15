@@ -65,7 +65,7 @@ const Footer = () => {
             Privacy Policy
           </Link>
           <span className="select-none text-center md:text-left">
-            © {new Date().getFullYear()} <span className="font-semibold">FileBank</span>. All rights reserved.
+            © {new Date().getFullYear()} <span className="font-semibold">Famacloud</span>. All rights reserved.
           </span>
         </div>
 
