@@ -16,7 +16,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { MdOutlineFeedback } from 'react-icons/md';
 import api from '../api/fileApi';
 import NotificationsModal from './NotificationsModal';
-import logo from '/vite.svg';
+import logo from '/Branded.svg';
 
 const { Header } = Layout;
 
@@ -100,8 +100,8 @@ export default function Navbar() {
     <>
       <Header className="flex justify-between items-center bg-white shadow sticky top-0 z-50 px-4">
         <Link to="/" className="flex items-center">
-          <img src={logo} alt="FileBank Logo" className="w-20 h-20 md:w-20 md:h-20 scale-200" />
-          <span className="text-[gray] text-[18px]">Filebank Cloud</span>
+          <img src={logo} alt="FileBank Logo" className="w-16 h-16 md:w-16 md:h-16 scale-1251" />
+          <span className="text-[gray] text-[18px]"></span>
         </Link>
 
         <div className="hidden md:flex flex-1 justify-center">
