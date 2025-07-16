@@ -210,6 +210,24 @@ setMessages(prev => [
   };
 
   const renderMessage = (msg, idx) => {
+if (msg.type === 'error') {
+      return (
+    <div key={idx} className="my-2 p-3 rounded-lg bg-red-50 text-red-700 dark:bg-red-900 dark:text-white flex flex-col gap-2">
+      <span>{msg.text}</span>
+      {msg.retryAction && (
+        <Button
+          type="primary"
+          size="small"
+          onClick={msg.retryAction}
+          className="w-fit bg-red-500 hover:bg-red-600"
+        >
+          Retry
+        </Button>
+      )}
+    </div>
+  );
+}  
+    
     const parts = msg.text.split(/```([\s\S]*?)```/g);
     return parts.map((part, i) => {
       if (i % 2 === 1) {
@@ -305,26 +323,6 @@ setMessages(prev => [
 
       <main ref={containerRef} className="flex-1 overflow-auto p-4 flex flex-col space-y-4">
         {messages.map((msg, idx) => (
-
-if (msg.type === 'error') {
-  return (
-    <div key={idx} className="my-2 p-3 rounded-lg bg-red-50 text-red-700 dark:bg-red-900 dark:text-white flex flex-col gap-2">
-      <span>{msg.text}</span>
-      {msg.retryAction && (
-        <Button
-          type="primary"
-          size="small"
-          onClick={msg.retryAction}
-          className="w-fit bg-red-500 hover:bg-red-600"
-        >
-          Retry
-        </Button>
-      )}
-    </div>
-  );
-}
-      
-      
           <motion.div
             key={idx}
             className="flex flex-col"
