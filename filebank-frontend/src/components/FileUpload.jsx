@@ -5,7 +5,7 @@ import { UploadOutlined, InfoCircleOutlined, LinkOutlined } from '@ant-design/ic
 import { useSnackbar } from 'notistack';
 import { Helmet } from 'react-helmet';
 import Lottie from 'lottie-react';
-import uploadAnimation from '/upload.json'; // Place upload.json in src/assets/
+import uploadAnimation from '/uploading.json'; // Place upload.json in src/assets/
 
 import api from '../api/fileApi';
 
