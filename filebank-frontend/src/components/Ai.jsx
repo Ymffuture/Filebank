@@ -14,7 +14,7 @@ const { Text } = Typography;
 const ChatBotModal = () => {
   const [visible, setVisible] = useState(false);
   const [messages, setMessages] = useState([
-    { from: 'bot', text: 'Hi! How filebank AI help? .' },
+    { from: 'bot', text: 'Hi! How famaAI help? .' },
   ]);
   const [input, setInput] = useState('');
   const [loading, setLoading] = useState(false);
@@ -29,10 +29,18 @@ const ChatBotModal = () => {
       const res = await api.post('/chat', { message: input });
       setMessages([...newMessages, { from: 'bot', text: res.data.reply }]);
     } catch {
-      setMessages([
-        ...newMessages,
-        { from: 'bot', text: '⚠️ Error contacting AI.' },
-      ]);
+      const createMessage = (from, text, type = 'text') => ({
+  id: `${Date.now()}-${Math.random()}`,
+  from,
+  text,
+  type,
+  timestamp: new Date().toISOString()
+});
+
+const AI_ERROR_MESSAGE = '⚠️ Sorry, famacloud AI is currently unreachable.';
+
+setMessages(prev => [...prev, createMessage('bot', AI_ERROR_MESSAGE, 'error')]);
+
     } finally {
       setInput('');
       setLoading(false);
@@ -130,14 +138,14 @@ const ChatBotModal = () => {
 
         <Space.Compact style={{ width: '100%' }}>
           <Input
-            placeholder="Ask filebank AI..."
+            placeholder="Quick ask famaAI..."
             value={input}
             onChange={(e) => setInput(e.target.value)}
             onKeyDown={(e) => e.key === 'Enter' && sendMessage()}
-            style={{border:'none', padding:'8px' }} 
+            style={{border:'none', padding:'8px', margin:'8px'}} 
           />
           <Button type="link" loading={loading} onClick={sendMessage} >
-            <ArrowUp/>
+            <ArrowUp className="rounded-full bg-black text-white" />
           </Button>
         </Space.Compact>
       </Modal>
