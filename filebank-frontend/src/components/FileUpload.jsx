@@ -5,7 +5,7 @@ import { UploadOutlined, InfoCircleOutlined, LinkOutlined } from '@ant-design/ic
 import { useSnackbar } from 'notistack';
 import { Helmet } from 'react-helmet';
 import Lottie from 'lottie-react';
-import uploadAnimation from '../assets/uploading.json'; // Place upload.json in src/assets/
+import uploadAnimation from '../assets/uploading.json'; // Ensure this file exists
 
 import api from '../api/fileApi';
 
@@ -50,9 +50,7 @@ export default function FileUpload({ onUpload, currentUserFileCount = 0 }) {
       enqueueSnackbar('Upload successful!', { variant: 'success' });
       setFiles([]);
 
-      setTimeout(() => {
-        if (onUpload) onUpload(res.data);
-      }, 500);
+      if (onUpload) onUpload(res.data);
 
     } catch (err) {
       console.error(err);
@@ -73,15 +71,47 @@ export default function FileUpload({ onUpload, currentUserFileCount = 0 }) {
     }
   };
 
+  const allowedTypes = [ 
+    // Images
+    'image/jpeg', 'image/png', 'image/gif', 'image/bmp', 'image/webp',
+    'image/svg+xml', 'image/x-icon', 'image/tiff',
+    // Audio
+    'audio/mpeg', 'audio/wav', 'audio/ogg',
+    // Video
+    'video/mp4', 'video/webm', 'video/ogg',
+    // Text & Code
+    'text/plain', 'text/html', 'text/css', 'application/javascript',
+    'application/json', 'application/xml', 'text/yaml', 'text/markdown', 'text/x-log',
+    'text/x-python', 'application/x-python-code',
+    'application/typescript', 'text/jsx', 'text/x-jsx',
+    // Documents
+    'application/pdf', 'application/msword', 
+    'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+    'application/vnd.ms-powerpoint', 
+    'application/vnd.openxmlformats-officedocument.presentationml.presentation',
+    'application/vnd.ms-excel',
+    'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+    // Archives
+    'application/zip', 'application/x-zip-compressed', 'application/x-7z-compressed',
+    'application/x-rar-compressed', 'application/x-tar', 'application/gzip',
+    // CSV & Data
+    'text/csv', 'application/sql',
+    // Fonts
+    'font/ttf', 'font/woff', 'font/woff2', 'application/font-woff',
+    // Configs & Binary
+    'text/x-shellscript', 'text/x-config', 'application/octet-stream'
+  ];
+
   return (
     <>
       <Helmet>
-        <title>Upload Files</title>
-        <meta name="description" content="Securely upload your files to famacloud." />
+        <title>Upload Files | Famacloud</title>
+        <meta name="description" content="Securely upload your files to Famacloud." />
       </Helmet>
 
       <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-[#fff] to-[#ffffff]">
         <div className="p-2 rounded-lg max-w-lg w-full">
+
           <h2 className="text-2xl font-bold mb-2 text-center text-gray-800">Upload your files</h2>
 
           {uploading && (
@@ -96,30 +126,6 @@ export default function FileUpload({ onUpload, currentUserFileCount = 0 }) {
 
           <Upload.Dragger
             beforeUpload={(file) => {
-              const allowedTypes = [ 
-                // Allowed Types (as before)
-                'image/jpeg', 'image/png', 'image/gif', 'image/bmp', 'image/webp',
-                'image/svg+xml', 'image/x-icon', 'image/tiff',
-                'audio/mpeg', 'audio/wav', 'audio/ogg',
-                'video/mp4', 'video/webm', 'video/ogg',
-                'text/plain', 'text/html', 'text/css', 'application/javascript',
-                'application/json', 'application/xml', 'text/yaml', 'text/markdown', 'text/x-log',
-                'text/x-python', 'application/x-python-code',
-                'application/typescript', 'text/jsx', 'text/x-jsx',
-                'application/pdf',
-                'application/msword', 
-                'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
-                'application/vnd.ms-powerpoint', 
-                'application/vnd.openxmlformats-officedocument.presentationml.presentation',
-                'application/vnd.ms-excel',
-                'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-                'application/zip', 'application/x-zip-compressed', 'application/x-7z-compressed',
-                'application/x-rar-compressed', 'application/x-tar', 'application/gzip',
-                'text/csv', 'application/sql',
-                'font/ttf', 'font/woff', 'font/woff2', 'application/font-woff',
-                'text/x-shellscript', 'text/x-config', 'application/octet-stream'
-              ];
-
               const isAllowedType = allowedTypes.includes(file.type);
               if (!isAllowedType) {
                 setText('Invalid file type.');
