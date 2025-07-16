@@ -1,15 +1,12 @@
 import React, { Suspense, lazy, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import { useSnackbar } from 'notistack';
-import { Alert, AlertTitle } from '@mui/material';
-import WarningAmberIcon from '@mui/icons-material/WarningAmber';
 import Profile from './pages/Profile';
 import NotFound from './components/NotFound';
 import VerifyEmail from './pages/VerifyEmail';
 import RequestReset from './pages/RequestReset';
 import ResetPassword from './pages/ResetPassword';
-import useContentLock from './hooks/useContentLock';
-import useNetworkStatus from './hooks/useNetworkStatus';
+import {useContentLock} from './hooks/useContentLock';
+import {useNetworkStatus} from './hooks/useNetworkStatus';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
