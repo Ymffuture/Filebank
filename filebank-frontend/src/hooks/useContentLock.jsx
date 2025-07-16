@@ -1,4 +1,4 @@
-function useContentLock() {
+const useContextLock = ()=> {
   const { enqueueSnackbar } = useSnackbar();
 
   useEffect(() => {
@@ -84,4 +84,4 @@ function useContentLock() {
     };
   }, [enqueueSnackbar]);
 }
-
+export default useContextLock;
