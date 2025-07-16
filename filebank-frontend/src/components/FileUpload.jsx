@@ -2,9 +2,12 @@ import React, { useState } from 'react';
 import { Link } from "react-router-dom";
 import { Upload, Button, Alert, Progress } from 'antd';
 import { UploadOutlined, InfoCircleOutlined, LinkOutlined } from '@ant-design/icons';
-import api from '../api/fileApi';
 import { useSnackbar } from 'notistack';
 import { Helmet } from 'react-helmet';
+import Lottie from 'lottie-react';
+import uploadAnimation from '/upload.json'; // Place upload.json in src/assets/
+
+import api from '../api/fileApi';
 
 export default function FileUpload({ onUpload, currentUserFileCount = 0 }) {
   const [files, setFiles] = useState([]);
@@ -39,9 +42,7 @@ export default function FileUpload({ onUpload, currentUserFileCount = 0 }) {
         <>
           Upload complete 100%.{' '}
           <Link to="/files" className="text-green-600 font-semibold hover:text-green-800">
-            <Button type="link" icon={<LinkOutlined />}>
-              View
-            </Button>
+            <Button type="link" icon={<LinkOutlined />}>View</Button>
           </Link>
         </>
       );
@@ -50,9 +51,7 @@ export default function FileUpload({ onUpload, currentUserFileCount = 0 }) {
       setFiles([]);
 
       setTimeout(() => {
-        if (onUpload) {
-          onUpload(res.data);
-        }
+        if (onUpload) onUpload(res.data);
       }, 500);
 
     } catch (err) {
@@ -78,100 +77,86 @@ export default function FileUpload({ onUpload, currentUserFileCount = 0 }) {
     <>
       <Helmet>
         <title>Upload Files</title>
-        <meta name="description" content="Securely upload your files to FileBank." />
+        <meta name="description" content="Securely upload your files to famacloud." />
       </Helmet>
 
-      <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-[#fff] to-[#ffffff] ">
+      <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-[#fff] to-[#ffffff]">
         <div className="p-2 rounded-lg max-w-lg w-full">
           <h2 className="text-2xl font-bold mb-2 text-center text-gray-800">Upload your files</h2>
+
+          {uploading && (
+            <div className="flex justify-center mb-6">
+              <Lottie
+                animationData={uploadAnimation}
+                loop
+                style={{ width: 150, height: 150 }}
+              />
+            </div>
+          )}
+
           <Upload.Dragger
-      beforeUpload={(file) => {
-        const allowedTypes = [ 
-  // Images
-  'image/jpeg', 'image/png', 'image/gif', 'image/bmp', 'image/webp',
-  'image/svg+xml', 'image/x-icon', 'image/tiff',
+            beforeUpload={(file) => {
+              const allowedTypes = [ 
+                // Allowed Types (as before)
+                'image/jpeg', 'image/png', 'image/gif', 'image/bmp', 'image/webp',
+                'image/svg+xml', 'image/x-icon', 'image/tiff',
+                'audio/mpeg', 'audio/wav', 'audio/ogg',
+                'video/mp4', 'video/webm', 'video/ogg',
+                'text/plain', 'text/html', 'text/css', 'application/javascript',
+                'application/json', 'application/xml', 'text/yaml', 'text/markdown', 'text/x-log',
+                'text/x-python', 'application/x-python-code',
+                'application/typescript', 'text/jsx', 'text/x-jsx',
+                'application/pdf',
+                'application/msword', 
+                'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+                'application/vnd.ms-powerpoint', 
+                'application/vnd.openxmlformats-officedocument.presentationml.presentation',
+                'application/vnd.ms-excel',
+                'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+                'application/zip', 'application/x-zip-compressed', 'application/x-7z-compressed',
+                'application/x-rar-compressed', 'application/x-tar', 'application/gzip',
+                'text/csv', 'application/sql',
+                'font/ttf', 'font/woff', 'font/woff2', 'application/font-woff',
+                'text/x-shellscript', 'text/x-config', 'application/octet-stream'
+              ];
 
-  // Audio
-  'audio/mpeg', 'audio/wav', 'audio/ogg',
+              const isAllowedType = allowedTypes.includes(file.type);
+              if (!isAllowedType) {
+                setText('Invalid file type.');
+                enqueueSnackbar('Invalid file type', { variant: 'warning' });
+                return Upload.LIST_IGNORE;
+              }
 
-  // Video
-  'video/mp4', 'video/webm', 'video/ogg',
+              const isLt5M = file.size / 1024 / 1024 < 5;
+              if (!isLt5M) {
+                setText('File size exceeds 5MB');
+                enqueueSnackbar('File size exceeds 5MB', { variant: 'warning' });
+                return Upload.LIST_IGNORE;
+              }
 
-  // Text & Code
-  'text/plain', 'text/html', 'text/css', 'application/javascript',
-  'application/json', 'application/xml', 'text/yaml', 'text/markdown', 'text/x-log',
-  'text/x-python', 'application/x-python-code',
-  'application/typescript', 'text/jsx', 'text/x-jsx',
+              return false; // Manual upload
+            }}
+            onChange={({ fileList }) => {
+              setFiles(fileList);
+              setText("");
+              setText2("");
+            }}
+            fileList={files}
+            multiple
+            showUploadList={{
+              showPreviewIcon: true,
+              showRemoveIcon: true,
+              showDownloadIcon: true,
+            }}
+            disabled={uploading}
+          >
+            <p className="ant-upload-drag-icon"><UploadOutlined /></p>
+            <p className="ant-upload-text">Click or drag file to this area to upload</p>
+            <p className="ant-upload-hint">
+              Supported: Images, Documents, Audio, Video, Archives, Code Files. Max size: 5MB.
+            </p>
+          </Upload.Dragger>
 
-  // Documents
-  'application/pdf',
-  'application/msword', // .doc
-  'application/vnd.openxmlformats-officedocument.wordprocessingml.document', // .docx
-  'application/vnd.ms-powerpoint', // .ppt
-  'application/vnd.openxmlformats-officedocument.presentationml.presentation', // .pptx
-  'application/vnd.ms-excel', // .xls
-  'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', // .xlsx
-
-  // Archives
-  'application/zip',
-  'application/x-zip-compressed',
-  'application/x-7z-compressed',
-  'application/x-rar-compressed',
-  'application/x-tar',
-  'application/gzip',
-
-  // CSV & Data
-  'text/csv',
-  'application/sql',
-
-  // Fonts
-  'font/ttf',
-  'font/woff',
-  'font/woff2',
-  'application/font-woff',
-  
-  // Configs & Env
-  'text/x-shellscript',
-  'text/x-config',
-  'application/octet-stream' // fallback for unknown binary files like .bin, .exe (optional)
-];
-
-        const isAllowedType = allowedTypes.includes(file.type);
-        if (!isAllowedType) {
-          setText('Invalid file type. Only images (JPEG, PNG, GIF, BMP, WEBP, SVG, ICO, TIFF), audio (MP3), video (MP4), text/code (TXT, JS, PY, HTML, etc.), PDF, DOCX, PPTX, and XLSX are allowed.');
-          enqueueSnackbar('Invalid file type', { variant: 'warning' });
-          return Upload.LIST_IGNORE;
-        }
-        const isLt5M = file.size / 1024 / 1024 < 5;
-        if (!isLt5M) {
-          setText('File size exceeds 5MB');
-          enqueueSnackbar('File sizeыск System: size exceeds 5MB', { variant: 'warning' });
-          return Upload.LIST_IGNORE;
-        }
-        return false; // Prevent auto upload
-      }}
-      onChange={({ fileList }) => {
-        setFiles(fileList);
-        setText("");
-        setText2("");
-      }}
-      fileList={files}
-      multiple
-      showUploadList={{
-        showPreviewIcon: true,
-        showRemoveIcon: true,
-        showDownloadIcon: true,
-      }}
-      disabled={uploading}
-    >
-      <p className="ant-upload-drag-icon">
-        <UploadOutlined />
-      </p>
-      <p className="ant-upload-text">Click or drag file to this area to upload</p>
-      <p className="ant-upload-hint">
-        Allowed file types: Images (JPEG, PNG, GIF, BMP, WEBP, SVG, ICO, TIFF), Text/Code (TXT, HTML, CSS, JSON, etc.), Documents (PDF, DOCX, PPTX, XLSX). Max size: 5MB.
-      </p>
-    </Upload.Dragger>
           <div className="mt-4 flex justify-center mb-8">
             <Button
               type="primary"
@@ -182,29 +167,18 @@ export default function FileUpload({ onUpload, currentUserFileCount = 0 }) {
               {uploading ? 'Uploading...' : 'Start Upload'}
             </Button>
           </div>
+
           {progress > 0 && (
             <div className="mt-4">
               <Progress percent={progress} />
             </div>
           )}
-          {text && (
-            <Alert
-              message={text}
-              type="error"
-              className="mt-4"
-              closable
-            />
-          )}
-          {text2 && (
-            <Alert
-              message={text2}
-              type="success"
-              className="mt-4"
-              closable
-            />
-          )}
+
+          {text && <Alert message={text} type="error" className="mt-4" closable />}
+          {text2 && <Alert message={text2} type="success" className="mt-4" closable />}
         </div>
       </div>
     </>
   );
 }
+
