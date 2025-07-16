@@ -1,5 +1,5 @@
 import React from 'react';
-import { Typography ,Button} from 'antd';
+import { Typography, Button } from 'antd';
 import { Link } from 'react-router-dom';
 import { ArrowBigLeftIcon } from 'lucide-react';
 
@@ -18,7 +18,7 @@ export default function Privacy() {
       </Title>
 
       <Paragraph>
-        At FileBank, your privacy is important to us. This policy explains how we collect, use, and protect your personal data.
+        At famacloud, your privacy is important to us. This policy explains how we collect, use, and protect your personal data.
       </Paragraph>
 
       <Title level={4} style={{ color: ratColors.gold, marginTop: '1.5rem' }}>
@@ -53,7 +53,7 @@ export default function Privacy() {
         5. Third-Party Services
       </Title>
       <Paragraph>
-        FileBank integrates with Google OAuth for authentication and uses cloud providers for file storage. These services have their own privacy policies.
+        famacloud integrates with Google OAuth for authentication and uses cloud providers for file storage. These services have their own privacy policies.
       </Paragraph>
 
       <Title level={4} style={{ color: ratColors.gold, marginTop: '1.5rem' }}>
@@ -67,23 +67,20 @@ export default function Privacy() {
         Last updated: June 2025
       </Paragraph>
 
-     <div className='flex gap-8'>
-         <Link to='/terms'>
-            <Button type='dashed'>
-       Terms
-      
-            </Button>
-      
-            </Link>
-            
-      <Link to='/'>
-            <Button type='link' icon={<ArrowBigLeftIcon/>}>
-       Baaaack
-      
-            </Button>
-      
-            </Link>
-     </div>
+      <div className="flex gap-8 mt-6">
+        <Link to="/terms">
+          <Button type="dashed">
+            Terms
+          </Button>
+        </Link>
+
+        <Link to="/">
+          <Button type="link" icon={<ArrowBigLeftIcon />}>
+            Back
+          </Button>
+        </Link>
+      </div>
     </div>
   );
 }
+
