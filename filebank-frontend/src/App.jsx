@@ -101,15 +101,12 @@ export default function App() {
     <Router>
       <AppContent />
       <ToastContainer
-        position="bottom-left"
-        autoClose={3000}
-        hideProgressBar
-        newestOnTop
-        closeOnClick
-        draggable={false}
-        pauseOnHover
-        theme="colored"
-      />
+  position="top-center"
+  hideProgressBar
+  closeOnClick={false}
+  draggable={false}
+  transition={Slide}
+/>
     </Router>
   );
 }
