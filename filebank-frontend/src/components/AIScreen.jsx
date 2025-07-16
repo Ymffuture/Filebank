@@ -108,7 +108,7 @@ useEffect(() => {
 }, [messages, botTypingText]);
 
 const clearChat = () => {
-  setMessages([{ from: 'bot', text: 'Hello I’m FBC-AI, your assistant. Ask me anything!' }]);
+  setMessages([{ from: 'bot', text: 'Hello I’m famaAI, your assistant. Ask me anything!' }]);
   localStorage.removeItem("chatHistory");
 };
 
@@ -160,8 +160,26 @@ const sendMessage = async (overrideInput) => {
 
   } catch (err) {
     console.error(err);
-    setMessages(prev => [...prev, { from: 'bot', text: '⚠️ Error contacting AI.' }]);
-    setIsTyping(false);
+  const createMessage = (from, text, type = 'text', retryAction = null) => ({
+  id: `${Date.now()}-${Math.random()}`,
+  from,
+  text,
+  type,
+  retryAction,
+  timestamp: new Date().toISOString()
+});
+
+setMessages(prev => [
+  ...prev,
+  createMessage(
+    'bot',
+    '⚠️ Sorry, famacloud AI is currently unreachable.',
+    'error',
+    () => sendMessage(userInput) 
+  )
+]);
+
+ setIsTyping(false);
   } finally {
     setLoading(false);
     setInput('');
@@ -287,6 +305,26 @@ const sendMessage = async (overrideInput) => {
 
       <main ref={containerRef} className="flex-1 overflow-auto p-4 flex flex-col space-y-4">
         {messages.map((msg, idx) => (
+
+if (msg.type === 'error') {
+  return (
+    <div key={idx} className="my-2 p-3 rounded-lg bg-red-50 text-red-700 dark:bg-red-900 dark:text-white flex flex-col gap-2">
+      <span>{msg.text}</span>
+      {msg.retryAction && (
+        <Button
+          type="primary"
+          size="small"
+          onClick={msg.retryAction}
+          className="w-fit bg-red-500 hover:bg-red-600"
+        >
+          Retry
+        </Button>
+      )}
+    </div>
+  );
+}
+      
+      
           <motion.div
             key={idx}
             className="flex flex-col"
