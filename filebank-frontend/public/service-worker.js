@@ -5,7 +5,7 @@ const urlsToCache = [
   '/manifest.json',
   '/vite.svg',
   '/Branded.svg',
-  '/icon.svg',
+  '/offline.html',
   '/vite.svg'
 ];
 
