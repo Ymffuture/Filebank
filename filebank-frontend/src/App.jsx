@@ -99,7 +99,7 @@ function useContentLock() {
         e.key === "F12"
       ) {
         e.preventDefault();
-        // showError("Copying or inspecting is disabled.");
+       showError("Copying or inspecting is disabled.");
       }
     };
 
