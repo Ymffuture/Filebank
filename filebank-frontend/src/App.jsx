@@ -5,8 +5,8 @@ import NotFound from './components/NotFound';
 import VerifyEmail from './pages/VerifyEmail';
 import RequestReset from './pages/RequestReset';
 import ResetPassword from './pages/ResetPassword';
-import {useContentLock} from './hooks/useContentLock';
-import {useNetworkStatus} from './hooks/useNetworkStatus';
+import useContextLock from './hooks/useContextLock';
+import useNetworkStatus from './hooks/useNetworkStatus';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
