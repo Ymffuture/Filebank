@@ -87,19 +87,55 @@ export default function FileUpload({ onUpload, currentUserFileCount = 0 }) {
           <Upload.Dragger
       beforeUpload={(file) => {
         const allowedTypes = [ 
-          'image/jpeg', 'image/png', 'image/gif', 'image/bmp', 'image/webp',
-          'image/svg+xml', 'image/x-icon', 'image/tiff', 
-          'audio/mpeg',       
-          'video/mp4', 
-          'text/plain', 'text/html', 'text/css', 'application/javascript',
-          'text/x-python', 'application/typescript', 'text/jsx', 'text/x-jsx',
-          'application/json', 'application/xml', 'text/yaml', 'text/markdown',
-          'text/x-log',
-          'application/pdf',
-          'application/vnd.openxmlformats-officedocument.wordprocessingml.document', // docx
-          'application/vnd.openxmlformats-officedocument.presentationml.presentation', // pptx
-          'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', // xlsx
-        ];
+  // Images
+  'image/jpeg', 'image/png', 'image/gif', 'image/bmp', 'image/webp',
+  'image/svg+xml', 'image/x-icon', 'image/tiff',
+
+  // Audio
+  'audio/mpeg', 'audio/wav', 'audio/ogg',
+
+  // Video
+  'video/mp4', 'video/webm', 'video/ogg',
+
+  // Text & Code
+  'text/plain', 'text/html', 'text/css', 'application/javascript',
+  'application/json', 'application/xml', 'text/yaml', 'text/markdown', 'text/x-log',
+  'text/x-python', 'application/x-python-code',
+  'application/typescript', 'text/jsx', 'text/x-jsx',
+
+  // Documents
+  'application/pdf',
+  'application/msword', // .doc
+  'application/vnd.openxmlformats-officedocument.wordprocessingml.document', // .docx
+  'application/vnd.ms-powerpoint', // .ppt
+  'application/vnd.openxmlformats-officedocument.presentationml.presentation', // .pptx
+  'application/vnd.ms-excel', // .xls
+  'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', // .xlsx
+
+  // Archives
+  'application/zip',
+  'application/x-zip-compressed',
+  'application/x-7z-compressed',
+  'application/x-rar-compressed',
+  'application/x-tar',
+  'application/gzip',
+
+  // CSV & Data
+  'text/csv',
+  'application/sql',
+
+  // Fonts
+  'font/ttf',
+  'font/woff',
+  'font/woff2',
+  'application/font-woff',
+  
+  // Configs & Env
+  'text/x-shellscript',
+  'text/x-config',
+  'application/octet-stream' // fallback for unknown binary files like .bin, .exe (optional)
+];
+
         const isAllowedType = allowedTypes.includes(file.type);
         if (!isAllowedType) {
           setText('Invalid file type. Only images (JPEG, PNG, GIF, BMP, WEBP, SVG, ICO, TIFF), audio (MP3), video (MP4), text/code (TXT, JS, PY, HTML, etc.), PDF, DOCX, PPTX, and XLSX are allowed.');
