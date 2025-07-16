@@ -33,6 +33,26 @@ export default function AIScreen() {
   const [isRecording, setIsRecording] = useState(false);
   const recognitionRef = useRef(null);
   const containerRef = useRef(null);
+
+  const textareaRef = useRef(null);
+
+  // Auto-resize effect
+  useEffect(() => {
+    if (textareaRef.current) {
+      textareaRef.current.style.height = 'auto';
+      textareaRef.current.style.height = `${textareaRef.current.scrollHeight}px`;
+    }
+  }, [input]);
+
+  const handleKeyDown = (e) => {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault();
+      if (input.trim() !== '') {
+        sendMessage(input);
+        setInput('');
+      }
+    }
+  };
 // start 
   const initSpeechRecognition = () => {
   const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
@@ -306,19 +326,15 @@ const sendMessage = async (overrideInput) => {
         <div className="max-w-3xl mx-auto flex flex-col gap-2">
           <div className="relative border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 rounded-xl flex items-end focus-within:ring-2 focus-within:ring-sky-500 transition">
             <textarea
-              value={input}
-              onChange={(e) => setInput(e.target.value)}
-              onKeyDown={(e) => {
-                if (e.key === 'Enter' && !e.shiftKey) {
-                  e.preventDefault();
-                  sendMessage();
-                }
-              }}
-              rows={1}
-              placeholder="Ask filebank AI..."
-              className="w-full resize-none border-0 bg-transparent px-4 py-3 text-sm text-gray-900 dark:text-white focus:outline-none"
-              aria-label="Ask filebank AI..."
-            />
+      ref={textareaRef}
+      value={input}
+      onChange={(e) => setInput(e.target.value)}
+      onKeyDown={handleKeyDown}
+      placeholder="Ask famaAI..."
+      aria-label="Type your message to famaAI"
+      rows={1}
+      className="w-full resize-none border-0 bg-transparent px-4 py-3 text-sm text-gray-900 dark:text-white focus:outline-none focus:ring-0"
+    />
             <div className="flex items-center gap-2 px-3 py-2">
               <button
                 type="button"
@@ -349,7 +365,7 @@ const sendMessage = async (overrideInput) => {
           </div>
 
           <p className="text-xs text-center text-gray-500 dark:text-gray-400 mt-2">
-            <b>Filebank cloud AI</b> may produce errors. Verify answers before using.
+            <b>famaAI</b> may produce errors. Verify answers before using.
           </p>
         </div>
       </footer>
