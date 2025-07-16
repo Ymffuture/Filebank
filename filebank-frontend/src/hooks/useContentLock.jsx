@@ -2,7 +2,7 @@ import { Alert, AlertTitle } from '@mui/material';
 import WarningAmberIcon from '@mui/icons-material/WarningAmber';
 import { useSnackbar } from 'notistack';
 
-const useContextLock = ()=> {
+const useContentLock = ()=> {
   const { enqueueSnackbar } = useSnackbar();
 
   useEffect(() => {
@@ -88,4 +88,4 @@ const useContextLock = ()=> {
     };
   }, [enqueueSnackbar]);
 }
-export default useContextLock;
+export default useContentLock;
