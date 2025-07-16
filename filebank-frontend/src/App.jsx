@@ -10,6 +10,9 @@ import RequestReset from './pages/RequestReset';
 import ResetPassword from './pages/ResetPassword';
 import useContentLock from './hooks/useContentLock';
 import useNetworkStatus from './hooks/useNetworkStatus';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 const Help     = lazy(() => import('./components/Help'));
 const FileList = lazy(() => import('./components/FileList'));
 const Footer   = lazy(() => import('./components/Footer'));
@@ -100,6 +103,16 @@ export default function App() {
   return (
     <Router>
       <AppContent />
+      <ToastContainer
+        position="bottom-left"
+        autoClose={3000}
+        hideProgressBar
+        newestOnTop
+        closeOnClick
+        draggable={false}
+        pauseOnHover
+        theme="colored"
+      />
     </Router>
   );
 }
