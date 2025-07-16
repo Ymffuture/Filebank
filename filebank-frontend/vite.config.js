@@ -7,7 +7,12 @@ export default defineConfig({
     react(),
     VitePWA({
       registerType: 'autoUpdate',
-      includeAssets: ['vite.svg', 'icon-upload.png', 'icon-files.png', 'icon-profile.png'],
+      includeAssets: [
+        'vite.svg',
+        'upload.png',
+        'files.png',
+        'profile.png'
+      ],
       manifest: {
         name: 'Famacloud',
         short_name: 'Famacloud',
@@ -16,10 +21,10 @@ export default defineConfig({
         background_color: '#F0F8FF',
         display: 'standalone',
         orientation: 'portrait-primary',
-        start_url: '.',
+        start_url: '/',
         icons: [
           { src: '/vite.svg', sizes: '192x192', type: 'image/png' },
-          { src: '/Branded.svg', sizes: '512x512', type: 'image/png' }
+          { src: '/Branded.svg', sizes: '512x512', type: 'image/svg+xml' }
         ],
         shortcuts: [
           {
@@ -27,28 +32,28 @@ export default defineConfig({
             short_name: 'Upload',
             description: 'Quickly upload new files',
             url: '/upload',
-            icons: [{ src: '/icon-upload.png', sizes: '96x96', type: 'image/png' }]
+            icons: [{ src: '/upload.png', sizes: '96x96', type: 'image/png' }]
           },
           {
             name: 'My Files',
             short_name: 'Files',
             description: 'Access your stored files',
             url: '/files',
-            icons: [{ src: '/icon-files.png', sizes: '96x96', type: 'image/png' }]
+            icons: [{ src: '/files.png', sizes: '96x96', type: 'image/png' }]
           },
           {
             name: 'Profile',
             short_name: 'Profile',
             description: 'View your profile',
             url: '/profile',
-            icons: [{ src: '/icon-profile.png', sizes: '96x96', type: 'image/png' }]
+            icons: [{ src: '/profile.png', sizes: '96x96', type: 'image/png' }]
           }
         ]
       },
       workbox: {
         runtimeCaching: [
           {
-            urlPattern: /.*\.(?:js|css|html|png|svg|jpg|jpeg|webp|woff2)/,
+            urlPattern: /.*\.(?:js|css|html|png|svg|jpg|jpeg|webp|woff2)$/,
             handler: 'CacheFirst',
             options: {
               cacheName: 'famacloud-assets',
@@ -59,7 +64,7 @@ export default defineConfig({
             }
           },
           {
-            urlPattern: /.*/,
+            urlPattern: ({ request }) => request.mode === 'navigate',
             handler: 'NetworkFirst',
             options: {
               cacheName: 'famacloud-pages',
@@ -73,8 +78,9 @@ export default defineConfig({
         ]
       },
       devOptions: {
-        enabled: true
+        enabled: false // Prevents service worker issues during dev
       }
     })
   ]
 })
+
