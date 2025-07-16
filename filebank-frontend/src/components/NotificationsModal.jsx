@@ -100,7 +100,7 @@ export default function NotificationsModal({ visible, onClose }) {
           icon={<CheckOutlined />}
           loading={markAllLoading}
         />,
-        <Button key="close" onClick={onClose} title="Close" />,
+        <Button key="close" onClick={onClose} title="Close" type="link" />,
       ]}
     >
       {loading ? (
@@ -141,7 +141,7 @@ export default function NotificationsModal({ visible, onClose }) {
                 >
                   <Button
                     type="link"
-                    danger
+                    
                     icon={<DeleteOutlined />}
                     size="small"
                     loading={processing[item._id]?.delete}
@@ -153,7 +153,7 @@ export default function NotificationsModal({ visible, onClose }) {
   title={
     <div>
       <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
-        <span className='text-[13px]'>{item.fromUser?.role === 'admin' ? 'Filebank' : 'Filebank File notification'}</span>
+        <span className='text-[13px]'>{item.fromUser?.role === 'admin' ? 'Famacloud' : 'Famacloud File notification'}</span>
         {item.fromUser?.role === 'admin' && (
           <CheckCircle 
       className='text-[8px]' 
