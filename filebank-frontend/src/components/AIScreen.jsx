@@ -23,7 +23,7 @@ SyntaxHighlighter.registerLanguage('python', python);
 
 export default function AIScreen() {
   const [messages, setMessages] = useState([
-    { from: 'bot', text: 'Hello I’m FBC-AI, your assistant. Ask me anything!' }
+    { from: 'bot', text: 'Hello I’m famaAI , your assistant. Ask me anything!' }
   ]);
   const [input, setInput] = useState('');
   const [loading, setLoading] = useState(false);
