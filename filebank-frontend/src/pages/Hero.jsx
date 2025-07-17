@@ -319,6 +319,7 @@ export default function Hero() {
               <Text type="secondary" style={{ cursor: 'pointer', display: isRegistering ? 'none' : 'inline-block', marginTop: '1rem' }} onClick={() => setForgotModalVisible(true)}>
                 Forgot password?
               </Text>
+              <br/>
               <Text style={{ cursor: 'pointer', display: 'inline-block', marginTop: '1rem' }} >
               <Link to="/terms" style={{ marginRight: 12, color: '#666' }}>Terms</Link>
               |
