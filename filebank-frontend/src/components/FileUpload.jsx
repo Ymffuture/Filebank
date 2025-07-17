@@ -114,7 +114,7 @@ export default function FileUpload({ onUpload, currentUserFileCount = 0 }) {
 
           <h2 className="text-2xl font-bold mb-2 text-center text-gray-800">Upload your files</h2>
 
-          {uploading && (
+          {uploading? (
             <div className="flex justify-center mb-6">
               <Lottie
                 animationData={uploadAnimation}
@@ -122,8 +122,7 @@ export default function FileUpload({ onUpload, currentUserFileCount = 0 }) {
                 style={{ width: 150, height: 150 }}
               />
             </div>
-          )}
-
+          ) :
           <Upload.Dragger
             beforeUpload={(file) => {
               const isAllowedType = allowedTypes.includes(file.type);
@@ -162,6 +161,9 @@ export default function FileUpload({ onUpload, currentUserFileCount = 0 }) {
               Supported: Images, Documents, Audio, Video, Archives, Code Files. Max size: 5MB.
             </p>
           </Upload.Dragger>
+          }
+
+          
 
           <div className="mt-4 flex justify-center mb-8">
             <Button
