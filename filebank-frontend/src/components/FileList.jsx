@@ -3,18 +3,17 @@ import { Card, Button, Space, Popconfirm, Tooltip, Skeleton, Alert, Input, Selec
 import api from '../api/fileApi';
 import { Link, useLocation } from 'react-router-dom';
 import { useSnackbar } from 'notistack';
-import { FaXTwitter, FaWhatsapp, FaLinkedin } from 'react-icons/fa6';
-import { ArrowBigLeftDashIcon } from 'lucide-react';
-import Lottie from 'lottie-react';
-import newBadgeAnimation from '../assets/Badge.json';
-import dayjs from 'dayjs';
-
 import {
   FileImageOutlined, FilePdfOutlined, FileExcelOutlined, FileWordOutlined,
   FilePptOutlined, FileTextOutlined, FileZipOutlined, AudioOutlined,
   VideoCameraOutlined, CodeOutlined, FileOutlined,
   DeleteOutlined, ClockCircleOutlined, DownloadOutlined, CopyOutlined
 } from '@ant-design/icons';
+import { FaXTwitter, FaWhatsapp, FaLinkedin } from 'react-icons/fa6';
+import { ArrowBigLeftDashIcon } from 'lucide-react';
+import dayjs from 'dayjs';
+import Lottie from 'lottie-react';
+import NewBadgeAnimation from '../assets/NewBadgeLottie.json';
 
 const { Option } = Select;
 
@@ -47,86 +46,6 @@ export default function FileList() {
     return Math.floor(diffMs / (1000 * 60 * 60 * 24));
   };
 
-  const getColorByFormat = (ext) => {
-    const colorMap = {
-      image: '#1E90FF',
-      video: '#FF6347',
-      audio: '#32CD32',
-      pdf: '#D32F2F',
-      word: '#1976D2',
-      excel: '#388E3C',
-      ppt: '#F57C00',
-      text: '#616161',
-      archive: '#8E24AA',
-      code: '#FFC107',
-      default: '#999999'
-    };
-
-    const groups = {
-      image: ['jpg','jpeg','png','gif','bmp','webp'],
-      video: ['mp4','mov','avi','wmv'],
-      audio: ['mp3','wav','ogg'],
-      pdf: ['pdf'],
-      word: ['doc','docx'],
-      excel: ['xls','xlsx','csv'],
-      ppt: ['ppt','pptx'],
-      text: ['txt','md'],
-      archive: ['zip','rar'],
-      code: ['js','jsx','ts','tsx','php','py','java']
-    };
-
-    for (let type in groups) {
-      if (groups[type].includes(ext)) return colorMap[type];
-    }
-    return colorMap.default;
-  };
-
-  const getFileIcon = (file) => {
-    const ext = (file.url.split('.').pop() || '').toLowerCase();
-    const color = getColorByFormat(ext);
-
-    const icons = {
-      image: FileImageOutlined,
-      video: VideoCameraOutlined,
-      audio: AudioOutlined,
-      pdf: FilePdfOutlined,
-      word: FileWordOutlined,
-      excel: FileExcelOutlined,
-      ppt: FilePptOutlined,
-      text: FileTextOutlined,
-      archive: FileZipOutlined,
-      code: CodeOutlined,
-      default: FileOutlined
-    };
-
-    const groups = {
-      image: ['jpg','jpeg','png','gif','bmp','webp'],
-      video: ['mp4','mov','avi','wmv'],
-      audio: ['mp3','wav','ogg'],
-      pdf: ['pdf'],
-      word: ['doc','docx'],
-      excel: ['xls','xlsx','csv'],
-      ppt: ['ppt','pptx'],
-      text: ['txt','md'],
-      archive: ['zip','rar'],
-      code: ['js','jsx','ts','tsx','php','py','java']
-    };
-
-    for (let type in groups) {
-      if (groups[type].includes(ext)) {
-        const Icon = icons[type];
-        return <Icon style={{ color }} />;
-      }
-    }
-    return <icons.default style={{ color }} />;
-  };
-
-  const copyLink = (url) => {
-    navigator.clipboard.writeText(url)
-      .then(() => enqueueSnackbar('Link copied!', { variant: 'success' }))
-      .catch(() => enqueueSnackbar('Copy failed', { variant: 'error' }));
-  };
-
   const fetchFiles = async () => {
     setLoading(true);
     try {
@@ -154,22 +73,66 @@ export default function FileList() {
     }
   };
 
+  const colorMap = {
+    image: '#1E90FF',
+    video: '#FF6347',
+    audio: '#32CD32',
+    pdf: '#D32F2F',
+    word: '#1976D2',
+    excel: '#388E3C',
+    ppt: '#F57C00',
+    text: '#616161',
+    archive: '#8E24AA',
+    code: '#FFC107',
+    default: '#999999'
+  };
+
+  const groups = {
+    image: ['jpg','jpeg','png','gif','bmp','webp'],
+    video: ['mp4','mov','avi','wmv'],
+    audio: ['mp3','wav','ogg'],
+    pdf: ['pdf'],
+    word: ['doc','docx'],
+    excel: ['xls','xlsx','csv'],
+    ppt: ['ppt','pptx'],
+    text: ['txt','md'],
+    archive: ['zip','rar'],
+    code: ['js','jsx','ts','tsx','php','py','java']
+  };
+
+  const getFileIcon = (file) => {
+    const ext = (file.url.split('.').pop() || '').toLowerCase();
+
+    for (let type in groups) {
+      if (groups[type].includes(ext)) {
+        const iconProps = { style: { color: colorMap[type], fontSize: 24 } };
+        switch (type) {
+          case 'image': return <FileImageOutlined {...iconProps} />;
+          case 'video': return <VideoCameraOutlined {...iconProps} />;
+          case 'audio': return <AudioOutlined {...iconProps} />;
+          case 'pdf': return <FilePdfOutlined {...iconProps} />;
+          case 'word': return <FileWordOutlined {...iconProps} />;
+          case 'excel': return <FileExcelOutlined {...iconProps} />;
+          case 'ppt': return <FilePptOutlined {...iconProps} />;
+          case 'text': return <FileTextOutlined {...iconProps} />;
+          case 'archive': return <FileZipOutlined {...iconProps} />;
+          case 'code': return <CodeOutlined {...iconProps} />;
+          default: break;
+        }
+      }
+    }
+    return <FileOutlined style={{ color: colorMap.default, fontSize: 24 }} />;
+  };
+
+  const copyLink = (url) => {
+    navigator.clipboard.writeText(url)
+      .then(() => enqueueSnackbar('Link copied!', { variant: 'success' }))
+      .catch(() => enqueueSnackbar('Copy failed', { variant: 'error' }));
+  };
+
   const filteredFiles = files.filter(file => {
     const matchesName = file.filename.toLowerCase().includes(searchName.toLowerCase());
     const ext = (file.url.split('.').pop() || '').toLowerCase();
-
-    const groups = {
-      image: ['jpg','jpeg','png','gif','bmp','webp'],
-      video: ['mp4','mov','avi','wmv'],
-      audio: ['mp3','wav','ogg'],
-      pdf: ['pdf'],
-      word: ['doc','docx'],
-      excel: ['xls','xlsx','csv'],
-      ppt: ['ppt','pptx'],
-      text: ['txt','md'],
-      archive: ['zip','rar'],
-      code: ['js','jsx','ts','tsx','php','py','java']
-    };
 
     let matchesFormat = searchFormat === 'all';
     if (!matchesFormat) {
@@ -203,25 +166,13 @@ export default function FileList() {
         </div>
       )}
 
-      <Alert
-        message="Tip: Rename downloads from `<slug>myfilepdf` → `myfile.pdf`."
-        type="warning" showIcon closable className="m-6"
-      />
+      <Alert message="Tip: Rename downloads from `<slug>myfilepdf` → `myfile.pdf`." type="warning" showIcon closable className="m-6" />
 
       <div className="p-4 bg-white shadow-sm rounded-md mb-4 flex flex-wrap gap-4">
         <Input placeholder="Search by name" value={searchName} onChange={e => setSearchName(e.target.value)} style={{ width: 200 }} />
         <Select value={searchFormat} onChange={v => setSearchFormat(v)} style={{ width: 150 }}>
           <Option value="all">All Formats</Option>
-          <Option value="image">Images</Option>
-          <Option value="video">Videos</Option>
-          <Option value="audio">Audio</Option>
-          <Option value="pdf">PDF</Option>
-          <Option value="word">Word</Option>
-          <Option value="excel">Excel/CSV</Option>
-          <Option value="ppt">PPT</Option>
-          <Option value="text">Text</Option>
-          <Option value="archive">Zip/Rar</Option>
-          <Option value="code">Code</Option>
+          {Object.keys(groups).map(group => <Option key={group} value={group}>{group.charAt(0).toUpperCase() + group.slice(1)}</Option>)}
         </Select>
         <DatePicker value={searchDate} onChange={d => setSearchDate(d)} placeholder="Filter by date" style={{ width: 180 }} />
         <Button onClick={() => { setSearchName(''); setSearchFormat('all'); setSearchDate(null); }}>Reset</Button>
@@ -243,15 +194,14 @@ export default function FileList() {
             return (
               <Card
                 key={file._id}
-                className="fade-in"
                 title={
                   <Space>
                     {getFileIcon(file)}
                     <Tooltip title={file.slug}>
                       {file.filename.length > 15 ? file.filename.slice(0, 15) + '…' : file.filename}
                     </Tooltip>
-                    {age < 1 && (
-                      <Lottie animationData={newBadgeAnimation} loop={false} style={{ width: 40, height: 40 }} />
+                    {age === 0 && (
+                      <Lottie animationData={NewBadgeAnimation} loop={false} style={{ width: 40, height: 40 }} />
                     )}
                   </Space>
                 }
@@ -265,8 +215,12 @@ export default function FileList() {
                     <Button danger type="text" icon={<DeleteOutlined />} loading={deleting === file.slug} />
                   </Popconfirm>
                 ]}
+                className='bg-[#1E90FF] text-white' 
               >
                 <p className="text-gray-700"><ClockCircleOutlined style={{ marginRight: 4 }} /><strong>Uploaded:</strong> {formatted}</p>
+                {age > 0 && age < 180 && (
+                  <Alert type="warning" showIcon className="m-4" message={`Will be deleted in ${180 - age} days.`} />
+                )}
               </Card>
             );
           })
