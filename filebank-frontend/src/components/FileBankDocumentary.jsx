@@ -10,7 +10,7 @@ export default function FamacloudDocumentary() {
   return (
     <div className="min-h-screen bg-[#fff] py-10 px-4">
       <Helmet>
-        <title>Famacloud Documentary | Qurovex</title>
+        <title>Famacloud Documentary</title>
         <meta name="description" content="Discover how Famacloud saves your important files, like CVs, certificates, and more, accessible anytime, anywhere with just internet access." />
       </Helmet>
 
@@ -19,7 +19,7 @@ export default function FamacloudDocumentary() {
           <Title level={2} className="text-center text-[#1E90FF] mb-6">The Story & Vision of Famacloud</Title>
           
           <Paragraph className="text-lg">
-            <Text strong>Famacloud</Text> is a purpose-built cloud storage solution developed by <Text code>Qurovex Institute</Text> to safeguard and streamline access to your most critical documents. These include CVs, academic certificates, professional licenses, legal papers, and personal credentials — the files that define your identity, achievements, and opportunities. Unlike traditional cloud storage platforms, Famacloud is engineered to ensure these vital documents are always available to you, securely stored, and accessible from any device with an internet connection.
+            <Text strong>Famacloud</Text> is a purpose-built cloud storage solution developed by <Text code>Quorvex Institute</Text> to safeguard and streamline access to your most critical documents. These include CVs, academic certificates, professional licenses, legal papers, and personal credentials — the files that define your identity, achievements, and opportunities. Unlike traditional cloud storage platforms, Famacloud is engineered to ensure these vital documents are always available to you, securely stored, and accessible from any device with an internet connection.
           </Paragraph>
 
           <Paragraph className="text-lg">
