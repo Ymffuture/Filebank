@@ -118,19 +118,19 @@ export default function FileUpload({ onUpload, currentUserFileCount = 0 }) {
               <Lottie
                 animationData={Successful}
                 loop={false}
-                style={{ width: 200, height: 200 }}
+                style={{ width: 300, height: 300 }}
               />
             </div> : text? <div className="flex justify-center mb-6">
               <Lottie
                 animationData={Failed}
                 loop={false}
-                style={{ width: 200, height: 200 }}
+                style={{ width: 300, height: 300 }}
               />
             </div>: <div className="flex justify-center mb-4">
               <Lottie
                 animationData={pdfAnim}
                 
-                style={{ width: 200, height: 200 }}
+                style={{ width: 300, height: 300 }}
               />
             </div>} 
 
@@ -139,7 +139,7 @@ export default function FileUpload({ onUpload, currentUserFileCount = 0 }) {
               <Lottie
                 animationData={uploadAnimation}
                 loop
-                style={{ width: 200, height: 200 }}
+                style={{ width: 350, height: 350 }}
               />
             </div>
           ) :
