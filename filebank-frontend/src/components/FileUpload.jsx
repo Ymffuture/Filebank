@@ -111,15 +111,23 @@ export default function FileUpload({ onUpload, currentUserFileCount = 0 }) {
 
       <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-[#fff] to-[#ffffff]">
         <div className="p-2 rounded-lg max-w-lg w-full">
-
+          {text2? 
+           <div className="flex justify-center mb-6">
+              <Lottie
+                animationData={uploadAnimation}
+                
+                style={{ width: 200, height: 200 }}
+              />
+            </div> : text? "error" : ""} 
+          
           <h2 className="text-2xl font-bold mb-2 text-center text-gray-800">Upload your files</h2>
 
-          {uploading? (
+          {uploading ? (
             <div className="flex justify-center mb-6">
               <Lottie
                 animationData={uploadAnimation}
                 loop
-                style={{ width: 150, height: 150 }}
+                style={{ width: 180, height: 180 }}
               />
             </div>
           ) :
