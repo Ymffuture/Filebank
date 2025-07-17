@@ -13,7 +13,7 @@ import { FaXTwitter, FaWhatsapp, FaLinkedin } from 'react-icons/fa6';
 import { ArrowBigLeftDashIcon } from 'lucide-react';
 import dayjs from 'dayjs';
 import Lottie from 'lottie-react';
-import NewBadgeAnimation from '../assets/NewBadgeLottie.json';
+import NewBadgeAnimation from '../assets/Badge.json';
 
 const { Option } = Select;
 
