@@ -8,7 +8,7 @@ import Lottie from 'lottie-react';
 import uploadAnimation from '../assets/uploading.json'; 
 import Successful from '../assets/Successful.json' ;
 import Failed from '../assets/Failed.json' ;
-import PDF from '../assets/PDF.json' ;
+import pdfAnim from '../assets/PDF.json' ;
 import api from '../api/fileApi';
 
 export default function FileUpload({ onUpload, currentUserFileCount = 0 }) {
@@ -128,7 +128,7 @@ export default function FileUpload({ onUpload, currentUserFileCount = 0 }) {
               />
             </div>: <div className="flex justify-center mb-6">
               <Lottie
-                animationData={PDF}
+                animationData={pdfAnim}
                 
                 style={{ width: 200, height: 200 }}
               />
