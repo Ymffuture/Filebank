@@ -10,7 +10,7 @@ export default function Home() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#fff] to-[#fff]">
       <Navbar />
-      <main className="container mx-auto py-10 space-y-12 px-4">
+      <main className="container mx-auto py-5 space-y-6 px-2">
         <section>
           <h1 className="text-3xl font-bold text-gray-700 mb-0">Start uploading Your Files</h1>
           <FileUpload onUpload={() => setRefresh((r) => r + 1)} />
