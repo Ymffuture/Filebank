@@ -133,8 +133,6 @@ export default function FileUpload({ onUpload, currentUserFileCount = 0 }) {
                 style={{ width: 200, height: 200 }}
               />
             </div>} 
-          
-          <h2 className="text-2xl font-bold mb-2 text-center text-gray-800">Upload your files</h2>
 
           {uploading ? (
             <div className="flex justify-center mb-4">
