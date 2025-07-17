@@ -1,17 +1,20 @@
 import React, { useEffect, useState } from 'react';
-import { Card, Button, Space, Popconfirm, Tooltip, Skeleton, Alert, Badge, Input, Select, DatePicker } from 'antd';
+import { Card, Button, Space, Popconfirm, Tooltip, Skeleton, Alert, Input, Select, DatePicker } from 'antd';
 import api from '../api/fileApi';
 import { Link, useLocation } from 'react-router-dom';
 import { useSnackbar } from 'notistack';
+import { FaXTwitter, FaWhatsapp, FaLinkedin } from 'react-icons/fa6';
+import { ArrowBigLeftDashIcon } from 'lucide-react';
+import Lottie from 'lottie-react';
+import newBadgeAnimation from '../assets/Badge.json';
+import dayjs from 'dayjs';
+
 import {
   FileImageOutlined, FilePdfOutlined, FileExcelOutlined, FileWordOutlined,
   FilePptOutlined, FileTextOutlined, FileZipOutlined, AudioOutlined,
   VideoCameraOutlined, CodeOutlined, FileOutlined,
   DeleteOutlined, ClockCircleOutlined, DownloadOutlined, CopyOutlined
 } from '@ant-design/icons';
-import { FaXTwitter, FaWhatsapp, FaLinkedin } from 'react-icons/fa6';
-import { ArrowBigLeftDashIcon } from 'lucide-react';
-import dayjs from 'dayjs';
 
 const { Option } = Select;
 
@@ -34,14 +37,94 @@ export default function FileList() {
     const isToday = date.toDateString() === now.toDateString();
 
     return isToday
-      ? `Today at ${date.toLocaleTimeString('en-ZA', { hour: 'numeric', minute: '2-digit', hour12: true })}`
-      : date.toLocaleString('en-ZA', { weekday: 'short', hour: 'numeric', minute: 'numeric', hour12: true });
+      ? `Today at ${date.toLocaleTimeString('en-ZA', { hour: '2-digit', minute: '2-digit', hour12: false })}`
+      : date.toLocaleString('en-ZA', { weekday: 'short', hour: '2-digit', minute: '2-digit', hour12: false });
   };
 
   const getAgeInDays = (createdAt) => {
     if (!createdAt) return 0;
     const diffMs = Date.now() - new Date(createdAt).getTime();
     return Math.floor(diffMs / (1000 * 60 * 60 * 24));
+  };
+
+  const getColorByFormat = (ext) => {
+    const colorMap = {
+      image: '#1E90FF',
+      video: '#FF6347',
+      audio: '#32CD32',
+      pdf: '#D32F2F',
+      word: '#1976D2',
+      excel: '#388E3C',
+      ppt: '#F57C00',
+      text: '#616161',
+      archive: '#8E24AA',
+      code: '#FFC107',
+      default: '#999999'
+    };
+
+    const groups = {
+      image: ['jpg','jpeg','png','gif','bmp','webp'],
+      video: ['mp4','mov','avi','wmv'],
+      audio: ['mp3','wav','ogg'],
+      pdf: ['pdf'],
+      word: ['doc','docx'],
+      excel: ['xls','xlsx','csv'],
+      ppt: ['ppt','pptx'],
+      text: ['txt','md'],
+      archive: ['zip','rar'],
+      code: ['js','jsx','ts','tsx','php','py','java']
+    };
+
+    for (let type in groups) {
+      if (groups[type].includes(ext)) return colorMap[type];
+    }
+    return colorMap.default;
+  };
+
+  const getFileIcon = (file) => {
+    const ext = (file.url.split('.').pop() || '').toLowerCase();
+    const color = getColorByFormat(ext);
+
+    const icons = {
+      image: FileImageOutlined,
+      video: VideoCameraOutlined,
+      audio: AudioOutlined,
+      pdf: FilePdfOutlined,
+      word: FileWordOutlined,
+      excel: FileExcelOutlined,
+      ppt: FilePptOutlined,
+      text: FileTextOutlined,
+      archive: FileZipOutlined,
+      code: CodeOutlined,
+      default: FileOutlined
+    };
+
+    const groups = {
+      image: ['jpg','jpeg','png','gif','bmp','webp'],
+      video: ['mp4','mov','avi','wmv'],
+      audio: ['mp3','wav','ogg'],
+      pdf: ['pdf'],
+      word: ['doc','docx'],
+      excel: ['xls','xlsx','csv'],
+      ppt: ['ppt','pptx'],
+      text: ['txt','md'],
+      archive: ['zip','rar'],
+      code: ['js','jsx','ts','tsx','php','py','java']
+    };
+
+    for (let type in groups) {
+      if (groups[type].includes(ext)) {
+        const Icon = icons[type];
+        return <Icon style={{ color }} />;
+      }
+    }
+    return <icons.default style={{ color }} />;
+  };
+
+  const copyLink = (url) => {
+    navigator.clipboard.writeText(url)
+      .then(() => enqueueSnackbar('Link copied!', { variant: 'success' }))
+      .catch(() => enqueueSnackbar('Copy failed', { variant: 'error' }));
   };
 
   const fetchFiles = async () => {
@@ -71,50 +154,10 @@ export default function FileList() {
     }
   };
 
-  const getFileIcon = (file) => {
-    const ext = (file.url.split('.').pop() || '').toLowerCase();
-    const groups = {
-      image: ['jpg','jpeg','png','gif','bmp','webp'],
-      video: ['mp4','mov','avi','wmv'],
-      audio: ['mp3','wav','ogg'],
-      pdf: ['pdf'],
-      word: ['doc','docx'],
-      excel: ['xls','xlsx','csv'],
-      ppt: ['ppt','pptx'],
-      text: ['txt','md'],
-      archive: ['zip','rar'],
-      code: ['js','jsx','ts','tsx','php','py','java']
-    };
-    const icons = {
-      image: FileImageOutlined,
-      video: VideoCameraOutlined,
-      audio: AudioOutlined,
-      pdf: FilePdfOutlined,
-      word: FileWordOutlined,
-      excel: FileExcelOutlined,
-      ppt: FilePptOutlined,
-      text: FileTextOutlined,
-      archive: FileZipOutlined,
-      code: CodeOutlined
-    };
-
-    for (let type in groups) {
-      if (groups[type].includes(ext)) return React.createElement(icons[type]);
-    }
-    return <FileOutlined />;
-  };
-
-  const copyLink = (url) => {
-    navigator.clipboard.writeText(url)
-      .then(() => enqueueSnackbar('Link copied!', { variant: 'success' }))
-      .catch(() => enqueueSnackbar('Copy failed', { variant: 'error' }));
-  };
-
-  // === NEW: Filtered Files ===
   const filteredFiles = files.filter(file => {
     const matchesName = file.filename.toLowerCase().includes(searchName.toLowerCase());
-
     const ext = (file.url.split('.').pop() || '').toLowerCase();
+
     const groups = {
       image: ['jpg','jpeg','png','gif','bmp','webp'],
       video: ['mp4','mov','avi','wmv'],
@@ -165,19 +208,9 @@ export default function FileList() {
         type="warning" showIcon closable className="m-6"
       />
 
-      {/* === NEW: Filters UI === */}
       <div className="p-4 bg-white shadow-sm rounded-md mb-4 flex flex-wrap gap-4">
-        <Input
-          placeholder="Search by name"
-          value={searchName}
-          onChange={e => setSearchName(e.target.value)}
-          style={{ width: 200 }}
-        />
-        <Select
-          value={searchFormat}
-          onChange={v => setSearchFormat(v)}
-          style={{ width: 150 }}
-        >
+        <Input placeholder="Search by name" value={searchName} onChange={e => setSearchName(e.target.value)} style={{ width: 200 }} />
+        <Select value={searchFormat} onChange={v => setSearchFormat(v)} style={{ width: 150 }}>
           <Option value="all">All Formats</Option>
           <Option value="image">Images</Option>
           <Option value="video">Videos</Option>
@@ -190,19 +223,8 @@ export default function FileList() {
           <Option value="archive">Zip/Rar</Option>
           <Option value="code">Code</Option>
         </Select>
-        <DatePicker
-          value={searchDate}
-          onChange={d => setSearchDate(d)}
-          placeholder="Filter by date"
-          style={{ width: 180 }}
-        />
-        <Button onClick={() => {
-          setSearchName('');
-          setSearchFormat('all');
-          setSearchDate(null);
-        }}>
-          Reset
-        </Button>
+        <DatePicker value={searchDate} onChange={d => setSearchDate(d)} placeholder="Filter by date" style={{ width: 180 }} />
+        <Button onClick={() => { setSearchName(''); setSearchFormat('all'); setSearchDate(null); }}>Reset</Button>
       </div>
 
       <div className="grid gap-6 grid-cols-1 p-4">
@@ -217,9 +239,6 @@ export default function FileList() {
             const age = getAgeInDays(file.createdAt);
             const formatted = formatTime(file.createdAt);
             const downloadUrl = file.downloadUrl || `${file.url}?fl=attachment:${encodeURIComponent(file.filename)}`;
-            const waUrl = `https://wa.me/?text=${encodeURIComponent(downloadUrl)}`;
-            const twUrl = `https://twitter.com/intent/tweet?url=${encodeURIComponent(downloadUrl)}`;
-            const liUrl = `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(downloadUrl)}`;
 
             return (
               <Card
@@ -231,35 +250,23 @@ export default function FileList() {
                     <Tooltip title={file.slug}>
                       {file.filename.length > 15 ? file.filename.slice(0, 15) + '…' : file.filename}
                     </Tooltip>
-                    {age <= 1 && <Badge count="New" style={{ background: '#52c41a' }} />}
+                    {age < 1 && (
+                      <Lottie animationData={newBadgeAnimation} loop={false} style={{ width: 40, height: 40 }} />
+                    )}
                   </Space>
                 }
                 actions={[
                   <a key="download" href={downloadUrl} download={file.filename}><DownloadOutlined /></a>,
                   <Tooltip key="copy" title="Copy link"><Button type="text" icon={<CopyOutlined />} onClick={() => copyLink(downloadUrl)} /></Tooltip>,
-                  <a key="wa" href={waUrl} target="_blank" rel="noopener noreferrer"><Button type="text" icon={<FaWhatsapp />} /></a>,
-                  <a key="tw" href={twUrl} target="_blank" rel="noopener noreferrer"><Button type="text" icon={<FaXTwitter />} /></a>,
-                  <a key="li" href={liUrl} target="_blank" rel="noopener noreferrer"><Button type="text" icon={<FaLinkedin />} /></a>,
+                  <a key="wa" href={`https://wa.me/?text=${encodeURIComponent(downloadUrl)}`} target="_blank" rel="noopener noreferrer"><FaWhatsapp /></a>,
+                  <a key="tw" href={`https://twitter.com/intent/tweet?url=${encodeURIComponent(downloadUrl)}`} target="_blank" rel="noopener noreferrer"><FaXTwitter /></a>,
+                  <a key="li" href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(downloadUrl)}`} target="_blank" rel="noopener noreferrer"><FaLinkedin /></a>,
                   <Popconfirm key="delete" title="Delete this file?" onConfirm={() => handleDelete(file.slug)}>
                     <Button danger type="text" icon={<DeleteOutlined />} loading={deleting === file.slug} />
                   </Popconfirm>
                 ]}
               >
                 <p className="text-gray-700"><ClockCircleOutlined style={{ marginRight: 4 }} /><strong>Uploaded:</strong> {formatted}</p>
-                {age > 0 && age < 30 && (
-                  <Alert type="warning" showIcon className="m-4" message={`Will be deleted in ${30 - age} days for security.`} />
-                )}
-                {file.resourceType === 'image' ? (
-                  <img src={file.url} alt={file.filename} className="rounded" style={{ width: '100%', maxHeight: 150, objectFit: 'contain', marginTop: 8 }} />
-                ) : file.resourceType === 'raw' && file.filename.endsWith('.pdf') ? (
-                  <a href={downloadUrl} target="_blank" rel="noopener noreferrer" className="m-2">
-                    <FilePdfOutlined style={{ fontSize: 80, color: '#999' }} /><p>Click to view</p>
-                  </a>
-                ) : (
-                  <div style={{ marginTop: 8, height: 150, display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#fafafa', borderRadius: 8, color: '#999', fontSize: 48 }}>
-                    {getFileIcon(file)}
-                  </div>
-                )}
               </Card>
             );
           })
