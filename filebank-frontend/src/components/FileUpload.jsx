@@ -6,6 +6,7 @@ import { useSnackbar } from 'notistack';
 import { Helmet } from 'react-helmet';
 import Lottie from 'lottie-react';
 import uploadAnimation from '../assets/uploading.json'; 
+import Upload from '../assets/Upload.json' ;
 import Successful from '../assets/Successful.json' ;
 import Failed from '../assets/Failed.json' ;
 import pdfAnim from '../assets/PDF.json' ;
@@ -130,7 +131,7 @@ export default function FileUpload({ onUpload, currentUserFileCount = 0 }) {
               <Lottie
                 animationData={pdfAnim}
                 
-                style={{ width: 300, height: 300 }}
+                style={{ width: 350, height: 350 }}
               />
             </div>} 
 
@@ -139,7 +140,7 @@ export default function FileUpload({ onUpload, currentUserFileCount = 0 }) {
               <Lottie
                 animationData={uploadAnimation}
                 loop
-                style={{ width: 350, height: 350 }}
+                style={{ width: 300, height: 300 }}
               />
             </div>
           ) :
@@ -175,7 +176,11 @@ export default function FileUpload({ onUpload, currentUserFileCount = 0 }) {
             }}
             disabled={uploading}
           >
-            <p className="ant-upload-drag-icon"><UploadOutlined /></p>
+            <Lottie
+                animationData={Upload}
+                loop={false}
+                style={{ width: 180, height: 180 }}
+              />
             <p className="ant-upload-text">Click or drag file to this area to upload</p>
             <p className="ant-upload-hint">
               Supported: Images, Documents, Audio, Video, Archives, Code Files. Max size: 5MB.
@@ -197,7 +202,7 @@ export default function FileUpload({ onUpload, currentUserFileCount = 0 }) {
           </div>
 
           {progress > 0 && (
-            <div className="mt-4">
+            <div className="mt-4 sticky">
               <Progress percent={progress} />
             </div>
           )}
