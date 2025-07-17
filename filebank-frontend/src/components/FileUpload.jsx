@@ -112,21 +112,21 @@ export default function FileUpload({ onUpload, currentUserFileCount = 0 }) {
       </Helmet>
 
       <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-[#fff] to-[#ffffff]">
-        <div className="p-2 rounded-lg max-w-lg w-full">
+        <div className="rounded-lg max-w-lg w-full">
           {text2? 
-           <div className="flex justify-center mb-6">
+           <div className="flex justify-center mb-4">
               <Lottie
                 animationData={Successful}
-                
+                loop={false}
                 style={{ width: 200, height: 200 }}
               />
             </div> : text? <div className="flex justify-center mb-6">
               <Lottie
                 animationData={Failed}
-                
+                loop={false}
                 style={{ width: 200, height: 200 }}
               />
-            </div>: <div className="flex justify-center mb-6">
+            </div>: <div className="flex justify-center mb-4">
               <Lottie
                 animationData={pdfAnim}
                 
@@ -137,11 +137,11 @@ export default function FileUpload({ onUpload, currentUserFileCount = 0 }) {
           <h2 className="text-2xl font-bold mb-2 text-center text-gray-800">Upload your files</h2>
 
           {uploading ? (
-            <div className="flex justify-center mb-6">
+            <div className="flex justify-center mb-4">
               <Lottie
                 animationData={uploadAnimation}
                 loop
-                style={{ width: 180, height: 180 }}
+                style={{ width: 200, height: 200 }}
               />
             </div>
           ) :
