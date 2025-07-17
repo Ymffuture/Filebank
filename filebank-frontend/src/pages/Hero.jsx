@@ -211,7 +211,7 @@ export default function Hero() {
         <Paragraph style={{ fontSize: '1.2rem', color: '#555' }}>
           Upload, manage, and access your files anywhere with <strong>Famacloud</strong>.
         </Paragraph>
-        {user? <Button size="large" style={{
+        {!user? <Button size="large" style={{
           marginTop: '2rem',
           padding: '0 2.5rem',
           background: '#1E90FF',
@@ -319,7 +319,7 @@ export default function Hero() {
               <Text type="secondary" style={{ cursor: 'pointer', display: isRegistering ? 'none' : 'inline-block', marginTop: '1rem' }} onClick={() => setForgotModalVisible(true)}>
                 Forgot password?
               </Text>
-              <Text>
+              <Text style={{ cursor: 'pointer', display: 'inline-block', marginTop: '1rem' }} >
               <Link to="/terms" style={{ marginRight: 12, color: '#666' }}>Terms</Link>
               |
               <Link to="/privacy" style={{ marginLeft: 12, color: '#666' }}>Privacy</Link>
@@ -352,7 +352,7 @@ export default function Hero() {
         color: '#777',
         fontSize: '0.85rem'
       }}>
-        Famacloud 
+        Famacloud App
       </div>
 
     </motion.div>
