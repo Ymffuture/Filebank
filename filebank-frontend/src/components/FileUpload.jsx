@@ -5,7 +5,9 @@ import { UploadOutlined, InfoCircleOutlined, LinkOutlined } from '@ant-design/ic
 import { useSnackbar } from 'notistack';
 import { Helmet } from 'react-helmet';
 import Lottie from 'lottie-react';
-import uploadAnimation from '../assets/uploading.json'; // Ensure this file exists
+import uploadAnimation from '../assets/uploading.json'; 
+import Successful from '../assets/Successful.json' ;
+import Failed from '../assets/Failed.json' ;
 
 import api from '../api/fileApi';
 
@@ -114,11 +116,23 @@ export default function FileUpload({ onUpload, currentUserFileCount = 0 }) {
           {text2? 
            <div className="flex justify-center mb-6">
               <Lottie
-                animationData={uploadAnimation}
+                animationData={Successful}
                 
                 style={{ width: 200, height: 200 }}
               />
-            </div> : text? "error" : ""} 
+            </div> : text? <div className="flex justify-center mb-6">
+              <Lottie
+                animationData={Failed}
+                
+                style={{ width: 200, height: 200 }}
+              />
+            </div>: <div className="flex justify-center mb-6">
+              <Lottie
+                animationData={Successful}
+                
+                style={{ width: 200, height: 200 }}
+              />
+            </div>} 
           
           <h2 className="text-2xl font-bold mb-2 text-center text-gray-800">Upload your files</h2>
 
