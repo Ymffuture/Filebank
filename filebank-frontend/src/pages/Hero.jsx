@@ -11,6 +11,7 @@ import LockAnimation from '../assets/Lock.json';
 import UploadAnimation from '../assets/Upload.json';
 import TimeAnimation from '../assets/Clock.json';
 import HeroAnimation from '../assets/Data.json';
+import Lockup from '../assets/Auth.json';
 
 const { Title, Paragraph, Text } = Typography;
 
@@ -279,6 +280,7 @@ export default function Hero() {
           </div>
         ) : (
           <Form layout="vertical" onFinish={onFinish}>
+            <Lottie animationData={Lockup} loop style={{ width: 80, height: 80}} />
             {isRegistering && (
               <Form.Item name="name" label="Full Name" rules={[{ required: true }]}>
                 <Input placeholder="Your Name" />
