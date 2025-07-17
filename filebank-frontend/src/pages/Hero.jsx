@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { GoogleLogin, googleLogout } from '@react-oauth/google';
 import { Button, Typography, message, Avatar, Dropdown, Menu, Badge, Space, Row, Col, Modal, Form, Input, Spin } from 'antd';
-import { BellOutlined, DashboardFilled, DownOutlined, LogoutOutlined, LockOutlined, CloudUploadOutlined, ClockCircleOutlined } from '@ant-design/icons';
+import { BellOutlined, DashboardFilled, DownOutlined, LogoutOutlined } from '@ant-design/icons';
 import { Link, useNavigate } from 'react-router-dom';
 import api from '../api/fileApi';
 import { useSnackbar } from 'notistack';
@@ -10,7 +10,9 @@ import LockAnimation from '../assets/Lock.json';
 import UploadAnimation from '../assets/Upload.json';
 import TimeAnimation from '../assets/Clock.json';
 import HeroAnimation from '../assets/Data.json';
+import AuthAnimation from '../assets/Auth.json';
 import Lottie from 'lottie-react'; 
+
 const { Title, Paragraph, Text } = Typography;
 
 export default function Hero() {
@@ -65,10 +67,9 @@ export default function Hero() {
   const userMenu = (
     <Menu
       items={[
-        { key: '1', label: <Link to="/profile" >Profile (coming soon) </Link> },
+        { key: '1', label: <Link to="/profile" >Profile (coming soon)</Link> },
         { key: '2', label: <Link to="/dashboard"><DashboardFilled /> Dashboard</Link> },
         { key: '3', label: <span onClick={handleLogout}><LogoutOutlined /> Logout</span> },
-        
       ]}
     />
   );
@@ -97,16 +98,14 @@ export default function Hero() {
   };
 
   const handleForgotSubmit = async () => {
-    if (!forgotEmail) {
-      return message.error('Please enter your email.');
-    }
+    if (!forgotEmail) return message.error('Please enter your email.');
     setLoading(true);
     try {
       await api.post('/auth/forgot-password', { email: forgotEmail });
-      enqueueSnackbar('Password reset email sent.', {variant:'success'} );
+      enqueueSnackbar('Password reset email sent.', {variant:'success'});
       setForgotModalVisible(false);
     } catch (err) {
-      enqueueSnackbar(err.response?.data?.message || 'Failed to send reset email.', {variant:'error'} );
+      enqueueSnackbar(err.response?.data?.message || 'Failed to send reset email.', {variant:'error'});
     } finally {
       setLoading(false);
     }
@@ -129,23 +128,32 @@ export default function Hero() {
       }}
     >
 
-<Lottie
-    animationData={HeroAnimation}
-    loop
-    style={{
-      position: 'absolute',
-      top: 0,
-      left: 0,
-      width: '100%',
-      height: '100%',
-      zIndex: 0,
-      opacity: 0.3, // Light opacity for background
-      pointerEvents: 'none' // Makes it non-clickable
-    }}
-  />
-      
+      <Lottie
+        animationData={HeroAnimation}
+        loop
+        style={{
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          width: '100%',
+          height: '100%',
+          zIndex: 0,
+          opacity: 0.25,
+          pointerEvents: 'none'
+        }}
+      />
+
       {/* Navigation */}
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', backdropFilter: 'blur(6px)', padding: '1rem', borderRadius: '12px', background: 'rgba(255,255,255,0.85)' }}>
+      <div style={{
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        backdropFilter: 'blur(6px)',
+        padding: '1rem',
+        borderRadius: '12px',
+        background: 'rgba(255,255,255,0.85)',
+        boxShadow: '0 8px 24px rgba(0,0,0,0.05)'
+      }}>
         <Title level={3} style={{ margin: 0, color: '#0B3D91' }}>Famacloud</Title>
         {user ? (
           <Space>
@@ -161,30 +169,13 @@ export default function Hero() {
             </Dropdown>
           </Space>
         ) : (
-          <Space>
-            <motion.div
-  whileHover={{ scale: 1.05 }}
-  whileTap={{ scale: 0.95 }}
-  style={{
-    width: '100%',
-    display: 'flex',
-    justifyContent: 'center',
-    marginTop: '1rem'
-  }}
->
-  <GoogleLogin
-    onSuccess={handleGoogleLoginSuccess}
-    onError={() => message.error('Google login failed')}
-    useOneTap
-    theme="filled_blue"
-    size="large"
-    text="continue_with"
-    shape="circle"
-    logo_alignment="left"
-  />
-</motion.div>
-            
-          </Space>
+          <GoogleLogin
+            onSuccess={handleGoogleLoginSuccess}
+            onError={() => message.error('Google login failed')}
+            useOneTap
+            theme="filled_blue"
+            size="large"
+          />
         )}
       </div>
 
@@ -199,85 +190,45 @@ export default function Hero() {
           textAlign: 'center',
           borderRadius: '16px',
           maxWidth: '900px',
-          margin: '4rem auto'
+          margin: '4rem auto',
+          boxShadow: '0 10px 30px rgba(0,0,0,0.1)'
         }}
       >
-        <Title style={{ color: '#0B3D91', fontSize: '3rem', marginBottom: '1rem' }}>Store with Renown, Access Anywhere </Title>
+        <Title style={{ color: '#0B3D91', fontSize: '3rem', marginBottom: '1rem' }}>Store with Renown, Access Anywhere</Title>
         <Paragraph style={{ fontSize: '1.2rem', color: '#444' }}>
           Upload, manage, and access your files anywhere with <strong>Famacloud</strong>.
         </Paragraph>
-        {!user ? 
         <Button size="large" style={{
           marginTop: '2rem',
           padding: '0 2rem',
-          background: '#1E90FF',
+          background: 'linear-gradient(90deg, #667eea 0%, #764ba2 100%)',
           borderRadius: '30px',
           color: '#fff',
           fontWeight: 500,
-          boxShadow: '0 4px 12px rgba(30,144,255,0.4)'
+          boxShadow: '0 4px 12px rgba(118,75,162,0.4)'
         }} onClick={() => setIsModalVisible(true)}>
-          Get Started Free
-        </Button> : <Button size="large" style={{
-          marginTop: '2rem',
-          padding: '0 2rem',
-          background: '#1E90FF',
-          borderRadius: '30px',
-          color: '#fff',
-          fontWeight: 500,
-          boxShadow: '0 4px 12px rgba(30,144,255,0.4)'
-        }} >
-          <Link to="/about-us" >About Us</Link>
-        </Button>} 
+          {user ? <Link to="/about-us">About Us</Link> : "Get Started Free"}
+        </Button>
       </motion.div>
 
-      {/* Overview Section */}
-
-<div style={{
-  background: 'rgba(255,255,255,0.85)',
-  padding: '3rem 2rem',
-  borderRadius: '16px',
-  maxWidth: '1000px',
-  margin: '2rem auto'
-}}>
-  <Title level={2} style={{ textAlign: 'center', color: '#0B3D91' }}>Overview</Title>
-  <Row gutter={[32, 32]} justify="center" style={{ marginTop: '2rem' }}>
-    <Col xs={24} sm={12} md={8}>
-      <Space direction="vertical" align="center">
-        <Lottie animationData={LockAnimation} loop style={{ width: 80, height: 80 }} />
-        <Text strong>End-to-End Encryption</Text>
-        <Text type="secondary" style={{ textAlign: 'center' }}>All files are encrypted for maximum security.</Text>
-      </Space>
-    </Col>
-    <Col xs={24} sm={12} md={8}>
-      <Space direction="vertical" align="center">
-        <Lottie animationData={UploadAnimation} loop style={{ width: 80, height: 80 }} />
-        <Text strong>Unlimited Uploads</Text>
-        <Text type="secondary" style={{ textAlign: 'center' }}>Upload images, videos, PDFs, code, and more with ease.</Text>
-      </Space>
-    </Col>
-    <Col xs={24} sm={12} md={8}>
-      <Space direction="vertical" align="center">
-        <Lottie animationData={TimeAnimation} loop style={{ width: 80, height: 80 }} />
-        <Text strong>Auto Expiry</Text>
-        <Text type="secondary" style={{ textAlign: 'center' }}>Files auto-expire after 30 days for safety unless renewed.</Text>
-      </Space>
-    </Col>
-  </Row>
-</div>
-
-      {/* Login/Register Modal */}
+      {/* Login/Register Modal with Lottie */}
       <Modal
-        title={isRegistering ? "Create Your FileBank Account" : "Login to FileBank"}
+        title={null}
         open={isModalVisible}
         onCancel={() => setIsModalVisible(false)}
         footer={null}
         centered
+        style={{ borderRadius: 20 }}
+        bodyStyle={{ padding: '2rem', borderRadius: '20px', background: 'linear-gradient(135deg, #f0f0f0, #ffffff)' }}
       >
+        <div style={{ textAlign: 'center', marginBottom: '1.5rem' }}>
+          <Lottie animationData={AuthAnimation} loop style={{ width: 150, height: 150 }} />
+          <Title level={3} style={{ margin: 0, color: '#333' }}>{isRegistering ? "Create Your Account" : "Login to Famacloud"}</Title>
+        </div>
+
         {loading ? (
-          <div style={{ textAlign: 'center', padding: '2rem' }}>
-            <Spin size="large" />
-          </div>
-        ) : !user && (
+          <Spin size="large" style={{ display: 'block', margin: '2rem auto' }} />
+        ) : (
           <Form layout="vertical" onFinish={onFinish}>
             {isRegistering && (
               <Form.Item name="name" label="Full Name" rules={[{ required: true }]}>
@@ -291,7 +242,14 @@ export default function Hero() {
               <Input.Password placeholder="Minimum 6 characters" />
             </Form.Item>
             <Form.Item>
-              <Button type="primary" htmlType="submit" style={{ width: '100%', background: '#1E90FF' }}>
+              <Button htmlType="submit" style={{
+                width: '100%',
+                background: 'linear-gradient(90deg, #667eea 0%, #764ba2 100%)',
+                color: '#fff',
+                fontWeight: 600,
+                borderRadius: 12,
+                boxShadow: '0 4px 10px rgba(118,75,162,0.2)'
+              }}>
                 {isRegistering ? "Register" : "Login"}
               </Button>
             </Form.Item>
@@ -303,10 +261,6 @@ export default function Hero() {
               <Text type="secondary" style={{ cursor: 'pointer', display: isRegistering ? 'none' : 'inline-block', marginTop: '1rem' }} onClick={() => setForgotModalVisible(true)}>
                 Forgot password?
               </Text>
-              <div style={{ marginTop: '1rem' }}>
-                <Link to="/terms" style={{ marginRight: 10 }}>Terms</Link> |
-                <Link to="/privacy" style={{ marginLeft: 10 }}>Privacy</Link>
-              </div>
             </Form.Item>
           </Form>
         )}
@@ -326,6 +280,8 @@ export default function Hero() {
           onChange={(e) => setForgotEmail(e.target.value)}
         />
       </Modal>
+
     </motion.div>
   );
 }
+
