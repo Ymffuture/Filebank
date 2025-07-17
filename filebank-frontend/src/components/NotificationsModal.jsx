@@ -1,9 +1,15 @@
 import React, { useEffect, useState } from 'react';
-import { Drawer, List, Badge, Button, Space, Popconfirm, Spin } from 'antd';
-import { DeleteOutlined, CheckOutlined, BellOutlined } from '@ant-design/icons';
+import { Drawer, List, Badge, Button, Space, Popconfirm, Spin, Typography } from 'antd';
+import { DeleteOutlined, CheckOutlined, BellOutlined, CloseOutlined } from '@ant-design/icons';
 import { useSnackbar } from 'notistack';
+import Lottie from 'lottie-react';
+import verifyAnimation from '../assets/Verified.json'; 
 import api from '../api/fileApi';
-import { ShieldCheck, CheckCircle, Bell} from 'lucide-react';
+import { ShieldCheck, CheckCircle, Bell } from 'lucide-react';
+import parse from 'html-react-parser';
+
+const { Paragraph, Text } = Typography;
+
 export default function NotificationsModal({ visible, onClose }) {
   const { enqueueSnackbar } = useSnackbar();
   const [notifications, setNotifications] = useState([]);
@@ -90,18 +96,31 @@ export default function NotificationsModal({ visible, onClose }) {
       }
       placement="bottom"
       height={650}
-      visible={visible}
+      open={visible}
       onClose={onClose}
-      footer={[
-        <Button
-          key="markAll"
-          title="Mark as read"
-          onClick={markAllAsRead}
-          icon={<CheckOutlined />}
-          loading={markAllLoading}
-        />,
-        <Button key="close" onClick={onClose} title="Close" type="link" />,
-      ]}
+      styles={{
+        body: { borderRadius: '25px 25px 0 0', paddingBottom: 60 },
+      }}
+      footer={
+        <div style={{ display: 'flex', justifyContent: 'space-between', padding: '8px 16px' }}>
+          <Button
+            onClick={markAllAsRead}
+            icon={<CheckOutlined />}
+            loading={markAllLoading}
+            type="primary"
+          >
+            Mark All as Read
+          </Button>
+          <Button
+            onClick={onClose}
+            icon={<CloseOutlined />}
+            type="text"
+            style={{ fontSize: 16 }}
+          >
+            Close
+          </Button>
+        </div>
+      }
     >
       {loading ? (
         <Spin />
@@ -113,9 +132,10 @@ export default function NotificationsModal({ visible, onClose }) {
             <List.Item
               style={{
                 backgroundColor: !item.read ? '#fffbe6' : 'transparent',
-                borderRadius: 4,
+                borderRadius: 8,
                 padding: '12px 16px',
                 marginBottom: 8,
+                boxShadow: !item.read ? '0 2px 8px rgba(0,0,0,0.05)' : 'none',
               }}
               actions={[
                 !item.read && (
@@ -141,50 +161,39 @@ export default function NotificationsModal({ visible, onClose }) {
                 >
                   <Button
                     type="link"
-                    
-                    icon={<DeleteOutlined />}
                     size="small"
+                    icon={<DeleteOutlined />}
                     loading={processing[item._id]?.delete}
                   />
                 </Popconfirm>,
               ]}
             >
-<List.Item.Meta
-  title={
-    <div>
-      <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
-        <span className='text-[13px]'>{item.fromUser?.role === 'admin' ? 'Famacloud' : 'Famacloud File notification'}</span>
-        {item.fromUser?.role === 'admin' && (
-          <CheckCircle 
-      className='text-[8px]' 
-      title="Admin" 
-      style={{
-               color: '#1E90FF',
-               transform: 'scale(0.6)',
-               transformOrigin: 'center center',  
-               display: 'inline-block' 
-            }} />
-        )}
-
-        {item.fromUser?.role !== 'admin' && (
-          <Bell 
-      className='text-[8px]' 
-      title="Admin" 
-      style={{
-               color: '#1E90FF',
-               transform: 'scale(0.6)',
-               transformOrigin: 'center center',  
-               display: 'inline-block' 
-            }} />
-        )}
-      </div>
-      <div style={{ fontWeight: item.read ? 'normal' : 'bold', marginTop: 2 }}>
-        {item.message}
-      </div>
-    </div>
-  }
-  description={new Date(item.createdAt).toLocaleString()}
-/>
+              <List.Item.Meta
+                title={
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                    {item.fromUser?.role === 'admin' ? (
+                      <Lottie
+                        animationData={verifyAnimation}
+                        loop={false}
+                        style={{ width: 30, height: 30 }}
+                      />
+                    ) : (
+                      <Bell color="#1E90FF" size={20} />
+                    )}
+                    <span style={{ fontSize: 14 }}>
+                      {item.fromUser?.role === 'admin' ? 'Famacloud Verified' : 'Famacloud Notification'}
+                    </span>
+                  </div>
+                }
+                description={
+                  <Text type="secondary" style={{ fontSize: 12 }}>
+                    {new Date(item.createdAt).toLocaleString('en-ZA', { hour12: false })}
+                  </Text>
+                }
+              />
+              <Paragraph style={{ marginTop: 4, fontSize: 13 }}>
+                {parse(item.message)}
+              </Paragraph>
             </List.Item>
           )}
         />
@@ -192,3 +201,4 @@ export default function NotificationsModal({ visible, onClose }) {
     </Drawer>
   );
 }
+
