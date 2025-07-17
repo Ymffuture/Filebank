@@ -210,7 +210,40 @@ export default function Hero() {
           {user ? <Link to="/about-us">About Us</Link> : "Get Started Free"}
         </Button>
       </motion.div>
+      {/* Overview Section */}
 
+<div style={{
+  background: 'rgba(255,255,255,0.85)',
+  padding: '3rem 2rem',
+  borderRadius: '16px',
+  maxWidth: '1000px',
+  margin: '2rem auto'
+}}>
+  <Title level={2} style={{ textAlign: 'center', color: '#0B3D91' }}>Overview</Title>
+  <Row gutter={[32, 32]} justify="center" style={{ marginTop: '2rem' }}>
+    <Col xs={24} sm={12} md={8}>
+      <Space direction="vertical" align="center">
+        <Lottie animationData={LockAnimation} loop style={{ width: 80, height: 80 }} />
+        <Text strong>End-to-End Encryption</Text>
+        <Text type="secondary" style={{ textAlign: 'center' }}>All files are encrypted for maximum security.</Text>
+      </Space>
+    </Col>
+    <Col xs={24} sm={12} md={8}>
+      <Space direction="vertical" align="center">
+        <Lottie animationData={UploadAnimation} loop style={{ width: 80, height: 80 }} />
+        <Text strong>Unlimited Uploads</Text>
+        <Text type="secondary" style={{ textAlign: 'center' }}>Upload images, videos, PDFs, code, and more with ease.</Text>
+      </Space>
+    </Col>
+    <Col xs={24} sm={12} md={8}>
+      <Space direction="vertical" align="center">
+        <Lottie animationData={TimeAnimation} loop style={{ width: 80, height: 80 }} />
+        <Text strong>Auto Expiry</Text>
+        <Text type="secondary" style={{ textAlign: 'center' }}>Files auto-expire after 30 days for safety unless renewed.</Text>
+      </Space>
+    </Col>
+  </Row>
+</div>
       {/* Login/Register Modal with Lottie */}
       <Modal
         title={null}
