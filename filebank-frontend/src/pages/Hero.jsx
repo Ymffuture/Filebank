@@ -211,7 +211,7 @@ export default function Hero() {
         <Paragraph style={{ fontSize: '1.2rem', color: '#555' }}>
           Upload, manage, and access your files anywhere with <strong>Famacloud</strong>.
         </Paragraph>
-        <Button size="large" style={{
+        {user? <Button size="large" style={{
           marginTop: '2rem',
           padding: '0 2.5rem',
           background: '#1E90FF',
@@ -220,8 +220,19 @@ export default function Hero() {
           fontWeight: 500,
           boxShadow: '0 6px 18px rgba(30,144,255,0.4)'
         }} onClick={() => setIsModalVisible(true)}>
-          {user ? <Link to="/about-us">About Us</Link> : 'Get Started Free'}
-        </Button>
+          Get Started Free
+        </Button>:
+          <Button size="large" style={{
+          marginTop: '2rem',
+          padding: '0 2.5rem',
+          background: '#1E90FF',
+          borderRadius: '30px',
+          color: '#fff',
+          fontWeight: 500,
+          boxShadow: '0 6px 18px rgba(30,144,255,0.4)'
+        }} >
+          <Link to="/about-us">About Us</Link>
+        </Button>} 
       </motion.div>
 
       {/* Overview Section */}
@@ -280,7 +291,10 @@ export default function Hero() {
           </div>
         ) : (
           <Form layout="vertical" onFinish={onFinish}>
-            <Lottie animationData={Lockup} loop style={{ width: 80, height: 80}} />
+            
+            <div className="flex justify-center mb-4">
+              <Lottie animationData={Lockup} loop style={{ width: 80, height: 80}} />
+            </div>
             {isRegistering && (
               <Form.Item name="name" label="Full Name" rules={[{ required: true }]}>
                 <Input placeholder="Your Name" />
@@ -304,6 +318,11 @@ export default function Hero() {
               <br />
               <Text type="secondary" style={{ cursor: 'pointer', display: isRegistering ? 'none' : 'inline-block', marginTop: '1rem' }} onClick={() => setForgotModalVisible(true)}>
                 Forgot password?
+              </Text>
+              <Text>
+              <Link to="/terms" style={{ marginRight: 12, color: '#666' }}>Terms</Link>
+              |
+              <Link to="/privacy" style={{ marginLeft: 12, color: '#666' }}>Privacy</Link>
               </Text>
             </Form.Item>
           </Form>
@@ -333,9 +352,7 @@ export default function Hero() {
         color: '#777',
         fontSize: '0.85rem'
       }}>
-        <Link to="/terms" style={{ marginRight: 12, color: '#666' }}>Terms</Link>
-        |
-        <Link to="/privacy" style={{ marginLeft: 12, color: '#666' }}>Privacy</Link>
+        Famacloud 
       </div>
 
     </motion.div>
