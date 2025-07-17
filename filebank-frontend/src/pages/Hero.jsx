@@ -6,12 +6,11 @@ import { Link, useNavigate } from 'react-router-dom';
 import api from '../api/fileApi';
 import { useSnackbar } from 'notistack';
 import { motion } from 'framer-motion';
+import Lottie from 'lottie-react';
 import LockAnimation from '../assets/Lock.json';
 import UploadAnimation from '../assets/Upload.json';
 import TimeAnimation from '../assets/Clock.json';
 import HeroAnimation from '../assets/Data.json';
-import AuthAnimation from '../assets/Auth.json';
-import Lottie from 'lottie-react'; 
 
 const { Title, Paragraph, Text } = Typography;
 
@@ -67,7 +66,7 @@ export default function Hero() {
   const userMenu = (
     <Menu
       items={[
-        { key: '1', label: <Link to="/profile" >Profile (coming soon)</Link> },
+        { key: '1', label: <Link to="/profile">Profile (coming soon)</Link> },
         { key: '2', label: <Link to="/dashboard"><DashboardFilled /> Dashboard</Link> },
         { key: '3', label: <span onClick={handleLogout}><LogoutOutlined /> Logout</span> },
       ]}
@@ -98,14 +97,16 @@ export default function Hero() {
   };
 
   const handleForgotSubmit = async () => {
-    if (!forgotEmail) return message.error('Please enter your email.');
+    if (!forgotEmail) {
+      return message.error('Please enter your email.');
+    }
     setLoading(true);
     try {
       await api.post('/auth/forgot-password', { email: forgotEmail });
-      enqueueSnackbar('Password reset email sent.', {variant:'success'});
+      enqueueSnackbar('Password reset email sent.', { variant: 'success' });
       setForgotModalVisible(false);
     } catch (err) {
-      enqueueSnackbar(err.response?.data?.message || 'Failed to send reset email.', {variant:'error'});
+      enqueueSnackbar(err.response?.data?.message || 'Failed to send reset email.', { variant: 'error' });
     } finally {
       setLoading(false);
     }
@@ -125,9 +126,10 @@ export default function Hero() {
         flexDirection: 'column',
         justifyContent: 'space-between',
         padding: '2rem',
+        position: 'relative'
       }}
     >
-
+      {/* Background Lottie */}
       <Lottie
         animationData={HeroAnimation}
         loop
@@ -138,7 +140,7 @@ export default function Hero() {
           width: '100%',
           height: '100%',
           zIndex: 0,
-          opacity: 0.25,
+          opacity: 0.2,
           pointerEvents: 'none'
         }}
       />
@@ -148,11 +150,13 @@ export default function Hero() {
         display: 'flex',
         justifyContent: 'space-between',
         alignItems: 'center',
-        backdropFilter: 'blur(6px)',
-        padding: '1rem',
-        borderRadius: '12px',
-        background: 'rgba(255,255,255,0.85)',
-        boxShadow: '0 8px 24px rgba(0,0,0,0.05)'
+        backdropFilter: 'blur(8px)',
+        padding: '1rem 2rem',
+        borderRadius: '20px',
+        background: 'rgba(255,255,255,0.9)',
+        boxShadow: '0 8px 24px rgba(0,0,0,0.05)',
+        position: 'relative',
+        zIndex: 1
       }}>
         <Title level={3} style={{ margin: 0, color: '#0B3D91' }}>Famacloud</Title>
         {user ? (
@@ -169,13 +173,18 @@ export default function Hero() {
             </Dropdown>
           </Space>
         ) : (
-          <GoogleLogin
-            onSuccess={handleGoogleLoginSuccess}
-            onError={() => message.error('Google login failed')}
-            useOneTap
-            theme="filled_blue"
-            size="large"
-          />
+          <Space>
+            <GoogleLogin
+              onSuccess={handleGoogleLoginSuccess}
+              onError={() => message.error('Google login failed')}
+              useOneTap
+              theme="filled_blue"
+              size="large"
+              text="continue_with"
+              shape="circle"
+              logo_alignment="left"
+            />
+          </Space>
         )}
       </div>
 
@@ -185,82 +194,89 @@ export default function Hero() {
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.3 }}
         style={{
-          background: 'rgba(255,255,255,0.96)',
+          background: 'rgba(255,255,255,0.95)',
           padding: '4rem 2rem',
           textAlign: 'center',
-          borderRadius: '16px',
+          borderRadius: '20px',
           maxWidth: '900px',
           margin: '4rem auto',
-          boxShadow: '0 10px 30px rgba(0,0,0,0.1)'
+          zIndex: 1,
+          boxShadow: '0 12px 40px rgba(0,0,0,0.08)'
         }}
       >
-        <Title style={{ color: '#0B3D91', fontSize: '3rem', marginBottom: '1rem' }}>Store with Renown, Access Anywhere</Title>
-        <Paragraph style={{ fontSize: '1.2rem', color: '#444' }}>
+        <Title style={{ color: '#0B3D91', fontSize: '3rem', marginBottom: '1rem' }}>
+          Store with Renown, Access Anywhere
+        </Title>
+        <Paragraph style={{ fontSize: '1.2rem', color: '#555' }}>
           Upload, manage, and access your files anywhere with <strong>Famacloud</strong>.
         </Paragraph>
         <Button size="large" style={{
           marginTop: '2rem',
-          padding: '0 2rem',
-          background: 'linear-gradient(90deg, #667eea 0%, #764ba2 100%)',
+          padding: '0 2.5rem',
+          background: '#1E90FF',
           borderRadius: '30px',
           color: '#fff',
           fontWeight: 500,
-          boxShadow: '0 4px 12px rgba(118,75,162,0.4)'
+          boxShadow: '0 6px 18px rgba(30,144,255,0.4)'
         }} onClick={() => setIsModalVisible(true)}>
-          {user ? <Link to="/about-us">About Us</Link> : "Get Started Free"}
+          {user ? <Link to="/about-us">About Us</Link> : 'Get Started Free'}
         </Button>
       </motion.div>
-      {/* Overview Section */}
 
-<div style={{
-  background: 'rgba(255,255,255,0.85)',
-  padding: '3rem 2rem',
-  borderRadius: '16px',
-  maxWidth: '1000px',
-  margin: '2rem auto'
-}}>
-  <Title level={2} style={{ textAlign: 'center', color: '#0B3D91' }}>Overview</Title>
-  <Row gutter={[32, 32]} justify="center" style={{ marginTop: '2rem' }}>
-    <Col xs={24} sm={12} md={8}>
-      <Space direction="vertical" align="center">
-        <Lottie animationData={LockAnimation} loop style={{ width: 80, height: 80 }} />
-        <Text strong>End-to-End Encryption</Text>
-        <Text type="secondary" style={{ textAlign: 'center' }}>All files are encrypted for maximum security.</Text>
-      </Space>
-    </Col>
-    <Col xs={24} sm={12} md={8}>
-      <Space direction="vertical" align="center">
-        <Lottie animationData={UploadAnimation} loop style={{ width: 80, height: 80 }} />
-        <Text strong>Unlimited Uploads</Text>
-        <Text type="secondary" style={{ textAlign: 'center' }}>Upload images, videos, PDFs, code, and more with ease.</Text>
-      </Space>
-    </Col>
-    <Col xs={24} sm={12} md={8}>
-      <Space direction="vertical" align="center">
-        <Lottie animationData={TimeAnimation} loop style={{ width: 80, height: 80 }} />
-        <Text strong>Auto Expiry</Text>
-        <Text type="secondary" style={{ textAlign: 'center' }}>Files auto-expire after 30 days for safety unless renewed.</Text>
-      </Space>
-    </Col>
-  </Row>
-</div>
-      {/* Login/Register Modal with Lottie */}
+      {/* Overview Section */}
+      <div style={{
+        background: 'rgba(255,255,255,0.9)',
+        padding: '3rem 2rem',
+        borderRadius: '20px',
+        maxWidth: '1000px',
+        margin: '2rem auto',
+        boxShadow: '0 8px 32px rgba(0,0,0,0.05)',
+        zIndex: 1
+      }}>
+        <Title level={2} style={{ textAlign: 'center', color: '#0B3D91' }}>Overview</Title>
+        <Row gutter={[32, 32]} justify="center" style={{ marginTop: '2rem' }}>
+          <Col xs={24} sm={12} md={8}>
+            <Space direction="vertical" align="center">
+              <Lottie animationData={LockAnimation} loop style={{ width: 80, height: 80 }} />
+              <Text strong>End-to-End Encryption</Text>
+              <Text type="secondary" style={{ textAlign: 'center' }}>
+                All files are encrypted for maximum security.
+              </Text>
+            </Space>
+          </Col>
+          <Col xs={24} sm={12} md={8}>
+            <Space direction="vertical" align="center">
+              <Lottie animationData={UploadAnimation} loop style={{ width: 80, height: 80 }} />
+              <Text strong>Unlimited Uploads</Text>
+              <Text type="secondary" style={{ textAlign: 'center' }}>
+                Upload images, videos, PDFs, code, and more.
+              </Text>
+            </Space>
+          </Col>
+          <Col xs={24} sm={12} md={8}>
+            <Space direction="vertical" align="center">
+              <Lottie animationData={TimeAnimation} loop style={{ width: 80, height: 80 }} />
+              <Text strong>Auto Expiry</Text>
+              <Text type="secondary" style={{ textAlign: 'center' }}>
+                Files auto-expire after 30 days unless renewed.
+              </Text>
+            </Space>
+          </Col>
+        </Row>
+      </div>
+
+      {/* Login/Register Modal */}
       <Modal
-        title={null}
+        title={isRegistering ? "Create Your Famacloud Account" : "Login to Famacloud"}
         open={isModalVisible}
         onCancel={() => setIsModalVisible(false)}
         footer={null}
         centered
-        style={{ borderRadius: 20 }}
-        bodyStyle={{ padding: '2rem', borderRadius: '20px', background: 'linear-gradient(135deg, #f0f0f0, #ffffff)' }}
       >
-        <div style={{ textAlign: 'center', marginBottom: '1.5rem' }}>
-          <Lottie animationData={AuthAnimation} loop style={{ width: 150, height: 150 }} />
-          <Title level={3} style={{ margin: 0, color: '#333' }}>{isRegistering ? "Create Your Account" : "Login to Famacloud"}</Title>
-        </div>
-
         {loading ? (
-          <Spin size="large" style={{ display: 'block', margin: '2rem auto' }} />
+          <div style={{ textAlign: 'center', padding: '2rem' }}>
+            <Spin size="large" />
+          </div>
         ) : (
           <Form layout="vertical" onFinish={onFinish}>
             {isRegistering && (
@@ -275,14 +291,7 @@ export default function Hero() {
               <Input.Password placeholder="Minimum 6 characters" />
             </Form.Item>
             <Form.Item>
-              <Button htmlType="submit" style={{
-                width: '100%',
-                background: 'linear-gradient(90deg, #667eea 0%, #764ba2 100%)',
-                color: '#fff',
-                fontWeight: 600,
-                borderRadius: 12,
-                boxShadow: '0 4px 10px rgba(118,75,162,0.2)'
-              }}>
+              <Button type="primary" htmlType="submit" style={{ width: '100%', background: '#1E90FF' }}>
                 {isRegistering ? "Register" : "Login"}
               </Button>
             </Form.Item>
@@ -313,6 +322,19 @@ export default function Hero() {
           onChange={(e) => setForgotEmail(e.target.value)}
         />
       </Modal>
+
+      {/* Global Footer */}
+      <div style={{
+        textAlign: 'center',
+        marginTop: '3rem',
+        padding: '1rem',
+        color: '#777',
+        fontSize: '0.85rem'
+      }}>
+        <Link to="/terms" style={{ marginRight: 12, color: '#666' }}>Terms</Link>
+        |
+        <Link to="/privacy" style={{ marginLeft: 12, color: '#666' }}>Privacy</Link>
+      </div>
 
     </motion.div>
   );
