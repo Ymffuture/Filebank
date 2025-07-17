@@ -8,9 +8,9 @@ export default function Home() {
   const [refresh, setRefresh] = useState(0);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#fff] to-[#fff]">
+    <div className="bg-gradient-to-br from-[#fff] to-[#fff]">
       <Navbar />
-      <main className="container mx-auto p-2 space-y-2">
+      <main className="mx-auto p-2 space-y-2">
         <section>
           <FileUpload onUpload={() => setRefresh((r) => r + 1)} />
         </section>
