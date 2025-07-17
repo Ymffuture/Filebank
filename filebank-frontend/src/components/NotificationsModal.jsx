@@ -95,7 +95,7 @@ export default function NotificationsModal({ visible, onClose }) {
         </Space>
       }
       placement="bottom"
-      height={650}
+      height={700}
       open={visible}
       onClose={onClose}
       styles={{
@@ -107,14 +107,14 @@ export default function NotificationsModal({ visible, onClose }) {
             onClick={markAllAsRead}
             icon={<CheckOutlined />}
             loading={markAllLoading}
-            type="primary"
+            type="dashed"
           >
             Mark All as Read
           </Button>
           <Button
             onClick={onClose}
             icon={<CloseOutlined />}
-            type="text"
+            type="link"
             style={{ fontSize: 16 }}
           >
             Close
@@ -171,6 +171,9 @@ export default function NotificationsModal({ visible, onClose }) {
               <List.Item.Meta
                 title={
                   <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                    <span style={{ fontSize: 14 }}>
+                      {item.fromUser?.role === 'admin' ? 'Famacloud' : 'Famacloud Notification'}
+                    </span>
                     {item.fromUser?.role === 'admin' ? (
                       <Lottie
                         animationData={verifyAnimation}
@@ -180,9 +183,7 @@ export default function NotificationsModal({ visible, onClose }) {
                     ) : (
                       <Bell color="#1E90FF" size={20} />
                     )}
-                    <span style={{ fontSize: 14 }}>
-                      {item.fromUser?.role === 'admin' ? 'Famacloud Verified' : 'Famacloud Notification'}
-                    </span>
+                    
                   </div>
                 }
                 description={
