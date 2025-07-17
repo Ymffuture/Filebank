@@ -8,7 +8,8 @@ import { useSnackbar } from 'notistack';
 import { motion } from 'framer-motion';
 import LockAnimation from '../assets/Lock.json';
 import UploadAnimation from '../assets/Upload.json';
-import TimeAnimation from '../assets/Time.json';
+import TimeAnimation from '../assets/Clock.json';
+import HeroAnimation from '../assets/Data.json';
 import Lottie from 'lottie-react'; 
 const { Title, Paragraph, Text } = Typography;
 
@@ -127,6 +128,22 @@ export default function Hero() {
         padding: '2rem',
       }}
     >
+
+<Lottie
+    animationData={HeroAnimation}
+    loop
+    style={{
+      position: 'absolute',
+      top: 0,
+      left: 0,
+      width: '100%',
+      height: '100%',
+      zIndex: 0,
+      opacity: 0.3, // Light opacity for background
+      pointerEvents: 'none' // Makes it non-clickable
+    }}
+  />
+      
       {/* Navigation */}
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', backdropFilter: 'blur(6px)', padding: '1rem', borderRadius: '12px', background: 'rgba(255,255,255,0.85)' }}>
         <Title level={3} style={{ margin: 0, color: '#0B3D91' }}>Famacloud</Title>
