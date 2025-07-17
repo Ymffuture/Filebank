@@ -292,9 +292,12 @@ export default function Hero() {
         ) : (
           <Form layout="vertical" onFinish={onFinish}>
             
-            <div className="flex justify-center mb-4">
+            {!isRegistering? <div className="flex justify-center mb-4">
               <Lottie animationData={Lockup} loop style={{ width: 80, height: 80}} />
-            </div>
+            </div>: <div className="flex justify-center mb-4">
+              <Lottie animationData={Lockup} loop={false} style={{ width: 80, height: 80}} />
+            </div>} 
+              
             {isRegistering && (
               <Form.Item name="name" label="Full Name" rules={[{ required: true }]}>
                 <Input placeholder="Your Name" />
@@ -307,7 +310,12 @@ export default function Hero() {
               <Input.Password placeholder="Minimum 6 characters" />
             </Form.Item>
             <Form.Item>
-              <Button type="primary" htmlType="submit" style={{ width: '100%', background: '#1E90FF' }}>
+              <Button htmlType="submit" block size="large" style={{
+              background: 'linear-gradient(90deg, #6366F1, #8B5CF6)',
+              border: 'none',
+              color: '#fff',
+              borderRadius: '30px'
+            }}>
                 {isRegistering ? "Register" : "Login"}
               </Button>
             </Form.Item>
