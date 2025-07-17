@@ -119,7 +119,7 @@ export default function Hero() {
       transition={{ duration: 0.5 }}
       style={{
         minHeight: '100vh',
-        backgroundImage: `url('/IMG-20250713-WA0042.jpg')`,
+        backgroundImage: `url('/bg.jpg')`,
         backgroundSize: 'cover',
         backgroundPosition: 'center',
         display: 'flex',
