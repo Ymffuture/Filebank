@@ -6,7 +6,7 @@ import { useSnackbar } from 'notistack';
 import { Helmet } from 'react-helmet';
 import Lottie from 'lottie-react';
 import uploadAnimation from '../assets/uploading.json'; 
-import Upload from '../assets/Upload.json' ;
+import UploadIcon from '../assets/Upload.json' ;
 import Successful from '../assets/Successful.json' ;
 import Failed from '../assets/Failed.json' ;
 import pdfAnim from '../assets/PDF.json' ;
@@ -177,7 +177,7 @@ export default function FileUpload({ onUpload, currentUserFileCount = 0 }) {
             disabled={uploading}
           >
             <Lottie
-                animationData={Upload}
+                animationData={UploadIcon}
                 loop={false}
                 style={{ width: 180, height: 180 }}
               />
