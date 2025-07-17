@@ -177,8 +177,8 @@ export default function NotificationsModal({ visible, onClose }) {
                     {item.fromUser?.role === 'admin' ? (
                       <Lottie
                         animationData={verifyAnimation}
-                        loop={false}
-                        style={{ width: 30, height: 30 }}
+                        loop={true}
+                        style={{ width: 20, height: 20 }}
                       />
                     ) : (
                       <Bell color="#1E90FF" size={20} />
