@@ -292,7 +292,7 @@ if (msg.type === 'error') {
             className={`my-2 p-3 rounded-lg max-w-[100%] whitespace-pre-wrap break-words text-[15px] leading-relaxed animate-fade-in ${
               msg.from === 'user'
                 ? 'bg-gray-100 text-[#333] self-end ml-auto max-w-[80%]'
-                : 'bg-* text-[#333] dark:bg-gray-700 dark:text-white'
+                : 'bg-[transparent] text-[#333] dark:bg-gray-700 dark:text-white'
             }`}
             dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(html) }}
           />
@@ -337,11 +337,11 @@ if (msg.type === 'error') {
         ))}
 
         {loading && !isTyping && (
-          <div className="flex justify-center mb-6">
+          <div className="flex mb-3">
               <Lottie
                 animationData={Wait}
                 loop
-                style={{ width: 30, height: 30 }}
+                style={{ width: 50, height: 50 }}
               />
             </div>
         )}
