@@ -218,7 +218,7 @@ if (msg.type === 'error') {
       <span>{msg.text}</span>
       {msg.retryAction && (
         <Button
-          type="primary"
+          type="link"
           size="small"
           onClick={msg.retryAction}
           className="w-fit bg-red-500 hover:bg-red-600"
@@ -255,6 +255,19 @@ if (msg.type === 'error') {
               }}
             >
               {part.trim()}
+              {isTyping && (
+          <div className="flex flex-col" aria-live="polite">
+            {renderMessage({ from: 'bot', text: botTypingText }, 'typing')}
+            <div className="ai-typing-bubble dark:bg-gray-700 dark:text-white">
+              <span className='animate-pulse text-[gray]'>typing</span>
+              <div className="flex ml-2 gap-1">
+                <span className="ai-dot"></span>
+                <span className="ai-dot"></span>
+                <span className="ai-dot"></span>
+              </div>
+            </div>
+          </div>
+        )}
             </SyntaxHighlighter>
 
             <div className="absolute top-2 right-2 z-10">
@@ -302,7 +315,7 @@ if (msg.type === 'error') {
   };
 
   return (
-    <div className={`${darkMode ? 'bg-[#333]' : ''} h-screen flex flex-col bg-gradient-to-br from-white to-white dark:from-gray-800 dark:to-gray-900`}>
+    <div className={`${!darkMode ? 'bg-[#333]' : ''} h-screen flex flex-col bg-gradient-to-br from-white to-white dark:from-gray-800 dark:to-gray-900`}>
       <header className="flex justify-between items-center p-4 bg-white dark:bg-gray-800">
         <h1 className="text-[14px] font-bold text-[gray] dark:text-white">FamaAI 3.3.1v</h1>
         <Link to='/dashboard'>Dashboard</Link>
@@ -346,19 +359,7 @@ if (msg.type === 'error') {
             </div>
         )}
 
-        {isTyping && (
-          <div className="flex flex-col gap-1" aria-live="polite">
-            {renderMessage({ from: 'bot', text: botTypingText }, 'typing')}
-            <div className="ai-typing-bubble dark:bg-gray-700 dark:text-white">
-              <span className='animate-pulse text-[gray]'>Typing</span>
-              <div className="flex ml-2 gap-1">
-                <span className="ai-dot"></span>
-                <span className="ai-dot"></span>
-                <span className="ai-dot"></span>
-              </div>
-            </div>
-          </div>
-        )}
+        
       </main>
 
       <footer className="w-full px-4 pb-6 pt-2 bg-white dark:bg-gray-900 dark:border-gray-700">
