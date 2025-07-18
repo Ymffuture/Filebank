@@ -337,11 +337,11 @@ if (msg.type === 'error') {
         ))}
 
         {loading && !isTyping && (
-          <div className="flex mb-3">
+          <div className="">
               <Lottie
                 animationData={Wait}
                 loop
-                style={{ width: 50, height: 50 }}
+                style={{ width: 150, height: 150 }}
               />
             </div>
         )}
