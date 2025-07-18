@@ -8,10 +8,9 @@ import { $generateHtmlFromNodes } from '@lexical/html';
 import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext';
 import { Button, Space } from 'antd';
 import { LinkPlugin } from '@lexical/react/LexicalLinkPlugin';
-import {
-  FORMAT_TEXT_COMMAND,
-  TOGGLE_LINK_COMMAND,
-} from 'lexical';
+import { FORMAT_TEXT_COMMAND } from 'lexical';
+import { TOGGLE_LINK_COMMAND } from '@lexical/link';
+
 
 const editorConfig = {
   namespace: 'NotifEditor',
