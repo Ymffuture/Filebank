@@ -1,155 +1,30 @@
-import React, { useEffect, useState, useMemo, useRef } from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 import {
-  Table,
-  Button,
-  Popconfirm,
-  Avatar,
-  Space,
-  Modal,
-  Dropdown,
-  Menu,
-  Row,
-  Col,
-  Card,
-  Statistic,
-  List,
-  message,
-  Tag,
-  Rate,
-  Typography,
-  Divider,
-  Empty,
+  Table, Button, Popconfirm, Avatar, Space, Row, Col, Card,
+  Statistic, List, Tag, Rate, Typography, Divider, Empty, Dropdown, Menu, Modal, message
 } from 'antd';
-import {
-  BarChart,
-  Bar,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  Legend,
-  ResponsiveContainer,
-} from 'recharts';
-import api from '../api/fileApi';
-import { useSnackbar } from 'notistack';
-import {
-  ArrowLeftOutlined,
-  NotificationOutlined,
-  EllipsisOutlined,
-  MessageOutlined,
-  StarOutlined,
-  ClockCircleOutlined,
-  BoldOutlined,
-  ItalicOutlined,
-  UnderlineOutlined,
-  UndoOutlined,
-  RedoOutlined,
-} from '@ant-design/icons';
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+import { ArrowLeftOutlined, NotificationOutlined, EllipsisOutlined, MessageOutlined, StarOutlined, ClockCircleOutlined } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
+import { useSnackbar } from 'notistack';
+import api from '../api/fileApi';
+import LexicalNotificationEditor from './LexicalNotificationEditor';
 
-// Lexical Imports
-import { LexicalComposer } from '@lexical/react/LexicalComposer';
-import { RichTextPlugin } from '@lexical/react/LexicalRichTextPlugin';
-import { ContentEditable } from '@lexical/react/LexicalContentEditable';
-import { HistoryPlugin } from '@lexical/react/LexicalHistoryPlugin';
-import { OnChangePlugin } from '@lexical/react/LexicalOnChangePlugin';
-
-import { $generateHtmlFromNodes } from '@lexical/html';
 const { Text } = Typography;
-
-// Toolbar component for Lexical editor
-function ToolbarPlugin() {
-  const [editor] = useLexicalComposerContext();
-
-  const format = (type) => {
-    editor.dispatchCommand('FORMAT_TEXT_COMMAND', type);
-  };
-
-  return (
-    <Space style={{ marginBottom: 12 }}>
-      <Button icon={<BoldOutlined />} onClick={() => format('bold')} />
-      <Button icon={<ItalicOutlined />} onClick={() => format('italic')} />
-      <Button icon={<UnderlineOutlined />} onClick={() => format('underline')} />
-      <Button icon={<UndoOutlined />} onClick={() => editor.dispatchCommand('UNDO_COMMAND')} />
-      <Button icon={<RedoOutlined />} onClick={() => editor.dispatchCommand('REDO_COMMAND')} />
-    </Space>
-  );
-}
-
-// LexicalNotificationEditor component
-function LexicalNotificationEditor({ onSend }) {
-  const [editorHtml, setEditorHtml] = useState('');
-  const editorRef = useRef(null);
-
-  const initialConfig = {
-    namespace: 'NotifyEditor',
-    onError: (error) => {
-      console.error(error);
-    },
-  };
-
-  const handleSend = () => {
-    if (!editorHtml.trim()) {
-      message.warning('Notification content cannot be empty');
-      return;
-    }
-    onSend(editorHtml);
-    setEditorHtml('');
-    if (editorRef.current) {
-      editorRef.current.update(() => {
-        const root = editorRef.current.getRootElement();
-        if (root) root.innerHTML = '';
-      });
-    }
-  };
-
-  return (
-    <LexicalComposer initialConfig={initialConfig}>
-      <Card
-        bodyStyle={{ padding: '16px', background: '#fff', borderRadius: '12px' }}
-        style={{ boxShadow: '0 2px 8px rgba(0,0,0,0.1)', marginBottom: '16px' }}
-      >
-        <ToolbarPlugin />
-        <RichTextPlugin
-          contentEditable={
-            <ContentEditable
-              ref={editorRef}
-              className="lexical-editor"
-              style={{
-                minHeight: '200px',
-                border: '1px solid #d9d9d9',
-                borderRadius: '8px',
-                padding: '12px',
-                fontSize: '14px',
-                overflow: 'auto',
-              }}
-            />
-          }
-          placeholder={<div style={{ padding: '12px', color: '#aaa' }}>Write your notification...</div>}
-        />
-        <HistoryPlugin />
-        <OnChangePlugin
-          onChange={(editorState, editor) => {
-            const html = editorState.read(() => $generateHtmlFromNodes(editor));
-            setEditorHtml(html);
-          }}
-        />
-        <Button type="primary" block style={{ marginTop: '12px' }} onClick={handleSend}>
-          Send Notification
-        </Button>
-      </Card>
-    </LexicalComposer>
-  );
-}
 
 export default function AdminUsers() {
   const [users, setUsers] = useState([]);
   const [feedbacks, setFeedbacks] = useState([]);
   const [uploadCounts, setUploadCounts] = useState([]);
   const [notifModalVisible, setNotifModalVisible] = useState(false);
-
   const { enqueueSnackbar } = useSnackbar();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    fetchUsers();
+    fetchAllFeedback();
+    fetchUploadCounts();
+  }, []);
 
   const fetchUsers = async () => {
     try {
@@ -179,8 +54,8 @@ export default function AdminUsers() {
   };
 
   const mergedUsers = useMemo(() => {
-    return users.map((user) => {
-      const countObj = uploadCounts.find((c) => c._id === user._id) || { uploadCount: 0 };
+    return users.map(user => {
+      const countObj = uploadCounts.find(c => c._id === user._id) || { uploadCount: 0 };
       return { ...user, uploadCount: countObj.uploadCount };
     });
   }, [users, uploadCounts]);
@@ -218,35 +93,12 @@ export default function AdminUsers() {
     }
   };
 
-  const handleSendNotification = async (htmlMessage) => {
-    try {
-      await api.post('/admin/notify-all', { message: htmlMessage });
-      enqueueSnackbar('Notification sent', { variant: 'success' });
-      setNotifModalVisible(false);
-    } catch {
-      enqueueSnackbar('Failed to send notification', { variant: 'error' });
-    }
-  };
-
-  useEffect(() => {
-    fetchUsers();
-    fetchAllFeedback();
-    fetchUploadCounts();
-  }, []);
-
-  const totalUsers = useMemo(() => mergedUsers.length, [mergedUsers]);
-  const totalUploads = useMemo(() => mergedUsers.reduce((sum, u) => sum + u.uploadCount, 0), [mergedUsers]);
-  const averageUploads = useMemo(() => (totalUsers ? totalUploads / totalUsers : 0), [totalUsers, totalUploads]);
-  const usersWithUploads = useMemo(() => mergedUsers.filter((u) => u.uploadCount > 0).length, [mergedUsers]);
-  const percentageWithUploads = useMemo(() => (totalUsers ? (usersWithUploads / totalUsers) * 100 : 0), [totalUsers, usersWithUploads]);
-  const topUsers = useMemo(() => [...mergedUsers].sort((a, b) => b.uploadCount - a.uploadCount).slice(0, 5), [mergedUsers]);
-
   const columns = [
     {
       title: 'Picture',
       dataIndex: 'picture',
       key: 'picture',
-      render: (pic) => <Avatar src={pic} />,
+      render: pic => <Avatar src={pic} />
     },
     { title: 'Name', dataIndex: 'displayName', key: 'displayName' },
     { title: 'Email', dataIndex: 'email', key: 'email' },
@@ -275,42 +127,34 @@ export default function AdminUsers() {
             <Button icon={<EllipsisOutlined />} />
           </Dropdown>
         );
-      },
-    },
+      }
+    }
   ];
+
+  const totalUsers = mergedUsers.length;
+  const totalUploads = mergedUsers.reduce((sum, u) => sum + u.uploadCount, 0);
+  const averageUploads = totalUsers ? (totalUploads / totalUsers).toFixed(2) : 0;
+  const usersWithUploads = mergedUsers.filter(u => u.uploadCount > 0).length;
+  const percentageWithUploads = totalUsers ? ((usersWithUploads / totalUsers) * 100).toFixed(2) : 0;
+  const topUsers = [...mergedUsers].sort((a, b) => b.uploadCount - a.uploadCount).slice(0, 5);
 
   return (
     <div className="p-4" style={{ overflow: 'hidden' }}>
       <Space className="mb-4">
-        <Button icon={<ArrowLeftOutlined />} onClick={() => navigate('/dashboard')}>
-          Back
-        </Button>
-        <Button icon={<NotificationOutlined />} type="primary" onClick={() => setNotifModalVisible(true)}>
-          Notify All
-        </Button>
+        <Button icon={<ArrowLeftOutlined />} onClick={() => navigate('/dashboard')}>Back</Button>
+        <Button icon={<NotificationOutlined />} type="primary" onClick={() => setNotifModalVisible(true)}>Notify All</Button>
       </Space>
 
       <Row gutter={16} className="mb-4">
-        <Col span={6}>
-          <Statistic title="Total Users" value={totalUsers} />
-        </Col>
-        <Col span={6}>
-          <Statistic title="Total Uploads" value={totalUploads} />
-        </Col>
-        <Col span={6}>
-          <Statistic title="Average Uploads" value={averageUploads.toFixed(2)} />
-        </Col>
-        <Col span={6}>
-          <Statistic title="Users with Uploads" value={`${usersWithUploads} (${percentageWithUploads.toFixed(2)}%)`} />
-        </Col>
+        <Col span={6}><Statistic title="Total Users" value={totalUsers} /></Col>
+        <Col span={6}><Statistic title="Total Uploads" value={totalUploads} /></Col>
+        <Col span={6}><Statistic title="Average Uploads" value={averageUploads} /></Col>
+        <Col span={6}><Statistic title="Users with Uploads" value={`${usersWithUploads} (${percentageWithUploads}%)`} /></Col>
       </Row>
 
       <Card title="Top 5 Users by Uploads" className="mb-4">
         <ResponsiveContainer width="100%" height={300}>
-          <BarChart
-            data={topUsers.map((u) => ({ name: u.displayName, uploads: u.uploadCount }))}
-            margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
-          >
+          <BarChart data={topUsers.map(u => ({ name: u.displayName, uploads: u.uploadCount }))}>
             <CartesianGrid strokeDasharray="3 3" />
             <XAxis dataKey="name" />
             <YAxis />
@@ -321,17 +165,11 @@ export default function AdminUsers() {
         </ResponsiveContainer>
       </Card>
 
-      <div style={{ overflowX: 'auto' }}>
-        <Table dataSource={mergedUsers} columns={columns} rowKey="_id" bordered pagination={{ pageSize: 10 }} />
-      </div>
+      <Table dataSource={mergedUsers} columns={columns} rowKey="_id" bordered pagination={{ pageSize: 10 }} />
 
       <Card
-        title={
-          <div className="flex items-center gap-2 text-lg font-semibold">
-            <MessageOutlined /> All Feedback
-          </div>
-        }
-        className="mb-6 shadow-md rounded-xl border border-gray-200 dark:border-gray-700"
+        title={<div className="flex items-center gap-2 text-lg font-semibold"><MessageOutlined /> All Feedback</div>}
+        className="mt-6 shadow-md rounded-xl border border-gray-200 dark:border-gray-700"
         bodyStyle={{ padding: 0 }}
       >
         {feedbacks.length === 0 ? (
@@ -352,9 +190,9 @@ export default function AdminUsers() {
                         {new Date(f.createdAt).toLocaleString()}
                       </Text>
                     </div>
-
-                    <Text className="block text-base text-gray-800 dark:text-white mb-1 leading-relaxed">{f.description}</Text>
-
+                    <Text className="block text-base text-gray-800 dark:text-white mb-1 leading-relaxed">
+                      {f.description}
+                    </Text>
                     <div className="flex items-center gap-2 mt-2">
                       <StarOutlined className="text-yellow-500" />
                       <Rate allowHalf disabled defaultValue={f.rating} style={{ fontSize: 14 }} />
@@ -376,7 +214,18 @@ export default function AdminUsers() {
         footer={null}
         width={600}
       >
-        <LexicalNotificationEditor onSend={handleSendNotification} />
+        <LexicalNotificationEditor
+          onSend={(htmlContent) => {
+            api.post('/admin/notify-all', { message: htmlContent })
+              .then(() => {
+                enqueueSnackbar('Notification sent', { variant: 'success' });
+                setNotifModalVisible(false);
+              })
+              .catch(() => {
+                enqueueSnackbar('Failed to send notification', { variant: 'error' });
+              });
+          }}
+        />
       </Modal>
     </div>
   );
