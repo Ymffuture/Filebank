@@ -95,7 +95,7 @@ export default function NotificationsModal({ visible, onClose }) {
         </Space>
       }
       placement="bottom"
-      height={700}
+      height={580}
       open={visible}
       onClose={onClose}
       styles={{
