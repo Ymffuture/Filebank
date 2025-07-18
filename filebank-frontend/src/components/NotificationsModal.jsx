@@ -7,7 +7,7 @@ import verifyAnimation from '../assets/Verified.json';
 import api from '../api/fileApi';
 import { ShieldCheck, CheckCircle, Bell } from 'lucide-react';
 import parse from 'html-react-parser';
-
+import DOMPurify from 'dompurify';
 const { Paragraph, Text } = Typography;
 
 export default function NotificationsModal({ visible, onClose }) {
@@ -86,6 +86,11 @@ export default function NotificationsModal({ visible, onClose }) {
     }
   };
 
+const cleanHtml = DOMPurify.sanitize(item.message, {
+  ALLOWED_ATTR: ['style', 'class', 'href', 'target', 'rel'],
+  ALLOWED_TAGS: ['b', 'i', 'strong', 'em', 'a', 'p', 'span', 'div', 'br', 'ul', 'li', 'ol', 'img'],
+});
+  
   return (
     <Drawer
       title={
@@ -193,7 +198,7 @@ export default function NotificationsModal({ visible, onClose }) {
                 }
               />
               <Paragraph style={{ marginTop: 4, fontSize: 13 }}>
-                {parse(item.message)}
+                 {parse(cleanHtml)}
               </Paragraph>
             </List.Item>
           )}
