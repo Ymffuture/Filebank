@@ -85,11 +85,6 @@ export default function NotificationsModal({ visible, onClose }) {
       setMarkAllLoading(false);
     }
   };
-
-const cleanHtml = DOMPurify.sanitize(item.message, {
-  ALLOWED_ATTR: ['style', 'class', 'href', 'target', 'rel'],
-  ALLOWED_TAGS: ['b', 'i', 'strong', 'em', 'a', 'p', 'span', 'div', 'br', 'ul', 'li', 'ol', 'img'],
-});
   
   return (
     <Drawer
@@ -198,8 +193,13 @@ const cleanHtml = DOMPurify.sanitize(item.message, {
                 }
               />
               <Paragraph style={{ marginTop: 4, fontSize: 13 }}>
-                 {parse(cleanHtml)}
-              </Paragraph>
+      {parse(
+        DOMPurify.sanitize(item.message, {
+          ALLOWED_ATTR: ['style', 'class', 'href', 'target', 'rel'],
+          ALLOWED_TAGS: ['b', 'i', 'strong', 'em', 'a', 'p', 'span', 'div', 'br', 'ul', 'li', 'ol', 'img'],
+        })
+      )}
+    </Paragraph>
             </List.Item>
           )}
         />
