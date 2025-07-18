@@ -255,19 +255,7 @@ if (msg.type === 'error') {
               }}
             >
               {part.trim()}
-              {isTyping && (
-          <div className="flex flex-col" aria-live="polite">
-            {renderMessage({ from: 'bot', text: botTypingText }, 'typing')}
-            <div className="ai-typing-bubble dark:bg-gray-700 dark:text-white">
-              <span className='animate-pulse text-[gray]'>typing</span>
-              <div className="flex ml-2 gap-1">
-                <span className="ai-dot"></span>
-                <span className="ai-dot"></span>
-                <span className="ai-dot"></span>
-              </div>
-            </div>
-          </div>
-        )}
+              
             </SyntaxHighlighter>
 
             <div className="absolute top-2 right-2 z-10">
@@ -330,11 +318,13 @@ if (msg.type === 'error') {
           />
         </Space>
       </header>
-
+      
+      {loading || isTyping ? null : 
+        
     <AnimatePresence>
   <QuickSuggestionsHero sendMessage={sendMessage} />
 </AnimatePresence>
-
+ }      
 
       <main ref={containerRef} className="flex-1 overflow-auto p-4 flex flex-col space-y-4">
         {messages.map((msg, idx) => (
@@ -359,7 +349,19 @@ if (msg.type === 'error') {
             </div>
         )}
 
-        
+        {isTyping && (
+          <div className="flex flex-col" aria-live="polite">
+            {renderMessage({ from: 'bot', text: botTypingText }, 'typing')}
+            <div className="ai-typing-bubble dark:bg-gray-700 dark:text-white">
+              <span className='animate-pulse text-[gray]'>typing</span>
+              <div className="flex ml-2 gap-1">
+                <span className="ai-dot"></span>
+                <span className="ai-dot"></span>
+                <span className="ai-dot"></span>
+              </div>
+            </div>
+          </div>
+        )}
       </main>
 
       <footer className="w-full px-4 pb-6 pt-2 bg-white dark:bg-gray-900 dark:border-gray-700">
