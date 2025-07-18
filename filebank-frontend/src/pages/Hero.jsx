@@ -296,7 +296,7 @@ export default function Hero() {
             {!isRegistering? <div className="flex justify-center mb-4">
               <Lottie animationData={Lockup} loop style={{ width: 80, height: 80}} />
             </div>: <div className="flex justify-center mb-4">
-              <Lottie animationData={LockupIn} loop style={{ width: 80, height: 80}} />
+              <Lottie animationData={LockupIn} loop style={{ width: 110, height: 110}} />
             </div>} 
               
             {isRegistering && (
