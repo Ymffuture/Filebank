@@ -6,32 +6,41 @@ import { HistoryPlugin } from '@lexical/react/LexicalHistoryPlugin';
 import { OnChangePlugin } from '@lexical/react/LexicalOnChangePlugin';
 import { $generateHtmlFromNodes } from '@lexical/html';
 import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext';
-import { Button } from 'antd';
+import { Button, Space } from 'antd';
+import { LinkPlugin } from '@lexical/react/LexicalLinkPlugin';
+import {
+  FORMAT_TEXT_COMMAND,
+  TOGGLE_LINK_COMMAND,
+} from 'lexical';
 
 const editorConfig = {
   namespace: 'NotifEditor',
   theme: {
-    paragraph: 'my-paragraph', // optional
+    paragraph: 'my-paragraph',
   },
   onError: (error) => {
     console.error('Lexical Error:', error);
   },
 };
 
-function HtmlExporter({ onExport }) {
+function Toolbar() {
   const [editor] = useLexicalComposerContext();
 
-  const handleExport = () => {
-    const htmlString = editor.getEditorState().read(() => {
-      return $generateHtmlFromNodes(editor);
-    });
-    onExport(htmlString);
-  };
-
   return (
-    <Button onClick={handleExport} className="mt-2">
-      Export to HTML
-    </Button>
+    <Space className="mb-2">
+      <Button onClick={() => editor.dispatchCommand(FORMAT_TEXT_COMMAND, 'bold')}>Bold</Button>
+      <Button onClick={() => editor.dispatchCommand(FORMAT_TEXT_COMMAND, 'italic')}>Italic</Button>
+      <Button
+        onClick={() => {
+          const url = prompt('Enter URL');
+          if (url) {
+            editor.dispatchCommand(TOGGLE_LINK_COMMAND, url);
+          }
+        }}
+      >
+        Link
+      </Button>
+    </Space>
   );
 }
 
@@ -45,6 +54,8 @@ export default function LexicalNotificationEditor({ onSend }) {
   return (
     <div className="p-4 border rounded shadow-md">
       <LexicalComposer initialConfig={editorConfig}>
+        <Toolbar />
+
         <RichTextPlugin
           contentEditable={
             <ContentEditable className="p-2 border rounded min-h-[150px]" />
@@ -52,6 +63,7 @@ export default function LexicalNotificationEditor({ onSend }) {
           placeholder={<div className="text-gray-400">Type your notification...</div>}
         />
         <HistoryPlugin />
+        <LinkPlugin />
         <OnChangePlugin
           onChange={(editorState) => {
             const newHtml = editorState.read(() => {
@@ -60,7 +72,6 @@ export default function LexicalNotificationEditor({ onSend }) {
             setHtml(newHtml);
           }}
         />
-        <HtmlExporter onExport={setHtml} />
       </LexicalComposer>
 
       <div className="mt-4">
@@ -73,7 +84,7 @@ export default function LexicalNotificationEditor({ onSend }) {
         </Button>
       </div>
 
-      <div className="mt-4 p-2 bg-gray-50 rounded border text-xs overflow-auto max-h-[200px]">
+      <div className="mt-4 p-2 bg-gray-50 rounded border text-xs overflow-auto max-h-[400px]">
         <strong>Generated HTML:</strong>
         <pre>{html}</pre>
       </div>
