@@ -14,6 +14,8 @@ import { Link } from 'react-router-dom';
 import DOMPurify from 'dompurify';
 import { motion, AnimatePresence } from 'framer-motion';
 import QuickSuggestionsHero from './QuickSuggestionsHero';
+import Lottie from 'lottie-react';
+import Wait from '../assets/wait.json'; 
 const { Text } = Typography;
 
 SyntaxHighlighter.registerLanguage('javascript', js);
@@ -335,12 +337,12 @@ if (msg.type === 'error') {
         ))}
 
         {loading && !isTyping && (
-          <div className="flex items-center gap-2 px-3 py-2 rounded-lg w-fit text-sm text-gray-700 dark:text-gray-100 animate-pulse">
-            <svg className="animate-spin h-6 w-6 text-sky-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-              <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
-              <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4l3-3-3-3v4a8 8 0 000 16z" />
-            </svg>
-          </div>
+          <div className="flex justify-center mb-6">
+              <Lottie
+                animationData={Wait}
+                loop
+                style={{ width: 30, height: 30 }}
+              />
         )}
 
         {isTyping && (
