@@ -192,14 +192,15 @@ export default function NotificationsModal({ visible, onClose }) {
                   </Text>
                 }
               />
-              <Paragraph style={{ marginTop: 4, fontSize: 13 }}>
-      {parse(
-        DOMPurify.sanitize(item.message, {
-          ALLOWED_ATTR: ['style', 'class', 'href', 'target', 'rel'],
-          ALLOWED_TAGS: ['b', 'i', 'strong', 'em', 'a', 'p', 'span', 'div', 'br', 'ul', 'li', 'ol', 'img'],
-        })
-      )}
-    </Paragraph>
+              <div
+  style={{ marginTop: 4, fontSize: 13 }}
+  dangerouslySetInnerHTML={{
+    __html: DOMPurify.sanitize(item.message, {
+      ALLOWED_TAGS: ['b', 'i', 'strong', 'em', 'a', 'p', 'span', 'div', 'br', 'ul', 'li', 'ol', 'img', 'button'],
+      ALLOWED_ATTR: ['href', 'target', 'rel', 'style', 'class', 'onclick'],
+    }),
+  }}
+/>
             </List.Item>
           )}
         />
