@@ -40,6 +40,8 @@ import {
   MessageOutlined, StarOutlined, ClockCircleOutlined
 } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
+import ReactQuill from 'react-quill';
+import 'react-quill/dist/quill.snow.css';
 
 export default function AdminUsers() {
   const [users, setUsers] = useState([]);
@@ -258,7 +260,7 @@ const { Text } = Typography;
 
 
       <Modal title="Send Update" open={notifModalVisible} onOk={handleSendNotification} onCancel={() => setNotifModalVisible(false)} okText="Send">
-        <Input.TextArea rows={4} value={notifText} onChange={e => setNotifText(e.target.value)} placeholder="send notifications..." />
+        <ReactQuill theme="snow" value={notifText} onChange={setNotifText} />
       </Modal>
     </div>
   );
