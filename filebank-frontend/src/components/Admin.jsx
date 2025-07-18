@@ -48,19 +48,13 @@ import {
 import { useNavigate } from 'react-router-dom';
 
 // Lexical Imports
-import {
-  LexicalComposer,
-  RichTextPlugin,
-  ContentEditable,
-  HistoryPlugin,
-  OnChangePlugin,
-  useLexicalComposerContext,
-} from '@lexical/react';
+import { LexicalComposer } from '@lexical/react/LexicalComposer';
+import { RichTextPlugin } from '@lexical/react/LexicalRichTextPlugin';
+import { ContentEditable } from '@lexical/react/LexicalContentEditable';
+import { HistoryPlugin } from '@lexical/react/LexicalHistoryPlugin';
+import { OnChangePlugin } from '@lexical/react/LexicalOnChangePlugin';
+
 import { $generateHtmlFromNodes } from '@lexical/html';
-
-// Styles for Lexical editor
-// import './LexicalEditorStyles.css';
-
 const { Text } = Typography;
 
 // Toolbar component for Lexical editor
