@@ -12,6 +12,7 @@ import UploadAnimation from '../assets/Upload.json';
 import TimeAnimation from '../assets/Clock.json';
 import HeroAnimation from '../assets/Data.json';
 import Lockup from '../assets/Auth.json';
+import LockupIn from '../assets/Reg.json';
 
 const { Title, Paragraph, Text } = Typography;
 
@@ -295,7 +296,7 @@ export default function Hero() {
             {!isRegistering? <div className="flex justify-center mb-4">
               <Lottie animationData={Lockup} loop style={{ width: 80, height: 80}} />
             </div>: <div className="flex justify-center mb-4">
-              <Lottie animationData={Lockup} loop={false} style={{ width: 80, height: 80}} />
+              <Lottie animationData={LockupIn} loop style={{ width: 80, height: 80}} />
             </div>} 
               
             {isRegistering && (
