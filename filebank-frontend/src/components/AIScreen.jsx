@@ -343,6 +343,7 @@ if (msg.type === 'error') {
                 loop
                 style={{ width: 30, height: 30 }}
               />
+            </div>
         )}
 
         {isTyping && (
