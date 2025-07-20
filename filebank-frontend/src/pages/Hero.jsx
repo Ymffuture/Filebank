@@ -13,7 +13,7 @@ import TimeAnimation from '../assets/Clock.json';
 import HeroAnimation from '../assets/Data.json';
 import Lockup from '../assets/Auth.json';
 import LockupIn from '../assets/Reg.json';
-
+import {Helmet} from 'react-helmet' 
 const { Title, Paragraph, Text } = Typography;
 
 export default function Hero() {
@@ -115,6 +115,12 @@ export default function Hero() {
   };
 
   return (
+    <>
+<Helmet>
+        <title> Home | Famacloud</title>
+        <meta name="description" content="Securely upload your files to Famacloud." />
+      </Helmet>
+      
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
@@ -367,6 +373,7 @@ export default function Hero() {
       </div>
 
     </motion.div>
+    </>
   );
 }
 
