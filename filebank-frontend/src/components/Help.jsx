@@ -2,7 +2,7 @@ import React from 'react';
 import { Alert, Typography, Button } from 'antd';
 import { Link } from 'react-router-dom';
 import { WifiOff, ServerCrash, LogInIcon, FileIcon, Download } from 'lucide-react';
-
+import {Helmet} from 'react-helmet';
 const { Title, Paragraph, Text } = Typography;
 
 const blockedExts = ['.exe', '.bat', '.cmd', '.sh', '.js', '.php', '.py', '.jar', '.msi', '.com', '.vbs'];
@@ -15,6 +15,11 @@ const luckyNumbers = [2, 3, 5, 8, 9];
 
 export default function HelpPage() {
   return (
+    <>
+    <Helmet >
+    <title > Help </title >
+    </Helmet>
+    
     <div className="min-h-screen w-full bg-gradient-to-tr from-blue-50 to-green-50 p-8 flex flex-col lg:flex-row">
       {/* Left Panel: Info */}
       <div className="flex-1 flex flex-col justify-center px-6 lg:px-12">
@@ -36,7 +41,7 @@ export default function HelpPage() {
                 <ServerCrash size={16} /> Server downtime. Try again after a few seconds.
               </li>
               <li className="flex items-center gap-2">
-                <LogInIcon size={16} /> Not logged in? <Link to="/login" className="underline" style={{ color: luckyColors.primary }}>Login here</Link>.
+                <LogInIcon size={16} /> Not logged in? <Link to="/" className="underline" style={{ color: luckyColors.primary }}>Login here</Link>.
               </li>
             </ul>
           }
@@ -94,6 +99,7 @@ export default function HelpPage() {
         <img src="/assets/secure_download.svg" alt="Secure Download" className="max-w-md animate-fadeIn" />
       </div>
     </div>
+        </>
   );
 }
 
