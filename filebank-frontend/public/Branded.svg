@@ -5,7 +5,7 @@
       <stop offset="100%" stop-color="#0B53ff"/>
     </linearGradient>
     <linearGradient id="textGrad" x1="0%" y1="0%" x2="100%" y2="0%">
-      <stop offset="0%" stop-color="#1E90FF "/>
+      <stop offset="0%" stop-color="#0B53ff "/>
       <stop offset="100%" stop-color="#1E90FF"/>
     </linearGradient>
     <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
@@ -22,15 +22,16 @@
   <path d="M50 12 C55 22, 55 38, 50 48 C45 38, 45 22, 50 12" stroke="#fff" stroke-width="0.8" opacity="0.3" fill="none"/>
 
   <!-- Phi Symbol in Center -->
-  <text x="41" y="36" font-family="Georgia, serif" font-size="20" fill="#fff" font-weight="bold">Φ</text>
+  <text x="41" y="36" font-family="Georgia, serif" font-size="22" fill="#fff" font-weight="bold">Φ</text>
 
   <!-- Brand Text -->
-  <text x="80" y="38" font-family="Inter, Poppins, sans-serif" font-size="22" font-weight="700" fill="#333">
-    Famacloud
-  </text>
+  <text x="80" y="38" font-family="Manrope, Inter, Poppins, sans-serif" font-size="22" font-weight="700" fill="#333">
+  Famacloud
+</text>
+
 
   <!-- Tagline -->
-  <text x="80" y="50" font-family="Manrope, Arial, sans-serif" font-size="8" fill="#fff">
+  <text x="80" y="50" font-family="Manrope, Arial, sans-serif" font-size="8" fill="#555">
     Secure. Store. Access Anywhere.
   </text>
 </svg>
