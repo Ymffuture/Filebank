@@ -100,12 +100,12 @@ export default function Navbar() {
     <>
       <Header className="flex justify-between items-center bg-white shadow sticky top-0 z-50 px-4">
         <Link to="/" className="flex items-center">
-          <img src={logo} alt="FileBank Logo" className="w-16 h-16 md:w-16 md:h-16 scale-200" />
+          <img src={logo} alt="Famacloud Logo" className="w-16 h-16 md:w-16 md:h-16 scale-230" />
           <span className="text-[gray] text-[18px]"></span>
         </Link>
 
         <div className="hidden md:flex flex-1 justify-center">
-          <Menu mode="horizontal"  items={mainMenuItems} className="bg-#1E90FF google-menu" />
+          <Menu mode="horizontal"  items={mainMenuItems} className="bg-[#1E90FF] google-menu" />
         </div>
 
         {/* Mobile menu button */}
@@ -117,7 +117,7 @@ export default function Navbar() {
             <>
               <MenuOutlined className="text-white" />
               {notifications > 0 && (
-                <span className="absolute top-1 right-1 block w-2 h-2 bg-[#1E90FF] rounded-full" />
+                <span className="absolute top-1 right-1 block w-2 h-2 bg-[pink] rounded-full" />
               )}
             </>
           }
@@ -149,13 +149,13 @@ export default function Navbar() {
           items={mainMenuItems.map(item => ({
             ...item,
             onClick: () => setDrawerVisible(false),
-            style: { fontWeight: 400, fontSize: '1.05rem', paddingLeft: '24px', background:'#1E90FF'},
+            style: { fontWeight: 400, fontSize: '1.05rem', paddingLeft: '24px', background:'#82CAFF', color:'#666' },
           }))}
           className="flex-grow overflow-auto bg-[#0B3D91]"
         />
 
         {/* Footer buttons */}
-        <div className="p-4 space-y-4 bg-[#fff] dark:bg-gray-900 text-white ">
+        <div className="p-1 space-y-2 bg-[#fff] dark:bg-gray-900 text-white ">
           <Button
             block
             type="link"
@@ -189,11 +189,12 @@ export default function Navbar() {
           {user ? (
             <Button
                 block
-                type="link" 
-    danger
+                type="dashed" 
+                danger
                 icon={<LogoutOutlined />}
                 onClick={handleLogout}
                 className="bg-red-600 hover:bg-red-700 text-white font-bold rounded-lg m-3"
+                style={{margin:'4px'}}
               >
                 Logout
               </Button>
