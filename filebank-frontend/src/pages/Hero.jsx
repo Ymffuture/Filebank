@@ -10,7 +10,7 @@ import Lottie from 'lottie-react';
 import LockAnimation from '../assets/Lock.json';
 import UploadAnimation from '../assets/Upload.json';
 import TimeAnimation from '../assets/Clock.json';
-import HeroAnimation from '../assets/Data.json';
+import HeroAnimation from '../assets/bg.json';
 import Lockup from '../assets/Auth.json';
 import LockupIn from '../assets/Reg.json';
 import {Helmet} from 'react-helmet' 
