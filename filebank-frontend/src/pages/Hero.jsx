@@ -121,7 +121,7 @@ export default function Hero() {
       transition={{ duration: 0.5 }}
       style={{
         minHeight: '100vh',
-        backgroundImage: `url('/bg.jpg')`,
+        backgroundImage: `url('/bg0.jpg')`,
         backgroundSize: 'cover',
         backgroundPosition: 'center',
         display: 'flex',
