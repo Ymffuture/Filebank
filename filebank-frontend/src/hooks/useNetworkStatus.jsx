@@ -11,7 +11,7 @@ const useNetworkStatus = () => {
     const toastStyle = {
       background: '#555',
       color: '#fff',
-      borderRadius: '8px',
+    //  borderRadius: '8px',
       boxShadow: '0 4px 12px rgba(0,0,0,0.15)',
       padding: '12px 16px',
       fontSize: '14px',
