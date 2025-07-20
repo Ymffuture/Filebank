@@ -115,6 +115,7 @@ export default function NotificationsModal({ visible, onClose }) {
             onClick={onClose}
             icon={<CloseOutlined />}
             type="link"
+            danger
             style={{ fontSize: 16 }}
           >
             Close
