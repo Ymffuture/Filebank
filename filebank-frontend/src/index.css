@@ -1,7 +1,8 @@
 @import "tailwindcss";
 
 .ant-upload-list-item-name{
-
+font-weight:800;
+    font-size:"18px";
     color:#014e14;
 }
 
@@ -9,7 +10,7 @@
     background: #014e14;
 }
 .ant-layout-header{
-    background: #0B3D91;
+    background: #1E90FF;
     color:#fff !important ;
 }
 code, pre {
@@ -38,7 +39,7 @@ body {
 }
 
 @keyframes fadeFlash {
-  0% { background-color: #fff7d6; opacity: 0.1; }
+  0% { background-color: #1E90FF; opacity: 0.1; }
   30% { background-color: #e1ffd9; }
   100% { background-color: white; opacity: 1; }
 }
@@ -80,7 +81,7 @@ body {
 .ai-dot {
   width: 0.5rem;
   height: 0.5rem;
-  background-color: #333;
+  background-color: #1E90FF;
   border-radius: 9999px;
   animation: bounceDots 1.2s infinite ease-in-out;
 }
@@ -94,9 +95,10 @@ body {
 .ai-dot:nth-child(3) {
   animation-delay: 0.3s;
 }
+
 .lexical-editor:focus {
   outline: none;
-  box-shadow: 0 0 0 2px #1E90FF22;
+  box-shadow: 0 0 0 2px #1E90FF;
   border-color: #1E90FF;
 }
 
