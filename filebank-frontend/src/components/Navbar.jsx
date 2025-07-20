@@ -105,19 +105,19 @@ export default function Navbar() {
         </Link>
 
         <div className="hidden md:flex flex-1 justify-center">
-          <Menu mode="horizontal"  items={mainMenuItems} className="bg-transparent google-menu" />
+          <Menu mode="horizontal"  items={mainMenuItems} className="bg-#1E90FF google-menu" />
         </div>
 
         {/* Mobile menu button */}
         <Button
           type="text"
-          className="md:hidden text-[22px] relative text-white"
+          className="md:hidden text-[26px] relative text-white"
           onClick={() => setDrawerVisible(true)}
           icon={
             <>
               <MenuOutlined className="text-white" />
               {notifications > 0 && (
-                <span className="absolute top-1 right-1 block w-2 h-2 bg-[royalblue] rounded-full" />
+                <span className="absolute top-1 right-1 block w-2 h-2 bg-[#1E90FF] rounded-full" />
               )}
             </>
           }
@@ -131,11 +131,11 @@ export default function Navbar() {
         bodyStyle={{ padding: 0, display: 'flex', flexDirection: 'column', height: '100%',background:'#0B3D91' }}
       >
         {/* Profile header with gradient */}
-        <div className="p-1 bg-gradient-to-r from-[#000] via-[#333] to-[gray] flex items-center gap-3">
+        <div className="p-2 bg-gradient-to-r from-[#1E90FF] via-[#ff] to-[#1E90FF] flex items-center gap-3">
           {profilePic ? (
-            <Avatar src={profilePic} size={64} />
+            <Avatar src={profilePic} size={32} />
           ) : (
-            <Avatar size={64} icon={<UserOutlined />} />
+            <Avatar size={32} icon={<UserOutlined />} />
           )}
           <div>
             <div className="font-semibold text-white text-[14px]">{user?.displayName || 'Guest'}</div>
@@ -146,17 +146,16 @@ export default function Navbar() {
         {/* Navigation */}
         <Menu
           mode="inline"
-          theme="light"
           items={mainMenuItems.map(item => ({
             ...item,
             onClick: () => setDrawerVisible(false),
-            style: { fontWeight: 600, fontSize: '1.05rem', paddingLeft: '24px' },
+            style: { fontWeight: 400, fontSize: '1.05rem', paddingLeft: '24px', background:'#1E90FF'},
           }))}
           className="flex-grow overflow-auto bg-[#0B3D91]"
         />
 
         {/* Footer buttons */}
-        <div className="p-4 space-y-4 bg-[#0B3D91] dark:bg-gray-900 text-white ">
+        <div className="p-4 space-y-4 bg-[#fff] dark:bg-gray-900 text-white ">
           <Button
             block
             type="link"
@@ -165,7 +164,7 @@ export default function Navbar() {
               setNotifModalVisible(true);
               setDrawerVisible(false);
             }}
-            style={{ fontWeight: '600', fontSize: '1rem' }}
+            style={{ fontWeight: '400', fontSize: '1rem' }}
           >
             Notifications
             <Badge
@@ -182,7 +181,7 @@ export default function Navbar() {
               navigate('/feedback');
               setDrawerVisible(false);
             }}
-            style={{ fontWeight: '600', fontSize: '1rem' }}
+            style={{ fontWeight: '400', fontSize: '1rem' }}
           >
             Feedback
           </Button>
@@ -190,8 +189,8 @@ export default function Navbar() {
           {user ? (
             <Button
                 block
-              type="link" 
-    
+                type="link" 
+    danger
                 icon={<LogoutOutlined />}
                 onClick={handleLogout}
                 className="bg-red-600 hover:bg-red-700 text-white font-bold rounded-lg m-3"
