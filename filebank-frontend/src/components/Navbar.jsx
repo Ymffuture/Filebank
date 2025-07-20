@@ -100,7 +100,7 @@ export default function Navbar() {
     <>
       <Header className="flex justify-between items-center bg-white shadow sticky top-0 z-50 px-4">
         <Link to="/" className="flex items-center">
-          <img src={logo} alt="Famacloud Logo" className="w-16 h-16 md:w-16 md:h-16 scale-230" />
+          <img src={logo} alt="Famacloud Logo" className="w-16 h-16 md:w-16 md:h-16 scale-300" />
           <span className="text-[gray] text-[18px]"></span>
         </Link>
 
@@ -189,7 +189,7 @@ export default function Navbar() {
           {user ? (
             <Button
                 block
-                type="dashed" 
+                type="link" 
                 danger
                 icon={<LogoutOutlined />}
                 onClick={handleLogout}
