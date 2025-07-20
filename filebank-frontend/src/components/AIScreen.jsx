@@ -16,6 +16,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import QuickSuggestionsHero from './QuickSuggestionsHero';
 import Lottie from 'lottie-react';
 import Wait from '../assets/wait.json'; 
+import {Helmet} from 'react-helmet' ;
 const { Text } = Typography;
 
 SyntaxHighlighter.registerLanguage('javascript', js);
@@ -303,6 +304,13 @@ if (msg.type === 'error') {
   };
 
   return (
+    <>
+    <Helmet>
+        <title>FamaAI | Famacloud</title>
+        <meta name="description" content="Securely upload your files to Famacloud. Powered by FamaAI " />
+      </Helmet>
+    
+    
     <div className={`${!darkMode ? 'bg-[#333]' : ''} h-screen flex flex-col bg-gradient-to-br from-white to-white dark:from-gray-800 dark:to-gray-900`}>
       <header className="flex justify-between items-center p-4 bg-white dark:bg-gray-800">
         <h1 className="text-[14px] font-bold text-[gray] dark:text-white">FamaAI 3.3.1v</h1>
@@ -412,6 +420,7 @@ if (msg.type === 'error') {
         </div>
       </footer>
     </div>
+    </>
   );
 }
 
