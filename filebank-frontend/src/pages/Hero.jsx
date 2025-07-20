@@ -88,7 +88,7 @@ export default function Hero() {
         localStorage.setItem('filebankUser', JSON.stringify(res.data.user));
         localStorage.setItem('filebankToken', res.data.token);
         enqueueSnackbar('Login successful!', { variant: 'success' });
-        navigate('/dashboard');
+        navigate('/');
       }
       setIsModalVisible(false);
     } catch (err) {
@@ -271,7 +271,7 @@ export default function Hero() {
               <Lottie animationData={TimeAnimation} loop style={{ width: 80, height: 80 }} />
               <Text strong>Auto Expiry</Text>
               <Text type="secondary" style={{ textAlign: 'center' }}>
-                Files auto-expire after 30 days unless renewed.
+                Files auto-expire after 180 days unless renewed.
               </Text>
             </Space>
           </Col>
@@ -285,6 +285,7 @@ export default function Hero() {
         onCancel={() => setIsModalVisible(false)}
         footer={null}
         centered
+        style={{color:'#666'}} 
       >
         {loading ? (
           <div style={{ textAlign: 'center', padding: '2rem' }}>
@@ -305,14 +306,14 @@ export default function Hero() {
               </Form.Item>
             )}
             <Form.Item name="email" label="Email" rules={[{ required: true, type: 'email' }]}>
-              <Input placeholder="you@example.com" />
+              <Input placeholder="yourname@example.com" />
             </Form.Item>
             <Form.Item name="password" label="Password" rules={[{ required: true, min: 6 }]}>
               <Input.Password placeholder="Minimum 6 characters" />
             </Form.Item>
             <Form.Item>
               <Button htmlType="submit" block size="large" style={{
-              background: 'linear-gradient(90deg, #6366F1, #8B5CF6)',
+              background: 'linear-gradient(117deg, #6366F1, #8B5CF6,#1E90FF)',
               border: 'none',
               color: '#fff',
               borderRadius: '30px'
@@ -329,10 +330,10 @@ export default function Hero() {
                 Forgot password?
               </Text>
               <br/>
-              <Text style={{ cursor: 'pointer', display: 'inline-block', marginTop: '1rem' }} >
-              <Link to="/terms" style={{ marginRight: 12, color: '#666' }}>Terms</Link>
+              <Text style={{ cursor: 'pointer', display: 'inline-block', marginTop: '1rem', color:'#1E90FF'}} >
+              <Link to="/terms" style={{ marginRight: 12, color:'#1E90FF' }}>Terms</Link>
               |
-              <Link to="/privacy" style={{ marginLeft: 12, color: '#666' }}>Privacy</Link>
+              <Link to="/privacy" style={{ marginLeft: 12, color:'#1E90FF' }}>Privacy</Link>
               </Text>
             </Form.Item>
           </Form>
