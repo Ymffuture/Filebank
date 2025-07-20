@@ -68,9 +68,9 @@ export default function Hero() {
   const userMenu = (
     <Menu
       items={[
-        { key: '1', label: <Link to="/profile">Profile (coming soon)</Link> },
-        { key: '2', label: <Link to="/dashboard"><DashboardFilled /> Dashboard</Link> },
-        { key: '3', label: <span onClick={handleLogout}><LogoutOutlined /> Logout</span> },
+        { key: '1', label: <Link to="/profile">Profile</Link> },
+        { key: '2', label: <Link to="/feedback"> Feedback</Link> },
+        { key: '3', label: <span onClick={handleLogout} className="text-[red]"><LogoutOutlined /> Logout</span> },
       ]}
     />
   );
@@ -232,7 +232,7 @@ export default function Hero() {
           fontWeight: 500,
           boxShadow: '0 6px 18px rgba(30,144,255,0.4)'
         }} >
-          <Link to="/about-us">About Us</Link>
+          <Link to="/dashboard">Go to Dashboard</Link>
         </Button>} 
       </motion.div>
 
