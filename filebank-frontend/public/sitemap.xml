@@ -6,40 +6,59 @@
                       http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
 
   <url>
-    <loc>https://filebank.vercel.app/</loc>
+    <loc>https://famacloud.vercel.app/</loc>
     <lastmod>2025-07-04</lastmod>
+    <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>
 
   <url>
-    <loc>https://filebank.vercel.app/full-screen-ai</loc>
+    <loc>https://famacloud.vercel.app/full-screen-ai</loc>
     <lastmod>2025-07-04</lastmod>
+    <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
 
   <url>
-    <loc>https://filebank.vercel.app/dashboard</loc>
+    <loc>https://famacloud.vercel.app/dashboard</loc>
     <lastmod>2025-07-04</lastmod>
+    <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
 
   <url>
-    <loc>https://filebank.vercel.app/files</loc>
+    <loc>https://famacloud.vercel.app/files</loc>
     <lastmod>2025-07-04</lastmod>
+    <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
 
   <url>
-    <loc>https://filebank.vercel.app/help</loc>
+    <loc>https://famacloud.vercel.app/help</loc>
     <lastmod>2025-07-04</lastmod>
+    <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
 
   <url>
-    <loc>https://filebank.vercel.app/feedback</loc>
+    <loc>https://famacloud.vercel.app/feedback</loc>
     <lastmod>2025-07-04</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <url>
+    <loc>https://famacloud.vercel.app/about-us</loc>
+    <lastmod>2025-07-20</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://famacloud.vercel.app/dashboard</loc>
+    <lastmod>2025-07-20</lastmod>
+    <changefreq>yearly</changefreq>
     <priority>0.7</priority>
   </url>
 
 </urlset>
-
