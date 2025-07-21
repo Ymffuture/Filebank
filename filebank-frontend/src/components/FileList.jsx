@@ -103,7 +103,6 @@ const ErrorFallback = ({ onRetry }) => (
     <div className="w-64 h-64 mb-6">
       <Lottie animationData={errorAnimation} loop={true} />
     </div>
-    <h2 className="text-3xl font-extrabold text-gray-800 dark:text-gray-200 mb-4">500 – Server Error</h2>
     <p className="text-gray-600 dark:text-gray-400 mb-8 max-w-md">
       Looks like something went wrong on our end. Please try again or contact support if the issue persists.
     </p>
