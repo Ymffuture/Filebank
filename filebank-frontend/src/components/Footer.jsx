@@ -51,13 +51,15 @@ const Footer = () => {
         </div>
 
         {/* Links + Copyright */}
-        <div className="flex flex-row items-center md:flex-row md:space-x-4 text-gray-500 dark:text-gray-400 text-xs">
+        <div className="flex flex-row items-center md:flex-row md:space-x-4 text-gray-500 dark:text-gray-400 text-xs gap-4">
           <Link
             to="/terms"
             className="hover:text-blue-600 dark:hover:text-blue-400 transition"
           >
             Terms
           </Link>
+
+      |
           <Link
             to="/privacy"
             className="hover:text-blue-600 dark:hover:text-blue-400 transition"
@@ -66,7 +68,7 @@ const Footer = () => {
           </Link>
           
         </div>
-          <span className="select-none text-center md:text-left">
+          <span className="select-none text-center md:text-left items-center md:flex-row md:space-x-4 text-gray-500 dark:text-gray-400 text-xs">
             © {new Date().getFullYear()} <span className="font-semibold">Famacloud</span>. All rights reserved.
           </span>
       </div>
