@@ -14,8 +14,9 @@ import { ArrowBigLeftDashIcon } from 'lucide-react';
 import dayjs from 'dayjs';
 import Lottie from 'lottie-react';
 import NewBadgeAnimation from '../assets/Badge.json';
-import { Frown } from 'lucide-react';
 import { motion } from 'framer-motion';
+import Lottie from 'lottie-react';
+import errorAnimation from '../assets/err500.json'; // Place your Lottie JSON here
 
 const { Option } = Select;
 
@@ -93,25 +94,29 @@ export default function FileList() {
     default: '#999999'
   };
 
+
 const ErrorFallback = ({ onRetry }) => (
   <motion.div
-    className="flex flex-col items-center justify-center py-24 text-center bg-white rounded-md shadow-md mx-4"
-    initial={{ opacity: 0, y: 10 }}
+    className="flex flex-col items-center justify-center min-h-[60vh] text-center bg-white dark:bg-gray-900 rounded-xl shadow-lg p-8"
+    initial={{ opacity: 0, y: 20 }}
     animate={{ opacity: 1, y: 0 }}
   >
-    <Frown size={48} className="text-red-500 mb-4" />
-    <h2 className="text-2xl font-bold mb-2 text-gray-800">Oops! Something went wrong</h2>
-    <p className="text-gray-600 mb-6 max-w-md">
-      We couldn't load your files right now. Please check your connection or try again later.
+    <div className="w-64 h-64 mb-6">
+      <Lottie animationData={errorAnimation} loop={true} />
+    </div>
+    <h2 className="text-3xl font-extrabold text-gray-800 dark:text-gray-200 mb-4">500 – Server Error</h2>
+    <p className="text-gray-600 dark:text-gray-400 mb-8 max-w-md">
+      Looks like something went wrong on our end. Please try again or contact support if the issue persists.
     </p>
     <button
       onClick={onRetry}
-      className="px-6 py-3 rounded-full bg-gradient-to-r from-[#FF5722] to-[#FF7043] text-white shadow-lg hover:scale-105 transition-all"
+      className="px-6 py-3 bg-gradient-to-r from-[#FF5722] to-[#FF7043] text-white rounded-full font-semibold shadow-lg hover:scale-105 active:scale-95 transition-all"
     >
       Retry
     </button>
   </motion.div>
 );
+
 
   const groups = {
     image: ['jpg','jpeg','png','gif','bmp','webp'],
