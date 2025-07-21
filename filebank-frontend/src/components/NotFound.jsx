@@ -3,21 +3,17 @@ import { Button } from 'antd';
 import { ArrowLeft, Home } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import Lottie from 'lottie-react';
+import errorAnimation from '../assets/error.json'; // Adjust the path if needed
 
 export default function NotFoundPage() {
-  const animationUrl = 'https://lottie.host/1f020d2e-0d25-45f8-9295-2c2b2b27843e/404-animation.json';
-
   return (
     <div className="min-h-screen flex flex-col justify-center items-center bg-gradient-to-tr from-blue-50 via-green-50 to-blue-100 p-6">
       <div className="text-center max-w-xl bg-white shadow-2xl rounded-2xl p-8">
         <div className="flex justify-center mb-4">
           <Lottie 
-            animationData={require('../assets/error.json')} // If you download the file
-            // Or use online link like below if preferred
-            // <Lottie animationData={null} path={animationUrl} loop autoplay />
-            path={animationUrl}
+            animationData={errorAnimation}
             loop
-            style={{ width: 200, height: 200 }}
+            style={{ width: 220, height: 220 }}
           />
         </div>
 
