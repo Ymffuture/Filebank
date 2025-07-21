@@ -7,8 +7,8 @@ import errorAnimation from '../assets/error.json'; // Adjust the path if needed
 
 export default function NotFoundPage() {
   return (
-    <div className="min-h-screen flex flex-col justify-center items-center bg-gradient-to-tr from-blue-50 via-green-50 to-blue-100 p-6">
-      <div className="text-center max-w-xl bg-white shadow-2xl rounded-2xl p-8">
+    <div className="min-h-screen flex flex-col justify-center items-center p-6">
+      <div className="text-center max-w-xl bg-white rounded-2xl p-8">
         <div className="flex justify-center mb-4">
           <Lottie 
             animationData={errorAnimation}
@@ -17,7 +17,7 @@ export default function NotFoundPage() {
           />
         </div>
 
-        <h1 className="text-4xl sm:text-5xl font-extrabold text-[#1E90FF] mb-2">404</h1>
+        <h1 className="text-4xl sm:text-5xl font-extrabold text-[#1E90FF] mb-2">Page Not Found</h1>
         <p className="text-lg text-gray-700 mb-4">
           Oops! The page you are looking for doesn’t exist or has been moved.
         </p>
