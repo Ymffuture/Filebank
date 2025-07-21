@@ -143,7 +143,7 @@ export default function Hero() {
         loop
         style={{
           position: 'absolute',
-          top: 0,
+          top: '25px',
           left: 0,
           width: '100%',
           height: '100%',
@@ -161,8 +161,8 @@ export default function Hero() {
         backdropFilter: 'blur(8px)',
         padding: '1rem 2rem',
         borderRadius: '20px',
-        background: 'rgba(255,255,255,0.9)',
-        boxShadow: '0 8px 24px rgba(0,0,0,0.05)',
+        background: '#fff',
+
         position: 'relative',
         zIndex: 1
       }}>
@@ -202,26 +202,26 @@ export default function Hero() {
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.3 }}
         style={{
-          background: 'rgba(255,255,255,0.95)',
+          background: '#fff',
           padding: '4rem 2rem',
           textAlign: 'center',
           borderRadius: '20px',
           maxWidth: '900px',
           margin: '4rem auto',
-          zIndex: 1,
-          boxShadow: '0 12px 40px rgba(0,0,0,0.08)'
+          zIndex: 1
+  
         }}
       >
         <Title style={{ color: '#0B3D91', fontSize: '3rem', marginBottom: '1rem' }}>
           Store with Renown, Access Anywhere
         </Title>
-        <Paragraph style={{ fontSize: '1.2rem', color: '#555' }}>
+        <Paragraph style={{ fontSize: '1.2rem', color: '#666' }}>
           Upload, manage, and access your files anywhere with <strong>Famacloud</strong>.
         </Paragraph>
         {!user? <Button size="large" style={{
           marginTop: '2rem',
           padding: '0 2.5rem',
-          background: '#1E90FF',
+          background: 'linear-gradient(90deg, #1E90FF 0%, #32CD32 100%)',
           borderRadius: '30px',
           color: '#fff',
           fontWeight: 500,
@@ -232,10 +232,10 @@ export default function Hero() {
           <Button size="large" style={{
           marginTop: '2rem',
           padding: '0 2.5rem',
-          background: '#1E90FF',
-          borderRadius: '30px',
+          background: 'linear-gradient(90deg, #1E90FF 0%, #32CD32 100%)',
+          borderRadius: '8px',
           color: '#fff',
-          fontWeight: 500,
+          fontWeight: 400,
           boxShadow: '0 6px 18px rgba(30,144,255,0.4)'
         }} >
           <Link to="/dashboard">Go to Dashboard</Link>
@@ -249,7 +249,6 @@ export default function Hero() {
         borderRadius: '20px',
         maxWidth: '1000px',
         margin: '2rem auto',
-        boxShadow: '0 8px 32px rgba(0,0,0,0.05)',
         zIndex: 1
       }}>
         <Title level={2} style={{ textAlign: 'center', color: '#0B3D91' }}>Overview</Title>
