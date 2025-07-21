@@ -7,7 +7,7 @@ import RequestReset from './pages/RequestReset';
 import ResetPassword from './pages/ResetPassword';
 import useContentLock from './hooks/useContentLock';
 import useNetworkStatus from './hooks/useNetworkStatus';
-import ErrorBoundary from './hooks/ErrorBoundary';
+// import ErrorBoundary from './hooks/ErrorBoundary';
 import { ToastContainer, Slide } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -77,7 +77,7 @@ function AppContent() {
     <Suspense fallback={<Loader />}>
       <Routes>
         <Route path="/dashboard" element={<Home />} />
-        <Route path="/files" element={<ErrorBoundary> <FileList /> </ErrorBoundary> } />
+        <Route path="/files" element={<FileList />km } />
         <Route path="/profile" element={<Profile />} />
         <Route path="/" element={<Hero />} />
         <Route path="/terms" element={<Terms />} />
