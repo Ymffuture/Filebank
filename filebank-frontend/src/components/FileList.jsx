@@ -14,6 +14,8 @@ import { ArrowBigLeftDashIcon } from 'lucide-react';
 import dayjs from 'dayjs';
 import Lottie from 'lottie-react';
 import NewBadgeAnimation from '../assets/Badge.json';
+import { Frown } from 'lucide-react';
+import { motion } from 'framer-motion';
 
 const { Option } = Select;
 
@@ -47,16 +49,19 @@ export default function FileList() {
   };
 
   const fetchFiles = async () => {
-    setLoading(true);
-    try {
-      const { data } = await api.get('/files');
-      setFiles(data);
-    } catch {
-      enqueueSnackbar('Failed to load files', { variant: 'error' });
-    } finally {
-      setLoading(false);
-    }
-  };
+  setLoading(true);
+  setError(null);
+
+  try {
+    const { data } = await api.get('/files');
+    setFiles(data);
+  } catch (err) {
+    enqueueSnackbar('Failed to load files', { variant: 'error' });
+    setError(err);
+  } finally {
+    setLoading(false);
+  }
+};
 
   useEffect(() => { fetchFiles(); }, [refresh]);
 
@@ -86,6 +91,26 @@ export default function FileList() {
     code: '#FFC107',
     default: '#999999'
   };
+
+const ErrorFallback = ({ onRetry }) => (
+  <motion.div
+    className="flex flex-col items-center justify-center py-24 text-center bg-white rounded-md shadow-md mx-4"
+    initial={{ opacity: 0, y: 10 }}
+    animate={{ opacity: 1, y: 0 }}
+  >
+    <Frown size={48} className="text-red-500 mb-4" />
+    <h2 className="text-2xl font-bold mb-2 text-gray-800">Oops! Something went wrong</h2>
+    <p className="text-gray-600 mb-6 max-w-md">
+      We couldn't load your files right now. Please check your connection or try again later.
+    </p>
+    <button
+      onClick={onRetry}
+      className="px-6 py-3 rounded-full bg-gradient-to-r from-[#FF5722] to-[#FF7043] text-white shadow-lg hover:scale-105 transition-all"
+    >
+      Retry
+    </button>
+  </motion.div>
+);
 
   const groups = {
     image: ['jpg','jpeg','png','gif','bmp','webp'],
