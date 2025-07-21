@@ -28,6 +28,7 @@ export default function FileList() {
   const [searchName, setSearchName] = useState('');
   const [searchFormat, setSearchFormat] = useState('all');
   const [searchDate, setSearchDate] = useState(null);
+  const [error, setError] = useState(null);
 
   const { enqueueSnackbar } = useSnackbar();
   const location = useLocation();
@@ -182,6 +183,11 @@ const ErrorFallback = ({ onRetry }) => (
   const displayedFiles = filteredFiles.slice(0, displayCount);
 
   return (
+
+    <>
+      {error? 
+      <ErrorFallback onRetry={() => setRefresh(r => r + 1)} />
+    :
     <>
       {location.pathname === '/files' && (
         <div className="p-2 sticky top-0 bg-white z-50">
@@ -261,6 +267,8 @@ const ErrorFallback = ({ onRetry }) => (
           <Button type="link" onClick={() => setDisplayCount(c => c + 4)}>Load More</Button>
         </div>
       )}
+    </>} 
+        
     </>
   );
 }
