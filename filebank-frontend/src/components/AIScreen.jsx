@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Input, Button, Space, Switch, Tooltip, Typography, message } from 'antd';
+import { Input, Button, Space, Switch, Tooltip, Typography, message, Modal } from 'antd';
+import { Input as AntInput } from 'antd';
 import { CopyOutlined, BulbOutlined } from '@ant-design/icons';
 import api from '../api/fileApi';
 import { Light as SyntaxHighlighter } from 'react-syntax-highlighter';
@@ -34,11 +35,44 @@ export default function AIScreen() {
   const [botTypingText, setBotTypingText] = useState('');
   const [isTyping, setIsTyping] = useState(false);
   const [isRecording, setIsRecording] = useState(false);
+
+const [showImageModal, setShowImageModal] = useState(false);
+const [imagePrompt, setImagePrompt] = useState('');
+const [generatedImage, setGeneratedImage] = useState(null);
+const [imageLoading, setImageLoading] = useState(false);
+
   const recognitionRef = useRef(null);
   const containerRef = useRef(null);
-
   const textareaRef = useRef(null);
+  
+// image code
+const generateImage = async () => {
+  if (!imagePrompt.trim()) return;
+  
+  setImageLoading(true);
+  
+  try {
+    const res = await api.post('/generate-image', { prompt: imagePrompt });
+    setGeneratedImage(res.data.image);
+    setShowImageModal(false);
 
+    // Optionally add image to messages flow
+    setMessages(prev => [
+      ...prev,
+      { from: 'user', text: imagePrompt },
+      { from: 'bot', text: res.data.image, type: 'image' }
+    ]);
+
+  } catch (err) {
+    message.error("Image generation failed.");
+    console.error(err);
+  } finally {
+    setImageLoading(false);
+    setImagePrompt('');
+  }
+};
+
+  
   // Auto-resize effect
   useEffect(() => {
     if (textareaRef.current) {
@@ -230,6 +264,20 @@ if (msg.type === 'error') {
     </div>
   );
 }  
+
+if (msg.type === 'image') {
+  return (
+    <div key={idx} className="my-4 flex flex-col items-start">
+      <img
+        src={msg.text}
+        alt="Generated AI"
+        className="rounded-lg shadow-lg max-w-full border"
+      />
+    </div>
+  );
+}
+
+
     
     const parts = msg.text.split(/```([\s\S]*?)```/g);
     return parts.map((part, i) => {
@@ -316,6 +364,14 @@ if (msg.type === 'error') {
         <h1 className="text-[14px] font-bold text-[gray] dark:text-white">FamaAI 3.3.1v</h1>
         <Link to='/dashboard'>Dashboard</Link>
         <Button onClick={clearChat} size="small">Clear</Button>
+        <Button
+  type="primary"
+  onClick={() => setShowImageModal(true)}
+  className="bg-[#333] text-white hover:bg-gray-700"
+>
+  Generate Image
+</Button>
+
         <Space>
           <Switch
             checked={darkMode}
@@ -420,6 +476,22 @@ if (msg.type === 'error') {
         </div>
       </footer>
     </div>
+<Modal
+  title="Generate AI Image"
+  open={showImageModal}
+  onCancel={() => setShowImageModal(false)}
+  onOk={generateImage}
+  okText={imageLoading ? 'Generating...' : 'Generate'}
+  confirmLoading={imageLoading}
+>
+  <AntInput.TextArea
+    value={imagePrompt}
+    onChange={(e) => setImagePrompt(e.target.value)}
+    placeholder="Describe the image you want to generate (e.g. futuristic city, cartoon cat)"
+    rows={4}
+  />
+</Modal>
+
     </>
   );
 }
