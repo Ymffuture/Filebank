@@ -102,7 +102,7 @@ export default function App() {
     <Router>
       <AppContent />
       <ToastContainer
-  position="bottom-center"
+  position="top-right"
   hideProgressBar
   closeOnClick={false}
   draggable={false}
