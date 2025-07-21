@@ -15,7 +15,6 @@ import dayjs from 'dayjs';
 import Lottie from 'lottie-react';
 import NewBadgeAnimation from '../assets/Badge.json';
 import { motion } from 'framer-motion';
-import Lottie from 'lottie-react';
 import errorAnimation from '../assets/server.json'; // Place your Lottie JSON here
 
 const { Option } = Select;
