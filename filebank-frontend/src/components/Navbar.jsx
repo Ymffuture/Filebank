@@ -103,6 +103,11 @@ export default function Navbar() {
           <img src={logo} alt="Famacloud Logo" className="w-16 h-16 md:w-16 md:h-16 scale-300" />
           <span className="text-[gray] text-[18px]"></span>
         </Link>
+{ title: 'Role', dataIndex: 'role', key: 'role', render: role => (
+  <Tag color={role === 'admin' ? 'gold' : 'blue'}>
+    {role.toUpperCase()}
+  </Tag>
+)},
 
         <div className="hidden md:flex flex-1 justify-center">
           <Menu mode="horizontal"  items={mainMenuItems} className="bg-[#1E90FF] google-menu" />
