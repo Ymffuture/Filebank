@@ -202,7 +202,7 @@ const ErrorFallback = ({ onRetry }) => (
 
       <Alert message="Tip: Rename downloads from `<slug>myfilepdf` → `myfile.pdf`." type="warning" showIcon closable className="m-6" />
 
-      <div className="p-4 bg-white shadow-sm rounded-md mb-4 flex flex-wrap gap-4">
+      <div className="p-4 shadow-sm rounded-md mb-4 flex flex-wrap gap-4">
         <Input placeholder="Search by name" value={searchName} onChange={e => setSearchName(e.target.value)} style={{ width: 200 }} />
         <Select value={searchFormat} onChange={v => setSearchFormat(v)} style={{ width: 150 }}>
           <Option value="all">All Formats</Option>
@@ -249,7 +249,7 @@ const ErrorFallback = ({ onRetry }) => (
                     <Button danger type="text" icon={<DeleteOutlined />} loading={deleting === file.slug} />
                   </Popconfirm>
                 ]}
-                className='bg-[#1E90FF] text-white' 
+                
               >
                 <p className="text-gray-700"><ClockCircleOutlined style={{ marginRight: 4 }} /><strong>Uploaded:</strong> {formatted}</p>
                 {age > 0 && age < 180 && (
