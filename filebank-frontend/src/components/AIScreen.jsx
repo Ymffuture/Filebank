@@ -53,20 +53,16 @@ const generateImage = async () => {
   
   try {
     const res = await api.post('/generate-image', { prompt: imagePrompt });
-
-    // Add prefix if backend returns raw base64
-    const imageSrc = res.data.image.startsWith('data:')
-      ? res.data.image
-      : `data:image/png;base64,${res.data.image}`;
-
-    setGeneratedImage(imageSrc);
+    setGeneratedImage(res.data.image);
     setShowImageModal(false);
 
+    // Optionally add image to messages flow
     setMessages(prev => [
       ...prev,
       { from: 'user', text: imagePrompt },
-      { from: 'bot', text: imageSrc, type: 'image' }
+      { from: 'bot', text: res.data.image, type: 'image' }
     ]);
+
   } catch (err) {
     message.error("Image generation failed.");
     console.error(err);
