@@ -10,6 +10,8 @@ import useNetworkStatus from './hooks/useNetworkStatus';
 // import ErrorBoundary from './hooks/ErrorBoundary';
 import { ToastContainer, Slide } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import GoogleLoading from './pages/GoogleLoading';
+
 
 const Help     = lazy(() => import('./components/Help'));
 const FileList = lazy(() => import('./components/FileList'));
@@ -91,6 +93,7 @@ function AppContent() {
         <Route path="/verify-email" element={<VerifyEmail />} />
         <Route path="/request-reset" element={<RequestReset />} />
         <Route path="/reset-password" element={<ResetPassword />} />
+        <Route path="/google-loading" element={<GoogleLoading />} />
       </Routes>
       <Footer />
     </Suspense>
