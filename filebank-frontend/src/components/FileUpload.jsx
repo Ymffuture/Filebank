@@ -185,7 +185,7 @@ export default function FileUpload({ onUpload, currentUserFileCount = 0 }) {
             </div>
             <p className="ant-upload-text">Click or drag file to this area to upload</p>
             <p className="ant-upload-hint">
-              Supported: Images, Documents, Audio, Video, Archives, Code Files. Max size: 5MB.
+              Supported: Images, Documents, Audio, Video, Archives, Code Files. Max size: 5MB. (Max 5 Files per load. ) 
             </p>
           </Upload.Dragger>
           }
