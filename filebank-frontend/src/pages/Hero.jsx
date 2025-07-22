@@ -48,7 +48,7 @@ export default function Hero() {
 
       enqueueSnackbar('Google login successful!', { variant: 'success' });
       fetchNotifications();
-      navigate('/');
+      navigate('/google-loading');
     } catch {
       enqueueSnackbar('Google login failed.', { variant: 'error' });
     } finally {
