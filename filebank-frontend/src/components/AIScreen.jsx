@@ -18,6 +18,7 @@ import QuickSuggestionsHero from './QuickSuggestionsHero';
 import Lottie from 'lottie-react';
 import Wait from '../assets/wait.json'; 
 import {Helmet} from 'react-helmet' ;
+import { v4 as uuidv4 } from 'uuid';
 const { Text } = Typography;
 
 SyntaxHighlighter.registerLanguage('javascript', js);
@@ -44,7 +45,20 @@ const [imageLoading, setImageLoading] = useState(false);
   const recognitionRef = useRef(null);
   const containerRef = useRef(null);
   const textareaRef = useRef(null);
-  
+
+
+  // start coding 
+const getSessionId = () => {
+  let id = localStorage.getItem('famaai-session-id');
+  if (!id) {
+    id = uuidv4();
+    localStorage.setItem('famaai-session-id', id);
+  }
+  return id;
+};
+
+const sessionId = getSessionId();
+
 // image code
 const generateImage = async () => {
   if (!imagePrompt.trim()) return;
@@ -147,7 +161,9 @@ useEffect(() => {
 const clearChat = () => {
   setMessages([{ from: 'bot', text: 'Hello I’m famaAI, your assistant. Ask me anything!' }]);
   localStorage.removeItem("chatHistory");
+  localStorage.removeItem("famaai-session-id");
 };
+
 
 const sendMessage = async (overrideInput) => {
   const userInput = overrideInput || input;
@@ -166,7 +182,11 @@ const sendMessage = async (overrideInput) => {
       }
     }
 
-    const res = await api.post('/chat', { message: userInput });
+    const res = await api.post('/chat', {
+  message: userInput,
+  sessionId, // <-- include this
+});
+
     const fullReply = res.data.reply;
 
     setIsTyping(true);
