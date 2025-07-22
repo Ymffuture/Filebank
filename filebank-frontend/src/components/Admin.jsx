@@ -20,6 +20,18 @@ export default function AdminUsers() {
   const { enqueueSnackbar } = useSnackbar();
   const navigate = useNavigate();
 
+const handleChangeRole = async (id, currentRole) => {
+  try {
+    const newRole = currentRole === 'admin' ? 'user' : 'admin';
+    await api.put(`/admin/users/${id}/role`, { role: newRole });
+    enqueueSnackbar(`Role changed to ${newRole}`, { variant: 'success' });
+    fetchUsers();
+  } catch {
+    enqueueSnackbar('Failed to change role', { variant: 'error' });
+  }
+};
+
+  
   useEffect(() => {
     fetchUsers();
     fetchAllFeedback();
@@ -107,21 +119,24 @@ export default function AdminUsers() {
       title: 'Actions',
       key: 'actions',
       render: (_, record) => {
-        const menu = (
-          <Menu>
-            <Menu.Item key="delete">
-              <Popconfirm title="Delete user?" onConfirm={() => handleDelete(record._id)} okText="Yes" cancelText="No">
-                Delete
-              </Popconfirm>
-            </Menu.Item>
-            <Menu.Item key="block" onClick={() => handleBlock(record._id, record.isBlocked)}>
-              {record.isBlocked ? 'Unblock' : 'Block'}
-            </Menu.Item>
-            <Menu.Item key="issue" onClick={() => handleIssue(record._id, record.isIssue)}>
-              {record.isIssue ? 'Remove Issue' : 'Mark as Issue'}
-            </Menu.Item>
-          </Menu>
-        );
+    const menu = (
+  <Menu>
+    <Menu.Item key="delete">
+      <Popconfirm title="Delete user?" onConfirm={() => handleDelete(record._id)} okText="Yes" cancelText="No">
+        Delete
+      </Popconfirm>
+    </Menu.Item>
+    <Menu.Item key="block" onClick={() => handleBlock(record._id, record.isBlocked)}>
+      {record.isBlocked ? 'Unblock' : 'Block'}
+    </Menu.Item>
+    <Menu.Item key="issue" onClick={() => handleIssue(record._id, record.isIssue)}>
+      {record.isIssue ? 'Remove Issue' : 'Mark as Issue'}
+    </Menu.Item>
+    <Menu.Item key="role" onClick={() => handleChangeRole(record._id, record.role)}>
+      {record.role === 'admin' ? 'Make User' : 'Make Admin'}
+    </Menu.Item>
+  </Menu>
+);
         return (
           <Dropdown overlay={menu} trigger={['click']}>
             <Button icon={<EllipsisOutlined />} />
