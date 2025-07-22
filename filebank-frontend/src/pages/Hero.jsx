@@ -62,7 +62,7 @@ export default function Hero() {
     localStorage.removeItem('filebankToken');
     setUser(null);
     enqueueSnackbar('Logged out', { variant: 'info' });
-    navigate('/google-loading');
+    navigate('/signing-out');
   };
 
   const userMenu = (
