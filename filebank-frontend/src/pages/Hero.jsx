@@ -62,7 +62,7 @@ export default function Hero() {
     localStorage.removeItem('filebankToken');
     setUser(null);
     enqueueSnackbar('Logged out', { variant: 'info' });
-    navigate('/');
+    navigate('/google-loading');
   };
 
   const userMenu = (
@@ -368,7 +368,7 @@ export default function Hero() {
         color: '#777',
         fontSize: '0.85rem'
       }}>
-        Famacloud App
+        Famacloud App ID:662672583632 
       </div>
 
     </motion.div>
