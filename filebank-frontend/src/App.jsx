@@ -94,7 +94,7 @@ function AppContent() {
         <Route path="/request-reset" element={<RequestReset />} />
         <Route path="/reset-password" element={<ResetPassword />} />
         <Route path="/google-loading" element={<GoogleLoading />} />
-        <Route path="/google-logout " element={<GoogleLogout />} />
+        <Route path="/signing-out" element={<GoogleLogout />} />
       </Routes>
       <Footer />
     </Suspense>
