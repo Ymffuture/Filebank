@@ -265,19 +265,7 @@ if (msg.type === 'error') {
   );
 }  
 
-if (msg.type === 'image') {
-  return (
-    <div key={idx} className="my-4 flex flex-col items-start">
-      <img
-        src={msg.text}
-        alt="Generated AI"
-        className="rounded-lg shadow-lg max-w-full border"
-      />
-    </div>
-  );
-}
-
-
+{msg.type === 'image' && <img src={msg.text} alt="Generated Image" />}
     
     const parts = msg.text.split(/```([\s\S]*?)```/g);
     return parts.map((part, i) => {
