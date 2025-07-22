@@ -112,7 +112,7 @@ export default function FileUpload({ onUpload, currentUserFileCount = 0 }) {
         <meta name="description" content="Securely upload your files to Famacloud." />
       </Helmet>
 
-      <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-[#fff] to-[#ffffff]">
+      <div className="flex items-center justify-center min-h-screen">
         <div className="rounded-lg max-w-lg w-full">
           {text2? 
            <div className="flex justify-center mb-4">
