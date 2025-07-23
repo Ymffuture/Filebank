@@ -36,14 +36,41 @@ const handleChangeRole = async (id, newRole) => {
   }
 };
 
+const [paymentRequests, setPaymentRequests] = useState([]);
+const [approving, setApproving] = useState(null);
+
+const fetchPaymentRequests = async () => {
+  try {
+    const res = await api.get('/admin/payment-requests');
+    setPaymentRequests(res.data || []);
+  } catch {
+    enqueueSnackbar('Failed to load payment codes', { variant: 'error' });
+  }
+};
+
+const handleApproveCode = async (id) => {
+  setApproving(id);
+  try {
+    await api.post(`/admin/payment-requests/${id}/approve`);
+    enqueueSnackbar('Code approved and user upgraded', { variant: 'success' });
+    fetchUsers(); // refresh roles
+    fetchPaymentRequests(); // remove approved entry
+  } catch {
+    enqueueSnackbar('Failed to approve code', { variant: 'error' });
+  } finally {
+    setApproving(null);
+  }
+};
 
 
   
   useEffect(() => {
-    fetchUsers();
-    fetchAllFeedback();
-    fetchUploadCounts();
-  }, []);
+  fetchUsers();
+  fetchAllFeedback();
+  fetchUploadCounts();
+  fetchPaymentRequests(); // ← new
+}, []);
+
 
   const fetchUsers = async () => {
     try {
@@ -208,6 +235,49 @@ const handleChangeRole = async (id, newRole) => {
           </BarChart>
         </ResponsiveContainer>
       </Card>
+      
+{paymentRequests.length > 0 && (
+  <Card
+    title="Pending Payment Codes"
+    className="mb-6 shadow border border-blue-100"
+    extra={<Text type="secondary">{paymentRequests.length} request(s)</Text>}
+  >
+    <List
+      itemLayout="horizontal"
+      dataSource={paymentRequests}
+      renderItem={(item) => (
+        <List.Item
+          actions={[
+            <Popconfirm
+              title="Approve this plan upgrade?"
+              onConfirm={() => handleApproveCode(item._id)}
+              okText="Approve"
+              cancelText="Cancel"
+            >
+              <Button
+                type="primary"
+                size="small"
+                loading={approving === item._id}
+              >
+                Approve
+              </Button>
+            </Popconfirm>
+          ]}
+        >
+          <List.Item.Meta
+            title={<Text strong>{item.email}</Text>}
+            description={
+              <>
+                <div>Code: <Text code>{item.paymentCode}</Text></div>
+                <div>Requested Plan: <Tag color="blue">{item.plan}</Tag></div>
+              </>
+            }
+          />
+        </List.Item>
+      )}
+    />
+  </Card>
+)}
 
       <Table
   dataSource={mergedUsers}
