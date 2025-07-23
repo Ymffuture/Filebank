@@ -117,13 +117,6 @@ const getRoleColor = (role) => {
           <img src={logo} alt="Famacloud Logo" className="w-16 h-16 md:w-16 md:h-16 scale-300" />
         
         </Link>
-{user?.role && (
-  <Tag color={getRoleColor(user.role)}>
-    {user.role.replace(/_/g, ' ').toUpperCase()}
-  </Tag>
-)}
-
-)}
 
         <div className="hidden md:flex flex-1 justify-center">
           <Menu mode="horizontal"  items={mainMenuItems} className="bg-[#1E90FF] google-menu" />
@@ -168,10 +161,11 @@ const getRoleColor = (role) => {
           <div>
             <div className="font-semibold text-white text-[14px]">{user?.displayName || 'Guest'}</div>
             <div className="text-[10px] text-white/80">{user?.email}</div>
-            <Tag color={getRoleColor(user.role)}>
+            
+          </div>
+          <Tag color={getRoleColor(user.role)}>
               {user.role.replace(/_/g, ' ').toUpperCase()}
            </Tag>
-          </div>
         </div>
 
         {/* Navigation */}
