@@ -47,7 +47,11 @@ export default function ChangePlanPage() {
       }
 
       setLoading(true);
-      await api.put(`/admin/users/${user._id}/role`, { role: selectedPlan.role });
+      
+      await api.post(`/admin/users/${user._id}/confirm-payment`, {
+  role: selectedPlan.role,
+  paymentCode: values.paymentCode
+});
 
       const updatedUser = { ...user, role: selectedPlan.role };
       localStorage.setItem('filebankUser', JSON.stringify(updatedUser));
