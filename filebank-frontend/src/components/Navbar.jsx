@@ -149,6 +149,7 @@ const getRoleColor = (role) => {
       >
         {/* Profile header with gradient */}
         <div className="p-2 bg-gradient-to-r from-[#1E90FF] via-[#ff] to-[#1E90FF] flex items-center gap-3">
+          
           {profilePic ? (
             <Avatar src={profilePic} size={32} />
           ) : (
@@ -157,6 +158,9 @@ const getRoleColor = (role) => {
           <div>
             <div className="font-semibold text-white text-[14px]">{user?.displayName || 'Guest'}</div>
             <div className="text-[10px] text-white/80">{user?.email}</div>
+            <Tag color={getRoleColor(user.role)}>
+              {user.role.replace(/_/g, ' ').toUpperCase()}
+           </Tag>
           </div>
         </div>
 
@@ -227,13 +231,7 @@ const getRoleColor = (role) => {
               />
           )}
         </div>
-        <Space align="center">
-  <Avatar src={user?.avatar} />
-  <span className="font-medium text-[14px]">{user?.name}</span>
-  <Tag color={getRoleColor(user.role)}>
-    {user.role.replace(/_/g, ' ').toUpperCase()}
-  </Tag>
-</Space>
+      
 
       </Drawer>
 
