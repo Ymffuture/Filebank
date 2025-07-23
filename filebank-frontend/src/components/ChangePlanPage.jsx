@@ -24,29 +24,34 @@ export default function ChangePlanPage() {
     window.open(whatsappUrl, '_blank');
   };
 
+  
   const handleSimulatePayment = async () => {
-    try {
-      const values = await form.validateFields();
-      if (!user || !user._id) {
-        message.error('User not found.');
-        return;
-      }
-
-      setLoading(true);
-
-      await api.post(`/admin/users/${user._id}/confirm-payment`, {
-        role: selectedPlan.role,
-        paymentCode: values.paymentCode,
-      });
-
-      message.success(`Code submitted! Waiting for admin to approve your ${selectedPlan.role} plan.`);
-    } catch (err) {
-      console.error(err);
-      message.error('Code submission failed');
-    } finally {
-      setLoading(false);
+  try {
+    const values = await form.validateFields();
+    if (!user || !user._id) {
+      message.error('User not found.');
+      return;
     }
-  };
+
+    setLoading(true);
+
+    // Correct API route to submit a payment code
+    await api.post('/payment-requests', {
+      userId: user._id,
+      email: user.email,
+      plan: selectedPlan.role,
+      paymentCode: values.paymentCode,
+    });
+
+    message.success(`Code submitted! Waiting for admin to approve your ${selectedPlan.role} plan.`);
+  } catch (err) {
+    console.error(err);
+    message.error('Code submission failed');
+  } finally {
+    setLoading(false);
+  }
+};
+
 
   return (
     <div className="min-h-screen bg-gray-50 p-6">
