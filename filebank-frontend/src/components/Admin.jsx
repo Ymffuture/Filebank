@@ -24,11 +24,11 @@ export default function AdminUsers() {
 const handleChangeRole = async (id, newRole) => {
   try {
     await api.put(`/admin/users/${id}/role`, { role: newRole });
-    message.success(`Role updated to ${newRole}`);
-    fetchUsers(); // refresh list
-  } catch (err) {
-    console.error('Role update failed:', err);
-    message.error('Failed to update role');
+    enqueueSnackbar(`Role changed to ${newRole}`, { variant: 'success' });
+    fetchUsers(); // refresh updated list
+  } catch (error) {
+    console.error('Role update error:', error);
+    enqueueSnackbar('Failed to change role', { variant: 'error' });
   }
 };
 
@@ -151,23 +151,13 @@ const handleChangeRole = async (id, newRole) => {
       {record.isIssue ? 'Remove Issue' : 'Mark as Issue'}
     </Menu.Item>
     <Menu.SubMenu key="changeRole" title="Change Role">
-  <Menu.Item key="admin" onClick={() => handleChangeRole(record._id, 'admin')}>
-    Make Admin
-  </Menu.Item>
-  <Menu.Item key="moderator" onClick={() => handleChangeRole(record._id, 'moderator')}>
-    Make Moderator
-  </Menu.Item>
-  <Menu.Item key="premium" onClick={() => handleChangeRole(record._id, 'premium_user')}>
-    Set as Premium
-  </Menu.Item>
-  <Menu.Item key="standard" onClick={() => handleChangeRole(record._id, 'standard_user')}>
-    Set as Standard
-  </Menu.Item>
-  <Menu.Item key="free" onClick={() => handleChangeRole(record._id, 'free_user')}>
-    Set as Free
-  </Menu.Item>
+  <Menu.SubMenu key="role" title="Change Role">
+  {['admin', 'moderator', 'premium_user', 'standard_user', 'free_plan'].map(role => (
+    <Menu.Item key={role} onClick={() => handleChangeRole(record._id, role)}>
+      Make {role.replace(/_/g, ' ').toUpperCase()}
+    </Menu.Item>
+  ))}
 </Menu.SubMenu>
-
   </Menu>
 );
         return (
