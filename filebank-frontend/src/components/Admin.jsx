@@ -23,14 +23,19 @@ export default function AdminUsers() {
 
 const handleChangeRole = async (id, newRole) => {
   try {
-    await api.put(`/admin/users/${id}/role`, { role: newRole });
-    enqueueSnackbar(`Role changed to ${newRole}`, { variant: 'success' });
-    fetchUsers(); // refresh updated list
+    const res = await api.put(`/admin/users/${id}/role`, { role: newRole });
+    if (res.data?.user?.role === newRole) {
+      enqueueSnackbar(`Role changed to ${newRole}`, { variant: 'success' });
+      fetchUsers();
+    } else {
+      throw new Error('Role did not update correctly');
+    }
   } catch (error) {
     console.error('Role update error:', error);
     enqueueSnackbar('Failed to change role', { variant: 'error' });
   }
 };
+
 
 
   
@@ -151,13 +156,13 @@ const handleChangeRole = async (id, newRole) => {
       {record.isIssue ? 'Remove Issue' : 'Mark as Issue'}
     </Menu.Item>
     <Menu.SubMenu key="changeRole" title="Change Role">
-  <Menu.SubMenu key="role" title="Change Role">
   {['admin', 'moderator', 'premium', 'standard', 'free'].map(role => (
     <Menu.Item key={role} onClick={() => handleChangeRole(record._id, role)}>
-      Make {role.replace(/_/g, ' ').toUpperCase()}
+      Make {role.toUpperCase()}
     </Menu.Item>
   ))}
 </Menu.SubMenu>
+
   </Menu>
 );
         return (
