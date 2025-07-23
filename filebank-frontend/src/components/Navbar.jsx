@@ -63,7 +63,7 @@ export default function Navbar() {
       localStorage.setItem('filebankUser', JSON.stringify(res.data.user));
       localStorage.setItem('filebankToken', res.data.token);
       fetchNotifications();
-      navigate('/');
+      navigate('/google-loading');
     } catch {
       message.error('Login failed.');
     }
@@ -74,6 +74,7 @@ export default function Navbar() {
     localStorage.removeItem('filebankUser');
     localStorage.removeItem('filebankToken');
     setUser(null);
+    navigate('/signing-out') 
     message.info('Logged out');
   };
 
