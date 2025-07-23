@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
-import { Card, Row, Col, Button, Typography, message, Modal, Form, Input, Badge } from 'antd';
+import { Card, Row, Col, Button, Typography, message, Form, Input, Badge } from 'antd';
+import { ArrowLeftOutlined } from '@ant-design/icons';
 import api from '../api/fileApi';
 
-const { Title, Paragraph } = Typography;
+const { Title, Paragraph, Text } = Typography;
 
 const plans = [
   { name: 'Free', price: 'R0', description: 'Basic access', role: 'free' },
@@ -13,22 +14,14 @@ const plans = [
 export default function ChangePlanPage() {
   const [loading, setLoading] = useState(false);
   const [selectedPlan, setSelectedPlan] = useState(null);
-  const [isPaymentModalOpen, setIsPaymentModalOpen] = useState(false);
   const [form] = Form.useForm();
   const user = JSON.parse(localStorage.getItem('filebankUser'));
 
   const handleChoosePlan = (plan) => {
     setSelectedPlan(plan);
-
-    // 👇 Redirect to WhatsApp
     const whatsappMessage = `Hi, I would like to upgrade to the *${plan.name}* plan. My email is ${user?.email}`;
     const whatsappUrl = `https://wa.me/27634414863?text=${encodeURIComponent(whatsappMessage)}`;
     window.open(whatsappUrl, '_blank');
-
-    // 👇 Open modal to enter payment code
-    setTimeout(() => {
-      setIsPaymentModalOpen(true);
-    }, 1000);
   };
 
   const handleSimulatePayment = async () => {
@@ -41,14 +34,12 @@ export default function ChangePlanPage() {
 
       setLoading(true);
 
-      // 👇 Send payment code to backend
       await api.post(`/admin/users/${user._id}/confirm-payment`, {
         role: selectedPlan.role,
         paymentCode: values.paymentCode,
       });
 
       message.success(`Code submitted! Waiting for admin to approve your ${selectedPlan.role} plan.`);
-      setIsPaymentModalOpen(false);
     } catch (err) {
       console.error(err);
       message.error('Code submission failed');
@@ -58,18 +49,32 @@ export default function ChangePlanPage() {
   };
 
   return (
-    <div className="p-6 max-w-5xl mx-auto">
-      <Title level={2} className="text-center">Choose Your Plan</Title>
+    <div className="min-h-screen bg-gray-50 p-6">
+      {/* Header */}
+      <div className="flex items-center justify-between mb-6">
+        <Button icon={<ArrowLeftOutlined />} onClick={() => window.history.back()}>
+          Back
+        </Button>
+        <Title level={3} style={{ marginBottom: 0, color: '#1E90FF' }}>Quorvex Institute – Upgrade Plan</Title>
+        <div /> {/* empty for spacing */}
+      </div>
+
+      {/* Plans */}
       <Row gutter={[24, 24]} justify="center">
         {plans.map(plan => {
           const isCurrent = user?.role === plan.role;
+          const isSelected = selectedPlan?.role === plan.role;
 
           return (
             <Col xs={24} sm={12} md={8} key={plan.name}>
               <Card
-                title={plan.name}
+                title={<Text strong>{plan.name}</Text>}
                 bordered
-                style={{ textAlign: 'center', borderColor: '#1E90FF' }}
+                style={{
+                  textAlign: 'center',
+                  borderColor: isSelected ? '#1E90FF' : '#f0f0f0',
+                  boxShadow: isSelected ? '0 4px 16px rgba(30,144,255,0.2)' : undefined
+                }}
                 actions={[
                   <Button
                     type="primary"
@@ -81,11 +86,9 @@ export default function ChangePlanPage() {
                   </Button>
                 ]}
               >
-                <Title level={3}>{plan.price}</Title>
+                <Title level={3} style={{ color: '#1E90FF' }}>{plan.price}</Title>
                 <Paragraph>{plan.description}</Paragraph>
-
-                {/* 👇 Show a pending badge if user tried upgrading */}
-                {!isCurrent && selectedPlan?.role === plan.role && (
+                {!isCurrent && isSelected && (
                   <Badge status="processing" text="Waiting for admin confirmation..." />
                 )}
               </Card>
@@ -94,25 +97,29 @@ export default function ChangePlanPage() {
         })}
       </Row>
 
-      {/* 🔐 Modal to enter code */}
-      <Modal
-        title={`Enter Payment Code - ${selectedPlan?.name} Plan`}
-        open={isPaymentModalOpen}
-        onOk={handleSimulatePayment}
-        confirmLoading={loading}
-        onCancel={() => setIsPaymentModalOpen(false)}
-        okText="Submit Code"
-      >
-        <Form form={form} layout="vertical">
-          <Form.Item
-            name="paymentCode"
-            label="Transaction Code"
-            rules={[{ required: true, message: 'Enter the code you received.' }]}
-          >
-            <Input placeholder="e.g. ABC123456" />
-          </Form.Item>
-        </Form>
-      </Modal>
+      {/* Payment Code Entry */}
+      {selectedPlan && (
+        <div className="mt-10 max-w-xl mx-auto bg-white p-6 rounded-lg shadow">
+          <Title level={4} style={{ color: '#333' }}>Enter Code for {selectedPlan.name} Plan</Title>
+          <Form form={form} layout="vertical" onFinish={handleSimulatePayment}>
+            <Form.Item
+              name="paymentCode"
+              label="Transaction Code"
+              rules={[{ required: true, message: 'Please enter your payment code.' }]}
+            >
+              <Input placeholder="e.g. ABC123456" />
+            </Form.Item>
+            <Button
+              type="primary"
+              htmlType="submit"
+              loading={loading}
+              block
+            >
+              Submit Code
+            </Button>
+          </Form>
+        </div>
+      )}
     </div>
   );
 }
