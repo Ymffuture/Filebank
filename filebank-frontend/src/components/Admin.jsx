@@ -23,7 +23,7 @@ export default function AdminUsers() {
 
 const handleChangeRole = async (userId, newRole) => {
   try {
-    await api.put(`/users/${userId}/role`, { role: newRole });
+    await api.put(`/admin/users/${userId}/role`, { role: newRole });
     message.success(`Role updated to ${newRole}`);
     fetchUsers(); // refresh list
   } catch (err) {
