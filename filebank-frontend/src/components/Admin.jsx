@@ -141,13 +141,13 @@ const handleChangeRole = async (userId, newRole) => {
   <Menu.Item key="moderator" onClick={() => handleChangeRole(record._id, 'moderator')}>
     Make Moderator
   </Menu.Item>
-  <Menu.Item key="premium_user" onClick={() => handleChangeRole(record._id, 'premium_user')}>
+  <Menu.Item key="premium" onClick={() => handleChangeRole(record._id, 'premium_user')}>
     Set as Premium
   </Menu.Item>
-  <Menu.Item key="standard_user" onClick={() => handleChangeRole(record._id, 'standard_user')}>
+  <Menu.Item key="standard" onClick={() => handleChangeRole(record._id, 'standard_user')}>
     Set as Standard
   </Menu.Item>
-  <Menu.Item key="free_user" onClick={() => handleChangeRole(record._id, 'free_user')}>
+  <Menu.Item key="free" onClick={() => handleChangeRole(record._id, 'free_user')}>
     Set as Free
   </Menu.Item>
 </Menu.SubMenu>
