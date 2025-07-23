@@ -13,6 +13,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import GoogleLoading from './pages/GoogleLoading';
 import GoogleLogout from './pages/GoogleLogout';
 
+const ChangePlanPage = lazy(() =>import('./components/ChangePlanPage')) ;
 const Help     = lazy(() => import('./components/Help'));
 const FileList = lazy(() => import('./components/FileList'));
 const Footer   = lazy(() => import('./components/Footer'));
@@ -95,6 +96,7 @@ function AppContent() {
         <Route path="/reset-password" element={<ResetPassword />} />
         <Route path="/google-loading" element={<GoogleLoading />} />
         <Route path="/signing-out" element={<GoogleLogout />} />
+        <Route path="/change-plan" element={<ChangePlanPage />} />
       </Routes>
       <Footer />
     </Suspense>
