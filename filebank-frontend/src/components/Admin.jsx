@@ -21,7 +21,7 @@ export default function AdminUsers() {
   const { enqueueSnackbar } = useSnackbar();
   const navigate = useNavigate();
 
-const handleChangeRole = async (userId, newRole) => {
+const handleChangeRole = async (id, newRole) => {
   try {
     await api.put(`/admin/users/${id}/role`, { role: newRole });
     message.success(`Role updated to ${newRole}`);
