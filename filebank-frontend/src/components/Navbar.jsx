@@ -1,5 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { Layout, Menu, Avatar, Dropdown, Space, Badge, Button, Drawer, message, Tag, Modal } from 'antd';
+import {
+  Layout, Menu, Avatar, Dropdown, Space, Badge, Button, Drawer, message, Tag, Tooltip,
+} from 'antd';
 import {
   BellOutlined,
   DashboardOutlined,
@@ -10,14 +12,16 @@ import {
   UserOutlined,
   GoogleOutlined,
   LogoutOutlined,
+  RobotOutlined,
+  FileTextOutlined,
+  CustomerServiceOutlined,
+  CreditCardOutlined,
   LockOutlined,
-  BgColorsOutlined,
+  SwapOutlined,
 } from '@ant-design/icons';
 import { GoogleLogin, googleLogout } from '@react-oauth/google';
 import { Link, useNavigate } from 'react-router-dom';
 import { MdOutlineFeedback } from 'react-icons/md';
-import { AiOutlineRobot } from 'react-icons/ai';
-import { FileTextOutlined } from '@ant-design/icons';
 import api from '../api/fileApi';
 import NotificationsModal from './NotificationsModal';
 import logo from '/Branded.svg';
@@ -29,8 +33,6 @@ export default function Navbar() {
   const [notifications, setNotifications] = useState(0);
   const [drawerVisible, setDrawerVisible] = useState(false);
   const [notifModalVisible, setNotifModalVisible] = useState(false);
-  const [headerColor, setHeaderColor] = useState('#ffffff'); // Default white
-  const [showPremiumTag, setShowPremiumTag] = useState(true);
   const navigate = useNavigate();
 
   const playSound = () => {
@@ -84,48 +86,86 @@ export default function Navbar() {
     message.info('Logged out');
   };
 
-  const handleRestrictedAccess = (feature) => {
-    message.warning(`Please upgrade your plan to access ${feature}`);
-    navigate('/change-plan');
+  const handleChangeRole = async () => {
+    if (!user?._id || !user?.role) return;
+    const newRole = user.role === 'admin' ? 'account' : 'admin';
+    try {
+      const res = await api.put(`/admin/users/${user._id}/role`, { role: newRole });
+      const updatedUser = { ...user, role: newRole };
+      localStorage.setItem('filebankUser', JSON.stringify(updatedUser));
+      setUser(updatedUser);
+      message.success(`Role changed to ${newRole}`);
+    } catch (error) {
+      console.error('Role change failed:', error);
+      message.error('Failed to change role');
+    }
   };
 
-  const handleColorChange = (color) => {
-    setHeaderColor(color);
+  const canAccess = (feature) => {
+    const role = user?.role;
+    if (!role) return false;
+    switch (feature) {
+      case 'feedback': return role !== 'free';
+      case 'ai': return ['premium', 'admin'].includes(role);
+      case 'cv-tips':
+      case 'coverletter-tips':
+      case 'agent':
+        return ['standard', 'premium', 'admin'].includes(role);
+      default: return true;
+    }
   };
 
-  const colorMenu = (
-    <Menu
-      items={[
-        { key: '1', label: 'Blue', onClick: () => handleColorChange('#1E90FF') },
-        { key: '2', label: 'Green', onClick: () => handleColorChange('#52c41a') },
-        { key: '3', label: 'Purple', onClick: () => handleColorChange('#722ed1') },
-      ]}
-    />
-  );
+  const getRoleColor = (role) => {
+    switch (role) {
+      case 'admin': return 'gold';
+      case 'moderator': return 'purple';
+      case 'premium': return 'cyan';
+      case 'standard': return 'blue';
+      case 'account':
+      case 'free': return 'gray';
+      default: return 'default';
+    }
+  };
+
+  const menuItems = [
+    { key: 'home', label: 'Home', icon: <HomeOutlined />, path: '/' },
+    { key: 'about', label: 'About Us', icon: <InfoCircleOutlined />, path: '/about-us' },
+    { key: 'files', label: 'Files', icon: <FileOutlined />, path: '/files' },
+    user?.role === 'admin' && { key: 'admin', label: 'Admin Panel', icon: <DashboardOutlined />, path: '/admin' },
+    { key: 'ai', label: 'AI Features', icon: <RobotOutlined />, path: '/ai', feature: 'ai' },
+    { key: 'cv-tips', label: 'CV Tips', icon: <FileTextOutlined />, path: '/cv-tips', feature: 'cv-tips' },
+    { key: 'coverletter-tips', label: 'Cover Letter Tips', icon: <FileTextOutlined />, path: '/coverletter-tips', feature: 'cv-tips' },
+    { key: 'agent', label: 'Agent', icon: <CustomerServiceOutlined />, path: '/agent', feature: 'agent' },
+    { key: 'feedback', label: 'Feedback', icon: <MdOutlineFeedback />, path: '/feedback', feature: 'feedback' },
+    { key: 'change-plan', label: 'Change Plan', icon: <CreditCardOutlined />, path: '/change-plan' },
+  ].filter(Boolean);
 
   const userMenu = (
     <Menu
       items={[
         { key: '1', icon: <UserOutlined />, label: 'Profile', onClick: () => navigate('/profile') },
-        { key: '2', icon: <MdOutlineFeedback />, label: 'Feedback', onClick: () => {
-          if (user?.role === 'free') {
-            handleRestrictedAccess('Feedback');
-          } else {
-            navigate('/feedback');
-          }
-        }},
-        (user?.role === 'premium' || user?.role === 'standard') && {
-          key: '3',
-          icon: <BgColorsOutlined />,
-          label: 'Change Header Color',
-          children: [
-            { key: '3-1', label: 'Blue', onClick: () => handleColorChange('#1E90FF') },
-            { key: '3-2', label: 'Green', onClick: () => handleColorChange('#52c41a') },
-            { key: '3-3', label: 'Purple', onClick: () => handleColorChange('#722ed1') },
-          ],
+        {
+          key: '2',
+          icon: canAccess('feedback') ? <MdOutlineFeedback /> : <LockOutlined />,
+          label: 'Feedback',
+          onClick: () => {
+            if (!canAccess('feedback')) {
+              message.info('Upgrade your plan to send feedback');
+              navigate('/upgrade');
+            } else {
+              navigate('/feedback');
+            }
+          },
         },
-        { key: '4', icon: <LogoutOutlined />, label: 'Logout', onClick: handleLogout },
-      ].filter(Boolean)}
+        {
+          key: '3',
+          icon: <SwapOutlined />,
+          label: 'Switch Role',
+          onClick: handleChangeRole,
+        },
+        { key: '4', icon: <CreditCardOutlined />, label: 'Change Plan', onClick: () => navigate('/change-plan') },
+        { key: '5', icon: <LogoutOutlined />, label: 'Logout', onClick: handleLogout },
+      ]}
     />
   );
 
@@ -134,65 +174,11 @@ export default function Navbar() {
     { key: 'about', label: <Link to="/about-us"><InfoCircleOutlined /> About Us</Link> },
     { key: 'files', label: <Link to="/files"><FileOutlined /> Files</Link> },
     user?.role === 'admin' && { key: 'admin', label: <Link to="/admin"><DashboardOutlined /> Admin Panel</Link> },
-    {
-      key: 'ai',
-      label: (
-        <span onClick={() => {
-          if (['free', 'moderator', 'standard'].includes(user?.role)) {
-            handleRestrictedAccess('AI Features');
-          } else {
-            navigate('/full-screen-ai');
-          }
-        }}>
-          <AiOutlineRobot /> AI Features {['free', 'moderator', 'standard'].includes(user?.role) && <LockOutlined />}
-        </span>
-      ),
-    },
-    {
-      key: 'cv-tips',
-      label: (
-        <span onClick={() => {
-          if (['free', 'moderator'].includes(user?.role)) {
-            handleRestrictedAccess('CV & Cover Letter Tips');
-          } else {
-            navigate('/cv-tips');
-          }
-        }}>
-          <FileTextOutlined /> CV & Cover Letter Tips {['free', 'moderator'].includes(user?.role) && <LockOutlined />}
-        </span>
-      ),
-    },
-    {
-      key: 'agent',
-      label: (
-        <span onClick={() => {
-          if (['free', 'moderator'].includes(user?.role)) {
-            handleRestrictedAccess('Agent');
-          } else {
-            navigate('/agent');
-          }
-        }}>
-          <UserOutlined /> Agent {['free', 'moderator'].includes(user?.role) && <LockOutlined />}
-        </span>
-      ),
-    },
-    { key: 'change-plan', label: <Link to="/change-plan"><UserOutlined /> Change Plan</Link> },
   ].filter(Boolean);
-
-  const getRoleColor = (role) => {
-    switch (role) {
-      case 'admin': return 'gold';
-      case 'moderator': return 'purple';
-      case 'premium': return 'cyan';
-      case 'standard': return 'blue';
-      case 'free': return 'gray';
-      default: return 'default';
-    }
-  };
 
   return (
     <>
-      <Header className="flex justify-between items-center shadow sticky top-0 z-50 px-4" style={{ background: headerColor }}>
+      <Header className="flex justify-between items-center bg-white shadow sticky top-0 z-50 px-4">
         <Link to="/" className="flex items-center">
           <img src={logo} alt="Famacloud Logo" className="w-16 h-16 md:w-16 md:h-16 scale-300" />
         </Link>
@@ -201,7 +187,7 @@ export default function Navbar() {
           <Menu mode="horizontal" items={mainMenuItems} className="bg-[#1E90FF] google-menu" />
         </div>
 
-        <div className="flex items-center space-x-2">
+        <div className="flex">
           <Button
             type="text"
             className="md:hidden text-[26px] relative text-white"
@@ -219,7 +205,13 @@ export default function Navbar() {
             <Dropdown overlay={userMenu}>
               <Space style={{ cursor: 'pointer' }}>
                 <Avatar src={user?.picture} icon={<UserOutlined />} />
-                {user?.displayName && <span className="text-white">{user.displayName}</span>}
+                {user?.role && (
+                  <Tooltip title={`Role: ${user.role}`}>
+                    <Tag color={getRoleColor(user.role)} style={{ marginLeft: 4 }}>
+                      {user.role.toUpperCase()}
+                    </Tag>
+                  </Tooltip>
+                )}
               </Space>
             </Dropdown>
           </Space>
@@ -233,42 +225,38 @@ export default function Navbar() {
         bodyStyle={{ padding: 0, display: 'flex', flexDirection: 'column', height: '100%', background: '#0B3D91' }}
       >
         <div className="p-2 flex items-center gap-4">
-          {profilePic ? (
-            <Avatar src={profilePic} size={32} />
-          ) : (
-            <Avatar size={32} icon={<UserOutlined />} />
-          )}
+          <Avatar src={user?.picture} size={32} icon={<UserOutlined />} />
           <div>
-            <div className="font-semibold text-white text-[14px]">{user?.displayName || 'Guest'}</div>
+            <div className="font-semibold text-white text-[14px]">
+              {user?.role === 'premium' || user?.role === 'admin' ? user?.displayName : 'User'}
+            </div>
             <div className="text-[10px] text-white/80">{user?.email}</div>
           </div>
-          {showPremiumTag && (
-            <Tag
-              color={getRoleColor(user?.role)}
-              onClick={() => setShowPremiumTag(false)}
-              style={{ cursor: 'pointer' }}
-            >
-              {user?.role?.replace(/_/g, ' ').toUpperCase()}
-            </Tag>
-          )}
+          <Tooltip title={`Role: ${user?.role}`}>
+            <Tag color={getRoleColor(user?.role)}>{user?.role?.toUpperCase()}</Tag>
+          </Tooltip>
         </div>
 
         <Menu
           mode="inline"
-          items={mainMenuItems.map(item => ({
-            ...item,
+          items={menuItems.map(item => ({
+            key: item.key,
+            icon: item.icon,
+            label: (
+              <Space>
+                {item.label}
+                {item.feature && !canAccess(item.feature) && <LockOutlined style={{ color: 'red' }} />}
+              </Space>
+            ),
             onClick: () => {
-              if (item.key === 'ai' && ['free', 'moderator', 'standard'].includes(user?.role)) {
-                handleRestrictedAccess('AI Features');
-              } else if (item.key === 'cv-tips' && ['free', 'moderator'].includes(user?.role)) {
-                handleRestrictedAccess('CV & Cover Letter Tips');
-              } else if (item.key === 'agent' && ['free', 'moderator'].includes(user?.role)) {
-                handleRestrictedAccess('Agent');
+              if (item.feature && !canAccess(item.feature)) {
+                message.info('Upgrade your plan to access this feature');
+                navigate('/upgrade');
               } else {
-                setDrawerVisible(false);
+                navigate(item.path);
               }
+              setDrawerVisible(false);
             },
-            style: { fontWeight: 400, fontSize: '1.05rem', paddingLeft: '24px', color: '#666' },
           }))}
           className="flex-grow overflow-auto"
         />
@@ -290,23 +278,6 @@ export default function Navbar() {
               offset={[6, 0]}
               style={{ backgroundColor: '#0B3D91', color: '#fff', marginLeft: 8 }}
             />
-          </Button>
-
-          <Button
-            block
-            type="link"
-            icon={user?.role === 'free' ? <LockOutlined /> : <MdOutlineFeedback />}
-            onClick={() => {
-              if (user?.role === 'free') {
-                handleRestrictedAccess('Feedback');
-              } else {
-                navigate('/feedback');
-                setDrawerVisible(false);
-              }
-            }}
-            style={{ fontWeight: '400', fontSize: '1rem' }}
-          >
-            Feedback
           </Button>
 
           {user ? (
@@ -338,3 +309,4 @@ export default function Navbar() {
     </>
   );
 }
+
