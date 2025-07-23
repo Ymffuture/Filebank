@@ -123,7 +123,8 @@ const getRoleColor = (role) => {
         </div>
 
         {/* Mobile menu button */}
-        <Button
+        <div className='flex' >
+          <Button 
           type="text"
           className="md:hidden text-[26px] relative text-white"
           onClick={() => setDrawerVisible(true)}
@@ -136,12 +137,15 @@ const getRoleColor = (role) => {
             </>
           }
         />
+            <Space>
             <Dropdown overlay={userMenu}>
               <Space style={{ cursor: 'pointer' }}>
                 <Avatar src={user?.picture} icon={<UserOutlined />} />
               </Space>
             </Dropdown>
-
+            </Space>
+        
+        </div>
       </Header>
 
       <Drawer
