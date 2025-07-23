@@ -23,7 +23,7 @@ export default function AdminUsers() {
 
 const handleChangeRole = async (userId, newRole) => {
   try {
-    await axios.put(`/api/users/${userId}/role`, { role: newRole });
+    await api.put(`/api/users/${userId}/role`, { role: newRole });
     message.success(`Role updated to ${newRole}`);
     fetchUsers(); // refresh list
   } catch (err) {
@@ -117,6 +117,22 @@ const handleChangeRole = async (userId, newRole) => {
     { title: 'Name', dataIndex: 'displayName', key: 'displayName' },
     { title: 'Email', dataIndex: 'email', key: 'email' },
     { title: 'Uploads', dataIndex: 'uploadCount', key: 'uploadCount' },
+        {
+  title: 'Role',
+  dataIndex: 'role',
+  key: 'role',
+  render: role => (
+    <Tag color={
+      role === 'admin' ? 'gold' :
+      role === 'moderator' ? 'purple' :
+      role === 'premium' ? 'cyan' :
+      role === 'standard' ? 'blue' :
+      'gray'
+    }>
+      {role.replace(/_/g, ' ').toUpperCase()}
+    </Tag>
+  )
+}, 
     {
       title: 'Actions',
       key: 'actions',
@@ -161,6 +177,7 @@ const handleChangeRole = async (userId, newRole) => {
         );
       }
     }
+
   ];
 
   const totalUsers = mergedUsers.length;
@@ -197,7 +214,14 @@ const handleChangeRole = async (userId, newRole) => {
         </ResponsiveContainer>
       </Card>
 
-      <Table dataSource={mergedUsers} columns={columns} rowKey="_id" bordered pagination={{ pageSize: 10 }} />
+      <Table
+  dataSource={mergedUsers}
+  columns={columns}
+  rowKey="_id"
+  bordered
+  pagination={{ pageSize: 10 }}
+  scroll={{ x: 'max-content' }}
+/>
 
       <Card
         title={<div className="flex items-center gap-2 text-lg font-semibold"><MessageOutlined /> All Feedback</div>}
