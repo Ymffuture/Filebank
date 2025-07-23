@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { Layout, Menu, Avatar, Dropdown, Space, Badge, Button, Drawer, message, Tag } from 'antd';
+import { Layout, Menu, Avatar, Dropdown, Space, Badge, Button, Drawer, message, Tag, Modal } from 'antd';
 import {
   BellOutlined,
   DashboardOutlined,
@@ -10,15 +10,14 @@ import {
   UserOutlined,
   GoogleOutlined,
   LogoutOutlined,
-  RobotOutlined,
-  FileTextOutlined,
-  CustomerServiceOutlined,
-  CreditCardOutlined,
   LockOutlined,
+  BgColorsOutlined,
 } from '@ant-design/icons';
 import { GoogleLogin, googleLogout } from '@react-oauth/google';
 import { Link, useNavigate } from 'react-router-dom';
 import { MdOutlineFeedback } from 'react-icons/md';
+import { AiOutlineRobot } from 'react-icons/ai';
+import { FileTextOutlined } from '@ant-design/icons';
 import api from '../api/fileApi';
 import NotificationsModal from './NotificationsModal';
 import logo from '/Branded.svg';
@@ -30,6 +29,8 @@ export default function Navbar() {
   const [notifications, setNotifications] = useState(0);
   const [drawerVisible, setDrawerVisible] = useState(false);
   const [notifModalVisible, setNotifModalVisible] = useState(false);
+  const [headerColor, setHeaderColor] = useState('#ffffff'); // Default white
+  const [showPremiumTag, setShowPremiumTag] = useState(true);
   const navigate = useNavigate();
 
   const playSound = () => {
@@ -83,56 +84,48 @@ export default function Navbar() {
     message.info('Logged out');
   };
 
-  const canAccess = (feature) => {
-    const role = user?.role;
-    if (!role) return false;
-    switch (feature) {
-      case 'feedback':
-        return role !== 'free';
-      case 'ai':
-        return role === 'premium' || role === 'admin';
-      case 'cv-tips':
-      case 'coverletter-tips':
-      case 'agent':
-        return role === 'standard' || role === 'premium' || role === 'admin';
-      default:
-        return true;
-    }
+  const handleRestrictedAccess = (feature) => {
+    message.warning(`Please upgrade your plan to access ${feature}`);
+    navigate('/change-plan');
   };
 
-  const menuItems = [
-    { key: 'home', label: 'Home', icon: <HomeOutlined />, path: '/' },
-    { key: 'about', label: 'About Us', icon: <InfoCircleOutlined />, path: '/about-us' },
-    { key: 'files', label: 'Files', icon: <FileOutlined />, path: '/files' },
-    user?.role === 'admin' && { key: 'admin', label: 'Admin Panel', icon: <DashboardOutlined />, path: '/admin' },
-    { key: 'ai', label: 'AI Features', icon: <RobotOutlined />, path: '/ai', feature: 'ai' },
-    { key: 'cv-tips', label: 'CV Tips', icon: <FileTextOutlined />, path: '/cv-tips', feature: 'cv-tips' },
-    { key: 'coverletter-tips', label: 'Cover Letter Tips', icon: <FileTextOutlined />, path: '/coverletter-tips', feature: 'cv-tips' },
-    { key: 'agent', label: 'Agent', icon: <CustomerServiceOutlined />, path: '/agent', feature: 'agent' },
-    { key: 'feedback', label: 'Feedback', icon: <MdOutlineFeedback />, path: '/feedback', feature: 'feedback' },
-    { key: 'change-plan', label: 'Change Plan', icon: <CreditCardOutlined />, path: '/change-plan' },
-  ].filter(Boolean);
+  const handleColorChange = (color) => {
+    setHeaderColor(color);
+  };
+
+  const colorMenu = (
+    <Menu
+      items={[
+        { key: '1', label: 'Blue', onClick: () => handleColorChange('#1E90FF') },
+        { key: '2', label: 'Green', onClick: () => handleColorChange('#52c41a') },
+        { key: '3', label: 'Purple', onClick: () => handleColorChange('#722ed1') },
+      ]}
+    />
+  );
 
   const userMenu = (
     <Menu
       items={[
         { key: '1', icon: <UserOutlined />, label: 'Profile', onClick: () => navigate('/profile') },
-        {
-          key: '2',
-          icon: canAccess('feedback') ? <MdOutlineFeedback /> : <LockOutlined />,
-          label: 'Feedback',
-          onClick: () => {
-            if (!canAccess('feedback')) {
-              message.info('Upgrade your plan to send feedback');
-              navigate('/upgrade');
-            } else {
-              navigate('/feedback');
-            }
-          },
+        { key: '2', icon: <MdOutlineFeedback />, label: 'Feedback', onClick: () => {
+          if (user?.role === 'free') {
+            handleRestrictedAccess('Feedback');
+          } else {
+            navigate('/feedback');
+          }
+        }},
+        (user?.role === 'premium' || user?.role === 'standard') && {
+          key: '3',
+          icon: <BgColorsOutlined />,
+          label: 'Change Header Color',
+          children: [
+            { key: '3-1', label: 'Blue', onClick: () => handleColorChange('#1E90FF') },
+            { key: '3-2', label: 'Green', onClick: () => handleColorChange('#52c41a') },
+            { key: '3-3', label: 'Purple', onClick: () => handleColorChange('#722ed1') },
+          ],
         },
-        { key: '3', icon: <CreditCardOutlined />, label: 'Change Plan', onClick: () => navigate('/change-plan') },
         { key: '4', icon: <LogoutOutlined />, label: 'Logout', onClick: handleLogout },
-      ]}
+      ].filter(Boolean)}
     />
   );
 
@@ -141,9 +134,50 @@ export default function Navbar() {
     { key: 'about', label: <Link to="/about-us"><InfoCircleOutlined /> About Us</Link> },
     { key: 'files', label: <Link to="/files"><FileOutlined /> Files</Link> },
     user?.role === 'admin' && { key: 'admin', label: <Link to="/admin"><DashboardOutlined /> Admin Panel</Link> },
+    {
+      key: 'ai',
+      label: (
+        <span onClick={() => {
+          if (['free', 'moderator', 'standard'].includes(user?.role)) {
+            handleRestrictedAccess('AI Features');
+          } else {
+            navigate('/full-screen-ai');
+          }
+        }}>
+          <AiOutlineRobot /> AI Features {['free', 'moderator', 'standard'].includes(user?.role) && <LockOutlined />}
+        </span>
+      ),
+    },
+    {
+      key: 'cv-tips',
+      label: (
+        <span onClick={() => {
+          if (['free', 'moderator'].includes(user?.role)) {
+            handleRestrictedAccess('CV & Cover Letter Tips');
+          } else {
+            navigate('/cv-tips');
+          }
+        }}>
+          <FileTextOutlined /> CV & Cover Letter Tips {['free', 'moderator'].includes(user?.role) && <LockOutlined />}
+        </span>
+      ),
+    },
+    {
+      key: 'agent',
+      label: (
+        <span onClick={() => {
+          if (['free', 'moderator'].includes(user?.role)) {
+            handleRestrictedAccess('Agent');
+          } else {
+            navigate('/agent');
+          }
+        }}>
+          <UserOutlined /> Agent {['free', 'moderator'].includes(user?.role) && <LockOutlined />}
+        </span>
+      ),
+    },
+    { key: 'change-plan', label: <Link to="/change-plan"><UserOutlined /> Change Plan</Link> },
   ].filter(Boolean);
-
-  const profilePic = user?.picture;
 
   const getRoleColor = (role) => {
     switch (role) {
@@ -158,7 +192,7 @@ export default function Navbar() {
 
   return (
     <>
-      <Header className="flex justify-between items-center bg-white shadow sticky top-0 z-50 px-4">
+      <Header className="flex justify-between items-center shadow sticky top-0 z-50 px-4" style={{ background: headerColor }}>
         <Link to="/" className="flex items-center">
           <img src={logo} alt="Famacloud Logo" className="w-16 h-16 md:w-16 md:h-16 scale-300" />
         </Link>
@@ -167,7 +201,7 @@ export default function Navbar() {
           <Menu mode="horizontal" items={mainMenuItems} className="bg-[#1E90FF] google-menu" />
         </div>
 
-        <div className="flex">
+        <div className="flex items-center space-x-2">
           <Button
             type="text"
             className="md:hidden text-[26px] relative text-white"
@@ -185,6 +219,7 @@ export default function Navbar() {
             <Dropdown overlay={userMenu}>
               <Space style={{ cursor: 'pointer' }}>
                 <Avatar src={user?.picture} icon={<UserOutlined />} />
+                {user?.displayName && <span className="text-white">{user.displayName}</span>}
               </Space>
             </Dropdown>
           </Space>
@@ -204,36 +239,36 @@ export default function Navbar() {
             <Avatar size={32} icon={<UserOutlined />} />
           )}
           <div>
-            <div className="font-semibold text-white text-[14px]">
-              {user?.role === 'premium' || user?.role === 'admin' ? user?.displayName : 'User'}
-            </div>
+            <div className="font-semibold text-white text-[14px]">{user?.displayName || 'Guest'}</div>
             <div className="text-[10px] text-white/80">{user?.email}</div>
           </div>
-          <Tag color={getRoleColor(user?.role)}>
-            {user?.role?.replace(/_/g, ' ').toUpperCase()}
-          </Tag>
+          {showPremiumTag && (
+            <Tag
+              color={getRoleColor(user?.role)}
+              onClick={() => setShowPremiumTag(false)}
+              style={{ cursor: 'pointer' }}
+            >
+              {user?.role?.replace(/_/g, ' ').toUpperCase()}
+            </Tag>
+          )}
         </div>
 
         <Menu
           mode="inline"
-          items={menuItems.map(item => ({
-            key: item.key,
-            icon: item.icon,
-            label: (
-              <Space>
-                {item.label}
-                {item.feature && !canAccess(item.feature) && <LockOutlined style={{ color: 'red' }} />}
-              </Space>
-            ),
+          items={mainMenuItems.map(item => ({
+            ...item,
             onClick: () => {
-              if (item.feature && !canAccess(item.feature)) {
-                message.info('Upgrade your plan to access this feature');
-                navigate('/upgrade');
+              if (item.key === 'ai' && ['free', 'moderator', 'standard'].includes(user?.role)) {
+                handleRestrictedAccess('AI Features');
+              } else if (item.key === 'cv-tips' && ['free', 'moderator'].includes(user?.role)) {
+                handleRestrictedAccess('CV & Cover Letter Tips');
+              } else if (item.key === 'agent' && ['free', 'moderator'].includes(user?.role)) {
+                handleRestrictedAccess('Agent');
               } else {
-                navigate(item.path);
+                setDrawerVisible(false);
               }
-              setDrawerVisible(false);
             },
+            style: { fontWeight: 400, fontSize: '1.05rem', paddingLeft: '24px', color: '#666' },
           }))}
           className="flex-grow overflow-auto"
         />
@@ -255,6 +290,23 @@ export default function Navbar() {
               offset={[6, 0]}
               style={{ backgroundColor: '#0B3D91', color: '#fff', marginLeft: 8 }}
             />
+          </Button>
+
+          <Button
+            block
+            type="link"
+            icon={user?.role === 'free' ? <LockOutlined /> : <MdOutlineFeedback />}
+            onClick={() => {
+              if (user?.role === 'free') {
+                handleRestrictedAccess('Feedback');
+              } else {
+                navigate('/feedback');
+                setDrawerVisible(false);
+              }
+            }}
+            style={{ fontWeight: '400', fontSize: '1rem' }}
+          >
+            Feedback
           </Button>
 
           {user ? (
