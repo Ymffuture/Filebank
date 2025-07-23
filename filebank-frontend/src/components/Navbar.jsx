@@ -95,7 +95,19 @@ export default function Navbar() {
   ].filter(Boolean);
 
   const profilePic = user?.picture;
+  
+const getRoleColor = (role) => {
+  switch (role) {
+    case 'admin': return 'gold';
+    case 'moderator': return 'purple';
+    case 'premium_user': return 'cyan';
+    case 'standard_user': return 'blue';
+    case 'free_plan': return 'gray';
+    default: return 'default';
+  }
+};
 
+                       
   return (
     <>
       <Header className="flex justify-between items-center bg-white shadow sticky top-0 z-50 px-4">
@@ -103,11 +115,11 @@ export default function Navbar() {
           <img src={logo} alt="Famacloud Logo" className="w-16 h-16 md:w-16 md:h-16 scale-300" />
           <span className="text-[gray] text-[18px]"></span>
         </Link>
-{ title: 'Role', dataIndex: 'role', key: 'role', render: role => (
-  <Tag color={role === 'admin' ? 'gold' : 'blue'}>
-    {role.toUpperCase()}
+{user && (
+  <Tag color={getRoleColor(user.role)}>
+    {user.role.replace(/_/g, ' ').toUpperCase()}
   </Tag>
-)},
+)}
 
         <div className="hidden md:flex flex-1 justify-center">
           <Menu mode="horizontal"  items={mainMenuItems} className="bg-[#1E90FF] google-menu" />
@@ -215,6 +227,14 @@ export default function Navbar() {
               />
           )}
         </div>
+        <Space align="center">
+  <Avatar src={user?.avatar} />
+  <span className="font-medium text-[14px]">{user?.name}</span>
+  <Tag color={getRoleColor(user.role)}>
+    {user.role.replace(/_/g, ' ').toUpperCase()}
+  </Tag>
+</Space>
+
       </Drawer>
 
       <NotificationsModal visible={notifModalVisible} onClose={() => setNotifModalVisible(false)} />
