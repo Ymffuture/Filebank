@@ -36,7 +36,7 @@ export default function ChangePlanPage() {
     setLoading(true);
 
     // Correct API route to submit a payment code
-    await api.post('/payment-requests', {
+    await api.post('/admin/payment-requests', {
       userId: user._id,
       email: user.email,
       plan: selectedPlan.role,
