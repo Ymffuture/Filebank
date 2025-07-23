@@ -141,13 +141,10 @@ const getRoleColor = (role) => {
             </>
           }
         />
-
-
-<Dropdown overlay={userMenu}>
+            <Dropdown overlay={userMenu}>
               <Space style={{ cursor: 'pointer' }}>
                 <Avatar src={user.picture} />
                 <Text>{user.name || user.displayName}</Text>
-                <DownOutlined />
               </Space>
             </Dropdown>
 
