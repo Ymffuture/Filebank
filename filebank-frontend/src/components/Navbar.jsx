@@ -100,9 +100,9 @@ const getRoleColor = (role) => {
   switch (role) {
     case 'admin': return 'gold';
     case 'moderator': return 'purple';
-    case 'premium_user': return 'cyan';
-    case 'standard_user': return 'blue';
-    case 'free_plan': return 'gray';
+    case 'premium': return 'cyan';
+    case 'standard': return 'blue';
+    case 'free': return 'gray';
     default: return 'default';
   }
 };
