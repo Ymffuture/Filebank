@@ -132,7 +132,7 @@ export default function Navbar() {
     { key: 'about', label: 'About Us', icon: <InfoCircleOutlined />, path: '/about-us' },
     { key: 'files', label: 'Files', icon: <FileOutlined />, path: '/files' },
     user?.role === 'admin' && { key: 'admin', label: 'Admin Panel', icon: <DashboardOutlined />, path: '/admin' },
-    { key: 'ai', label: 'AI Features', icon: <RobotOutlined />, path: '/ai', feature: 'ai' },
+    { key: 'ai', label: 'AI Features', icon: <RobotOutlined />, path: '/full-screen-ai', feature: 'ai' },
     { key: 'cv-tips', label: 'CV Tips', icon: <FileTextOutlined />, path: '/cv-tips', feature: 'cv-tips' },
     { key: 'coverletter-tips', label: 'Cover Letter Tips', icon: <FileTextOutlined />, path: '/coverletter-tips', feature: 'cv-tips' },
     { key: 'agent', label: 'Agent', icon: <CustomerServiceOutlined />, path: '/agent', feature: 'agent' },
@@ -187,7 +187,7 @@ export default function Navbar() {
           <Menu mode="horizontal" items={mainMenuItems} className="bg-[#1E90FF] google-menu" />
         </div>
 
-        <div className="flex">
+        <div className="flex items-center">
           <Button
             type="text"
             className="md:hidden text-[26px] relative text-white"
@@ -205,13 +205,7 @@ export default function Navbar() {
             <Dropdown overlay={userMenu}>
               <Space style={{ cursor: 'pointer' }}>
                 <Avatar src={user?.picture} icon={<UserOutlined />} />
-                {user?.role && (
-                  <Tooltip title={`Role: ${user.role}`}>
-                    <Tag color={getRoleColor(user.role)} style={{ marginLeft: 4 }}>
-                      {user.role.toUpperCase()}
-                    </Tag>
-                  </Tooltip>
-                )}
+                
               </Space>
             </Dropdown>
           </Space>
@@ -228,7 +222,7 @@ export default function Navbar() {
           <Avatar src={user?.picture} size={32} icon={<UserOutlined />} />
           <div>
             <div className="font-semibold text-white text-[14px]">
-              {user?.role === 'premium' || user?.role === 'admin' ? user?.displayName : 'User'}
+              {user?.role === 'premium' || user?.role === 'admin' || user?.role === 'moderator' || user?.role === 'standard' || user?.role === 'free'  ? user?.displayName : 'Account'}
             </div>
             <div className="text-[10px] text-white/80">{user?.email}</div>
           </div>
