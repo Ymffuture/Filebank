@@ -115,12 +115,14 @@ const getRoleColor = (role) => {
       <Header className="flex justify-between items-center bg-white shadow sticky top-0 z-50 px-4">
         <Link to="/" className="flex items-center">
           <img src={logo} alt="Famacloud Logo" className="w-16 h-16 md:w-16 md:h-16 scale-300" />
-          <span className="text-[gray] text-[18px]"></span>
+        
         </Link>
-{user && (
+{user?.role && (
   <Tag color={getRoleColor(user.role)}>
     {user.role.replace(/_/g, ' ').toUpperCase()}
   </Tag>
+)}
+
 )}
 
         <div className="hidden md:flex flex-1 justify-center">
@@ -143,8 +145,7 @@ const getRoleColor = (role) => {
         />
             <Dropdown overlay={userMenu}>
               <Space style={{ cursor: 'pointer' }}>
-                <Avatar src={user.picture} />
-                <Text>{user.name || user.displayName}</Text>
+                <Avatar src={user?.picture} icon={<UserOutlined />} />
               </Space>
             </Dropdown>
 
@@ -157,7 +158,7 @@ const getRoleColor = (role) => {
         bodyStyle={{ padding: 0, display: 'flex', flexDirection: 'column', height: '100%',background:'#0B3D91' }}
       >
         {/* Profile header with gradient */}
-        <div className="p-2 bg-gradient-to-r from-[#1E90FF] via-[#ff] to-[#1E90FF] flex items-center gap-3">
+        <div className="p-2 flex items-center gap-4">
           
           {profilePic ? (
             <Avatar src={profilePic} size={32} />
@@ -179,9 +180,9 @@ const getRoleColor = (role) => {
           items={mainMenuItems.map(item => ({
             ...item,
             onClick: () => setDrawerVisible(false),
-            style: { fontWeight: 400, fontSize: '1.05rem', paddingLeft: '24px', background:'#82CAFF', color:'#666' },
+            style: { fontWeight: 400, fontSize: '1.05rem', paddingLeft: '24px', color:'#666' },
           }))}
-          className="flex-grow overflow-auto bg-[#0B3D91]"
+          className="flex-grow overflow-auto"
         />
 
         {/* Footer buttons */}
