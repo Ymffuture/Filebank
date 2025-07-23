@@ -11,6 +11,7 @@ import api from '../api/fileApi';
 import LexicalNotificationEditor from './LexicalNotificationEditor';
 
 const { Text } = Typography;
+const { SubMenu } = Menu;
 
 export default function AdminUsers() {
   const [users, setUsers] = useState([]);
@@ -20,16 +21,17 @@ export default function AdminUsers() {
   const { enqueueSnackbar } = useSnackbar();
   const navigate = useNavigate();
 
-const handleChangeRole = async (id, currentRole) => {
+const handleChangeRole = async (userId, newRole) => {
   try {
-    const newRole = currentRole === 'admin' ? 'user' : 'admin';
-    await api.put(`/admin/users/${id}/role`, { role: newRole });
-    enqueueSnackbar(`Role changed to ${newRole}`, { variant: 'success' });
-    fetchUsers();
-  } catch {
-    enqueueSnackbar('Failed to change role', { variant: 'error' });
+    await axios.put(`/api/users/${userId}/role`, { role: newRole });
+    message.success(`Role updated to ${newRole}`);
+    fetchUsers(); // refresh list
+  } catch (err) {
+    console.error('Role update failed:', err);
+    message.error('Failed to update role');
   }
 };
+
 
   
   useEffect(() => {
@@ -132,9 +134,24 @@ const handleChangeRole = async (id, currentRole) => {
     <Menu.Item key="issue" onClick={() => handleIssue(record._id, record.isIssue)}>
       {record.isIssue ? 'Remove Issue' : 'Mark as Issue'}
     </Menu.Item>
-    <Menu.Item key="role" onClick={() => handleChangeRole(record._id, record.role)}>
-      {record.role === 'admin' ? 'Make User' : 'Make Admin'}
-    </Menu.Item>
+    <Menu.SubMenu key="changeRole" title="Change Role">
+  <Menu.Item key="admin" onClick={() => handleChangeRole(record._id, 'admin')}>
+    Make Admin
+  </Menu.Item>
+  <Menu.Item key="moderator" onClick={() => handleChangeRole(record._id, 'moderator')}>
+    Make Moderator
+  </Menu.Item>
+  <Menu.Item key="premium_user" onClick={() => handleChangeRole(record._id, 'premium_user')}>
+    Set as Premium
+  </Menu.Item>
+  <Menu.Item key="standard_user" onClick={() => handleChangeRole(record._id, 'standard_user')}>
+    Set as Standard
+  </Menu.Item>
+  <Menu.Item key="free_user" onClick={() => handleChangeRole(record._id, 'free_user')}>
+    Set as Free
+  </Menu.Item>
+</Menu.SubMenu>
+
   </Menu>
 );
         return (
