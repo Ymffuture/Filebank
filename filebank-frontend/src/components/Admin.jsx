@@ -152,7 +152,7 @@ const handleChangeRole = async (id, newRole) => {
     </Menu.Item>
     <Menu.SubMenu key="changeRole" title="Change Role">
   <Menu.SubMenu key="role" title="Change Role">
-  {['admin', 'moderator', 'premium_user', 'standard_user', 'free_plan'].map(role => (
+  {['admin', 'moderator', 'premium', 'standard', 'free'].map(role => (
     <Menu.Item key={role} onClick={() => handleChangeRole(record._id, role)}>
       Make {role.replace(/_/g, ' ').toUpperCase()}
     </Menu.Item>
