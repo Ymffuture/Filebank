@@ -281,7 +281,7 @@ const handleApproveCode = async (id) => {
     />
   </Card>
 )}
-<PaymentLog/>
+
       <Table
   dataSource={mergedUsers}
   columns={columns}
@@ -330,7 +330,7 @@ const handleApproveCode = async (id) => {
           />
         )}
       </Card>
-
+<PaymentLog/>
       <Modal
         title="Send Notification"
         open={notifModalVisible}
