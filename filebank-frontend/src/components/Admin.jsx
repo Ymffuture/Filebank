@@ -269,6 +269,7 @@ const handleRejectCode = async (id) => {
       type="primary"
       size="small"
       loading={approving === item._id}
+      onClick={() => handleRejectCode(item._id)}
     >
       Approve
     </Button>
