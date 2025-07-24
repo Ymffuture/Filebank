@@ -14,16 +14,23 @@ const { Text } = Typography;
 const { SubMenu } = Menu;
 
 export default function AdminUsers() {
-  const [users, setUsers] = useState([]);
-  const [feedbacks, setFeedbacks] = useState([]);
-  const [uploadCounts, setUploadCounts] = useState([]);
-  const [notifModalVisible, setNotifModalVisible] = useState(false);
-  const { enqueueSnackbar } = useSnackbar();
-  const navigate = useNavigate();
+  
+const [users, setUsers] = useState([]);
+const [feedbacks, setFeedbacks] = useState([]);
+const [uploadCounts, setUploadCounts] = useState([]);
+const [notifModalVisible, setNotifModalVisible] = useState(false);
 const [rejectionModalVisible, setRejectionModalVisible] = useState(false);
 const [rejectionReason, setRejectionReason] = useState('');
 const [selectedRequestId, setSelectedRequestId] = useState(null);
+const [paymentRequests, setPaymentRequests] = useState([]);
+const [approving, setApproving] = useState(null);
 
+const { enqueueSnackbar } = useSnackbar();
+const navigate = useNavigate();
+const intervalRef = useRef(null);
+const isAnyModalOpen = notifModalVisible || rejectionModalVisible;
+
+  
 const handleChangeRole = async (id, newRole) => {
   try {
     const res = await api.put(`/admin/users/${id}/role`, { role: newRole });
@@ -38,9 +45,6 @@ const handleChangeRole = async (id, newRole) => {
     enqueueSnackbar('Failed to change role', { variant: 'error' });
   }
 };
-
-const [paymentRequests, setPaymentRequests] = useState([]);
-const [approving, setApproving] = useState(null);
 
 const fetchPaymentRequests = async () => {
   try {
@@ -93,15 +97,13 @@ const confirmRejection = async () => {
     setRejectionReason('');
   }
 };
-
   
 const MAX_REFRESHES = 20;
 const REFRESH_INTERVAL_MS = 3000;
-
+  
 useEffect(() => {
+  
   let count = 0;
-  const intervalRef = useRef(null);
-
   const fetchAllData = () => {
     if (!isModalVisible) {
       fetchUsers();
@@ -121,8 +123,6 @@ useEffect(() => {
 
   return () => clearInterval(intervalRef.current); // cleanup
 }, [isModalVisible]);
-
-
 
 
   const fetchUsers = async () => {
