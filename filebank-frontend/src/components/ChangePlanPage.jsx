@@ -50,9 +50,9 @@ const planFeatures = {
 };
 
 const plans = [
-  { name: 'Free', price: 'R0', description: 'Basic access', role: 'free' },
-  { name: 'Standard', price: 'R79/month', description: 'CV + Cover Letter help', role: 'standard' },
-  { name: 'Premium', price: 'R129/month', description: 'AI assistant + early features', role: 'premium' },
+  { name: 'Free', price: 'R0', description: 'Basic access', role: 'Free' },
+  { name: 'Standard', price: 'R19 Once', description: 'CV + Cover Letter help', role: 'Standard' },
+  { name: 'Premium', price: 'R39 Once', description: 'AI assistant + early features', role: 'Premium' },
 ];
 
 export default function ChangePlanPage() {
