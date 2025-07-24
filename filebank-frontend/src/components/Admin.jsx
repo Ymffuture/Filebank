@@ -100,29 +100,30 @@ const confirmRejection = async () => {
   
 const MAX_REFRESHES = 20;
 const REFRESH_INTERVAL_MS = 3000;
-  
+
 useEffect(() => {
-  
-  let count = 0;
-  const fetchAllData = () => {
-    if (!isModalVisible) {
-      fetchUsers();
-      fetchAllFeedback();
-      fetchUploadCounts();
-      fetchPaymentRequests();
-      count += 1;
-      if (count >= MAX_REFRESHES) {
-        clearInterval(intervalRef.current);
-      }
-    }
-  };
+  let count = 0;
 
-  fetchAllData(); // initial fetch
+  const fetchAllData = () => {
+    if (!notifModalVisible && !rejectionModalVisible) { // check both modals
+      fetchUsers();
+      fetchAllFeedback();
+      fetchUploadCounts();
+      fetchPaymentRequests();
+      count += 1;
 
-  intervalRef.current = setInterval(fetchAllData, REFRESH_INTERVAL_MS);
+      if (count >= MAX_REFRESHES) {
+        clearInterval(intervalRef.current);
+      }
+    }
+  };
 
-  return () => clearInterval(intervalRef.current); // cleanup
-}, [isModalVisible]);
+  fetchAllData(); // run once immediately
+
+  intervalRef.current = setInterval(fetchAllData, REFRESH_INTERVAL_MS);
+
+  return () => clearInterval(intervalRef.current);
+}, [notifModalVisible, rejectionModalVisible]); // observe both modals
 
 
   const fetchUsers = async () => {
