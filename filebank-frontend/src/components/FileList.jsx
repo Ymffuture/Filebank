@@ -16,6 +16,7 @@ import Lottie from 'lottie-react';
 import NewBadgeAnimation from '../assets/Badge.json';
 import { motion } from 'framer-motion';
 import errorAnimation from '../assets/server.json'; // Place your Lottie JSON here
+import { ShieldCheck } from 'lucide-react'; // premium icon
 
 const { Option } = Select;
 
@@ -29,6 +30,8 @@ export default function FileList() {
   const [searchFormat, setSearchFormat] = useState('all');
   const [searchDate, setSearchDate] = useState(null);
   const [error, setError] = useState(null);
+const [userRole, setUserRole] = useState('Free'); // fallback if you don't have global auth context
+const maxAge = userRole === 'Free' ? 20 : 180;
 
   const { enqueueSnackbar } = useSnackbar();
   const location = useLocation();
@@ -55,7 +58,12 @@ export default function FileList() {
 
   try {
     const { data } = await api.get('/files');
-    setFiles(data);
+    const filtered = userRole === 'Free'
+  ? data.filter(file => getAgeInDays(file.createdAt) <= 20)
+  : data;
+
+setFiles(filtered);
+
   } catch (err) {
     enqueueSnackbar('Failed to load files', { variant: 'error' });
     setError(err);
@@ -183,7 +191,9 @@ const ErrorFallback = ({ onRetry }) => (
     return matchesName && matchesFormat && matchesDate;
   });
 
-  const displayedFiles = filteredFiles.slice(0, displayCount);
+  const displayLimit = userRole === 'Free' ? 4 : displayCount;
+const displayedFiles = filteredFiles.slice(0, displayLimit);
+
 
   return (
 
@@ -239,22 +249,71 @@ const ErrorFallback = ({ onRetry }) => (
                     )}
                   </Space>
                 }
-                actions={[
-                  <a key="download" href={downloadUrl} download={file.filename}><DownloadOutlined /></a>,
-                  <Tooltip key="copy" title="Copy link"><Button type="text" icon={<CopyOutlined />} onClick={() => copyLink(downloadUrl)} /></Tooltip>,
-                  <a key="wa" href={`https://wa.me/?text=${encodeURIComponent(downloadUrl)}`} target="_blank" rel="noopener noreferrer"><FaWhatsapp /></a>,
-                  <a key="tw" href={`https://twitter.com/intent/tweet?url=${encodeURIComponent(downloadUrl)}`} target="_blank" rel="noopener noreferrer"><FaXTwitter /></a>,
-                  <a key="li" href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(downloadUrl)}`} target="_blank" rel="noopener noreferrer"><FaLinkedin /></a>,
-                  <Popconfirm key="delete" title="Delete this file?" onConfirm={() => handleDelete(file.slug)}>
-                    <Button danger type="text" icon={<DeleteOutlined />} loading={deleting === file.slug} />
-                  </Popconfirm>
-                ]}
+                
+actions={[
+  userRole !== 'Free' ? (
+    
+    <>
+      <a key="download" href={downloadUrl} download={file.filename}>
+        <DownloadOutlined />
+      </a>
+
+      <Tooltip key="copy" title="Copy link">
+        <Button type="text" icon={<CopyOutlined />} onClick={() => copyLink(downloadUrl)} />
+      </Tooltip>
+
+      <a key="wa" href={`https://wa.me/?text=${encodeURIComponent(downloadUrl)}`} target="_blank" rel="noopener noreferrer">
+        <FaWhatsapp />
+      </a>
+
+      <a key="tw" href={`https://twitter.com/intent/tweet?url=${encodeURIComponent(downloadUrl)}`} target="_blank" rel="noopener noreferrer">
+        <FaXTwitter />
+      </a>
+
+      <a key="li" href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(downloadUrl)}`} target="_blank" rel="noopener noreferrer">
+        <FaLinkedin />
+      </a>
+
+      <Popconfirm key="delete" title="Delete this file?" onConfirm={() => handleDelete(file.slug)}>
+        <Button danger type="text" icon={<DeleteOutlined />} loading={deleting === file.slug} />
+      </Popconfirm>
+    </>
+  ) : (
+    
+    <>
+      <Tooltip key="disabled-download" title="Premium users can download">
+        <Button type="text" disabled icon={<><ShieldCheck size={14} className="text-yellow-500 mr-1" /><DownloadOutlined /></>} />
+      </Tooltip>
+
+      <Tooltip key="disabled-copy" title="Premium users can copy links">
+        <Button type="text" disabled icon={<><ShieldCheck size={14} className="text-yellow-500 mr-1" /><CopyOutlined /></>} />
+      </Tooltip>
+
+      <Tooltip key="disabled-wa" title="Premium users can share via WhatsApp">
+        <Button type="text" disabled icon={<><ShieldCheck size={14} className="text-yellow-500 mr-1" /><FaWhatsapp /></>} />
+      </Tooltip>
+
+      <Tooltip key="disabled-tw" title="Premium users can share via X">
+        <Button type="text" disabled icon={<><ShieldCheck size={14} className="text-yellow-500 mr-1" /><FaXTwitter /></>} />
+      </Tooltip>
+
+      <Tooltip key="disabled-li" title="Premium users can share via LinkedIn">
+        <Button type="text" disabled icon={<><ShieldCheck size={14} className="text-yellow-500 mr-1" /><FaLinkedin /></>} />
+      </Tooltip>
+
+      <Tooltip key="disabled-delete" title="Premium users can delete files">
+        <Button danger type="text" disabled icon={<><ShieldCheck size={14} className="text-yellow-500 mr-1" /><DeleteOutlined /></>} />
+      </Tooltip>
+    </>
+  )
+]}
+
                 
               >
                 <p className="text-gray-700"><ClockCircleOutlined style={{ marginRight: 4 }} /><strong>Uploaded:</strong> {formatted}</p>
-                {age > 0 && age < 180 && (
-                  <Alert type="warning" showIcon className="m-4" message={`Will be deleted in ${180 - age} days.`} />
-                )}
+                {age > 0 && age < maxAge && (
+  <Alert type="warning" showIcon className="m-4" message={`Will be deleted in ${maxAge - age} days.`} />
+)}
               </Card>
             );
           })
@@ -270,6 +329,16 @@ const ErrorFallback = ({ onRetry }) => (
           <Button type="link" onClick={() => setDisplayCount(c => c + 4)}>Load More</Button>
         </div>
       )}
+      {userRole === 'Free' && (
+  <Alert
+    type="info"
+    message="Free Plan: Only 4 most recent files visible, no sharing or downloading, and auto-deletion after 20 days."
+    showIcon
+    closable
+    className="mb-4"
+  />
+)}
+
     </>} 
         
     </>
