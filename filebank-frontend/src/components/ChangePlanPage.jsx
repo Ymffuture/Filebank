@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
-import { Card, Row, Col, Button, Typography, message, Form, Input, Badge } from 'antd';
+import React, { useState, useEffect } from 'react';
+import { Card, Row, Col, Button, Typography, message, Form, Input, Badge as AntBadge } from 'antd';
 import { ArrowLeftOutlined } from '@ant-design/icons';
-import { Check, X } from 'lucide-react';
+import { Check, X, ThumbsUp, ThumbsDown, Hourglass } from 'lucide-react';
 import api from '../api/fileApi';
 
 const { Title, Paragraph, Text } = Typography;
@@ -55,6 +55,7 @@ const plans = [
 export default function ChangePlanPage() {
   const [loading, setLoading] = useState(false);
   const [selectedPlan, setSelectedPlan] = useState(null);
+  const [upgradeStatus, setUpgradeStatus] = useState(null);
   const [form] = Form.useForm();
   const user = JSON.parse(localStorage.getItem('filebankUser'));
 
@@ -83,6 +84,7 @@ export default function ChangePlanPage() {
       });
 
       message.success(`Code submitted! Waiting for admin to approve your ${selectedPlan.role} plan.`);
+      setUpgradeStatus('pending');
     } catch (err) {
       console.error(err);
       message.error('Code submission failed');
@@ -91,9 +93,54 @@ export default function ChangePlanPage() {
     }
   };
 
+  const renderStatusBadge = () => {
+    if (!upgradeStatus) return null;
+
+    const statusMap = {
+      pending: {
+        text: 'Pending Approval',
+        icon: <Hourglass className="text-yellow-500 w-4 h-4" />,
+        color: 'gold',
+      },
+      approved: {
+        text: 'Plan Approved',
+        icon: <ThumbsUp className="text-green-600 w-4 h-4" />,
+        color: 'green',
+      },
+      rejected: {
+        text: 'Rejected by Admin',
+        icon: <ThumbsDown className="text-red-500 w-4 h-4" />,
+        color: 'red',
+      },
+    };
+
+    const current = statusMap[upgradeStatus];
+
+    return (
+      <div className="flex items-center justify-center mt-3 gap-2">
+        {current.icon}
+        <AntBadge color={current.color} text={current.text} />
+      </div>
+    );
+  };
+
+  useEffect(() => {
+    const fetchStatus = async () => {
+      if (!user?._id) return;
+      try {
+        const { data } = await api.get(`/admin/payment-requests/${user._id}`);
+        if (data?.status) {
+          setUpgradeStatus(data.status);
+        }
+      } catch (err) {
+        console.warn('No upgrade status found');
+      }
+    };
+    fetchStatus();
+  }, [selectedPlan?.role]);
+
   return (
     <div className="min-h-screen bg-gray-50 p-6">
-      {/* Header */}
       <div className="flex items-center justify-between mb-6">
         <Button icon={<ArrowLeftOutlined />} onClick={() => window.history.back()}>
           Back
@@ -104,7 +151,6 @@ export default function ChangePlanPage() {
         <div />
       </div>
 
-      {/* Plans */}
       <Row gutter={[24, 24]} justify="center">
         {plans.map((plan) => {
           const features = planFeatures[plan.role];
@@ -146,16 +192,13 @@ export default function ChangePlanPage() {
                   <PlanFeature enabled={features.feedback} label="Feedback from Experts" />
                 </div>
 
-                {isSelected && !isCurrent && (
-                  <Badge status="processing" text="Waiting for admin confirmation..." className="mt-4" />
-                )}
+                {isSelected && !isCurrent && renderStatusBadge()}
               </Card>
             </Col>
           );
         })}
       </Row>
 
-      {/* Payment Code Section */}
       {selectedPlan && (
         <div className="mt-10 max-w-xl mx-auto bg-white p-6 rounded-lg shadow">
           <Title level={4} style={{ color: '#333' }}>
