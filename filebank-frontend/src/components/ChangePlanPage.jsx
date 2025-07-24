@@ -137,6 +137,11 @@ export default function ChangePlanPage() {
             Submitted {dayjs(statusData.createdAt).fromNow()}
           </Text>
         )}
+        
+        {request.status === 'rejected' && (
+  <Paragraph type="danger">Reason: {request.rejectionReason}</Paragraph>
+)}
+
       </div>
     );
   };
