@@ -12,7 +12,7 @@ export default function Home() {
       <Navbar />
       <main className="mx-auto p-2 space-y-2">
         <section>
-          <FileUpload onUpload={() => setRefresh((r) => r + 1)} />
+          <FileUpload onUpload={() => setRefresh((r) => r + 1)} userRole={user?.role} />
         </section>
 <section>
   <Ai/>
