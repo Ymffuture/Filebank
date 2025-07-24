@@ -19,8 +19,8 @@ export default function FileUpload({ onUpload, currentUserFileCount = 0, userRol
   const [text, setText] = useState("");
   const [text2, setText2] = useState("");
   const { enqueueSnackbar } = useSnackbar();
-const storedUser = JSON.parse(localStorage.getItem('filebankUser'));
-const userRole = storedUser?.role;
+// const storedUser = JSON.parse(localStorage.getItem('filebankUser'));
+// const userRole = storedUser?.role;
   const handleSubmit = async () => {
     if (files.length === 0) {
       setText('No files selected.');
