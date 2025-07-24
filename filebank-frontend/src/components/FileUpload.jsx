@@ -146,52 +146,42 @@ const userRole = storedUser?.role || 'Free';
             </div>
           ) :
           <Upload.Dragger
-  beforeUpload={(file) => {
-    const isAllowedType = allowedTypes.includes(file.type);
-    if (!isAllowedType) {
-      setText('Invalid file type.');
-      enqueueSnackbar('Invalid file type', { variant: 'warning' });
-      return Upload.LIST_IGNORE;
-    }
+            beforeUpload={(file) => {
+              const isAllowedType = allowedTypes.includes(file.type);
+              if (!isAllowedType) {
+                setText('Invalid file type.');
+                enqueueSnackbar('Invalid file type', { variant: 'warning' });
+                return Upload.LIST_IGNORE;
+              }
 if (fileList.length > 5) {
   enqueueSnackbar("Maximum 5 files allowed per upload.", { variant: "warning" });
   return;
 }
 
-    const isLt5M = file.size / 1024 / 1024 < 5;
-    if (!isLt5M) {
-      setText('File size exceeds 5MB');
-      enqueueSnackbar('File size exceeds 5MB', { variant: 'warning' });
-      return Upload.LIST_IGNORE;
-    }
+              const isLt5M = file.size / 1024 / 1024 < 5;
+              if (!isLt5M) {
+                setText('File size exceeds 5MB');
+                enqueueSnackbar('File size exceeds 5MB', { variant: 'warning' });
+                return Upload.LIST_IGNORE;
+              }
 
-    return false; // manual upload
-  }}
-  onChange={({ fileList }) => {
-    let updatedList = fileList;
-    const FREE_UPLOAD_LIMIT = 1;
+              return false; // Manual upload
+            }}
+            onChange={({ fileList }) => {
+              setFiles(fileList);
+              setText("");
+              setText2("");
+            }}
+            fileList={files}
+            multiple={userRole !== 'Free'}
 
-    if (userRole === 'Free' && fileList.length >FREE_UPLOAD_LIMIT) {
-      updatedList = [fileList[fileList.length - 1]];
-      setText("Free users can only upload one file at a time.");
-      enqueueSnackbar("Free users can only upload one file per upload.", { variant: "info" });
-    } else {
-      setText("");
-    }
-
-    setFiles(updatedList);
-    setText2("");
-  }}
-  fileList={files}
-  multiple={userRole !== 'Free'}
-  showUploadList={{
-    showPreviewIcon: true,
-    showRemoveIcon: true,
-    showDownloadIcon: true,
-  }}
-  disabled={uploading}
->
-
+            showUploadList={{
+              showPreviewIcon: true,
+              showRemoveIcon: true,
+              showDownloadIcon: true,
+            }}
+            disabled={uploading}
+          >
             <div className="flex justify-center mb-4">
               <Lottie
                 animationData={UploadIcon}
@@ -223,9 +213,6 @@ if (fileList.length > 5) {
               <Progress percent={progress} />
             </div>
           )}
-{userRole === 'Free' && (
-  <Alert type="info" showIcon message="You can only upload 1 file per upload. Upgrade for batch uploads." className="mb-4" />
-)}
 
           {text && <Alert message={text} type="error" className="mt-4" closable />}
           {text2 && <Alert message={text2} type="success" className="mt-4" closable />}
@@ -234,4 +221,3 @@ if (fileList.length > 5) {
     </>
   );
 }
-
