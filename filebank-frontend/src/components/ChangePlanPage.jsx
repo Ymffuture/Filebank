@@ -107,34 +107,44 @@ export default function ChangePlanPage() {
     }
   };
 
-  const fetchStatus = async () => {
-    if (!user?._id) return;
-    try {
-      const { data } = await api.get(`/admin/payment-requests/${user._id}`);
-      if (Array.isArray(data) && data.length > 0) {
-        const latest = data[data.length - 1];
-        setStatusData(latest);
-        setUpgradeStatus(latest.status);
-        const matched = plans.find((p) => p.role === latest.plan);
-        if (matched) setSelectedPlan(matched);
+  // Fetch latest payment request status
+const fetchStatus = async () => {
+  if (!user?._id) return;
+  try {
+    const { data } = await api.get(`/admin/payment-requests/${user._id}`);
+    if (Array.isArray(data) && data.length > 0) {
+      const latest = data[data.length - 1];
+
+      setStatusData(latest);
+      setUpgradeStatus(latest.status);
+
+      const matchedPlan = plans.find((p) => p.role === latest.plan);
+      if (matchedPlan) {
+        setSelectedPlan(matchedPlan);
       }
-    } catch (err) {
-      console.warn('No upgrade status found');
     }
-  };
+  } catch (err) {
+    console.error('Status fetch error:', err);
+  }
+};
 
-  useEffect(() => {
-    fetchStatus(); // initial fetch
-    intervalRef.current = setInterval(() => {
-      const modalOpen = document.querySelector('.ant-modal-root')?.style.display === 'block';
-      if (!modalOpen && refreshCount < 15) {
-        fetchStatus();
-        setRefreshCount((prev) => prev + 1);
-      }
-    }, 3000);
+// Auto-fetch and refresh
+useEffect(() => {
+  fetchStatus(); // load from backend
 
-    return () => clearInterval(intervalRef.current);
-  }, []);
+  let refreshLimit = 0;
+
+  intervalRef.current = setInterval(() => {
+    const modalOpen = document.querySelector('.ant-modal-root')?.style.display === 'block';
+    if (!modalOpen && refreshLimit < 15) {
+      fetchStatus();
+      refreshLimit += 1;
+    }
+  }, 3000);
+
+  return () => clearInterval(intervalRef.current);
+}, []);
+
 
   const renderStatusBadge = () => {
     if (!upgradeStatus) return null;
