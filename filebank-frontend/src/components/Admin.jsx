@@ -265,15 +265,18 @@ const handleApproveCode = async (id) => {
           ]}
         >
           <List.Item.Meta
-            title={<Text strong>{item.email}</Text>}
-            description={
-              <>
-                <div>Code: <Text code>{item.paymentCode}</Text></div>
-                <div>Requested Plan: <Tag color="blue">{item.plan}</Tag></div>
-              </>
-            }
-          />
-        </List.Item>
+  title={<Text strong>{item.email}</Text>}
+  description={
+    <>
+      <div>Code: <Text code>{item.paymentCode}</Text></div>
+      <div>Requested Plan: <Tag color="blue">{item.plan}</Tag></div>
+      <div>Status: <Tag color={
+        item.status === 'approved' ? 'green' :
+        item.status === 'rejected' ? 'red' : 'orange'
+      }>{item.status.toUpperCase()}</Tag></div>
+    </>
+  }
+/>
       )}
     />
   </Card>
