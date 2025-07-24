@@ -12,7 +12,7 @@ import Failed from '../assets/Failed.json' ;
 import pdfAnim from '../assets/PDF.json' ;
 import api from '../api/fileApi';
 
-export default function FileUpload({ onUpload, currentUserFileCount = 0 }) {
+export default function FileUpload({ onUpload, currentUserFileCount = 0, userRole }) {
   const [files, setFiles] = useState([]);
   const [uploading, setUploading] = useState(false);
   const [progress, setProgress] = useState(0);
@@ -20,7 +20,7 @@ export default function FileUpload({ onUpload, currentUserFileCount = 0 }) {
   const [text2, setText2] = useState("");
   const { enqueueSnackbar } = useSnackbar();
 const storedUser = JSON.parse(localStorage.getItem('filebankUser'));
-const userRole = storedUser?.role || 'Free';
+const userRole = storedUser?.role;
   const handleSubmit = async () => {
     if (files.length === 0) {
       setText('No files selected.');
