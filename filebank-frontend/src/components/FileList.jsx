@@ -30,7 +30,8 @@ export default function FileList() {
   const [searchFormat, setSearchFormat] = useState('all');
   const [searchDate, setSearchDate] = useState(null);
   const [error, setError] = useState(null);
-const [userRole, setUserRole] = useState('Free'); // fallback if you don't have global auth context
+const storedUser = JSON.parse(localStorage.getItem('filebankUser'));
+const userRole = storedUser?.role; // fallback if you don't have global auth context
 const maxAge = userRole === 'Free' ? 20 : 180;
 
   const { enqueueSnackbar } = useSnackbar();
