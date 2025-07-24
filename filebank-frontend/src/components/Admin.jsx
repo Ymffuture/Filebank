@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useMemo } from 'react';
+import React, { useEffect, useState, useMemo, useRef } from 'react';
 import {
   Table, Button, Popconfirm, Avatar, Space, Row, Col, Card,
   Statistic, List, Tag, Rate, Typography, Divider, Empty, Dropdown, Menu, Modal, message
@@ -20,6 +20,9 @@ export default function AdminUsers() {
   const [notifModalVisible, setNotifModalVisible] = useState(false);
   const { enqueueSnackbar } = useSnackbar();
   const navigate = useNavigate();
+const [rejectionModalVisible, setRejectionModalVisible] = useState(false);
+const [rejectionReason, setRejectionReason] = useState('');
+const [selectedRequestId, setSelectedRequestId] = useState(null);
 
 const handleChangeRole = async (id, newRole) => {
   try {
@@ -63,23 +66,63 @@ const handleApproveCode = async (id) => {
 };
 
 
-const handleRejectCode = async (id) => {
+const handleRejectCode = (id) => {
+  setSelectedRequestId(id);
+  setRejectionReason('');
+  setRejectionModalVisible(true);
+};
+
+
+const confirmRejection = async () => {
+  if (!rejectionReason.trim()) {
+    message.warning('Please provide a reason for rejection');
+    return;
+  }
   try {
-    await api.put(`/admin/payment-requests/${id}`, { action: 'reject' });
-    enqueueSnackbar('Payment rejected', { variant: 'info' });
-    fetchPaymentRequests(); // refresh list
+    await api.put(`/admin/payment-requests/${selectedRequestId}`, {
+      action: 'reject',
+      reason: rejectionReason,
+    });
+    enqueueSnackbar('Payment request rejected', { variant: 'info' });
+    fetchPaymentRequests();
   } catch {
-    enqueueSnackbar('Failed to reject payment', { variant: 'error' });
+    enqueueSnackbar('Failed to reject request', { variant: 'error' });
+  } finally {
+    setRejectionModalVisible(false);
+    setSelectedRequestId(null);
+    setRejectionReason('');
   }
 };
 
   
-  useEffect(() => {
-  fetchUsers();
-  fetchAllFeedback();
-  fetchUploadCounts();
-  fetchPaymentRequests(); // ← new
-}, []);
+const MAX_REFRESHES = 20;
+const REFRESH_INTERVAL_MS = 3000;
+
+useEffect(() => {
+  let count = 0;
+  const intervalRef = useRef(null);
+
+  const fetchAllData = () => {
+    if (!isModalVisible) {
+      fetchUsers();
+      fetchAllFeedback();
+      fetchUploadCounts();
+      fetchPaymentRequests();
+      count += 1;
+      if (count >= MAX_REFRESHES) {
+        clearInterval(intervalRef.current);
+      }
+    }
+  };
+
+  fetchAllData(); // initial fetch
+
+  intervalRef.current = setInterval(fetchAllData, REFRESH_INTERVAL_MS);
+
+  return () => clearInterval(intervalRef.current); // cleanup
+}, [isModalVisible]);
+
+
 
 
   const fetchUsers = async () => {
@@ -382,6 +425,25 @@ const handleRejectCode = async (id) => {
           }}
         />
       </Modal>
+
+      <Modal
+  title="Reject Payment Request"
+  open={rejectionModalVisible}
+  onCancel={() => setRejectionModalVisible(false)}
+  onOk={confirmRejection}
+  okText="Reject"
+  okButtonProps={{ danger: true }}
+>
+  <Text>Reason for rejection:</Text>
+  <textarea
+    value={rejectionReason}
+    onChange={(e) => setRejectionReason(e.target.value)}
+    rows={4}
+    style={{ width: '100%', marginTop: 8 }}
+    placeholder="e.g. Payment code is invalid or used already"
+  />
+</Modal>
+
     </div>
   );
 }
