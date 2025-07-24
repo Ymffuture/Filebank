@@ -137,6 +137,12 @@ export default function ChangePlanPage() {
             Submitted {dayjs(statusData.createdAt).fromNow()}
           </Text>
         )}
+        {upgradeStatus === 'rejected' && statusData?.rejectionReason && (
+  <Paragraph type="danger" style={{ color: 'red' }}>
+    Reason: {statusData.rejectionReason}
+  </Paragraph>
+)}
+
       </div>
     );
   };
