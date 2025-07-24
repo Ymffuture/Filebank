@@ -118,7 +118,6 @@ setMessages(prev => [...prev, createMessage('bot', AI_ERROR_MESSAGE, 'error')]);
         title="Quick Assistant"
         open={visible}
         onCancel={() => setVisible(false)}
-        footer={<Link to='/full-screen-ai' >Full screen</Link> }
         width={500}
         bodyStyle={{ maxHeight: '80vh', overflowY: 'auto', paddingBottom: 0 }}
       >
