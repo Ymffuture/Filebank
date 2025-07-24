@@ -62,6 +62,15 @@ const handleApproveCode = async (id) => {
   }
 };
 
+const handleRejectCode = async (id) => {
+  try {
+    await api.put(`/admin/payment-requests/${id}`, { action: 'reject' });
+    enqueueSnackbar('Payment rejected', { variant: 'info' });
+    fetchPaymentRequests(); // refresh list
+  } catch {
+    enqueueSnackbar('Failed to reject payment', { variant: 'error' });
+  }
+};
 
   
   useEffect(() => {
@@ -248,36 +257,54 @@ const handleApproveCode = async (id) => {
       renderItem={(item) => (
         <List.Item
           actions={[
-            <Popconfirm
-              title="Approve this plan upgrade?"
-              onConfirm={() => handleApproveCode(item._id)}
-              okText="Approve"
-              cancelText="Cancel"
-            >
-              <Button
-                type="primary"
-                size="small"
-                loading={approving === item._id}
-              >
-                Approve
-              </Button>
-            </Popconfirm>
+            <>
+  <Popconfirm
+    title="Approve this plan upgrade?"
+    onConfirm={() => handleApproveCode(item._id)}
+    okText="Approve"
+    cancelText="Cancel"
+  >
+    <Button
+      type="primary"
+      size="small"
+      loading={approving === item._id}
+    >
+      Approve
+    </Button>
+  </Popconfirm>
+
+  <Button
+    danger
+    size="small"
+    onClick={() => handleRejectCode(item._id)}
+    style={{ marginLeft: 8 }}
+  >
+    Reject
+  </Button>
+</>
+
           ]}
         >
           <List.Item.Meta
   title={<Text strong>{item.email}</Text>}
   description={
     <>
-      <div>Code: <Text code>{item.paymentCode}</Text></div>
-      <div>Requested Plan: <Tag color="blue">{item.plan}</Tag></div>
-      <div>Status: <Tag color={
-        item.status === 'approved' ? 'green' :
-        item.status === 'rejected' ? 'red' : 'orange'
-      }>{item.status.toUpperCase()}</Tag></div>
-    </>
+  <div>Code: <Text code>{item.paymentCode}</Text></div>
+  <div>Requested Plan: <Tag color="blue">{item.plan}</Tag></div>
+  <div>Status: <Tag color={
+    item.status === 'approved' ? 'green' :
+    item.status === 'rejected' ? 'red' : 'orange'
+  }>{item.status.toUpperCase()}</Tag></div>
+  <div>
+    Requested At:{' '}
+    <Text type="secondary">
+      {new Date(item.createdAt).toLocaleString()}
+    </Text>
+  </div>
+</>
+
   }
 />
-
         </List.Item>
       )}
     />
