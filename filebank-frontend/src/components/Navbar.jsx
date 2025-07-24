@@ -151,7 +151,7 @@ export default function Navbar() {
           onClick: () => {
             if (!canAccess('feedback')) {
               message.info('Upgrade your plan to send feedback');
-              navigate('/upgrade');
+              navigate('/change-plan');
             } else {
               navigate('/feedback');
             }
@@ -245,7 +245,7 @@ export default function Navbar() {
             onClick: () => {
               if (item.feature && !canAccess(item.feature)) {
                 message.info('Upgrade your plan to access this feature');
-                navigate('/upgrade');
+                navigate('/change-plan');
               } else {
                 navigate(item.path);
               }
