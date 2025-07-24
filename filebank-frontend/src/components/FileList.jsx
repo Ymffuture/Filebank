@@ -285,8 +285,8 @@ actions={[
         <Button type="text" disabled icon={<><ShieldCheck size={14} className="text-yellow-500 mr-1" /><DownloadOutlined /></>} />
       </Tooltip>
 
-      <Tooltip key="disabled-copy" title="Premium users can copy links">
-        <Button type="text" disabled icon={<><ShieldCheck size={14} className="text-yellow-500 mr-1" /><CopyOutlined /></>} />
+      <Tooltip key="copy" title="Copy link">
+        <Button type="text" icon={<CopyOutlined />} onClick={() => copyLink(downloadUrl)} />
       </Tooltip>
 
       <Tooltip key="disabled-wa" title="Premium users can share via WhatsApp">
