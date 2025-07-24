@@ -1,7 +1,5 @@
-import React, { useState, useEffect, useRef } from 'react';
-import {
-  Card, Row, Col, Button, Typography, message, Form, Input, Badge as AntBadge,
-} from 'antd';
+import React, { useState, useEffect } from 'react';
+import { Card, Row, Col, Button, Typography, message, Form, Input, Badge as AntBadge } from 'antd';
 import { ArrowLeftOutlined } from '@ant-design/icons';
 import { Check, X, ThumbsUp, ThumbsDown, Hourglass } from 'lucide-react';
 import api from '../api/fileApi';
@@ -52,9 +50,9 @@ const planFeatures = {
 };
 
 const plans = [
-  { name: 'Free', price: 'R0.00', description: 'Basic access', role: 'free' },
-  { name: 'Standard', price: 'R19.00 Once', description: 'CV + Cover Letter help', role: 'standard' },
-  { name: 'Premium', price: 'R39.00 Once', description: 'AI assistant + early features', role: 'premium' },
+  { name: 'Free', price: 'R0', description: 'Basic access', role: 'free' },
+  { name: 'Standard', price: 'R79/month', description: 'CV + Cover Letter help', role: 'standard' },
+  { name: 'Premium', price: 'R129/month', description: 'AI assistant + early features', role: 'premium' },
 ];
 
 export default function ChangePlanPage() {
@@ -62,10 +60,8 @@ export default function ChangePlanPage() {
   const [selectedPlan, setSelectedPlan] = useState(null);
   const [upgradeStatus, setUpgradeStatus] = useState(null);
   const [statusData, setStatusData] = useState(null);
-  const [refreshCount, setRefreshCount] = useState(0);
-  const intervalRef = useRef(null);
-  const user = JSON.parse(localStorage.getItem('filebankUser'));
   const [form] = Form.useForm();
+  const user = JSON.parse(localStorage.getItem('filebankUser'));
 
   const handleChoosePlan = (plan) => {
     setSelectedPlan(plan);
@@ -101,50 +97,11 @@ export default function ChangePlanPage() {
       message.success(`Code submitted! Waiting for admin to approve your ${selectedPlan.role} plan.`);
     } catch (err) {
       console.error(err);
-      message.error(err?.response?.data?.message || 'Code submission failed');
+      message.error('Code submission failed');
     } finally {
       setLoading(false);
     }
   };
-
-  // Fetch latest payment request status
-const fetchStatus = async () => {
-  if (!user?._id) return;
-  try {
-    const { data } = await api.get(`/admin/payment-requests/${user._id}`);
-    if (Array.isArray(data) && data.length > 0) {
-      const latest = data[data.length - 1];
-
-      setStatusData(latest);
-      setUpgradeStatus(latest.status);
-
-      const matchedPlan = plans.find((p) => p.role === latest.plan);
-      if (matchedPlan) {
-        setSelectedPlan(matchedPlan);
-      }
-    }
-  } catch (err) {
-    console.error('Status fetch error:', err);
-  }
-};
-
-// Auto-fetch and refresh
-useEffect(() => {
-  fetchStatus(); // load from backend
-
-  let refreshLimit = 0;
-
-  intervalRef.current = setInterval(() => {
-    const modalOpen = document.querySelector('.ant-modal-root')?.style.display === 'block';
-    if (!modalOpen && refreshLimit < 15) {
-      fetchStatus();
-      refreshLimit += 1;
-    }
-  }, 3000);
-
-  return () => clearInterval(intervalRef.current);
-}, []);
-
 
   const renderStatusBadge = () => {
     if (!upgradeStatus) return null;
@@ -180,12 +137,34 @@ useEffect(() => {
             Submitted {dayjs(statusData.createdAt).fromNow()}
           </Text>
         )}
-        {upgradeStatus === 'rejected' && (
-          <Paragraph type="danger">Reason: {statusData?.rejectionReason || 'No reason provided'}</Paragraph>
-        )}
+        
+        {request.status === 'rejected' && (
+  <Paragraph type="danger">Reason: {request.rejectionReason}</Paragraph>
+)}
+
       </div>
     );
   };
+
+  useEffect(() => {
+    const fetchStatus = async () => {
+      if (!user?._id) return;
+      try {
+        const { data } = await api.get(`/admin/payment-requests/${user._id}`);
+        if (data?.status) {
+          setStatusData(data);
+          setUpgradeStatus(data.status);
+          if (data.plan) {
+            const planMatch = plans.find(p => p.role === data.plan);
+            if (planMatch) setSelectedPlan(planMatch);
+          }
+        }
+      } catch (err) {
+        console.warn('No upgrade status found');
+      }
+    };
+    fetchStatus();
+  }, []);
 
   return (
     <div className="min-h-screen bg-gray-50 p-6">
@@ -193,8 +172,8 @@ useEffect(() => {
         <Button icon={<ArrowLeftOutlined />} onClick={() => window.history.back()}>
           Back
         </Button>
-        <Title level={3} style={{ marginBottom: 0, color: '#666' }}>
-          Pricing with NO MONTHLY FEES
+        <Title level={3} style={{ marginBottom: 0, color: '#1E90FF' }}>
+          Pricing
         </Title>
         <div />
       </div>
@@ -254,7 +233,13 @@ useEffect(() => {
           </Title>
           <Paragraph>
             After sending the WhatsApp message, please return to this page and paste your transaction code below.
+            This code will be verified by the admin. Your upgrade status will show as:
           </Paragraph>
+          <ul className="list-disc ml-6 text-sm text-gray-700">
+            <li><strong>Pending:</strong> Waiting for admin confirmation</li>
+            <li><strong>Approved:</strong> Your plan is active</li>
+            <li><strong>Rejected:</strong> Code invalid or payment issue</li>
+          </ul>
 
           <Form form={form} layout="vertical" onFinish={handleSimulatePayment} className="mt-6">
             <Form.Item
@@ -264,7 +249,12 @@ useEffect(() => {
             >
               <Input placeholder="e.g. 45TRJ970" />
             </Form.Item>
-            <Button type="primary" htmlType="submit" loading={loading} block>
+            <Button
+              type="primary"
+              htmlType="submit"
+              loading={loading}
+              block
+            >
               Submit Code
             </Button>
           </Form>
@@ -273,4 +263,3 @@ useEffect(() => {
     </div>
   );
 }
-
