@@ -49,18 +49,19 @@ const fetchPaymentRequests = async () => {
 };
 
 const handleApproveCode = async (id) => {
-  setApproving(id);
-  try {
-    await api.post(`/admin/payment-requests/${id}/approve`);
-    enqueueSnackbar('Code approved and user upgraded', { variant: 'success' });
-    fetchUsers(); // refresh roles
-    fetchPaymentRequests(); // remove approved entry
-  } catch {
-    enqueueSnackbar('Failed to approve code', { variant: 'error' });
-  } finally {
-    setApproving(null);
-  }
+  setApproving(id);
+  try {
+    await api.put(`/admin/payment-requests/${id}`, { action: 'approve' });
+    enqueueSnackbar('Code approved and user upgraded', { variant: 'success' });
+    fetchUsers(); // refresh roles
+    fetchPaymentRequests(); // remove approved entry
+  } catch {
+    enqueueSnackbar('Failed to approve code', { variant: 'error' });
+  } finally {
+    setApproving(null);
+  }
 };
+
 
 const handleRejectCode = async (id) => {
   try {
