@@ -153,6 +153,10 @@ export default function FileUpload({ onUpload, currentUserFileCount = 0, userRol
       enqueueSnackbar('Invalid file type', { variant: 'warning' });
       return Upload.LIST_IGNORE;
     }
+if (fileList.length > 5) {
+  enqueueSnackbar("Maximum 5 files allowed per upload.", { variant: "warning" });
+  return;
+}
 
     const isLt5M = file.size / 1024 / 1024 < 5;
     if (!isLt5M) {
@@ -178,7 +182,7 @@ export default function FileUpload({ onUpload, currentUserFileCount = 0, userRol
     setText2("");
   }}
   fileList={files}
-  multiple={userRole !== 'Free'}
+  multiple={userRole !== 'Free'? true:false }
   showUploadList={{
     showPreviewIcon: true,
     showRemoveIcon: true,
