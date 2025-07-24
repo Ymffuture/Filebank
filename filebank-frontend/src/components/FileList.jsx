@@ -242,9 +242,9 @@ const ErrorFallback = ({ onRetry }) => (
                 actions={[
                   <a key="download" href={downloadUrl} download={file.filename}><DownloadOutlined /></a>,
                   <Tooltip key="copy" title="Copy link"><Button type="text" icon={<CopyOutlined />} onClick={() => copyLink(downloadUrl)} /></Tooltip>,
-                  <a key="wa" href={`https://wa.me/?text=${encodeURIComponent(downloadUrl)}`} target="_blank" rel="noopener noreferrer"><FaWhatsapp /></a>,
-                  <a key="tw" href={`https://twitter.com/intent/tweet?url=${encodeURIComponent(downloadUrl)}`} target="_blank" rel="noopener noreferrer"><FaXTwitter /></a>,
-                  <a key="li" href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(downloadUrl)}`} target="_blank" rel="noopener noreferrer"><FaLinkedin /></a>,
+                  <a key="wa" href={waUrl} target="_blank" rel="noopener noreferrer"><Button type="text" icon={<FaWhatsapp />} /></a>,
+                  <a key="tw" href={twUrl} target="_blank" rel="noopener noreferrer"><Button type="text" icon={<FaXTwitter />} /></a>,
+                  <a key="li" href={liUrl} target="_blank" rel="noopener noreferrer"><Button type="text" icon={<FaLinkedin />} /></a>,
                   <Popconfirm key="delete" title="Delete this file?" onConfirm={() => handleDelete(file.slug)}>
                     <Button danger type="text" icon={<DeleteOutlined />} loading={deleting === file.slug} />
                   </Popconfirm>
