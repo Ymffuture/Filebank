@@ -9,7 +9,7 @@ import { useNavigate } from 'react-router-dom';
 import { useSnackbar } from 'notistack';
 import api from '../api/fileApi';
 import LexicalNotificationEditor from './LexicalNotificationEditor';
-import PaymentLog from './adminsec';
+import PaymentLog from './Adminsec';
 const { Text } = Typography;
 const { SubMenu } = Menu;
 
