@@ -3,6 +3,9 @@ import { Card, Row, Col, Button, Typography, message, Form, Input, Badge as AntB
 import { ArrowLeftOutlined } from '@ant-design/icons';
 import { Check, X, ThumbsUp, ThumbsDown, Hourglass } from 'lucide-react';
 import api from '../api/fileApi';
+import dayjs from 'dayjs';
+import relativeTime from 'dayjs/plugin/relativeTime';
+dayjs.extend(relativeTime);
 
 const { Title, Paragraph, Text } = Typography;
 
@@ -56,6 +59,7 @@ export default function ChangePlanPage() {
   const [loading, setLoading] = useState(false);
   const [selectedPlan, setSelectedPlan] = useState(null);
   const [upgradeStatus, setUpgradeStatus] = useState(null);
+  const [statusData, setStatusData] = useState(null);
   const [form] = Form.useForm();
   const user = JSON.parse(localStorage.getItem('filebankUser'));
 
@@ -74,17 +78,23 @@ export default function ChangePlanPage() {
         return;
       }
 
+      if (upgradeStatus === 'pending') {
+        message.warning('You already have a pending request.');
+        return;
+      }
+
       setLoading(true);
 
-      await api.post('/admin/payment-requests', {
+      const { data } = await api.post('/admin/payment-requests', {
         userId: user._id,
         email: user.email,
         plan: selectedPlan.role,
         paymentCode: values.paymentCode,
       });
 
-      message.success(`Code submitted! Waiting for admin to approve your ${selectedPlan.role} plan.`);
+      setStatusData(data);
       setUpgradeStatus('pending');
+      message.success(`Code submitted! Waiting for admin to approve your ${selectedPlan.role} plan.`);
     } catch (err) {
       console.error(err);
       message.error('Code submission failed');
@@ -117,9 +127,16 @@ export default function ChangePlanPage() {
     const current = statusMap[upgradeStatus];
 
     return (
-      <div className="flex items-center justify-center mt-3 gap-2">
-        {current.icon}
-        <AntBadge color={current.color} text={current.text} />
+      <div className="flex flex-col items-center justify-center mt-3 gap-1">
+        <div className="flex items-center gap-2">
+          {current.icon}
+          <AntBadge color={current.color} text={current.text} />
+        </div>
+        {statusData?.createdAt && (
+          <Text type="secondary" className="text-xs">
+            Submitted {dayjs(statusData.createdAt).fromNow()}
+          </Text>
+        )}
       </div>
     );
   };
@@ -130,14 +147,19 @@ export default function ChangePlanPage() {
       try {
         const { data } = await api.get(`/admin/payment-requests/${user._id}`);
         if (data?.status) {
+          setStatusData(data);
           setUpgradeStatus(data.status);
+          if (data.plan) {
+            const planMatch = plans.find(p => p.role === data.plan);
+            if (planMatch) setSelectedPlan(planMatch);
+          }
         }
       } catch (err) {
         console.warn('No upgrade status found');
       }
     };
     fetchStatus();
-  }, [selectedPlan?.role]);
+  }, []);
 
   return (
     <div className="min-h-screen bg-gray-50 p-6">
@@ -199,7 +221,7 @@ export default function ChangePlanPage() {
         })}
       </Row>
 
-      {selectedPlan && (
+      {selectedPlan && upgradeStatus !== 'approved' && (
         <div className="mt-10 max-w-xl mx-auto bg-white p-6 rounded-lg shadow">
           <Title level={4} style={{ color: '#333' }}>
             What’s Next for the {selectedPlan.name} Plan
@@ -220,7 +242,7 @@ export default function ChangePlanPage() {
               label="Transaction Code"
               rules={[{ required: true, message: 'Please enter your payment code.' }]}
             >
-              <Input placeholder="e.g. ABC123456" />
+              <Input placeholder="e.g. 45TRJ970" />
             </Form.Item>
             <Button
               type="primary"
