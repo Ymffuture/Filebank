@@ -168,7 +168,7 @@ export default function ChangePlanPage() {
           Back
         </Button>
         <Title level={3} style={{ marginBottom: 0, color: '#1E90FF' }}>
-          Quorvex Institute – Upgrade Plan
+          Pricing
         </Title>
         <div />
       </div>
