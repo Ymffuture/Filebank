@@ -19,7 +19,8 @@ export default function FileUpload({ onUpload, currentUserFileCount = 0 }) {
   const [text, setText] = useState("");
   const [text2, setText2] = useState("");
   const { enqueueSnackbar } = useSnackbar();
-
+const storedUser = JSON.parse(localStorage.getItem('filebankUser'));
+const userRole = storedUser?.role || 'Free';
   const handleSubmit = async () => {
     if (files.length === 0) {
       setText('No files selected.');
@@ -152,6 +153,10 @@ export default function FileUpload({ onUpload, currentUserFileCount = 0 }) {
       enqueueSnackbar('Invalid file type', { variant: 'warning' });
       return Upload.LIST_IGNORE;
     }
+if (fileList.length > 5) {
+  enqueueSnackbar("Maximum 5 files allowed per upload.", { variant: "warning" });
+  return;
+}
 
     const isLt5M = file.size / 1024 / 1024 < 5;
     if (!isLt5M) {
@@ -164,8 +169,9 @@ export default function FileUpload({ onUpload, currentUserFileCount = 0 }) {
   }}
   onChange={({ fileList }) => {
     let updatedList = fileList;
+    const FREE_UPLOAD_LIMIT = 1;
 
-    if (userRole === 'Free' && fileList.length > 1) {
+    if (userRole === 'Free' && fileList.length >FREE_UPLOAD_LIMIT) {
       updatedList = [fileList[fileList.length - 1]];
       setText("Free users can only upload one file at a time.");
       enqueueSnackbar("Free users can only upload one file per upload.", { variant: "info" });
