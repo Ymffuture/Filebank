@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { Card, Row, Col, Button, Typography, message, Form, Input, Badge as AntBadge } from 'antd';
+import { Card, Row, Col, Button, Typography, Form, Input, Badge as AntBadge } from 'antd';
 import { ArrowLeftOutlined } from '@ant-design/icons';
 import { Check, X, ThumbsUp, ThumbsDown, Hourglass } from 'lucide-react';
+import { useSnackbar } from 'notistack';
 import api from '../api/fileApi';
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
+
 dayjs.extend(relativeTime);
 
 const { Title, Paragraph, Text } = Typography;
@@ -61,6 +63,7 @@ export default function ChangePlanPage() {
   const [upgradeStatus, setUpgradeStatus] = useState(null);
   const [statusData, setStatusData] = useState(null);
   const [form] = Form.useForm();
+  const { enqueueSnackbar } = useSnackbar();
   const user = JSON.parse(localStorage.getItem('filebankUser'));
 
   const handleChoosePlan = (plan) => {
@@ -74,12 +77,12 @@ export default function ChangePlanPage() {
     try {
       const values = await form.validateFields();
       if (!user || !user._id) {
-        message.error('User not found.');
+        enqueueSnackbar('User not found.', { variant: 'error' });
         return;
       }
 
       if (upgradeStatus === 'pending') {
-        message.warning('You already have a pending request.');
+        enqueueSnackbar('You already have a pending request.', { variant: 'warning' });
         return;
       }
 
@@ -94,10 +97,14 @@ export default function ChangePlanPage() {
 
       setStatusData(data);
       setUpgradeStatus('pending');
-      message.success(`Code submitted! Waiting for admin to approve your ${selectedPlan.role} plan.`);
+      enqueueSnackbar(`Code submitted! Waiting for admin to approve your ${selectedPlan.role} plan.`, {
+        variant: 'success',
+      });
+
+      form.resetFields(); // ✅ clear form
     } catch (err) {
       console.error(err);
-      message.error('Code submission failed');
+      enqueueSnackbar('Code submission failed', { variant: 'error' });
     } finally {
       setLoading(false);
     }
@@ -138,11 +145,10 @@ export default function ChangePlanPage() {
           </Text>
         )}
         {upgradeStatus === 'rejected' && statusData?.rejectionReason && (
-  <Paragraph type="danger" style={{ color: 'red' }}>
-    Reason: {statusData.rejectionReason}
-  </Paragraph>
-)}
-
+          <Paragraph type="danger" style={{ color: 'red' }}>
+            Reason: {statusData.rejectionReason}
+          </Paragraph>
+        )}
       </div>
     );
   };
@@ -156,8 +162,13 @@ export default function ChangePlanPage() {
           setStatusData(data);
           setUpgradeStatus(data.status);
           if (data.plan) {
-            const planMatch = plans.find(p => p.role === data.plan);
+            const planMatch = plans.find((p) => p.role === data.plan);
             if (planMatch) setSelectedPlan(planMatch);
+          }
+
+          if (data.status === 'approved' && data.plan && user?.role !== data.plan) {
+            const updatedUser = { ...user, role: data.plan };
+            localStorage.setItem('filebankUser', JSON.stringify(updatedUser));
           }
         }
       } catch (err) {
@@ -234,7 +245,6 @@ export default function ChangePlanPage() {
           </Title>
           <Paragraph>
             After sending the WhatsApp message, please return to this page and paste your transaction code below.
-            This code will be verified by the admin. Your upgrade status will show as:
           </Paragraph>
           <ul className="list-disc ml-6 text-sm text-gray-700">
             <li><strong>Pending:</strong> Waiting for admin confirmation</li>
@@ -264,3 +274,4 @@ export default function ChangePlanPage() {
     </div>
   );
 }
+
