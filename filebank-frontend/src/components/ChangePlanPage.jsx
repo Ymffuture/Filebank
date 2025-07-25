@@ -1,15 +1,18 @@
 import React, { useState, useEffect } from 'react';
-import { Card, Row, Col, Button, Typography, message, Form, Input, Badge as AntBadge } from 'antd';
+import {
+  Card, Row, Col, Button, Typography, message,
+  Form, Input, Badge as AntBadge
+} from 'antd';
 import { ArrowLeftOutlined } from '@ant-design/icons';
 import { Check, X, ThumbsUp, ThumbsDown, Hourglass } from 'lucide-react';
 import api from '../api/fileApi';
 import dayjs from 'dayjs';
-import { useSnackbar } from 'notistack';
 import relativeTime from 'dayjs/plugin/relativeTime';
-dayjs.extend(relativeTime);
+import { useSnackbar } from 'notistack';
 
+dayjs.extend(relativeTime);
 const { Title, Paragraph, Text } = Typography;
-const { enqueueSnackbar } = useSnackbar();
+
 const PlanFeature = ({ enabled, label }) => (
   <div className="flex items-center gap-2 text-sm text-gray-700">
     {enabled ? <Check className="text-green-600 w-4 h-4" /> : <X className="text-red-500 w-4 h-4" />}
@@ -18,36 +21,9 @@ const PlanFeature = ({ enabled, label }) => (
 );
 
 const planFeatures = {
-  free: {
-    upload: false,
-    support: true,
-    share: false,
-    autoDelete: false,
-    ai: false,
-    cv: false,
-    agents: false,
-    feedback: false,
-  },
-  standard: {
-    upload: true,
-    support: true,
-    share: true,
-    autoDelete: true,
-    ai: false,
-    cv: true,
-    agents: false,
-    feedback: true,
-  },
-  premium: {
-    upload: true,
-    support: true,
-    share: true,
-    autoDelete: true,
-    ai: true,
-    cv: true,
-    agents: true,
-    feedback: true,
-  },
+  free: { upload: false, support: true, share: false, autoDelete: false, ai: false, cv: false, agents: false, feedback: false },
+  standard: { upload: true, support: true, share: true, autoDelete: true, ai: false, cv: true, agents: false, feedback: true },
+  premium: { upload: true, support: true, share: true, autoDelete: true, ai: true, cv: true, agents: true, feedback: true },
 };
 
 const plans = [
@@ -62,6 +38,7 @@ export default function ChangePlanPage() {
   const [upgradeStatus, setUpgradeStatus] = useState(null);
   const [statusData, setStatusData] = useState(null);
   const [form] = Form.useForm();
+  const { enqueueSnackbar } = useSnackbar();
   const user = JSON.parse(localStorage.getItem('filebankUser'));
 
   const handleChoosePlan = (plan) => {
@@ -139,11 +116,10 @@ export default function ChangePlanPage() {
           </Text>
         )}
         {upgradeStatus === 'rejected' && statusData?.rejectionReason && (
-  <Paragraph type="danger" style={{ color: 'red' }}>
-    Reason: {statusData.rejectionReason}
-  </Paragraph>
-)}
-
+          <Paragraph type="danger" style={{ color: 'red' }}>
+            Reason: {statusData.rejectionReason}
+          </Paragraph>
+        )}
       </div>
     );
   };
@@ -156,17 +132,18 @@ export default function ChangePlanPage() {
         if (data?.status) {
           setStatusData(data);
           setUpgradeStatus(data.status);
+
           if (data.plan) {
-            const planMatch = plans.find(p => p.role === data.plan);
-            if (planMatch) setSelectedPlan(planMatch);
+            const match = plans.find((p) => p.role === data.plan);
+            if (match) setSelectedPlan(match);
           }
         }
       } catch (err) {
-        console.warn('No upgrade status found');
+        console.warn('No upgrade status found:', err);
       }
     };
     fetchStatus();
-  }, []);
+  }, [user?._id]);
 
   return (
     <div className="min-h-screen bg-gray-50 p-6">
@@ -198,7 +175,7 @@ export default function ChangePlanPage() {
                 }}
                 actions={[
                   <Button
-                    type="primary"
+                    type={isCurrent ? 'default' : 'primary'}
                     block
                     disabled={isCurrent}
                     onClick={() => handleChoosePlan(plan)}
@@ -234,8 +211,8 @@ export default function ChangePlanPage() {
             What’s Next for the {selectedPlan.name} Plan
           </Title>
           <Paragraph>
-            After sending the WhatsApp message, please return to this page and paste your transaction code below.
-            This code will be verified by the admin. Your upgrade status will show as:
+            After sending the WhatsApp message, return here and paste your transaction code.
+            The code will be verified by the admin.
           </Paragraph>
           <ul className="list-disc ml-6 text-sm text-gray-700">
             <li><strong>Pending:</strong> Waiting for admin confirmation</li>
@@ -251,12 +228,7 @@ export default function ChangePlanPage() {
             >
               <Input placeholder="e.g. 45TRJ970" />
             </Form.Item>
-            <Button
-              type="primary"
-              htmlType="submit"
-              loading={loading}
-              block
-            >
+            <Button type="primary" htmlType="submit" loading={loading} block>
               Submit Code
             </Button>
           </Form>
@@ -265,3 +237,4 @@ export default function ChangePlanPage() {
     </div>
   );
 }
+
