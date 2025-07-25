@@ -102,18 +102,24 @@ export default function Navbar() {
   };
 
   const canAccess = (feature) => {
-    const role = user?.role;
-    if (!role) return false;
-    switch (feature) {
-      case 'feedback': return role !== 'free';
-      case 'ai': return ['premium', 'admin'].includes(role);
-      case 'cv-tips':
-      case 'coverletter-tips':
-      case 'agent':
-        return ['standard', 'premium', 'admin'].includes(role);
-      default: return true;
-    }
-  };
+  const role = user?.role;
+  if (!role) return false;
+
+  switch (feature) {
+    case 'feedback':
+      return role !== 'free';
+    case 'ai':
+      return ['premium', 'admin'].includes(role);
+    case 'cv-tips':
+    case 'coverletter-tips':
+      return ['standard', 'premium', 'admin'].includes(role);
+    case 'agent':
+      return ['premium', 'admin'].includes(role); // updated line
+    default:
+      return true;
+  }
+};
+
 
   const getRoleColor = (role) => {
     switch (role) {
