@@ -4,11 +4,12 @@ import { ArrowLeftOutlined } from '@ant-design/icons';
 import { Check, X, ThumbsUp, ThumbsDown, Hourglass } from 'lucide-react';
 import api from '../api/fileApi';
 import dayjs from 'dayjs';
+import { useSnackbar } from 'notistack';
 import relativeTime from 'dayjs/plugin/relativeTime';
 dayjs.extend(relativeTime);
 
 const { Title, Paragraph, Text } = Typography;
-
+const { enqueueSnackbar } = useSnackbar();
 const PlanFeature = ({ enabled, label }) => (
   <div className="flex items-center gap-2 text-sm text-gray-700">
     {enabled ? <Check className="text-green-600 w-4 h-4" /> : <X className="text-red-500 w-4 h-4" />}
@@ -74,12 +75,12 @@ export default function ChangePlanPage() {
     try {
       const values = await form.validateFields();
       if (!user || !user._id) {
-        message.error('User not found.');
+        enqueueSnackbar('User not found.');
         return;
       }
 
       if (upgradeStatus === 'pending') {
-        message.warning('You already have a pending request.');
+        enqueueSnackbar('You already have a pending request.');
         return;
       }
 
@@ -94,10 +95,10 @@ export default function ChangePlanPage() {
 
       setStatusData(data);
       setUpgradeStatus('pending');
-      message.success(`Code submitted! Waiting for admin to approve your ${selectedPlan.role} plan.`);
+      enqueueSnackbar(`Code submitted! Waiting for admin to approve your ${selectedPlan.role} plan.`);
     } catch (err) {
       console.error(err);
-      message.error('Code submission failed');
+      enqueueSnackbar('Code submission failed');
     } finally {
       setLoading(false);
     }
