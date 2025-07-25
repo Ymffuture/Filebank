@@ -88,7 +88,7 @@ export default function Navbar() {
 
   const handleChangeRole = async () => {
     if (!user?._id || !user?.role) return;
-    const newRole = user.role === 'admin' ? 'account' : 'admin';
+    const newRole = user.role === 'admin' ? 'free' : 'admin';
     try {
       const res = await api.put(`/admin/users/${user._id}/role`, { role: newRole });
       const updatedUser = { ...user, role: newRole };
@@ -226,7 +226,7 @@ export default function Navbar() {
             </div>
             <div className="text-[10px] text-white/80">{user?.email}</div>
           </div>
-          <Tooltip title={`Role: ${user?.role}`}>
+          <Tooltip title={`You are currently on ${user?.role} plan`}>
             <Tag color={getRoleColor(user?.role)}>{user?.role?.toUpperCase()}</Tag>
           </Tooltip>
         </div>
