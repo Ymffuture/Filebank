@@ -238,12 +238,11 @@ const ErrorFallback = ({ onRetry }) => (
                       <Lottie animationData={NewBadgeAnimation} loop={false} style={{ width: 40, height: 40 }} />
                     )}
                   </Space>
-                }
-                
-actions={[
-  <Space key="actions" size="middle" style={{ justifyContent: 'center', width: '100%' }}>
+                }     
+        actions={[
+              <Space key="actions" size="middle" style={{ justifyContent: 'center', width: '100%' }}>
 
-    <Tooltip title="Download">
+             <Tooltip title="Download">
       <Button
         type="text"
         shape="circle"
@@ -318,8 +317,7 @@ actions={[
 
   </Space>
 ]}
-
-                
+ 
               >
                 <p className="text-gray-700"><ClockCircleOutlined style={{ marginRight: 4 }} /><strong>Uploaded:</strong> {formatted}</p>
                 {age > 0 && age < 180 && (
