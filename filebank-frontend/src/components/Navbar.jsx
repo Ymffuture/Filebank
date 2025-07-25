@@ -29,14 +29,14 @@ import { useSnackbar } from 'notistack';
 import { FaLock } from 'react-icons/fa';
 
 const { Header } = Layout;
-const { enqueueSnackbar } = useSnackbar();
+
 export default function Navbar() {
   const [user, setUser] = useState(() => JSON.parse(localStorage.getItem('filebankUser')));
   const [notifications, setNotifications] = useState(0);
   const [drawerVisible, setDrawerVisible] = useState(false);
   const [notifModalVisible, setNotifModalVisible] = useState(false);
   const navigate = useNavigate();
-
+  const { enqueueSnackbar } = useSnackbar();
   const playSound = () => {
     const audio = new Audio('/mix.mp3');
     audio.play().catch(() => {
