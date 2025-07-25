@@ -239,14 +239,7 @@ const ErrorFallback = ({ onRetry }) => (
                     )}
                   </Space>
                 }
-                import { Tooltip, Button, Space, Popconfirm } from 'antd';
-import {
-  DownloadOutlined,
-  CopyOutlined,
-  DeleteOutlined
-} from '@ant-design/icons';
-import { FaWhatsapp, FaXTwitter, FaLinkedin } from 'react-icons/fa6';
-
+                
 actions={[
   <Space key="actions" size="middle" style={{ justifyContent: 'center', width: '100%' }}>
 
