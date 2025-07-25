@@ -239,16 +239,93 @@ const ErrorFallback = ({ onRetry }) => (
                     )}
                   </Space>
                 }
-                actions={[
-                  <a key="download" href={downloadUrl} download={file.filename}><DownloadOutlined /></a>,
-                  <Tooltip key="copy" title="Copy link"><Button type="text" icon={<CopyOutlined />} onClick={() => copyLink(downloadUrl)} /></Tooltip>,
-                  <a key="wa" href={`https://wa.me/?text=${encodeURIComponent(downloadUrl)}`} target="_blank" rel="noopener noreferrer"><FaWhatsapp /></a>,
-                  <a key="tw" href={`https://twitter.com/intent/tweet?url=${encodeURIComponent(downloadUrl)}`} target="_blank" rel="noopener noreferrer"><FaXTwitter /></a>,
-                  <a key="li" href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(downloadUrl)}`} target="_blank" rel="noopener noreferrer"><FaLinkedin /></a>,
-                  <Popconfirm key="delete" title="Delete this file?" onConfirm={() => handleDelete(file.slug)}>
-                    <Button danger type="text" icon={<DeleteOutlined />} loading={deleting === file.slug} />
-                  </Popconfirm>
-                ]}
+                import { Tooltip, Button, Space, Popconfirm } from 'antd';
+import {
+  DownloadOutlined,
+  CopyOutlined,
+  DeleteOutlined
+} from '@ant-design/icons';
+import { FaWhatsapp, FaXTwitter, FaLinkedin } from 'react-icons/fa6';
+
+actions={[
+  <Space key="actions" size="middle" style={{ justifyContent: 'center', width: '100%' }}>
+
+    <Tooltip title="Download">
+      <Button
+        type="text"
+        shape="circle"
+        icon={<DownloadOutlined />}
+        style={{ background: '#e6f7ff', color: '#1890ff' }}
+        href={downloadUrl}
+        download={file.filename}
+      />
+    </Tooltip>
+
+    <Tooltip title="Copy link">
+      <Button
+        type="text"
+        shape="circle"
+        icon={<CopyOutlined />}
+        onClick={() => copyLink(downloadUrl)}
+        style={{ background: '#fff7e6', color: '#fa8c16' }}
+      />
+    </Tooltip>
+
+    <Tooltip title="Share on WhatsApp">
+      <Button
+        type="text"
+        shape="circle"
+        icon={<FaWhatsapp />}
+        href={`https://wa.me/?text=${encodeURIComponent(downloadUrl)}`}
+        target="_blank"
+        rel="noopener noreferrer"
+        style={{ background: '#dcf8c6', color: '#25D366' }}
+      />
+    </Tooltip>
+
+    <Tooltip title="Share on X">
+      <Button
+        type="text"
+        shape="circle"
+        icon={<FaXTwitter />}
+        href={`https://twitter.com/intent/tweet?url=${encodeURIComponent(downloadUrl)}`}
+        target="_blank"
+        rel="noopener noreferrer"
+        style={{ background: '#e8f5fd', color: '#1DA1F2' }}
+      />
+    </Tooltip>
+
+    <Tooltip title="Share on LinkedIn">
+      <Button
+        type="text"
+        shape="circle"
+        icon={<FaLinkedin />}
+        href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(downloadUrl)}`}
+        target="_blank"
+        rel="noopener noreferrer"
+        style={{ background: '#eef3f8', color: '#0077B5' }}
+      />
+    </Tooltip>
+
+    <Tooltip title="Delete file">
+      <Popconfirm
+        title="Delete this file?"
+        onConfirm={() => handleDelete(file.slug)}
+      >
+        <Button
+          danger
+          type="text"
+          shape="circle"
+          icon={<DeleteOutlined />}
+          loading={deleting === file.slug}
+          style={{ background: '#fff1f0', color: '#ff4d4f' }}
+        />
+      </Popconfirm>
+    </Tooltip>
+
+  </Space>
+]}
+
                 
               >
                 <p className="text-gray-700"><ClockCircleOutlined style={{ marginRight: 4 }} /><strong>Uploaded:</strong> {formatted}</p>
