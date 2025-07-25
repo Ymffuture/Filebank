@@ -240,17 +240,16 @@ const ErrorFallback = ({ onRetry }) => (
                   </Space>
                 }     
         actions={[
-              <Space key="actions" size="middle" style={{ justifyContent: 'center', width: '100%' }}>
-
-             <Tooltip title="Download">
-      <Button
-        type="text"
-        shape="circle"
-        icon={<DownloadOutlined />}
-        style={{ background: '#e6f7ff', color: '#1890ff' }}
-        href={downloadUrl}
-        download={file.filename}
-      />
+  <Space key="actions" size="middle" style={{ justifyContent: 'center', width: '100%' }}>
+    <Tooltip title="Download">
+      <a href={downloadUrl} download={file.filename}>
+        <Button
+          type="text"
+          shape="circle"
+          icon={<DownloadOutlined />}
+          style={{ background: '#e6f7ff', color: '#1890ff' }}
+        />
+      </a>
     </Tooltip>
 
     <Tooltip title="Copy link">
@@ -264,39 +263,48 @@ const ErrorFallback = ({ onRetry }) => (
     </Tooltip>
 
     <Tooltip title="Share on WhatsApp">
-      <Button
-        type="text"
-        shape="circle"
-        icon={<FaWhatsapp />}
+      <a
         href={`https://wa.me/?text=${encodeURIComponent(downloadUrl)}`}
         target="_blank"
         rel="noopener noreferrer"
-        style={{ background: '#dcf8c6', color: '#25D366' }}
-      />
+      >
+        <Button
+          type="text"
+          shape="circle"
+          icon={<FaWhatsapp />}
+          style={{ background: '#dcf8c6', color: '#25D366' }}
+        />
+      </a>
     </Tooltip>
 
     <Tooltip title="Share on X">
-      <Button
-        type="text"
-        shape="circle"
-        icon={<FaXTwitter />}
+      <a
         href={`https://twitter.com/intent/tweet?url=${encodeURIComponent(downloadUrl)}`}
         target="_blank"
         rel="noopener noreferrer"
-        style={{ background: '#e8f5fd', color: '#1DA1F2' }}
-      />
+      >
+        <Button
+          type="text"
+          shape="circle"
+          icon={<FaXTwitter />}
+          style={{ background: '#e8f5fd', color: '#1DA1F2' }}
+        />
+      </a>
     </Tooltip>
 
     <Tooltip title="Share on LinkedIn">
-      <Button
-        type="text"
-        shape="circle"
-        icon={<FaLinkedin />}
+      <a
         href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(downloadUrl)}`}
         target="_blank"
         rel="noopener noreferrer"
-        style={{ background: '#eef3f8', color: '#0077B5' }}
-      />
+      >
+        <Button
+          type="text"
+          shape="circle"
+          icon={<FaLinkedin />}
+          style={{ background: '#eef3f8', color: '#0077B5' }}
+        />
+      </a>
     </Tooltip>
 
     <Tooltip title="Delete file">
@@ -314,11 +322,10 @@ const ErrorFallback = ({ onRetry }) => (
         />
       </Popconfirm>
     </Tooltip>
-
   </Space>
 ]}
- 
               >
+                
                 <p className="text-gray-700"><ClockCircleOutlined style={{ marginRight: 4 }} /><strong>Uploaded:</strong> {formatted}</p>
                 {age > 0 && age < 180 && (
                   <Alert type="warning" showIcon className="m-4" message={`Will be deleted in ${180 - age} days.`} />
