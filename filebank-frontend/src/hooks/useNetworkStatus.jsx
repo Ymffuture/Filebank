@@ -9,15 +9,19 @@ const useNetworkStatus = () => {
 
   useEffect(() => {
     const toastStyle = {
-      background: '#555',
+      background: '#000',
       color: '#fff',
-    //  borderRadius: '8px',
-      boxShadow: '0 4px 12px rgba(0,0,0,0.15)',
-      padding: '12px 16px',
+      padding: '6px 8px',
       fontSize: '14px',
       fontWeight: '500',
     };
-
+const _toastStyle = {
+      background: '#1E90FF',
+      color: '#fff',
+      padding: '6px 8px',
+      fontSize: '14px',
+      fontWeight: '500',
+    };
     const iconStyle = {
       marginRight: 8,
       opacity: 0.8,
@@ -33,7 +37,7 @@ const useNetworkStatus = () => {
             </span>
           ),
           type: 'default',
-          style: toastStyle,
+          style: _toastStyle,
           isLoading: false,
           autoClose: 2500,
           closeOnClick: false,
