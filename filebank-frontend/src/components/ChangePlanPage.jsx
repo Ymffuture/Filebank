@@ -132,16 +132,21 @@ export default function ChangePlanPage() {
           {current.icon}
           <AntBadge color={current.color} text={current.text} />
         </div>
-        {statusData?.createdAt && (
-          <Text type="secondary" className="text-xs">
-            Submitted {dayjs(statusData.createdAt).fromNow()}
-          </Text>
-        )}
-        {upgradeStatus === 'rejected' && statusData?.rejectionReason && (
-  <Paragraph type="danger" style={{ color: 'red' }}>
-    Reason: {statusData.rejectionReason}
-  </Paragraph>
+        {statusData && (
+  <>
+    {statusData?.createdAt && (
+      <Text type="secondary" className="text-xs">
+        Submitted {dayjs(statusData.createdAt).fromNow()}
+      </Text>
+    )}
+    {upgradeStatus === 'rejected' && statusData?.rejectionReason && (
+      <Paragraph type="danger" style={{ color: 'red' }}>
+        Reason: {statusData.rejectionReason}
+      </Paragraph>
+    )}
+  </>
 )}
+
 
       </div>
     );
