@@ -25,9 +25,11 @@ import { MdOutlineFeedback } from 'react-icons/md';
 import api from '../api/fileApi';
 import NotificationsModal from './NotificationsModal';
 import logo from '/Branded.svg';
+import { useSnackbar } from 'notistack';
+import { FaLock } from 'react-icons/fa';
 
 const { Header } = Layout;
-
+const { enqueueSnackbar } = useSnackbar();
 export default function Navbar() {
   const [user, setUser] = useState(() => JSON.parse(localStorage.getItem('filebankUser')));
   const [notifications, setNotifications] = useState(0);
@@ -86,21 +88,6 @@ export default function Navbar() {
     message.info('Logged out');
   };
 
-  const handleChangeRole = async () => {
-    if (!user?._id || !user?.role) return;
-    const newRole = user.role === 'admin' ? 'free' : 'admin';
-    try {
-      const res = await api.put(`/admin/users/${user._id}/role`, { role: newRole });
-      const updatedUser = { ...user, role: newRole };
-      localStorage.setItem('filebankUser', JSON.stringify(updatedUser));
-      setUser(updatedUser);
-      message.success(`Role changed to ${newRole}`);
-    } catch (error) {
-      console.error('Role change failed:', error);
-      message.error('Failed to change role');
-    }
-  };
-
   const canAccess = (feature) => {
   const role = user?.role;
   if (!role) return false;
@@ -139,8 +126,8 @@ export default function Navbar() {
     { key: 'files', label: 'Files', icon: <FileOutlined />, path: '/files' },
     user?.role === 'admin' && { key: 'admin', label: 'Admin Panel', icon: <DashboardOutlined />, path: '/admin' },
     { key: 'ai', label: 'AI Features', icon: <RobotOutlined />, path: '/full-screen-ai', feature: 'ai' },
-    { key: 'cv-tips', label: 'CV Tips', icon: <FileTextOutlined />, path: '/cv-tips', feature: 'cv-tips' },
-    { key: 'coverletter-tips', label: 'Cover Letter Tips', icon: <FileTextOutlined />, path: '/coverletter-tips', feature: 'cv-tips' },
+    { key: 'cv-tips', label: 'Build CV & coverletter', icon: <FileTextOutlined />, path: '/cv', feature: 'cv-tips' },
+  //  { key: 'coverletter-tips', label: 'Cover Letter Tips', icon: <FileTextOutlined />, path: '/coverletter-tips', feature: 'cv-tips' },
     { key: 'agent', label: 'Agent', icon: <CustomerServiceOutlined />, path: '/agent', feature: 'agent' },
     { key: 'feedback', label: 'Feedback', icon: <MdOutlineFeedback />, path: '/feedback', feature: 'feedback' },
     { key: 'change-plan', label: 'Change Plan', icon: <CreditCardOutlined />, path: '/change-plan' },
@@ -163,12 +150,7 @@ export default function Navbar() {
             }
           },
         },
-        {
-          key: '3',
-          icon: <SwapOutlined />,
-          label: 'Switch Role',
-          onClick: handleChangeRole,
-        },
+        
         { key: '4', icon: <CreditCardOutlined />, label: 'Change Plan', onClick: () => navigate('/change-plan') },
         { key: '5', icon: <LogoutOutlined />, label: 'Logout', onClick: handleLogout },
       ]}
@@ -245,12 +227,12 @@ export default function Navbar() {
             label: (
               <Space>
                 {item.label}
-                {item.feature && !canAccess(item.feature) && <LockOutlined style={{ color: 'red' }} />}
+                {item.feature && !canAccess(item.feature) && <FaLock style={{ color: 'red' }} />}
               </Space>
             ),
             onClick: () => {
               if (item.feature && !canAccess(item.feature)) {
-                message.info('Upgrade your plan to access this feature');
+                enqueueSnackbar('Upgrade your plan to access this feature');
                 navigate('/change-plan');
               } else {
                 navigate(item.path);
