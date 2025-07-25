@@ -240,7 +240,6 @@ const ErrorFallback = ({ onRetry }) => (
                   </Space>
                 }     
         actions={[
-  <Space key="actions" size="middle" style={{ justifyContent: 'center', width: '100%' }}>
     <Tooltip title="Download">
       <a href={downloadUrl} download={file.filename}>
         <Button
@@ -250,7 +249,7 @@ const ErrorFallback = ({ onRetry }) => (
           style={{ background: '#e6f7ff', color: '#1890ff' }}
         />
       </a>
-    </Tooltip>
+    </Tooltip>, 
 
     <Tooltip title="Copy link">
       <Button
@@ -260,7 +259,7 @@ const ErrorFallback = ({ onRetry }) => (
         onClick={() => copyLink(downloadUrl)}
         style={{ background: '#fff7e6', color: '#fa8c16' }}
       />
-    </Tooltip>
+    </Tooltip>, 
 
     <Tooltip title="Share on WhatsApp">
       <a
@@ -275,7 +274,7 @@ const ErrorFallback = ({ onRetry }) => (
           style={{ background: '#dcf8c6', color: '#25D366' }}
         />
       </a>
-    </Tooltip>
+    </Tooltip>, 
 
     <Tooltip title="Share on X">
       <a
@@ -290,7 +289,7 @@ const ErrorFallback = ({ onRetry }) => (
           style={{ background: '#e8f5fd', color: '#1DA1F2' }}
         />
       </a>
-    </Tooltip>
+    </Tooltip>, 
 
     <Tooltip title="Share on LinkedIn">
       <a
@@ -305,7 +304,7 @@ const ErrorFallback = ({ onRetry }) => (
           style={{ background: '#eef3f8', color: '#0077B5' }}
         />
       </a>
-    </Tooltip>
+    </Tooltip>, 
 
     <Tooltip title="Delete file">
       <Popconfirm
@@ -322,7 +321,7 @@ const ErrorFallback = ({ onRetry }) => (
         />
       </Popconfirm>
     </Tooltip>
-  </Space>
+         
 ]}
               >
                 
