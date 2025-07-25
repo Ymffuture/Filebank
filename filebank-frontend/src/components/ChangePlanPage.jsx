@@ -21,15 +21,15 @@ const PlanFeature = ({ enabled, label }) => (
 );
 
 const planFeatures = {
-  free: { upload: false, support: true, share: false, autoDelete: false, ai: false, cv: false, agents: false, feedback: false },
+  free: { upload: true, support: true, share: false, autoDelete: false, ai: false, cv: false, agents: false, feedback: false },
   standard: { upload: true, support: true, share: true, autoDelete: true, ai: false, cv: true, agents: false, feedback: true },
   premium: { upload: true, support: true, share: true, autoDelete: true, ai: true, cv: true, agents: true, feedback: true },
 };
 
 const plans = [
   { name: 'Free', price: 'R0', description: 'Basic access', role: 'free' },
-  { name: 'Standard', price: 'R79/month', description: 'CV + Cover Letter help', role: 'standard' },
-  { name: 'Premium', price: 'R129/month', description: 'AI assistant + early features', role: 'premium' },
+  { name: 'Standard', price: 'R19 Once', description: 'CV + Cover Letter help', role: 'standard' },
+  { name: 'Premium', price: 'R39 Once', description: 'AI assistant + early features', role: 'premium' },
 ];
 
 export default function ChangePlanPage() {
@@ -44,7 +44,7 @@ export default function ChangePlanPage() {
   const handleChoosePlan = (plan) => {
     setSelectedPlan(plan);
     const whatsappMessage = `Hi, I would like to upgrade to the *${plan.name}* plan. My email is ${user?.email}`;
-    const whatsappUrl = `https://wa.me/27634414863?text=${encodeURIComponent(whatsappMessage)}`;
+    const whatsappUrl = `https://wa.me/27653935339?text=${encodeURIComponent(whatsappMessage)}`;
     window.open(whatsappUrl, '_blank');
   };
 
@@ -174,15 +174,25 @@ export default function ChangePlanPage() {
                   boxShadow: isSelected ? '0 4px 16px rgba(30,144,255,0.2)' : undefined,
                 }}
                 actions={[
-                  <Button
-                    type={isCurrent ? 'default' : 'primary'}
-                    block
-                    disabled={isCurrent}
-                    onClick={() => handleChoosePlan(plan)}
-                  >
-                    {isCurrent ? 'Current Plan' : 'Choose Plan'}
-                  </Button>,
-                ]}
+  <Button
+    type={isCurrent ? 'default' : 'primary'}
+    block
+    size="large"
+    disabled={isCurrent}
+    style={{
+      borderRadius: '8px',
+      fontWeight: 600,
+      backgroundColor: isCurrent ? '#f0f0f0' : '#1677ff',
+      color: isCurrent ? '#999' : '#fff',
+      boxShadow: !isCurrent && '0 4px 12px rgba(22, 119, 255, 0.3)',
+      transition: 'all 0.3s ease-in-out',
+    }}
+    onClick={() => !isCurrent && handleChoosePlan(plan)}
+  >
+    {isCurrent ? '✔ Current Plan' : '✨ Choose Plan'}
+  </Button>,
+]}
+
               >
                 <Title level={3} style={{ color: '#1E90FF' }}>{plan.price}</Title>
                 <Paragraph>{plan.description}</Paragraph>
