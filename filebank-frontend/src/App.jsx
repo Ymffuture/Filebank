@@ -13,7 +13,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import GoogleLoading from './pages/GoogleLoading';
 import GoogleLogout from './pages/GoogleLogout';
 
-
+const Agent = lazy(() =>import('./pages/Agent')) ;
 const CVTips = lazy(() =>import('./pages/CVTips'));
 const ChangePlanPage = lazy(() =>import('./components/ChangePlanPage')) ;
 const Help     = lazy(() => import('./components/Help'));
@@ -93,6 +93,7 @@ function AppContent() {
         <Route path="/feedback" element={<Feedback />} />
         <Route path="*" element={<NotFound />} />
         <Route path="/cv" element={<CVTips />} />
+        <Route path="/agent" element={<Agent />} />
         <Route path="/full-screen-ai" element={<AIScreen />} />
         <Route path="/verify-email" element={<VerifyEmail />} />
         <Route path="/request-reset" element={<RequestReset />} />
