@@ -91,7 +91,7 @@ function AppContent() {
         <Route path="/help" element={<Help />} />
         <Route path="/feedback" element={<Feedback />} />
         <Route path="*" element={<NotFound />} />
-        <Route path="/cv-tips" element={<CVTips />} />
+        <Route path="/cv" element={<CVTips />} />
         <Route path="/full-screen-ai" element={<AIScreen />} />
         <Route path="/verify-email" element={<VerifyEmail />} />
         <Route path="/request-reset" element={<RequestReset />} />
