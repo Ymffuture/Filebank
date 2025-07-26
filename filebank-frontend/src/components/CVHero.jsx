@@ -1,3 +1,4 @@
+import React from 'react' 
 import Typing from 'react-typing-effect';
 import { Lightbulb, UserCheck } from 'lucide-react';
 
