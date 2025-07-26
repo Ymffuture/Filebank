@@ -35,6 +35,8 @@ export default function Navbar() {
   const [notifications, setNotifications] = useState(0);
   const [drawerVisible, setDrawerVisible] = useState(false);
   const [notifModalVisible, setNotifModalVisible] = useState(false);
+  const [newNotif, setNewNotif] = useState(false);
+
   const navigate = useNavigate();
   const { enqueueSnackbar } = useSnackbar();
   const playSound = () => {
@@ -54,8 +56,12 @@ export default function Navbar() {
     try {
       const res = await api.get('/notifications');
       const newCount = res.data.count || 0;
-      if (newCount > notifications) playSound();
-      setNotifications(newCount);
+      if (newCount > notifications){
+        playSound();
+        setNewNotif(true);
+       } 
+      setNotifications(newCount); 
+      
     } catch {}
   }, [notifications]);
 
@@ -286,6 +292,23 @@ export default function Navbar() {
           )}
         </div>
       </Drawer>
+      
+{newNotif && (
+  <div
+    className="bg-yellow-100 border border-yellow-300 text-yellow-800 px-4 py-2 text-center font-medium animate-fade-in sticky top-[64px] z-40"
+    style={{
+      display: 'flex',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      gap: '1rem'
+    }}
+  >
+    <span>🔔 You have a new notification</span>
+    <Button size="small" onClick={() => setNewNotif(false)}>
+      Dismiss
+    </Button>
+  </div>
+)}
 
       <NotificationsModal visible={notifModalVisible} onClose={() => setNotifModalVisible(false)} />
     </>
