@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Lightbulb, UserCheck } from 'lucide-react';
-
+import {Link} from 'react-router-dom' ;
 const typingTexts = [
   'Step-by-step guidance.',
   'Professional tips.',
@@ -37,6 +37,7 @@ const CVHero = () => {
 
   return (
     <section className="bg-gradient-to-br from-blue-50 to-purple-100 py-20 text-center">
+      <Link to='/dashboard' >Back</Link>
       <div className="max-w-4xl mx-auto px-4">
         <h1 className="text-4xl md:text-6xl font-bold mb-4">Build a CV That Gets You Hired</h1>
         <p className="text-xl text-gray-700 mb-6 h-10">
