@@ -12,8 +12,9 @@ import { ToastContainer, Slide } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import GoogleLoading from './pages/GoogleLoading';
 import GoogleLogout from './pages/GoogleLogout';
-import CVTips from './pages/CVTips';
 
+
+const CVTips = lazy(() =>import('./pages/CVTips'));
 const ChangePlanPage = lazy(() =>import('./components/ChangePlanPage')) ;
 const Help     = lazy(() => import('./components/Help'));
 const FileList = lazy(() => import('./components/FileList'));
