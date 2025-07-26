@@ -9,7 +9,7 @@ import api from '../api/fileApi';
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import { useSnackbar } from 'notistack';
-
+import {Helmet} from 'react-helmet' ;
 dayjs.extend(relativeTime);
 const { Title, Paragraph, Text } = Typography;
 
@@ -106,6 +106,9 @@ export default function ChangePlanPage() {
 
     return (
       <div className="flex flex-col items-center justify-center mt-3 gap-1">
+        <Helmet >
+        <title >Change plan </title >
+        </Helmet>
         <div className="flex items-center gap-2">
           {current.icon}
           <AntBadge color={current.color} text={current.text} />
