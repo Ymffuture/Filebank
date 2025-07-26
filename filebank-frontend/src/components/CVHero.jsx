@@ -1,4 +1,4 @@
-import { TypeAnimation } from 'react-typing-effect';
+import Typing from 'react-typing-effect';
 import { Lightbulb, UserCheck } from 'lucide-react';
 
 const CVHero = () => (
@@ -6,7 +6,7 @@ const CVHero = () => (
     <div className="max-w-4xl mx-auto px-4">
       <h1 className="text-4xl md:text-6xl font-bold mb-4">Build a CV That Gets You Hired</h1>
       <p className="text-xl text-gray-700 mb-6">
-        <TypeAnimation
+        <Typing
           text={['Step-by-step guidance.', 'Professional tips.', 'Ready to impress.']}
           speed={60}
           eraseDelay={1500}
