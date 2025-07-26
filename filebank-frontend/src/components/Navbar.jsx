@@ -295,7 +295,7 @@ export default function Navbar() {
       
 {newNotif && (
   <div
-    className="bg-yellow-100 border border-yellow-300 text-yellow-800 px-4 py-2 text-center font-medium animate-fade-in sticky top-[64px] z-40"
+    className="bg-yellow-100 border border-yellow-300 text-yellow-800 px-4 py-2 text-center font-medium animate-fade-in sticky top-[64px] z-50"
     style={{
       display: 'flex',
       justifyContent: 'space-between',
