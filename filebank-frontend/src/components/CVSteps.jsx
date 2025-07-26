@@ -1,3 +1,4 @@
+import React from 'react' 
 import { CheckCircle, LayoutTemplate, TextCursorInput, Briefcase } from 'lucide-react';
 
 const tips = [
