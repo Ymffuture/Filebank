@@ -60,6 +60,9 @@ export default function Navbar() {
         playSound();
         setNewNotif(true);
        } 
+      if(newCount ===0){
+       setNewNotif(false);
+      }
       setNotifications(newCount); 
       
     } catch {}
