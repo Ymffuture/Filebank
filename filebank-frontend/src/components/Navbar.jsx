@@ -302,14 +302,17 @@ export default function Navbar() {
       alignItems: 'center',
       gap: '1rem'
     }}
+    onClick={() => {
+    setNotifModalVisible(true);
+    setDrawerVisible(false);
+      }}
   >
-    <span>🔔 You have a new notification</span>
+    <span>🔔 You have a new notification. <span className='text-[8px] text-black'>Tap to view</span></span>
     <Button size="small" onClick={() => setNewNotif(false)}>
       Dismiss
     </Button>
   </div>
 )}
-
       <NotificationsModal visible={notifModalVisible} onClose={() => setNotifModalVisible(false)} />
     </>
   );
