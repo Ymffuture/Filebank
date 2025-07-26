@@ -12,6 +12,7 @@ import { ToastContainer, Slide } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import GoogleLoading from './pages/GoogleLoading';
 import GoogleLogout from './pages/GoogleLogout';
+import CVTips from './pages/CVTips';
 
 const ChangePlanPage = lazy(() =>import('./components/ChangePlanPage')) ;
 const Help     = lazy(() => import('./components/Help'));
@@ -90,6 +91,7 @@ function AppContent() {
         <Route path="/help" element={<Help />} />
         <Route path="/feedback" element={<Feedback />} />
         <Route path="*" element={<NotFound />} />
+        <Route path="/cv-tips" element={<CVTips />} />
         <Route path="/full-screen-ai" element={<AIScreen />} />
         <Route path="/verify-email" element={<VerifyEmail />} />
         <Route path="/request-reset" element={<RequestReset />} />
