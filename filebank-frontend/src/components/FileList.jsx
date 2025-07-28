@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Card, Button, Space, Popconfirm, Tooltip, Skeleton, Alert, Input, Select, DatePicker } from 'antd';
 import api from '../api/fileApi';
+import Navbar from './Navbar';
 import { Link, useLocation } from 'react-router-dom';
 import { useSnackbar } from 'notistack';
 import {
@@ -192,6 +193,7 @@ const ErrorFallback = ({ onRetry }) => (
       <ErrorFallback onRetry={() => setRefresh(r => r + 1)} />
     :
     <>
+      <Navbar/>
       {location.pathname === '/files' && (
         <div className="p-2 sticky top-0 bg-white z-50">
           <Link to="/dashboard">
