@@ -4,6 +4,9 @@
 font-weight:800;
     font-size:"18px";
     color:#014e14;
+    background:whitesmoke;
+    padding:'4px';
+    margin:'5px'
 }
 
 .ant-progress-bg{
@@ -11,7 +14,6 @@ font-weight:800;
 }
 .ant-layout-header{
     background: #1E90FF;
-    color:#fff !important ;
 }
 code, pre {
   font-family: 'JetBrains Mono', 'Fira Code', monospace;
