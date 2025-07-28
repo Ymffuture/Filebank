@@ -113,4 +113,13 @@ body {
 .animate-fade-in {
   animation: fadeIn 0.4s ease-out;
 }
+/* App.css */
+.SnackbarItem-variantSuccess,
+.SnackbarItem-variantError,
+.SnackbarItem-variantDefault {
+  background-color: #000 !important;
+  color: #fff !important;
+  font-weight: 500;
+  border-radius: 8px;
+}
 
