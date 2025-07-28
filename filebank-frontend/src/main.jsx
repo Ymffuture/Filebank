@@ -23,19 +23,20 @@ const theme = createTheme({
 });
 
 ReactDOM.createRoot(document.getElementById('root')).render(
+  
   <React.StrictMode>  
   <GoogleOAuthProvider clientId="815421801782-jkj6h92h24uo1nhe03hvqfhctebhnaht.apps.googleusercontent.com">
-    <ThemeProvider theme={theme}>
-<SnackbarProvider
-maxSnack={3}
-  autoHideDuration={3000}
-  anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
-> 
-    
+  <StyledEngineProvider injectFirst>
+  <ThemeProvider theme={theme}>
+  <SnackbarProvider
+          maxSnack={3}
+          autoHideDuration={3000}
+          anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+        > 
     <App />
-  
-</SnackbarProvider>
-      </ThemeProvider>
-    </GoogleOAuthProvider>
-  </React.StrictMode>
+ </SnackbarProvider>
+ </ThemeProvider>
+ </StyledEngineProvider>
+ </GoogleOAuthProvider>
+ </React.StrictMode>
 );
