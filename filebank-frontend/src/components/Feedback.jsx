@@ -4,7 +4,7 @@ import api from '../api/fileApi';
 import { useNavigate } from 'react-router-dom';
 import { Star } from 'lucide-react';
 import { useSnackbar } from 'notistack';
-
+import Navbar from './Navbar';
 const { Title, Paragraph } = Typography;
 
 export default function FeedbackPage() {
@@ -28,7 +28,10 @@ export default function FeedbackPage() {
   };
 
   return (
+    <>
+      <Navbar/>
     <div className="min-h-screen flex justify-center items-start bg-gradient-to-tr from-blue-50 to-green-50 p-6">
+      
       <div className="w-full max-w-2xl bg-white rounded-2xl shadow-md p-8">
         <Title level={2} className="text-center text-[#1E90FF] mb-4">
           File a Complaint or Improvement
@@ -92,5 +95,6 @@ export default function FeedbackPage() {
         />
       </div>
     </div>
+    </>
   );
 }
