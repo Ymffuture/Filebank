@@ -106,9 +106,10 @@ export default function ChangePlanPage() {
     const current = statusMap[upgradeStatus];
 
     return (
-      <>
-        <Navbar/>
+      
+        
       <div className="flex flex-col items-center justify-center mt-3 gap-1">
+        <Navbar/>
         <Helmet >
         <title >Change plan </title >
         </Helmet>
@@ -251,7 +252,7 @@ export default function ChangePlanPage() {
         </div>
       )}
     </div>
-      </>
+      
   );
 }
 
