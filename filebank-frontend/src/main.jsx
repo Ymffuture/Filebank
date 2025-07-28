@@ -24,7 +24,11 @@ if ('serviceWorker' in navigator) {
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>  
   <GoogleOAuthProvider clientId="815421801782-jkj6h92h24uo1nhe03hvqfhctebhnaht.apps.googleusercontent.com">
-<SnackbarProvider>
+<SnackbarProvider
+maxSnack={3}
+  autoHideDuration={3000}
+  anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+> 
   <ConfigProvider
     theme={{
       token: {
