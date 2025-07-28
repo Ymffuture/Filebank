@@ -3,6 +3,7 @@ import {
   Card, Row, Col, Button, Typography, message,
   Form, Input, Badge as AntBadge
 } from 'antd';
+import Navbar from './Navbar';
 import { ArrowLeftOutlined } from '@ant-design/icons';
 import { Check, X, ThumbsUp, ThumbsDown, Hourglass } from 'lucide-react';
 import api from '../api/fileApi';
@@ -105,6 +106,8 @@ export default function ChangePlanPage() {
     const current = statusMap[upgradeStatus];
 
     return (
+      <>
+        <Navbar/>
       <div className="flex flex-col items-center justify-center mt-3 gap-1">
         <Helmet >
         <title >Change plan </title >
@@ -248,6 +251,7 @@ export default function ChangePlanPage() {
         </div>
       )}
     </div>
+      </>
   );
 }
 
