@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+Limport React, { useEffect, useState } from 'react';
 import { Card, Button, Space, Popconfirm, Tooltip, Skeleton, Alert, Input, Select, DatePicker } from 'antd';
 import api from '../api/fileApi';
 import Navbar from './Navbar';
@@ -237,7 +237,7 @@ const ErrorFallback = ({ onRetry }) => (
                       {file.filename.length > 15 ? file.filename.slice(0, 15) + '…' : file.filename}
                     </Tooltip>
                     {age === 0 && (
-                      <Lottie animationData={NewBadgeAnimation} loop={false} style={{ width: 40, height: 40 }} />
+                      <Lottie animationData={NewBadgeAnimation} loop style={{ width: 40, height: 40 }} />
                     )}
                   </Space>
                 }     
@@ -273,7 +273,7 @@ const ErrorFallback = ({ onRetry }) => (
           type="text"
           shape="circle"
           icon={<FaWhatsapp />}
-          style={{ background: '#dcf8c6', color: '#25D366' }}
+          style={{ background: '#25D366', color: '#fff' }}
         />
       </a>
     </Tooltip>, 
@@ -288,7 +288,7 @@ const ErrorFallback = ({ onRetry }) => (
           type="text"
           shape="circle"
           icon={<FaXTwitter />}
-          style={{ background: '#e8f5fd', color: '#1DA1F2' }}
+          style={{ background: '#000', color: '#fff' }}
         />
       </a>
     </Tooltip>, 
@@ -303,7 +303,7 @@ const ErrorFallback = ({ onRetry }) => (
           type="text"
           shape="circle"
           icon={<FaLinkedin />}
-          style={{ background: '#eef3f8', color: '#0077B5' }}
+          style={{ background: '#0077B5', color: '#fff' }}
         />
       </a>
     </Tooltip>, 
