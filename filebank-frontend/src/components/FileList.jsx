@@ -234,10 +234,10 @@ const ErrorFallback = ({ onRetry }) => (
                   <Space>
                     {getFileIcon(file)}
                     <Tooltip title={file.slug}>
-                      {file.filename.length > 15 ? file.filename.slice(0, 15) + '…' : file.filename}
+                      {file.filename.length > 10 ? file.filename.slice(0, 6) + '…' : file.filename}
                     </Tooltip>
                     {age === 0 && (
-                      <Lottie animationData={NewBadgeAnimation} loop style={{ width: 40, height: 40 }} />
+                      <Lottie animationData={NewBadgeAnimation} loop style={{ width: 20, height: 20 }} />
                     )}
                   </Space>
                 }     
@@ -248,7 +248,7 @@ const ErrorFallback = ({ onRetry }) => (
           type="text"
           shape="circle"
           icon={<DownloadOutlined />}
-          style={{ background: '#e6f7ff', color: '#1890ff' }}
+          style={{ background: '#1890ff', color: '#fff' }}
         />
       </a>
     </Tooltip>, 
@@ -259,7 +259,7 @@ const ErrorFallback = ({ onRetry }) => (
         shape="circle"
         icon={<CopyOutlined />}
         onClick={() => copyLink(downloadUrl)}
-        style={{ background: '#fff7e6', color: '#fa8c16' }}
+        style={{ background: '#fa8c16', color: '#fff' }}
       />
     </Tooltip>, 
 
@@ -319,7 +319,7 @@ const ErrorFallback = ({ onRetry }) => (
           shape="circle"
           icon={<DeleteOutlined />}
           loading={deleting === file.slug}
-          style={{ background: '#fff1f0', color: '#ff4d4f' }}
+          style={{ background: '#ff4d4f', color: '#fff' }}
         />
       </Popconfirm>
     </Tooltip>
