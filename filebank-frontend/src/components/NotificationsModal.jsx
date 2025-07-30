@@ -191,7 +191,7 @@ export default function NotificationsModal({ visible, onClose }) {
                       />
                     ) : (
                     
-          item.fromUser?.role === 'premium' ? 
+          item.fromUser?.role !== 'free' ? 
   <span style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
     <BadgeCheck color="gold" size={18} />
     <Bell color="#1E90FF" size={16} />
