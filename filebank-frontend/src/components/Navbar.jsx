@@ -24,7 +24,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { MdOutlineFeedback } from 'react-icons/md';
 import api from '../api/fileApi';
 import NotificationsModal from './NotificationsModal';
-import logo from '/Branded.svg';
+import logo from '/Loogo.png';
 import { useSnackbar } from 'notistack';
 import { FaLock } from 'react-icons/fa';
 
@@ -176,38 +176,45 @@ export default function Navbar() {
   return (
     <>
       <Header className="flex justify-between items-center bg-white shadow sticky top-0 z-50 px-4">
-        <Link to="/" className="flex items-center">
-          <img src={logo} alt="Famacloud Logo" className="w-16 h-16 md:w-16 md:h-16 scale-300" />
-        </Link>
+      <Header className="flex items-center justify-between bg-white shadow sticky top-0 z-50 px-4">
+  {/* Menu icon on far left */}
+  <div className="flex items-center gap-2">
+    <Button
+      type="text"
+      className="md:hidden text-[26px] relative text-white"
+      onClick={() => setDrawerVisible(true)}
+      icon={
+        <>
+          <MenuOutlined className="text-blue-600" />
+          {notifications > 0 && (
+            <span className="absolute top-1 right-1 block w-2 h-2 bg-[pink] rounded-full" />
+          )}
+        </>
+      }
+    />
+    <Link to="/" className="flex items-center">
+      <img src={logo} alt="Famacloud Logo" className="w-16 h-16 md:w-16 md:h-16 scale-300" />
+      <span className='text-white' >Famacloud</span >
+    </Link>
+  </div>
 
-        <div className="hidden md:flex flex-1 justify-center">
-          <Menu mode="horizontal" items={mainMenuItems} className="bg-[#1E90FF] google-menu" />
-        </div>
+  {/* Center menu (desktop only) */}
+  <div className="hidden md:flex flex-1 justify-center">
+    <Menu mode="horizontal" items={mainMenuItems} className="bg-[#1E90FF] google-menu" />
+  </div>
 
-        <div className="flex items-center">
-          <Button
-            type="text"
-            className="md:hidden text-[26px] relative text-white"
-            onClick={() => setDrawerVisible(true)}
-            icon={
-              <>
-                <MenuOutlined className="text-white" />
-                {notifications > 0 && (
-                  <span className="absolute top-1 right-1 block w-2 h-2 bg-[pink] rounded-full" />
-                )}
-              </>
-            }
-          />
-          <Space>
-            <Dropdown overlay={userMenu}>
-              <Space style={{ cursor: 'pointer' }}>
-                <Avatar src={user?.picture} icon={<UserOutlined />} />
-                
-              </Space>
-            </Dropdown>
-          </Space>
-        </div>
-      </Header>
+  {/* Avatar and user dropdown on the right */}
+  <div className="flex items-center">
+    <Space>
+      <Dropdown overlay={userMenu}>
+        <Space style={{ cursor: 'pointer' }}>
+          <Avatar src={user?.picture} icon={<UserOutlined />} />
+        </Space>
+      </Dropdown>
+    </Space>
+  </div>
+</Header>
+
 
       <Drawer
         placement="left"
