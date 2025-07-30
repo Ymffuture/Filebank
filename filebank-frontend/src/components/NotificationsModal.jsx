@@ -128,7 +128,6 @@ export default function NotificationsModal({ visible, onClose }) {
       footer={
         <div style={{ display: 'flex', justifyContent: 'space-between', padding: '8px 16px' }}>
   <Tooltip title={currentUser?.role === 'free' ? "Upgrade to use this feature" : "Mark all notifications as read"}>
-  <Tooltip title={currentUser?.role === 'free' ? "Upgrade to use this feature" : "Mark all notifications as read"}>
   <span>
     <Button
       onClick={currentUser?.role === 'free' ? undefined : markAllAsRead}
@@ -141,8 +140,6 @@ export default function NotificationsModal({ visible, onClose }) {
     </Button>
   </span>
 </Tooltip>
-
-
           <Button
             onClick={onClose}
             icon={<CloseOutlined />}
