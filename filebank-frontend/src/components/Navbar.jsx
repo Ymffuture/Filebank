@@ -203,22 +203,29 @@ export default function Navbar() {
   </div>
 
   {/* Avatar and user dropdown on the right */}
-  <div className="flex items-center left-[20%]">
-    <Space>
-      
-            <Badge count={notifications} size="small" />
-              <BellOutlined style={{ fontSize: 20, cursor: 'pointer', color: '#fff' }} onClick={() => {
-              setNotifModalVisible(true);
-              setDrawerVisible(false);
-            }} />
-        
-      <Dropdown overlay={userMenu}>
-        <Space style={{ cursor: 'pointer' }}>
-          <Avatar src={user?.picture} icon={<UserOutlined />} />
-        </Space>
-      </Dropdown>
-    </Space>
-  </div>
+  <div className="absolute right-5 top-3 flex items-center space-x-4">
+  {/* Notification Icon with Badge */}
+  <Badge count={notifications} size="small" offset={[-2, 2]}>
+    <BellOutlined
+      className="text-white text-[20px] cursor-pointer hover:text-blue-400 transition"
+      onClick={() => {
+        setNotifModalVisible(true);
+        setDrawerVisible(false);
+      }}
+    />
+  </Badge>
+
+  {/* Avatar with Dropdown */}
+  <Dropdown overlay={userMenu} placement="bottomRight" arrow>
+    <Avatar
+      src={user?.picture}
+      icon={<UserOutlined />}
+      className="cursor-pointer hover:shadow-lg transition"
+      size="default"
+    />
+  </Dropdown>
+</div>
+
 </Header>
 
 
