@@ -24,7 +24,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { MdOutlineFeedback } from 'react-icons/md';
 import api from '../api/fileApi';
 import NotificationsModal from './NotificationsModal';
-import logo from '/Loogo.png';
+import logo from '/logow.png';
 import { useSnackbar } from 'notistack';
 import { FaLock } from 'react-icons/fa';
 
@@ -175,12 +175,12 @@ export default function Navbar() {
 
   return (
     <>
-      <Header className="flex justify-between bg-white shadow sticky top-0 z-50 px-4">
+      <Header className="flex justify-between sticky top-0 z-50 px-4">
   {/* Menu icon on far left */}
   <div className="flex items-center gap-2">
     <Button
       type="text"
-      className="md:hidden text-[26px] relative text-white left-0"
+      className="md:hidden text-[26px] relative text-white left-[30%]"
       onClick={() => setDrawerVisible(true)}
       icon={
         <>
@@ -192,7 +192,7 @@ export default function Navbar() {
       }
     />
     <Link to="/" className="flex items-center">
-      <img src={logo} alt="Famacloud Logo" className="w-16 h-16 md:w-16 md:h-16 scale-100" />
+      <img src={logo} alt="Famacloud Logo" className="w-16 h-16 md:w-16 md:h-16 scale-70" />
       <span className='text-white' >Famacloud</span >
     </Link>
   </div>
