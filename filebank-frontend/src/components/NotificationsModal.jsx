@@ -16,6 +16,7 @@ export default function NotificationsModal({ visible, onClose }) {
   const [loading, setLoading] = useState(false);
   const [processing, setProcessing] = useState({});
   const [markAllLoading, setMarkAllLoading] = useState(false);
+  const currentUser = JSON.parse(localStorage.getItem('filebankUser'));
 
   const loadNotifications = async () => {
     setLoading(true);
@@ -104,13 +105,13 @@ export default function NotificationsModal({ visible, onClose }) {
       }}
       footer={
         <div style={{ display: 'flex', justifyContent: 'space-between', padding: '8px 16px' }}>
-  <Tooltip title={fromUser?.role === 'free'? "Upgrade to ues this feature" :"Mark all notifications as read" } >
+  <Tooltip title={currentUser?.role === 'free'? "Upgrade to ues this feature" :"Mark all notifications as read" } >
   <Button
     onClick={markAllAsRead}
     icon={<CheckOutlined />}
     loading={markAllLoading}
     type="dashed"
-    disabled={fromUser?.role === 'free'}
+    disabled={currentUser?.role === 'free'}
   >
     Mark All as Read
   </Button>
