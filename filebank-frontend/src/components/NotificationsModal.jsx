@@ -87,27 +87,6 @@ export default function NotificationsModal({ visible, onClose }) {
     }
   };
 
-  const SenderIcon = ({item} ) => {
-  if (item.fromUser?.role === 'admin') {
-    return (
-      <Lottie
-        animationData={verifyAnimation}
-        loop={true}
-        style={{ width: 20, height: 20 }}
-      />
-    );
-  } else if (item.fromUser?.role === 'premium') {
-    return (
-      <span style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
-        <BadgeCheck color="gold" size={18} />
-        <Bell color="#1E90FF" size={16} />
-      </span>
-    );
-  } else {
-    return <Bell color="#1E90FF" size={20} />;
-  }
-};
-
   
   return (
     <Drawer
@@ -201,12 +180,29 @@ export default function NotificationsModal({ visible, onClose }) {
               <List.Item.Meta
                 title={
                   <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-  <span style={{ fontSize: 14 }}>
-    {item.fromUser?.role === 'admin' ? 'Famacloud' : 'Famacloud Notification'}
+                    <span style={{ fontSize: 14 }}>
+                      {item.fromUser?.role === 'admin' ? 'Famacloud' : 'Famacloud Notification'}
+                    </span>
+                    {item.fromUser?.role === 'admin' ? (
+                      <Lottie
+                        animationData={verifyAnimation}
+                        loop={true}
+                        style={{ width: 20, height: 20 }}
+                      />
+                    ) : (
+                    
+                    {item.fromUser?.role === 'premium' ? (
+  <span style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
+    <BadgeCheck color="gold" size={18} />
+    <Bell color="#1E90FF" size={16} />
   </span>
-  <SenderIcon item={item} />
- 
-</div>
+) : (
+  <Bell color="#1E90FF" size={20} />
+)}
+
+                    )}
+                    
+                  </div>
                 }
                 description={
                   <Text type="secondary" style={{ fontSize: 12 }}>
