@@ -9,12 +9,12 @@
   "orientation": "portrait-primary",
   "icons": [
     {
-      "src": "/vite.svg",
+      "src": "/Loogo.png",
       "sizes": "192x192",
       "type": "image/png"
     },
     {
-      "src": "/Branded.svg",
+      "src": "/Loogo.png",
       "sizes": "512x512",
       "type": "image/png"
     }
@@ -33,14 +33,14 @@
     "short_name": "Files",
     "description": "Access your stored files",
     "url": "/files",
-    "icons": [{ "src": "/Branded.svg", "sizes": "96x96", "type": "image/png" }]
+    "icons": [{ "src": "/vite.svg", "sizes": "96x96", "type": "image/png" }]
   },
   {
     "name": "Profile",
     "short_name": "Profile",
     "description": "View your profile",
     "url": "/profile",
-    "icons": [{ "src": "/Branded.svg", "sizes": "96x96", "type": "image/png" }]
+    "icons": [{ "src": "/vite.svg", "sizes": "96x96", "type": "image/png" }]
   }
 ]
 
