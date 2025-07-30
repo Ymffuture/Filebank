@@ -191,10 +191,21 @@ export default function Navbar() {
         </>
       }
     />
-    <Link to="/" className="flex items-center relative right-[25%]">
-      <img src={logo} alt="Famacloud Logo" className="w-16 h-16 md:w-16 md:h-16 scale-70" />
-      <span className='text-white' >Famacloud</span >
-    </Link>
+    <Link to="/" className="flex items-center relative right-[25%] font-inter">
+  <img src={logo} alt="Famacloud Logo" className="w-16 h-16 md:w-16 md:h-16 scale-70" />
+  <span className="text-lg font-semibold flex gap-0.5">
+    <span className="text-green-400">F</span>
+    <span className="text-white">a</span>
+    <span className="text-yellow-400">m</span>
+    <span className="text-red-500">a</span>
+    <span className="text-green-400">c</span>
+    <span className="text-white">l</span>
+    <span className="text-yellow-400">o</span>
+    <span className="text-red-500">u</span>
+    <span className="text-green-400">d</span>
+  </span>
+</Link>
+
   </div>
 
   {/* Center menu (desktop only) */}
