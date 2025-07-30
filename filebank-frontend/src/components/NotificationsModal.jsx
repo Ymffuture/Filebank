@@ -9,6 +9,7 @@ import { ShieldCheck, CheckCircle, Bell } from 'lucide-react';
 import parse from 'html-react-parser';
 import DOMPurify from 'dompurify';
 const { Paragraph, Text } = Typography;
+import { Star, BadgeCheck, ShieldCheck, Gem, Crown } from 'lucide-react';
 
 export default function NotificationsModal({ visible, onClose }) {
   const { enqueueSnackbar } = useSnackbar();
@@ -108,11 +109,11 @@ export default function NotificationsModal({ visible, onClose }) {
   <Tooltip title={currentUser?.role === 'free' ? "Upgrade to use this feature" : "Mark all notifications as read"}>
   <span>
     <Button
-      onClick={markAllAsRead}
-      icon={<CheckOutlined />}
+      onClick={currentUser?.role === 'free' ? '' : markAllAsRead}
+      icon={currentUser?.role === 'free'? <Crown/> :<CheckOutlined /> }
       loading={markAllLoading}
       type="dashed"
-      disabled={currentUser?.role === 'free'}
+      
     >
       Mark All as Read
     </Button>
@@ -190,7 +191,9 @@ export default function NotificationsModal({ visible, onClose }) {
                         style={{ width: 20, height: 20 }}
                       />
                     ) : (
-                      <Bell color="#1E90FF" size={20} />
+                    {item.fromUser?.role === 'premium'? (
+                      <BadgeCheck color="gold" size={20} />
+                      <Bell color="#1E90FF" size={10} />):<Bell color="#1E90FF" size={20}}
                     )}
                     
                   </div>
