@@ -87,7 +87,7 @@ export default function NotificationsModal({ visible, onClose }) {
     }
   };
 
-  const SenderIcon = () => {
+  const SenderIcon = ({item} ) => {
   if (item.fromUser?.role === 'admin') {
     return (
       <Lottie
@@ -207,7 +207,8 @@ export default function NotificationsModal({ visible, onClose }) {
   <span style={{ fontSize: 14 }}>
     {item.fromUser?.role === 'admin' ? 'Famacloud' : 'Famacloud Notification'}
   </span>
-  <SenderIcon />
+  <SenderIcon item={item} />
+ 
 </div>
                 }
                 description={
