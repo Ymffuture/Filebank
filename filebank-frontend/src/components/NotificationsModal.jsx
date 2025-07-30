@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Drawer, List, Badge, Button, Space, Popconfirm, Spin, Typography } from 'antd';
+import { Drawer, List, Badge, Button, Space, Popconfirm, Spin, Typography, Tooltip} from 'antd';
 import { DeleteOutlined, CheckOutlined, BellOutlined, CloseOutlined } from '@ant-design/icons';
 import { useSnackbar } from 'notistack';
 import Lottie from 'lottie-react';
@@ -92,6 +92,7 @@ export default function NotificationsModal({ visible, onClose }) {
         <Space>
           <BellOutlined /> Notifications
           <Badge count={notifications.filter((n) => !n.read).length} />
+          
         </Space>
       }
       placement="bottom"
@@ -103,14 +104,17 @@ export default function NotificationsModal({ visible, onClose }) {
       }}
       footer={
         <div style={{ display: 'flex', justifyContent: 'space-between', padding: '8px 16px' }}>
-          <Button
-            onClick={markAllAsRead}
-            icon={<CheckOutlined />}
-            loading={markAllLoading}
-            type="dashed"
-          >
-            Mark All as Read
-          </Button>
+  <Tooltip title={ item.fromUser?.role === 'free'? "Upgrade to ues this feature" :"Mark all notifications as read" } >
+  <Button
+    onClick={markAllAsRead}
+    icon={<CheckOutlined />}
+    loading={markAllLoading}
+    type="dashed"
+    disabled={item.fromUser?.role === 'free'}
+  >
+    Mark All as Read
+  </Button>
+</Tooltip>
           <Button
             onClick={onClose}
             icon={<CloseOutlined />}
