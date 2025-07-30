@@ -175,7 +175,6 @@ export default function Navbar() {
 
   return (
     <>
-      <Header className="flex justify-between items-center bg-white shadow sticky top-0 z-50 px-4">
       <Header className="flex items-center justify-between bg-white shadow sticky top-0 z-50 px-4">
   {/* Menu icon on far left */}
   <div className="flex items-center gap-2">
