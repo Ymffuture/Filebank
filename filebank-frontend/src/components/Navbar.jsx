@@ -206,7 +206,7 @@ export default function Navbar() {
   <div className="flex items-center left-[20%]">
     <Space>
       
-            <Badge count={notifications} size="small" offset={[0, 6]}>
+            <Badge count={notifications} size="small" offset={[0, 6]} />
               <BellOutlined style={{ fontSize: 24, cursor: 'pointer', color: '#333' }} onClick={() => {
               setNotifModalVisible(true);
               setDrawerVisible(false);
