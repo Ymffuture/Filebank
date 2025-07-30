@@ -177,10 +177,10 @@ export default function Navbar() {
     <>
       <Header className="flex justify-between sticky top-0 z-50 px-4">
   {/* Menu icon on far left */}
-  <div className="flex items-center gap-2">
+  <div className="flex items-center gap-0">
     <Button
       type="text"
-      className="md:hidden text-[26px] relative text-white left-[-30%]"
+      className="md:hidden text-[26px] relative text-white left-[-25%]"
       onClick={() => setDrawerVisible(true)}
       icon={
         <>
@@ -192,7 +192,7 @@ export default function Navbar() {
       }
     />
     <Link to="/" className="flex items-center">
-      <img src={logo} alt="Famacloud Logo" className="w-16 h-16 md:w-16 md:h-16 scale-70" />
+      <img src={logo} alt="Famacloud Logo" className="w-16 h-16 md:w-16 md:h-16 scale-80" />
       <span className='text-white' >Famacloud</span >
     </Link>
   </div>
