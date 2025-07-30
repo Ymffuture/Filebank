@@ -105,17 +105,20 @@ export default function NotificationsModal({ visible, onClose }) {
       }}
       footer={
         <div style={{ display: 'flex', justifyContent: 'space-between', padding: '8px 16px' }}>
-  <Tooltip title={currentUser?.role === 'free'? "Upgrade to ues this feature" :"Mark all notifications as read" } >
-  <Button
-    onClick={markAllAsRead}
-    icon={<CheckOutlined />}
-    loading={markAllLoading}
-    type="dashed"
-    disabled={currentUser?.role === 'free'}
-  >
-    Mark All as Read
-  </Button>
+  <Tooltip title={currentUser?.role === 'free' ? "Upgrade to use this feature" : "Mark all notifications as read"}>
+  <span>
+    <Button
+      onClick={markAllAsRead}
+      icon={<CheckOutlined />}
+      loading={markAllLoading}
+      type="dashed"
+      disabled={currentUser?.role === 'free'}
+    >
+      Mark All as Read
+    </Button>
+  </span>
 </Tooltip>
+
           <Button
             onClick={onClose}
             icon={<CloseOutlined />}
