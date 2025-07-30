@@ -5,11 +5,10 @@ import { useSnackbar } from 'notistack';
 import Lottie from 'lottie-react';
 import verifyAnimation from '../assets/Verified.json'; 
 import api from '../api/fileApi';
-import { ShieldCheck, CheckCircle, Bell } from 'lucide-react';
+import { ShieldCheck, CheckCircle, Bell, Crown, BadgeCheck} from 'lucide-react';
 import parse from 'html-react-parser';
 import DOMPurify from 'dompurify';
 const { Paragraph, Text } = Typography;
-import { Star, BadgeCheck, ShieldCheck, Gem, Crown } from 'lucide-react';
 
 export default function NotificationsModal({ visible, onClose }) {
   const { enqueueSnackbar } = useSnackbar();
@@ -107,18 +106,20 @@ export default function NotificationsModal({ visible, onClose }) {
       footer={
         <div style={{ display: 'flex', justifyContent: 'space-between', padding: '8px 16px' }}>
   <Tooltip title={currentUser?.role === 'free' ? "Upgrade to use this feature" : "Mark all notifications as read"}>
+  <Tooltip title={currentUser?.role === 'free' ? "Upgrade to use this feature" : "Mark all notifications as read"}>
   <span>
     <Button
-      onClick={currentUser?.role === 'free' ? '' : markAllAsRead}
-      icon={currentUser?.role === 'free'? <Crown/> :<CheckOutlined /> }
+      onClick={currentUser?.role === 'free' ? undefined : markAllAsRead}
+      icon={currentUser?.role === 'free' ? <Crown size={18} /> : <CheckOutlined />}
       loading={markAllLoading}
       type="dashed"
-      
+      disabled={currentUser?.role === 'free'}
     >
       Mark All as Read
     </Button>
   </span>
 </Tooltip>
+
 
           <Button
             onClick={onClose}
@@ -191,9 +192,16 @@ export default function NotificationsModal({ visible, onClose }) {
                         style={{ width: 20, height: 20 }}
                       />
                     ) : (
-                    {item.fromUser?.role === 'premium'? (
-                      <BadgeCheck color="gold" size={20} />
-                      <Bell color="#1E90FF" size={10} />):<Bell color="#1E90FF" size={20}}
+                    
+                    {item.fromUser?.role === 'premium' ? (
+  <span style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
+    <BadgeCheck color="gold" size={18} />
+    <Bell color="#1E90FF" size={16} />
+  </span>
+) : (
+  <Bell color="#1E90FF" size={20} />
+)}
+                    
                     )}
                     
                   </div>
