@@ -24,7 +24,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { MdOutlineFeedback } from 'react-icons/md';
 import api from '../api/fileApi';
 import NotificationsModal from './NotificationsModal';
-import logo from '/logow.png';
+import logo from '/logoww.png';
 import { useSnackbar } from 'notistack';
 import { FaLock } from 'react-icons/fa';
 
