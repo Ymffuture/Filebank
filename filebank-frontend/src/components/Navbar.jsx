@@ -177,7 +177,7 @@ export default function Navbar() {
     <>
       <Header className="flex justify-between sticky top-0 z-50 px-4">
   {/* Menu icon on far left */}
-  <div className="flex">
+  <div className="flex items-center">
     <Button
       type="text"
       className="md:hidden text-[26px] relative text-white left-[-25%]"
@@ -191,7 +191,7 @@ export default function Navbar() {
         </>
       }
     />
-    <Link to="/" className="flex">
+    <Link to="/" className="flex items-center">
       <img src={logo} alt="Famacloud Logo" className="w-16 h-16 md:w-16 md:h-16 scale-80" />
       <span className='text-white' >Famacloud</span >
     </Link>
@@ -203,8 +203,12 @@ export default function Navbar() {
   </div>
 
   {/* Avatar and user dropdown on the right */}
-  <div className="flex items-center">
+  <div className="flex items-center left-[20%]">
     <Space>
+      
+            <Badge count={notifications} size="small">
+              <BellOutlined style={{ fontSize: 24, cursor: 'pointer', color: '#333' }} onClick={fetchNotifications} />
+        
       <Dropdown overlay={userMenu}>
         <Space style={{ cursor: 'pointer' }}>
           <Avatar src={user?.picture} icon={<UserOutlined />} />
