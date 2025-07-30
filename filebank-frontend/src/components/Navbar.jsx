@@ -180,7 +180,7 @@ export default function Navbar() {
   <div className="flex items-center gap-2">
     <Button
       type="text"
-      className="md:hidden text-[26px] relative text-white"
+      className="md:hidden text-[26px] relative text-white left-0"
       onClick={() => setDrawerVisible(true)}
       icon={
         <>
@@ -192,7 +192,7 @@ export default function Navbar() {
       }
     />
     <Link to="/" className="flex items-center">
-      <img src={logo} alt="Famacloud Logo" className="w-16 h-16 md:w-16 md:h-16 scale-300" />
+      <img src={logo} alt="Famacloud Logo" className="w-16 h-16 md:w-16 md:h-16 scale-100" />
       <span className='text-white' >Famacloud</span >
     </Link>
   </div>
