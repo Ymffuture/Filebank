@@ -109,7 +109,7 @@ export default function FileUpload({ onUpload, currentUserFileCount = 0, userRol
   return (
     <>
       <Helmet>
-        <title>Upload Files | Famacloud</title>
+        <title> Dashboard Upload Files | Famacloud</title>
         <meta name="description" content="Securely upload your files to Famacloud." />
       </Helmet>
 
@@ -128,13 +128,13 @@ export default function FileUpload({ onUpload, currentUserFileCount = 0, userRol
                 loop={false}
                 style={{ width: 300, height: 300 }}
               />
-            </div>: <div className="flex justify-center mb-4">
+            </div>: !uploading? <div className="flex justify-center mb-4">
               <Lottie
                 animationData={pdfAnim}
                 
-                style={{ width: 350, height: 350 }}
+                style={{ width: 320, height: 320 }}
               />
-            </div>} 
+            </div>:null} 
 
           {uploading ? (
             <div className="flex justify-center mb-4">
@@ -153,7 +153,7 @@ export default function FileUpload({ onUpload, currentUserFileCount = 0, userRol
       enqueueSnackbar('Invalid file type', { variant: 'warning' });
       return Upload.LIST_IGNORE;
     }
-if (fileList.length > 5) {
+if (fileList.length > 2) {
   enqueueSnackbar("Maximum 5 files allowed per upload.", { variant: "warning" });
   return;
 }
