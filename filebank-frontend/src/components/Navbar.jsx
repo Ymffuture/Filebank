@@ -180,7 +180,7 @@ export default function Navbar() {
   <div className="flex items-center gap-2">
     <Button
       type="text"
-      className="md:hidden text-[26px] relative text-white left-[30%]"
+      className="md:hidden text-[26px] relative text-white left-[-30%]"
       onClick={() => setDrawerVisible(true)}
       icon={
         <>
