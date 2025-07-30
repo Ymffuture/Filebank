@@ -1,3 +1,4 @@
+/** @type {import('tailwindcss').Config} */
 module.exports = {
   content: ["./index.html", "./src/**/*.{js,jsx}"],
   theme: {
@@ -13,5 +14,11 @@ module.exports = {
       },
     },
   },
-  plugins: [],
-}
+  plugins: [
+    require('tailwind-scrollbar-hide'), // ✅ include scrollbar plugn here
+ require('@tailwindcss/forms'),
+require('@tailwindcss/typography'),
+require('@tailwindcss/aspect-ratio'),
+ 
+  ],
+};
