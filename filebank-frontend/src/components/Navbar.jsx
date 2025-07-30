@@ -192,7 +192,7 @@ export default function Navbar() {
       }
     />
     <Link to="/" className="flex items-center relative right-[25%]">
-      <img src={logo} alt="Famacloud Logo" className="w-16 h-16 md:w-16 md:h-16 scale-80" />
+      <img src={logo} alt="Famacloud Logo" className="w-16 h-16 md:w-16 md:h-16 scale-70" />
       <span className='text-white' >Famacloud</span >
     </Link>
   </div>
@@ -206,7 +206,7 @@ export default function Navbar() {
   <div className="flex items-center left-[20%]">
     <Space>
       
-            <Badge count={notifications} size="small" offset={[0, 6]} />
+            <Badge count={notifications} size="small" />
               <BellOutlined style={{ fontSize: 20, cursor: 'pointer', color: '#fff' }} onClick={() => {
               setNotifModalVisible(true);
               setDrawerVisible(false);
