@@ -173,6 +173,8 @@ export default function Navbar() {
     user?.role === 'admin' && { key: 'admin', label: <Link to="/admin"><DashboardOutlined /> Admin Panel</Link> },
   ].filter(Boolean);
 
+  const isPremium = ['premium', 'admin'].includes(user?.role);
+  
   return (
     <>
       <Header className="flex justify-between sticky top-0 z-50 px-4">
@@ -241,7 +243,7 @@ export default function Navbar() {
         bodyStyle={{ padding: 0, display: 'flex', flexDirection: 'column', height: '100%', background: '#0B3D91' }}
       >
         
-const isPremium = ['premium', 'admin'].includes(user?.role);
+
 
 <div className="p-2 flex items-center gap-4">
   <Avatar src={user?.picture} size={32} icon={<UserOutlined />} />
