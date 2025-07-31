@@ -195,7 +195,7 @@ export default function ChangePlanPage() {
       boxShadow: !isCurrent && '0 4px 12px rgba(22, 119, 255, 0.3)',
       transition: 'all 0.3s ease-in-out',
     }}
-    onClick={() => isSelected? '' : !isCurrent && handleChoosePlan(plan)}
+    onClick={() => !isCurrent && handleChoosePlan(plan)}
   >
     {isCurrent ? '✔ Current Plan' : '✨ Choose Plan'} 
     
