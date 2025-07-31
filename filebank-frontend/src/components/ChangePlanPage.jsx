@@ -97,7 +97,7 @@ export default function ChangePlanPage() {
         color: 'green',
       },
       rejected: {
-        text: 'Rejected by Admin',
+        text: 'Rejected by Famacloud',
         icon: <ThumbsDown className="text-red-500 w-4 h-4" />,
         color: 'red',
       },
@@ -152,7 +152,7 @@ export default function ChangePlanPage() {
       <Navbar/>
       
       <Helmet >
-        <title >Change plan </title >
+        <title >Change plan | best-selling R39</title >
         </Helmet> 
     <div className="min-h-screen bg-gray-50 p-6">
       <div className="flex items-center justify-between mb-6">
@@ -163,6 +163,10 @@ export default function ChangePlanPage() {
           🔥 Best pricing board  
         </Title>
         <div />
+        <Paragraph className='text-[gold]' >
+            After sending the WhatsApp message, return here and paste your transaction code.
+            The code will be verified by the Famacloud.
+          </Paragraph>
       </div>
 
       <Row gutter={[24, 24]} justify="center">
@@ -231,10 +235,10 @@ export default function ChangePlanPage() {
           </Title>
           <Paragraph>
             After sending the WhatsApp message, return here and paste your transaction code.
-            The code will be verified by the admin.
+            The code will be verified by the Famacloud.
           </Paragraph>
           <ul className="list-disc ml-6 text-sm text-gray-700">
-            <li><strong>Pending:</strong> Waiting for admin confirmation</li>
+            <li><strong>Pending:</strong> Waiting for Famacloud confirmation</li>
             <li><strong>Approved:</strong> Your plan is active</li>
             <li><strong>Rejected:</strong> Code invalid or payment issue</li>
           </ul>
