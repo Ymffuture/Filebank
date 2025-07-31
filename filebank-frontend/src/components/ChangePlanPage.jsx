@@ -160,7 +160,7 @@ export default function ChangePlanPage() {
           Back
         </Button>
         <Title level={3} style={{ marginBottom: 0, color: '#1E90FF' }}>
-          { isSelected ? "Loading... Plan" :"Pricing"} 
+          🔥 Best pricing board  
         </Title>
         <div />
       </div>
@@ -195,9 +195,10 @@ export default function ChangePlanPage() {
       boxShadow: !isCurrent && '0 4px 12px rgba(22, 119, 255, 0.3)',
       transition: 'all 0.3s ease-in-out',
     }}
-    onClick={() => !isCurrent && handleChoosePlan(plan)}
+    onClick={() => isSelected? '' : !isCurrent && handleChoosePlan(plan)}
   >
-    {isCurrent ? '✔ Current Plan' : '✨ Choose Plan'}
+    {isCurrent ? '✔ Current Plan' : '✨ Choose Plan'} {isSelected? "Loading..." :""} 
+    
   </Button>,
 ]}
 
