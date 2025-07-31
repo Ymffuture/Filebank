@@ -160,7 +160,7 @@ export default function ChangePlanPage() {
           Back
         </Button>
         <Title level={3} style={{ marginBottom: 0, color: '#1E90FF' }}>
-          Pricing
+          { isSelected ? "Loading... Plan" :"Pricing"} 
         </Title>
         <div />
       </div>
@@ -246,8 +246,8 @@ export default function ChangePlanPage() {
             >
               <Input placeholder="e.g. 45TRJ970" />
             </Form.Item>
-            <Button type="primary" htmlType="submit" loading={loading} block>
-              Submit Code
+            <Button type="primary" htmlType="submit" loading={loading} block disabled={isSelected} >
+              { isSelected? "In progress" :" Submit Code"} 
             </Button>
           </Form>
         </div>
