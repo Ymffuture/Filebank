@@ -276,7 +276,7 @@ export default function Hero() {
               <Lottie animationData={TimeAnimation} loop style={{ width: 80, height: 80 }} />
               <Text strong>Auto Expiry</Text>
               <Text type="secondary" style={{ textAlign: 'center' }}>
-                Files auto-expire after 180 days unless renewed.
+                Files auto-expire after 90 days unless renewed.
               </Text>
             </Space>
           </Col>
