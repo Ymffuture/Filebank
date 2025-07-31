@@ -165,7 +165,7 @@ export default function ChangePlanPage() {
         <div />
         
       </div>
-<Paragraph style={{color:'gold', background:'yellow'}} >
+<Paragraph style={{color:'gold', background:'#666', padding:'4px', borderRadius:'5px'}} >
             After sending the WhatsApp message, return here and paste your transaction code.
             The code will be verified by the Famacloud.
      </Paragraph>
