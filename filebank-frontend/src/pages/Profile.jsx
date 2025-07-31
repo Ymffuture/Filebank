@@ -49,9 +49,7 @@ export default function Profile() {
 
       setUploading(true);
 
-      const res = await api.put('/auth/update-profile', formData, {
-        headers: { 'Content-Type': 'multipart/form-data' }
-      });
+      const res = await api.put('/auth/update-profile', formData);
 
       setUser(res.data.data);
       localStorage.setItem('filebankUser', JSON.stringify(res.data.data));
@@ -68,6 +66,7 @@ export default function Profile() {
     return (
       <div className="flex justify-center items-center min-h-[60vh]">
         <Spin size="large" />
+        <span >Famacloud profile loading...</span >
       </div>
     );
   }
