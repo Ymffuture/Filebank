@@ -35,6 +35,7 @@ import {
   Headphones,
   CreditCard,
   Lock,
+  MessageSquare, 
 } from 'lucide-react';
 
 
@@ -157,10 +158,10 @@ export default function Navbar() {
     { key: 'files', label: 'Files', icon: <File />, path: '/files' },
     user?.role === 'admin' && { key: 'admin', label: 'Admin Panel', icon: <LayoutDashboard />, path: '/admin' },
     { key: 'ai', label: 'AI assistant', icon: <Bot />, path: '/full-screen-ai', feature: 'ai' },
-    { key: 'cv-tips', label: 'Build CV & coverletter', icon: <FileTextOutlined />, path: '/cv', feature: 'cv-tips' },
+    { key: 'cv-tips', label: 'Build CV & coverletter', icon: <FileText />, path: '/cv', feature: 'cv-tips' },
   //  { key: 'coverletter-tips', label: 'Cover Letter Tips', icon: <FileTextOutlined />, path: '/coverletter-tips', feature: 'cv-tips' },
     { key: 'agent', label: 'Agent', icon: <Headphones />, path: '/agent', feature: 'agent' },
-    { key: 'feedback', label: 'Feedback', icon: <MdOutlineFeedback />, path: '/feedback', feature: 'feedback' },
+    { key: 'feedback', label: 'Feedback', icon: <MessageSquare />, path: '/feedback', feature: 'feedback' },
     { key: 'change-plan', label: 'Change Plan', icon: <CreditCard />, path: '/change-plan' },
   ].filter(Boolean);
 
