@@ -19,6 +19,28 @@ import {
   LockOutlined,
   SwapOutlined,
 } from '@ant-design/icons';
+
+// replace
+
+import {
+  LayoutDashboard,
+  File,
+  Home,
+  Info,
+  Menu as LucideMenu,
+  User,
+  LogOut,
+  Bot,
+  FileText,
+  Headphones,
+  CreditCard,
+  Lock,
+} from 'lucide-react';
+
+
+// end
+
+
 import { GoogleLogin, googleLogout } from '@react-oauth/google';
 import { Link, useNavigate } from 'react-router-dom';
 import { MdOutlineFeedback } from 'react-icons/md';
@@ -130,16 +152,16 @@ export default function Navbar() {
   };
 
   const menuItems = [
-    { key: 'home', label: 'Home', icon: <HomeOutlined />, path: '/' },
-    { key: 'about', label: 'About Us', icon: <InfoCircleOutlined />, path: '/about-us' },
-    { key: 'files', label: 'Files', icon: <FileOutlined />, path: '/files' },
-    user?.role === 'admin' && { key: 'admin', label: 'Admin Panel', icon: <DashboardOutlined />, path: '/admin' },
-    { key: 'ai', label: 'AI Features', icon: <RobotOutlined />, path: '/full-screen-ai', feature: 'ai' },
+    { key: 'home', label: 'Home', icon: <Home />, path: '/' },
+    { key: 'about', label: 'About Us', icon: <Info />, path: '/about-us' },
+    { key: 'files', label: 'Files', icon: <File />, path: '/files' },
+    user?.role === 'admin' && { key: 'admin', label: 'Admin Panel', icon: <LayoutDashboard />, path: '/admin' },
+    { key: 'ai', label: 'AI assistant', icon: <Bot />, path: '/full-screen-ai', feature: 'ai' },
     { key: 'cv-tips', label: 'Build CV & coverletter', icon: <FileTextOutlined />, path: '/cv', feature: 'cv-tips' },
   //  { key: 'coverletter-tips', label: 'Cover Letter Tips', icon: <FileTextOutlined />, path: '/coverletter-tips', feature: 'cv-tips' },
-    { key: 'agent', label: 'Agent', icon: <CustomerServiceOutlined />, path: '/agent', feature: 'agent' },
+    { key: 'agent', label: 'Agent', icon: <Headphones />, path: '/agent', feature: 'agent' },
     { key: 'feedback', label: 'Feedback', icon: <MdOutlineFeedback />, path: '/feedback', feature: 'feedback' },
-    { key: 'change-plan', label: 'Change Plan', icon: <CreditCardOutlined />, path: '/change-plan' },
+    { key: 'change-plan', label: 'Change Plan', icon: <CreditCard />, path: '/change-plan' },
   ].filter(Boolean);
 
   const userMenu = (
@@ -186,7 +208,7 @@ export default function Navbar() {
       onClick={() => setDrawerVisible(true)}
       icon={
         <>
-          <MenuOutlined style={{ fontSize: 20, cursor: 'pointer', color: '#fff' }} />
+          <LucideMenu style={{ fontSize: 20, cursor: 'pointer', color: '#fff' }} />
           {notifications > 0 && (
             <span className="absolute top-1 right-1 block w-2 h-2 bg-[pink] rounded-full" />
           )}
@@ -213,7 +235,7 @@ export default function Navbar() {
   <div className="absolute right-5 top-3 flex items-center space-x-4">
   {/* Notification Icon with Badge */}
   <Badge count={notifications} size="medium" offset={[-2, 2]}>
-    <BellOutlined
+    <Bell
       className="text-white text-[20px] cursor-pointer hover:text-blue-400 transition"
       onClick={() => {
         setNotifModalVisible(true);
