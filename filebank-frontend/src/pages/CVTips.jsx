@@ -6,12 +6,15 @@ import Navbar from '../components/Navbar';
 
 const CVTips = () => {
   return (
-    <div className="min-h-screen bg-white text-gray-900">
-      <Navbar/>
+   <>
+     <Navbar/>
+  <div className="min-h-screen bg-white text-gray-900">
       <CVHero />
       <CVSteps />
       <PricingSlider />
-    </div>
+    </div> 
+   </> 
+    
   );
 };
 
