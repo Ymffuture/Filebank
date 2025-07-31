@@ -202,8 +202,8 @@ const ErrorFallback = ({ onRetry }) => (
         </div>
       )}
 
-      <Alert message="Tip: Rename downloads from `<slug>myfilepdf` → `myfile.pdf`." type="warning" showIcon closable className="m-6" />
-
+      <Alert message="Tip: Rename downloads from `<slug> myfilepdf` → `myfile.pdf`. Note that the file will not open if rename after downloading, to ensure that enable the rename file before downloading or path on your browser settings. " type="warning" showIcon closable className="m-8" />
+<Alert message="Don't share your info" type='danger' showIcon closable className="m-8"/>
       <div className="p-4 shadow-sm rounded-md mb-4 flex flex-wrap gap-4">
         <Input placeholder="Search by name" value={searchName} onChange={e => setSearchName(e.target.value)} style={{ width: 200 }} />
         <Select value={searchFormat} onChange={v => setSearchFormat(v)} style={{ width: 150 }}>
