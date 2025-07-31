@@ -212,7 +212,7 @@ export default function Navbar() {
         <>
           <LucideMenu style={{ fontSize: 20, cursor: 'pointer', color: '#fff' }} />
           {notifications > 0 && (
-            <span className="absolute top-1 right-1 block w-2 h-2 bg-[pink] rounded-full" />
+            <span className="absolute top-1 right-1 block w-3 h-3 bg-[whitesmoke] rounded-full" />
           )}
         </>
       }
@@ -234,7 +234,7 @@ export default function Navbar() {
   </div>
 
   {/* Avatar and user dropdown on the right */}
-  <div className="absolute right-5 top-3 flex items-center space-x-4">
+  <div className="absolute right-5 top-3 flex items-center space-x-4 gap-3">
   {/* Notification Icon with Badge */}
   <Badge count={notifications} size="medium" offset={[-2, 2]}>
     <Bell
