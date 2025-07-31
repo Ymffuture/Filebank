@@ -28,8 +28,8 @@ export default function GoogleLoading() {
         <Lottie animationData={LoadingAnimation} loop />
       </div>
 
-      <Title level={2} style={{ color: '#fff' }}>Logging you in...</Title>
-      <Text style={{ color: '#f0f0f0' }}>
+      <Title level={2} style={{ color: '#fff' }}>Logging in...</Title>
+      <Text code style={{ color: '#f0f0f0' }}>
         Please wait while we prepare your Home page.
       </Text>
     </motion.div>
