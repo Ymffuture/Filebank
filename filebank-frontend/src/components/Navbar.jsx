@@ -153,17 +153,18 @@ export default function Navbar() {
   };
 
   const menuItems = [
-    { key: 'home', label: 'Home', icon: <Home />, path: '/' },
-    { key: 'about', label: 'About Us', icon: <Info />, path: '/about-us' },
-    { key: 'files', label: 'Files', icon: <File />, path: '/files' },
-    user?.role === 'admin' && { key: 'admin', label: 'Admin Panel', icon: <LayoutDashboard />, path: '/admin' },
-    { key: 'ai', label: 'AI assistant', icon: <Bot />, path: '/full-screen-ai', feature: 'ai' },
-    { key: 'cv-tips', label: 'Build CV & coverletter', icon: <FileText />, path: '/cv', feature: 'cv-tips' },
-  //  { key: 'coverletter-tips', label: 'Cover Letter Tips', icon: <FileTextOutlined />, path: '/coverletter-tips', feature: 'cv-tips' },
-    { key: 'agent', label: 'Agent', icon: <Headphones />, path: '/agent', feature: 'agent' },
-    { key: 'feedback', label: 'Feedback', icon: <MessageSquare />, path: '/feedback', feature: 'feedback' },
-    { key: 'change-plan', label: 'Change Plan', icon: <CreditCard />, path: '/change-plan' },
-  ].filter(Boolean);
+  { key: 'home', label: 'Home', icon: <Home size={18} />, path: '/' },
+  { key: 'about', label: 'About Us', icon: <Info size={18} />, path: '/about-us' },
+  { key: 'files', label: 'Files', icon: <File size={18} />, path: '/files' },
+  user?.role === 'admin' && { key: 'admin', label: 'Admin Panel', icon: <LayoutDashboard size={18} />, path: '/admin' },
+  { key: 'ai', label: 'AI assistant', icon: <Bot size={18} />, path: '/full-screen-ai', feature: 'ai' },
+  { key: 'cv-tips', label: 'Build CV & coverletter', icon: <FileText size={18} />, path: '/cv', feature: 'cv-tips' },
+  // { key: 'coverletter-tips', label: 'Cover Letter Tips', icon: <FileText size={18} />, path: '/coverletter-tips', feature: 'cv-tips' },
+  { key: 'agent', label: 'Agent', icon: <Headphones size={18} />, path: '/agent', feature: 'agent' },
+  { key: 'feedback', label: 'Feedback', icon: <MessageSquare size={18} />, path: '/feedback', feature: 'feedback' },
+  { key: 'change-plan', label: 'Change Plan', icon: <CreditCard size={18} />, path: '/change-plan' },
+].filter(Boolean);
+
 
   const userMenu = (
     <Menu
