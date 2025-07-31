@@ -163,12 +163,12 @@ export default function ChangePlanPage() {
           🔥 Best pricing board  
         </Title>
         <div />
-        <Paragraph className='text-[gold]' >
+        
+      </div>
+<Paragraph style={{color:'gold', background:'yellow'}} >
             After sending the WhatsApp message, return here and paste your transaction code.
             The code will be verified by the Famacloud.
-          </Paragraph>
-      </div>
-
+     </Paragraph>
       <Row gutter={[24, 24]} justify="center">
         {plans.map((plan) => {
           const features = planFeatures[plan.role];
