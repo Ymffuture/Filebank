@@ -197,7 +197,7 @@ export default function ChangePlanPage() {
     }}
     onClick={() => isSelected? '' : !isCurrent && handleChoosePlan(plan)}
   >
-    {isCurrent ? '✔ Current Plan' : '✨ Choose Plan'} {isSelected? "Loading..." :""} 
+    {isCurrent ? '✔ Current Plan' : '✨ Choose Plan'} 
     
   </Button>,
 ]}
