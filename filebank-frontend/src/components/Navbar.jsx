@@ -210,7 +210,7 @@ export default function Navbar() {
       onClick={() => setDrawerVisible(true)}
       icon={
         <>
-          <LucideMenu style={{ fontSize: 20, cursor: 'pointer', color: '#fff' }} />
+          <MenuOutlined style={{ fontSize: 20, cursor: 'pointer', color: '#fff' }} />
           {notifications > 0 && (
             <span className="absolute top-1 right-1 block w-3 h-3 bg-[whitesmoke] rounded-full" />
           )}
