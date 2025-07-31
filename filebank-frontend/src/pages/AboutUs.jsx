@@ -1,6 +1,6 @@
 import React from 'react';
 import { Card, Typography, Space, Divider } from 'antd';
-import { CloudUpload, ShieldCheck, Users, Mail, MapPin, Globe } from 'lucide-react';
+import { CloudUpload, ShieldCheck, Users, Mail, MapPin, Globe, Phone} from 'lucide-react';
 import { Helmet } from 'react-helmet';
 import Navbar from '../components/Navbar';
 
@@ -76,8 +76,9 @@ export default function AboutUs() {
               <Title level={4}>Contact Us</Title>
               <Paragraph>
                 <Space direction="vertical" size="small">
-                  <span><Mail className="inline mr-2" size={16} /> <Text code>quorvexinstitute@gmail.com</Text></span>
-                  <span><MapPin className="inline mr-2" size={16} /> 2354 Drieziek 4, Orange Farm, Johannesburg South, 1841</span>
+                  <span><Mail className="inline mr-2" size={16} /> <Text code>Famacloud.ai@gmail.com</Text></span>
+                  <span><Phone className="inline mr-2" size={16} /> <Text code>+27 63 441 4863</Text></span>
+                  <span><MapPin className="inline mr-2" size={16} />Johannesburg South, 1805</span>
                   <span><Globe className="inline mr-2" size={16} /> <a href="https://filebank.vercel.app" target="_blank" rel="noopener noreferrer">filebank.vercel.app</a></span>
                 </Space>
               </Paragraph>
