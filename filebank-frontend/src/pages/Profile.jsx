@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import {
-  Card, Avatar, Descriptions, Spin, Upload, Button, message,
+  Card, Avatar, Descriptions, Spin, Upload, Button,
   Input, Typography, Space
 } from 'antd';
 import {
@@ -8,6 +8,7 @@ import {
   CloseOutlined, MailOutlined, IdcardOutlined, ArrowLeftOutlined
 } from '@ant-design/icons';
 import { Link } from 'react-router-dom';
+import { useSnackbar } from 'notistack';
 import api from '../api/fileApi';
 
 const { Title } = Typography;
@@ -19,6 +20,7 @@ export default function Profile() {
   const [form, setForm] = useState({ name: '', email: '', picture: null });
   const [file, setFile] = useState(null);
   const [uploading, setUploading] = useState(false);
+  const { enqueueSnackbar } = useSnackbar();
 
   useEffect(() => { fetchUser(); }, []);
 
@@ -33,7 +35,7 @@ export default function Profile() {
       });
       localStorage.setItem('filebankUser', JSON.stringify(res.data));
     } catch {
-      message.error('Failed to load profile');
+      enqueueSnackbar('Failed to load profile', { variant: 'error' });
     } finally {
       setLoading(false);
     }
@@ -43,9 +45,7 @@ export default function Profile() {
     try {
       const formData = new FormData();
       formData.append('name', form.name);
-      if (file) {
-        formData.append('image', file);
-      }
+      if (file) formData.append('image', file);
 
       setUploading(true);
 
@@ -53,12 +53,12 @@ export default function Profile() {
         headers: { 'Content-Type': 'multipart/form-data' }
       });
 
-      setUser(res.data.data); // <- Updated backend sends `data`
+      setUser(res.data.data);
       localStorage.setItem('filebankUser', JSON.stringify(res.data.data));
-      message.success('Profile updated!');
+      enqueueSnackbar('Profile updated successfully', { variant: 'success' });
       setEditing(false);
     } catch (err) {
-      message.error(err.response?.data?.message || 'Update failed');
+      enqueueSnackbar(err.response?.data?.message || 'Update failed', { variant: 'error' });
     } finally {
       setUploading(false);
     }
@@ -73,14 +73,16 @@ export default function Profile() {
   }
 
   return (
-    <div className="flex justify-center items-center min-h-[80vh] p-4">
+    <div className="flex justify-center items-center min-h-[80vh] p-4 bg-[#fafafa]">
       <Card
         style={{
-          maxWidth: 500,
+          maxWidth: 460,
           width: '100%',
-          borderRadius: '16px',
-          boxShadow: '0 6px 24px rgba(0,0,0,0.08)',
-          transition: 'all 0.3s ease-in-out'
+          borderRadius: '24px',
+          border: 'none',
+          boxShadow: '0 4px 24px rgba(0,0,0,0.06)',
+          background: '#fff',
+          padding: 24
         }}
         hoverable
       >
@@ -91,7 +93,7 @@ export default function Profile() {
               src={form.picture}
               icon={<UserOutlined />}
               style={{
-                border: '4px solid #f0f0f0',
+                border: '4px solid #eee',
                 transition: 'transform 0.3s',
                 cursor: editing ? 'pointer' : 'default'
               }}
@@ -103,14 +105,20 @@ export default function Profile() {
                 beforeUpload={(file) => {
                   setFile(file);
                   setForm({ ...form, picture: URL.createObjectURL(file) });
-                  return false; // Prevent auto upload
+                  return false;
                 }}
               >
                 <Button
                   size="small"
                   icon={<UploadOutlined />}
                   loading={uploading}
-                  style={{ position: 'absolute', bottom: -10, right: -10 }}
+                  style={{
+                    position: 'absolute',
+                    bottom: -10,
+                    right: -10,
+                    backgroundColor: '#fafafa',
+                    border: '1px solid #ccc'
+                  }}
                 >
                   Change
                 </Button>
@@ -119,7 +127,7 @@ export default function Profile() {
           </div>
         </Space>
 
-        <Title level={4} style={{ textAlign: 'center', marginTop: 16 }}>My Profile</Title>
+        <Title level={4} className="text-center mt-4 font-inter">My Profile</Title>
 
         {editing ? (
           <>
