@@ -289,7 +289,7 @@ export default function Navbar() {
             label: (
               <Space>
                 {item.label}
-                {item.feature && !canAccess(item.feature) && <FaLock style={{ color: 'red' }} />}
+                {item.feature && !canAccess(item.feature) && <FaLock style={{ color: '#666' }} />}
               </Space>
             ),
             onClick: () => {
