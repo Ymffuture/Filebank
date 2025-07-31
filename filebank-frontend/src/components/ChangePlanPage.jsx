@@ -106,13 +106,8 @@ export default function ChangePlanPage() {
     const current = statusMap[upgradeStatus];
 
     return (
-      
         
-      <div className="flex flex-col items-center justify-center mt-3 gap-1">
-        <Navbar/>
-        <Helmet >
-        <title >Change plan </title >
-        </Helmet>
+      <div className="flex flex-col items-center justify-center mt-3 gap-1">   
         <div className="flex items-center gap-2">
           {current.icon}
           <AntBadge color={current.color} text={current.text} />
@@ -153,6 +148,12 @@ export default function ChangePlanPage() {
   }, [user?._id]);
 
   return (
+    <>
+      <Navbar/>
+      
+      <Helmet >
+        <title >Change plan </title >
+        </Helmet> 
     <div className="min-h-screen bg-gray-50 p-6">
       <div className="flex items-center justify-between mb-6">
         <Button icon={<ArrowLeftOutlined />} onClick={() => window.history.back()}>
@@ -252,7 +253,7 @@ export default function ChangePlanPage() {
         </div>
       )}
     </div>
-      
+      </>
   );
 }
 
