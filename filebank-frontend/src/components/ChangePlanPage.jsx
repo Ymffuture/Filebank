@@ -247,8 +247,8 @@ export default function ChangePlanPage() {
             >
               <Input placeholder="e.g. 45TRJ970" />
             </Form.Item>
-            <Button type="primary" htmlType="submit" loading={loading} block disabled={isSelected} >
-              { isSelected? "In progress" :" Submit Code"} 
+            <Button type="dashed" htmlType="submit" loading={loading} block disabled={loading} >
+              Submit the code 
             </Button>
           </Form>
         </div>
