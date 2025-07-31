@@ -261,7 +261,7 @@ export default function Navbar() {
       title={
         <div className="text-center">
           <div className="mb-1">You're on <strong>{user?.role}</strong> plan</div>
-          <Button type="primary" size="small" onClick={() => navigate('/upgrade')}>
+          <Button type="dashed" size="small" onClick={() => navigate('/change-plan')}>
             Upgrade
           </Button>
         </div>
