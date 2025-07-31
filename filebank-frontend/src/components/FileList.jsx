@@ -217,8 +217,8 @@ const ErrorFallback = ({ onRetry }) => (
       <div className="grid gap-6 grid-cols-1 p-4">
         {loading ? (
           Array.from({ length: 4 }).map((_, i) => (
-            <Card key={i} hoverable bodyStyle={{ minHeight: 300 }}>
-              <Skeleton active avatar paragraph={{ rows: 4 }} />
+            <Card key={i} hoverable bodyStyle={{ minHeight: 400 }}>
+              <Skeleton active avatar paragraph={{ rows: 6 }} />
             </Card>
           ))
         ) : displayedFiles.length > 0 ? (
@@ -234,7 +234,7 @@ const ErrorFallback = ({ onRetry }) => (
                   <Space>
                     {getFileIcon(file)}
                     <Tooltip title={file.slug}>
-                      {file.filename.length > 10 ? file.filename.slice(0, 6) + '…' : file.filename}
+                      {file.filename.length > 30 ? file.filename.slice(0, 20) + '…' : file.filename}
                     </Tooltip>
                     {age === 0 && (
                       <Lottie animationData={NewBadgeAnimation} loop style={{ width: 20, height: 20 }} />
@@ -325,11 +325,12 @@ const ErrorFallback = ({ onRetry }) => (
     </Tooltip>
          
 ]}
+                style={{color:'whitesmoke'}} 
               >
                 
                 <p className="text-gray-700"><ClockCircleOutlined style={{ marginRight: 4 }} /><strong>Uploaded:</strong> {formatted}</p>
-                {age > 0 && age < 180 && (
-                  <Alert type="warning" showIcon className="m-4" message={`Will be deleted in ${180 - age} days.`} />
+                {age > 0 && age < 90 && (
+                  <Alert type="warning" showIcon className="m-4" message={`This file will be deleted in ${90 - age} days, for security. `} />
                 )}
               </Card>
             );
