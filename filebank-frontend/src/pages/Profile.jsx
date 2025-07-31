@@ -35,7 +35,7 @@ export default function Profile() {
       });
       localStorage.setItem('filebankUser', JSON.stringify(res.data));
     } catch {
-      enqueueSnackbar('Failed to load profile', { variant: 'error' });
+      enqueueSnackbar('Failed to load profile');
     } finally {
       setLoading(false);
     }
@@ -55,10 +55,10 @@ export default function Profile() {
 
       setUser(res.data.data);
       localStorage.setItem('filebankUser', JSON.stringify(res.data.data));
-      enqueueSnackbar('Profile updated successfully', { variant: 'success' });
+      enqueueSnackbar('Profile updated successfully');
       setEditing(false);
     } catch (err) {
-      enqueueSnackbar(err.response?.data?.message || 'Update failed', { variant: 'error' });
+      enqueueSnackbar(err.response?.data?.message || 'Server error', { variant: 'error' });
     } finally {
       setUploading(false);
     }
