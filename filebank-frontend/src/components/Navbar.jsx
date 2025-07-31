@@ -27,7 +27,7 @@ import NotificationsModal from './NotificationsModal';
 import logo from '/Loogo.png';
 import { useSnackbar } from 'notistack';
 import { FaLock } from 'react-icons/fa';
-
+import { ShieldCheck, CheckCircle, Bell, Crown, BadgeCheck} from 'lucide-react';
 const { Header } = Layout;
 
 export default function Navbar() {
@@ -193,17 +193,11 @@ export default function Navbar() {
     />
     <Link to="/" className="flex items-center relative right-[25%] font-inter">
   <img src={logo} alt="Famacloud Logo" className="w-16 h-16 md:w-16 md:h-16 scale-70" />
-  <span className="text-lg font-semibold flex gap-0.5">
-    <span className="text-green-400">F</span>
-    <span className="text-white">a</span>
-    <span className="text-yellow-400">m</span>
-    <span className="text-red-500">a</span>
-    <span className="text-green-400">c</span>
-    <span className="text-white">l</span>
-    <span className="text-yellow-400">o</span>
-    <span className="text-red-500">u</span>
-    <span className="text-green-400">d</span>
-  </span>
+  <span className="text-lg font-semibold flex gap-2">
+  <span className="text-green-400">Fama</span>
+  <span className="text-yellow-400">cloud</span>
+</span>
+
 </Link>
 
   </div>
@@ -246,18 +240,43 @@ export default function Navbar() {
         onClose={() => setDrawerVisible(false)}
         bodyStyle={{ padding: 0, display: 'flex', flexDirection: 'column', height: '100%', background: '#0B3D91' }}
       >
-        <div className="p-2 flex items-center gap-4">
-          <Avatar src={user?.picture} size={32} icon={<UserOutlined />} />
-          <div>
-            <div className="font-semibold text-white text-[14px]">
-              {user?.role === 'premium' || user?.role === 'admin' || user?.role === 'moderator' || user?.role === 'standard' || user?.role === 'free'  ? user?.displayName : 'Account'}
-            </div>
-            <div className="text-[10px] text-white/80">{user?.email}</div>
-          </div>
-          <Tooltip title={`You are currently on ${user?.role} plan`}>
-            <Tag color={getRoleColor(user?.role)}>{user?.role?.toUpperCase()}</Tag>
-          </Tooltip>
-        </div>
+        
+const isPremium = ['premium', 'admin'].includes(user?.role);
+
+<div className="p-2 flex items-center gap-4">
+  <Avatar src={user?.picture} size={32} icon={<UserOutlined />} />
+
+  <div className="flex-1">
+    <div className="flex items-center gap-1 text-white text-[14px] font-semibold">
+      {user?.displayName || 'Account'}
+      {isPremium && <Crown className="text-yellow-400 w-4 h-4" />}
+    </div>
+    <div className="text-[10px] text-white/80">{user?.email}</div>
+  </div>
+
+  {!isPremium ? (
+    <Tooltip
+      title={
+        <div className="text-center">
+          <div className="mb-1">You're on <strong>{user?.role}</strong> plan</div>
+          <Button type="primary" size="small" onClick={() => navigate('/upgrade')}>
+            Upgrade
+          </Button>
+        </div>
+      }
+      color="black"
+    >
+      <Tag color={getRoleColor(user?.role)} className="cursor-pointer">
+        {user?.role?.toUpperCase()}
+      </Tag>
+    </Tooltip>
+  ) : (
+    <Tooltip title={`You're on ${user?.role} plan`} color="gold">
+      <Tag color={getRoleColor(user?.role)}>{user?.role?.toUpperCase()}</Tag>
+    </Tooltip>
+  )}
+</div>
+
 
         <Menu
           mode="inline"
