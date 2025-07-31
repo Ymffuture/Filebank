@@ -195,7 +195,7 @@ export default function Navbar() {
     />
     <Link to="/" className="flex items-center relative right-[25%] font-inter">
   <img src={logo} alt="Famacloud Logo" className="w-16 h-16 md:w-16 md:h-16 scale-70" />
-  <span className="text-lg font-semibold flex gap-2">
+  <span className="text-lg font-semibold flex">
   <span className="text-green-400">Fama</span>
   <span className="text-yellow-400">cloud</span>
 </span>
@@ -212,13 +212,14 @@ export default function Navbar() {
   {/* Avatar and user dropdown on the right */}
   <div className="absolute right-5 top-3 flex items-center space-x-4">
   {/* Notification Icon with Badge */}
-  <Badge count={notifications} size="small" offset={[-2, 2]}>
+  <Badge count={notifications} size="medium" offset={[-2, 2]}>
     <BellOutlined
       className="text-white text-[20px] cursor-pointer hover:text-blue-400 transition"
       onClick={() => {
         setNotifModalVisible(true);
         setDrawerVisible(false);
       }}
+      style={{color:'#fff'}} 
     />
   </Badge>
 
@@ -357,12 +358,14 @@ export default function Navbar() {
       alignItems: 'center',
       gap: '1rem'
     }}
-    onClick={() => {
+    
+  >
+    <span
+      onClick={() => {
     setNotifModalVisible(true);
     setDrawerVisible(false);
       }}
-  >
-    <span>🔔 You have a new notification. <span className='text-[8px] text-black'>Tap to view</span></span>
+      >🔔 You have a new notification <span className='text-[8px] text-black'>Tap to view</span></span>
     <Button size="small" onClick={() => setNewNotif(false)}>
       Dismiss
     </Button>
