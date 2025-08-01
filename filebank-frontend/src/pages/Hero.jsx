@@ -243,12 +243,14 @@ export default function Hero() {
     alignItems: 'center',
     backdropFilter: 'blur(8px)',
     WebkitBackdropFilter: 'blur(8px)', // For Safari
-    padding: '1rem 2rem',
+    padding: '4rem 2rem',
+    textAlign: 'center',
+    maxWidth: '900px',
+    margin: '4rem auto',
     borderRadius: '20px',
     background: 'rgba(255, 255, 255, 0.08)', // Transparent white
     border: '1px solid rgba(255, 255, 255, 0.2)',
     boxShadow: '0 4px 30px rgba(0, 0, 0, 0.1)',
-    position: 'relative',
     zIndex: 1,
     color: '#fff', // white text for dark background
   }}
@@ -291,12 +293,12 @@ export default function Hero() {
     alignItems: 'center',
     backdropFilter: 'blur(8px)',
     WebkitBackdropFilter: 'blur(8px)', // For Safari
-    padding: '1rem 2rem',
+    padding: '3rem 2rem',
     borderRadius: '20px',
     background: 'rgba(255, 255, 255, 0.08)', // Transparent white
     border: '1px solid rgba(255, 255, 255, 0.2)',
     boxShadow: '0 4px 30px rgba(0, 0, 0, 0.1)',
-    position: 'relative',
+    maxWidth: '900px',
     zIndex: 1,
     color: '#fff', // white text for dark background
   }}>
