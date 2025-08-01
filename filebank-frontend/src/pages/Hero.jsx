@@ -254,12 +254,11 @@ export default function Hero() {
         }}
       >
         <Title style={{ color: '#0B3D91', fontSize: '3rem', marginBottom: '1rem' }}>
-  <DecryptedText
-  text="Store with Renown, Access Anywhere
-  animateOn="view"
-  revealDirection="center"
-/>
-          
+            <DecryptedText
+               text="Store with Renown, Access Anywhere" 
+               animateOn="view"
+                revealDirection="center"
+               /> 
         </Title>
       
         <Paragraph style={{ fontSize: '1.2rem', color: '#fff' }}>
