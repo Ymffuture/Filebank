@@ -16,7 +16,7 @@ import LockupIn from '../assets/Reg.json';
 import {Helmet} from 'react-helmet' 
 import RotatingText from './RotatingText' 
 import Beams from './Beams';
-
+import DecryptedText from './DecryptedText';
 
 
 
@@ -256,6 +256,30 @@ export default function Hero() {
         <Title style={{ color: '#0B3D91', fontSize: '3rem', marginBottom: '1rem' }}>
           Store with Renown, Access Anywhere
         </Title>
+        
+
+{/* Example 1: Defaults (hover to decrypt) */}
+<DecryptedText text="Hover me!" />
+
+{/* Example 2: Customized speed and characters */}
+<DecryptedText
+text="Customize me"
+speed={100}
+maxIterations={20}
+characters="ABCD1234!?"
+className="revealed"
+parentClassName="all-letters"
+encryptedClassName="encrypted"
+/>
+
+{/* Example 3: Animate on view (runs once) */}
+<div style={{ marginTop: '4rem' }}>
+<DecryptedText
+  text="This text animates when in view"
+  animateOn="view"
+  revealDirection="center"
+/>
+</div>
         <Paragraph style={{ fontSize: '1.2rem', color: '#fff' }}>
           Upload, manage, and access your files anywhere with <strong>Famacloud</strong>.
         </Paragraph>
