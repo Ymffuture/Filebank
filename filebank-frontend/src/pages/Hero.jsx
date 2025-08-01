@@ -186,18 +186,22 @@ export default function Hero() {
       />
 
       {/* Navigation */}
-      <div style={{
-        display: 'flex',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        backdropFilter: 'blur(8px)',
-        padding: '1rem 2rem',
-        borderRadius: '20px',
-        background: '#fff',
-
-        position: 'relative',
-        zIndex: 1
-      }}>
+      <div 
+        style={{
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    backdropFilter: 'blur(8px)',
+    WebkitBackdropFilter: 'blur(8px)', // For Safari
+    padding: '1rem 2rem',
+    borderRadius: '20px',
+    background: 'rgba(255, 255, 255, 0.08)', // Transparent white
+    border: '1px solid rgba(255, 255, 255, 0.2)',
+    boxShadow: '0 4px 30px rgba(0, 0, 0, 0.1)',
+    position: 'relative',
+    zIndex: 1,
+    color: '#666', // white text for dark background
+  }}>
         <Title level={3} style={{ margin: 0, color: '#0B3D91' }}>Famacloud</Title>
         {user ? (
           <Space>
