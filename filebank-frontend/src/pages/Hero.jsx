@@ -124,7 +124,7 @@ export default function Hero() {
   return (
     <>
 <Helmet>
-        <title> Home | Famacloud</title>
+        <title> Home | {user.name || user.displayName || 'Famacloud ' }</title>
        <meta name="theme-color" content="#000" />
         <meta name="description" content="Securely upload your files to Famacloud." />
       </Helmet>
