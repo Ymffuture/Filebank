@@ -19,7 +19,7 @@ export default function Home() {
   return (
     <div className="dark:bg-[#666] ">
       <Navbar />
-      <main className="mx-auto p-2 space-y-2">
+      <main className="mx-auto space-y-2">
         <section>
           {/* ✅ Now passing the correct role from localStorage */}
           <FileUpload onUpload={() => setRefresh((r) => r + 1)} userRole={userRole} />
