@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
 
 const TrueFocus = ({
-  sentence = "",
+  sentence = "Famacloud Dashboard Upload",
   manualMode = false,
   blurAmount = 5,
   borderColor = "green",
