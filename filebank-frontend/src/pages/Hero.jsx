@@ -125,6 +125,7 @@ export default function Hero() {
     <>
 <Helmet>
         <title> Home | Famacloud</title>
+       <meta name="theme-color" content="#000" />
         <meta name="description" content="Securely upload your files to Famacloud." />
       </Helmet>
       
@@ -240,12 +241,14 @@ export default function Hero() {
         style={{
           backdropFilter: 'blur(8px)',
     WebkitBackdropFilter: 'blur(8px)', 
-          background: '#fff',
+          background: 'rgba(255, 255, 255, 0.08)',
           padding: '4rem 2rem',
           textAlign: 'center',
           borderRadius: '20px',
           maxWidth: '900px',
           margin: '4rem auto',
+          border: '1px solid rgba(255, 255, 255, 0.2)',
+    boxShadow: '0 4px 30px rgba(0, 0, 0, 0.1)',
           zIndex: 1
   
         }}
@@ -284,15 +287,17 @@ export default function Hero() {
       <div style={{
       backdropFilter: 'blur(8px)',
     WebkitBackdropFilter: 'blur(8px)', 
-        background: 'rgba(255,255,255,0.9)',
+        background: 'rgba(255, 255, 255, 0.08)',
         padding: '3rem 2rem',
         borderRadius: '20px',
         maxWidth: '1000px',
         margin: '2rem auto',
+      border: '1px solid rgba(255, 255, 255, 0.2)',
+    boxShadow: '0 4px 30px rgba(0, 0, 0, 0.1)',
         zIndex: 1
       }}>
         <Title level={2} style={{ textAlign: 'center', color: '#0B3D91' }}>Overview</Title>
-        <Row gutter={[32, 32]} justify="center" style={{ marginTop: '2rem' }}>
+        <Row gutter={[32, 32]} justify="center" style={{ marginTop: '2rem', color:'#fff' }}>
           <Col xs={24} sm={12} md={8}>
             <Space direction="vertical" align="center">
               <Lottie animationData={LockAnimation} loop style={{ width: 80, height: 80 }} />
