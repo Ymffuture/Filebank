@@ -30,7 +30,7 @@ export default function Home() {
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, ease: 'easeOut' }}
-          className="text-center py-10 px-4 bg-gradient-to-br from-[#0B3D91] to-[#1e1e2f] text-white rounded-2xl shadow-2xl max-w-4xl mx-auto"
+          className="text-center p-10 bg-[#1E90FF] max-w-4xl mx-auto"
         >
           <h1 className="text-4xl md:text-5xl font-extrabold mb-4 tracking-tight">
             <TrueFocus 
@@ -43,7 +43,7 @@ pauseBetweenAnimations={1}
 />
             
           </h1>
-          <div className="text-xl md:text-2xl font-medium">
+          <div className="text-xl md:text-2xl font-medium p-2">
             <TextType 
               text={[
                 "Securely upload, access & share files",
