@@ -4,14 +4,13 @@ import { FacebookIcon, GithubIcon, LinkedinIcon } from 'lucide-react';
 import { Tooltip } from 'antd';
 import Particles from './Particles'; 
 
-
 const Footer = () => {
   return (
     <footer className="bg-white dark:bg-gray-900 dark:border-gray-700 py-6">
-    
-<div style={{ width: '100%', height: '200px', position: 'absolute', zIndex: 0, pointerEvents: 'none' }}>
+<div style={{ width: '100%', height: '300px', position: 'absolute', zIndex: 0, pointerEvents: 'none' }}>
+
   <Particles
-    particleColors={['#000', '#1E90FF', 'red' ]}
+    particleColors={['#000', '#333']}
     particleCount={200}
     particleSpread={10}
     speed={0.1}
@@ -60,4 +59,35 @@ const Footer = () => {
               </a>
             </Tooltip>
           </div>
-          <span className="text-gray-500 dark:text-gray-400 text-xs text-center md:text-left"> 
+          <span className="text-gray-500 dark:text-gray-400 text-xs text-center md:text-left">
+            Powered by <span className="font-semibold">Quorvex Institute</span>
+          </span>
+        </div>
+
+        {/* Links + Copyright */}
+        <div className="flex flex-row items-center md:flex-row md:space-x-4 text-gray-500 dark:text-gray-400 text-xs gap-4">
+          <Link
+            to="/terms"
+            className="hover:text-blue-600 dark:hover:text-blue-400 transition"
+          >
+            Terms
+          </Link>
+
+      |
+          <Link
+            to="/privacy"
+            className="hover:text-blue-600 dark:hover:text-blue-400 transition"
+          >
+            Privacy
+          </Link>
+          
+        </div>
+          <span className="select-none text-center md:text-left items-center md:flex-row md:space-x-4 text-gray-500 dark:text-gray-400 text-xs">
+            © {new Date().getFullYear()} <span className="font-semibold">Famacloud</span>. All rights reserved.
+          </span>
+      </div>
+    </footer>
+  );
+};
+
+export default Footer;
