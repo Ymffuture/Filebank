@@ -129,7 +129,24 @@ export default function Hero() {
       </Helmet>
       
 
-<div style={{ width: '100%', height: '600px', position: 'relative' }}>
+
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5 }}
+      style={{
+        minHeight: '100vh',
+      //   backgroundImage: `url('/bg9.jpg')`,
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'space-between',
+        padding: '2rem',
+        position: 'relative'
+      }}
+    >
+      <div style={{ width: '100%', height: '600px', position: 'relative' }}>
   <Beams
     beamWidth={2}
     beamHeight={15}
@@ -141,22 +158,7 @@ export default function Hero() {
     rotation={0}
   />
 </div>
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5 }}
-      style={{
-        minHeight: '100vh',
-        backgroundImage: `url('/bg9.jpg')`,
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'space-between',
-        padding: '2rem',
-        position: 'relative'
-      }}
-    >
+      
       {/* Background Lottie */}
       <Lottie
         animationData={HeroAnimation}
