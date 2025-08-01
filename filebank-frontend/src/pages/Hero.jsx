@@ -162,7 +162,7 @@ export default function Hero() {
           beamWidth={2.8}
           beamHeight={10}
           beamNumber={14}
-          lightColor="#1E90FF "
+          lightColor="#1E90FF"
           speed={2}
           noiseIntensity={1.75}
           scale={0.2}
@@ -416,7 +416,7 @@ export default function Hero() {
   
 <RotatingText
   texts={['Famacloud', 'Store', 'Files', 'images ', 'and', 'More' ]}
-  mainClassName="p-4 sm:px-2 md:px-3 bg-cyan-300 text-black overflow-hidden py-0.5 sm:py-1 md:py-2 justify-center rounded"
+  mainClassName="p-4 sm:p-4 md:p-3 bg-cyan-300 text-black overflow-hidden py-0.5 sm:py-2 md:py-2 justify-center rounded"
   staggerFrom={"last"}
   initial={{ y: "100%" }}
   animate={{ y: 0 }}
