@@ -15,6 +15,12 @@ import Lockup from '../assets/Auth.json';
 import LockupIn from '../assets/Reg.json';
 import {Helmet} from 'react-helmet' 
 import RotatingText from './RotatingText' 
+import Beams from './Beams';
+
+
+
+
+
 const { Title, Paragraph, Text } = Typography;
 
 export default function Hero() {
@@ -122,6 +128,19 @@ export default function Hero() {
         <meta name="description" content="Securely upload your files to Famacloud." />
       </Helmet>
       
+
+<div style={{ width: '100%', height: '600px', position: 'relative' }}>
+  <Beams
+    beamWidth={2}
+    beamHeight={15}
+    beamNumber={12}
+    lightColor="#ffffff"
+    speed={2}
+    noiseIntensity={1.75}
+    scale={0.2}
+    rotation={0}
+  />
+</div>
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
