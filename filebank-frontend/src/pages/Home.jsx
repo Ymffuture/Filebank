@@ -34,13 +34,13 @@ export default function Home() {
         >
           <h1 className="text-4xl md:text-5xl font-extrabold mb-4 tracking-tight">
             <TrueFocus 
-sentence="Famacloud Dashboard Upload "
-manualMode={false}
-blurAmount={5}
-borderColor="red"
-animationDuration={2}
-pauseBetweenAnimations={1}
-/>
+             sentence="Famacloud Dashboard Upload "
+              manualMode={false}
+              blurAmount={5}
+              borderColor="red"
+              animationDuration={2}
+              pauseBetweenAnimations={1}
+             />
             
           </h1>
           <div className="text-xl md:text-2xl font-medium p-2">
@@ -52,7 +52,7 @@ pauseBetweenAnimations={1}
                 "Fast. Reliable. Famacloud."
               ]}
               typingSpeed={70}
-              pauseDuration={2000}
+              pauseDuration={5000}
               showCursor={true}
               cursorCharacter="_"
             />
