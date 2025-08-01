@@ -11,6 +11,8 @@ import Successful from '../assets/Successful.json' ;
 import Failed from '../assets/Failed.json' ;
 import pdfAnim from '../assets/PDF.json' ;
 import api from '../api/fileApi';
+import Stack from './Stack'
+
 
 export default function FileUpload({ onUpload, currentUserFileCount = 0, userRole }) {
   const [files, setFiles] = useState([]);
@@ -106,6 +108,14 @@ export default function FileUpload({ onUpload, currentUserFileCount = 0, userRol
     'text/x-shellscript', 'text/x-config', 'application/octet-stream'
   ];
 
+//demo images
+  const images = [
+  { id: 1, img: "https://images.unsplash.com/photo-1480074568708-e7b720bb3f09?q=80&w=500&auto=format" },
+  { id: 2, img: "https://images.unsplash.com/photo-1449844908441-8829872d2607?q=80&w=500&auto=format" },
+  { id: 3, img: "https://images.unsplash.com/photo-1452626212852-811d58933cae?q=80&w=500&auto=format" },
+  { id: 4, img: "https://images.unsplash.com/photo-1572120360610-d971b9d7767c?q=80&w=500&auto=format" }
+]; 
+  
   return (
     <>
       <Helmet>
@@ -134,7 +144,15 @@ export default function FileUpload({ onUpload, currentUserFileCount = 0, userRol
                 
                 style={{ width: 320, height: 320 }}
               />
-            </div>:null} 
+            </div>:
+                 <Stack
+                 randomRotation={true}
+                sensitivity={180}
+                sendToBackOnClick={false}
+                cardDimensions={{ width: 300, height: 300 }}
+                cardsData={images}
+              />   
+          } 
 
           {uploading ? (
             <div className="flex justify-center mb-4">
