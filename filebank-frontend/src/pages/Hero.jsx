@@ -160,10 +160,10 @@ export default function Hero() {
         <Beams
           beamWidth={2.8}
           beamHeight={12}
-          beamNumber={30}
+          beamNumber={20}
           lightColor="red"
           speed={2}
-          noiseIntensity={3.75}
+          noiseIntensity={1.75}
           scale={0.2}
           rotation={30}
         />
@@ -200,18 +200,18 @@ export default function Hero() {
     boxShadow: '0 4px 30px rgba(0, 0, 0, 0.1)',
     position: 'relative',
     zIndex: 1,
-    color: '#666', // white text for dark background
+    color: '#fff', // white text for dark background
   }}>
         <Title level={3} style={{ margin: 0, color: '#0B3D91' }}>Famacloud</Title>
         {user ? (
           <Space>
             <Badge count={notifications} size="small">
-              <BellOutlined style={{ fontSize: 24, cursor: 'pointer', color: '#333' }} onClick={fetchNotifications} />
+              <BellOutlined style={{ fontSize: 24, cursor: 'pointer', color: '#fff' }} onClick={fetchNotifications} />
             </Badge>
             <Dropdown overlay={userMenu}>
               <Space style={{ cursor: 'pointer' }}>
                 <Avatar src={user.picture} />
-                <Text>{user.name || user.displayName}</Text>
+                <Text style={{color:'#fff'}} >{user.name || user.displayName}</Text>
                 <DownOutlined />
               </Space>
             </Dropdown>
@@ -238,20 +238,25 @@ export default function Hero() {
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.3 }}
         style={{
-          background: '#fff',
-          padding: '4rem 2rem',
-          textAlign: 'center',
-          borderRadius: '20px',
-          maxWidth: '900px',
-          margin: '4rem auto',
-          zIndex: 1
-  
-        }}
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    backdropFilter: 'blur(8px)',
+    WebkitBackdropFilter: 'blur(8px)', // For Safari
+    padding: '1rem 2rem',
+    borderRadius: '20px',
+    background: 'rgba(255, 255, 255, 0.08)', // Transparent white
+    border: '1px solid rgba(255, 255, 255, 0.2)',
+    boxShadow: '0 4px 30px rgba(0, 0, 0, 0.1)',
+    position: 'relative',
+    zIndex: 1,
+    color: '#fff', // white text for dark background
+  }}
       >
         <Title style={{ color: '#0B3D91', fontSize: '3rem', marginBottom: '1rem' }}>
           Store with Renown, Access Anywhere
         </Title>
-        <Paragraph style={{ fontSize: '1.2rem', color: '#666' }}>
+        <Paragraph style={{ fontSize: '1.2rem', color: '#fff' }}>
           Upload, manage, and access your files anywhere with <strong>Famacloud</strong>.
         </Paragraph>
         {!user? <Button size="large" style={{
@@ -279,14 +284,22 @@ export default function Hero() {
       </motion.div>
 
       {/* Overview Section */}
-      <div style={{
-        background: 'rgba(255,255,255,0.9)',
-        padding: '3rem 2rem',
-        borderRadius: '20px',
-        maxWidth: '1000px',
-        margin: '2rem auto',
-        zIndex: 1
-      }}>
+      <div 
+        style={{
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    backdropFilter: 'blur(8px)',
+    WebkitBackdropFilter: 'blur(8px)', // For Safari
+    padding: '1rem 2rem',
+    borderRadius: '20px',
+    background: 'rgba(255, 255, 255, 0.08)', // Transparent white
+    border: '1px solid rgba(255, 255, 255, 0.2)',
+    boxShadow: '0 4px 30px rgba(0, 0, 0, 0.1)',
+    position: 'relative',
+    zIndex: 1,
+    color: '#fff', // white text for dark background
+  }}>
         <Title level={2} style={{ textAlign: 'center', color: '#0B3D91' }}>Overview</Title>
         <Row gutter={[32, 32]} justify="center" style={{ marginTop: '2rem' }}>
           <Col xs={24} sm={12} md={8}>
@@ -407,7 +420,7 @@ export default function Hero() {
   
 <RotatingText
   texts={['Famacloud', 'Store', 'Files', 'images ', 'and', 'Code' ]}
-  mainClassName="px-2 sm:px-2 md:px-3 bg-cyan-300 text-black overflow-hidden py-0.5 sm:py-1 md:py-2 justify-center rounded-lg"
+  mainClassName="p-4 sm:px-2 md:px-3 bg-cyan-300 text-black overflow-hidden py-0.5 sm:py-1 md:py-2 justify-center rounded-lg"
   staggerFrom={"last"}
   initial={{ y: "100%" }}
   animate={{ y: 0 }}
