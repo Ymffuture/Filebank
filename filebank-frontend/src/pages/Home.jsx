@@ -6,6 +6,8 @@ import FileList from '../components/FileList';
 import FileBankDocumentary from '../components/FileBankDocumentary';
 import Ai from '../components/Ai';
 import TextType from './TextType';
+import TrueFocus from './TrueFocus';
+
 
 export default function Home() {
   const [refresh, setRefresh] = useState(0);
@@ -31,7 +33,15 @@ export default function Home() {
           className="text-center py-10 px-4 bg-gradient-to-br from-[#0B3D91] to-[#1e1e2f] text-white rounded-2xl shadow-2xl max-w-4xl mx-auto"
         >
           <h1 className="text-4xl md:text-5xl font-extrabold mb-4 tracking-tight">
-            Famacloud Dashboard Upload
+            <TrueFocus 
+sentence="Famacloud Dashboard Upload "
+manualMode={false}
+blurAmount={5}
+borderColor="red"
+animationDuration={2}
+pauseBetweenAnimations={1}
+/>
+            
           </h1>
           <div className="text-xl md:text-2xl font-medium">
             <TextType 
