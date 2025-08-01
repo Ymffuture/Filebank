@@ -11,9 +11,9 @@ const Footer = () => {
 
   <Particles
     particleColors={['#000', '#1E90FF', 'red']}
-    particleCount={200}
+    particleCount={300}
     particleSpread={10}
-    speed={0.1}
+    speed={0.3}
     particleBaseSize={100}
     moveParticlesOnHover={true}
     alphaParticles={false}
