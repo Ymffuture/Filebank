@@ -160,10 +160,10 @@ export default function Hero() {
         <Beams
           beamWidth={2.8}
           beamHeight={12}
-          beamNumber={20}
+          beamNumber={30}
           lightColor="red"
           speed={2}
-          noiseIntensity={1.75}
+          noiseIntensity={3.75}
           scale={0.2}
           rotation={30}
         />
@@ -238,22 +238,17 @@ export default function Hero() {
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.3 }}
         style={{
-    display: 'flex',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    backdropFilter: 'blur(8px)',
-    WebkitBackdropFilter: 'blur(8px)', // For Safari
-    padding: '4rem 2rem',
-    textAlign: 'center',
-    maxWidth: '900px',
-    margin: '4rem auto',
-    borderRadius: '20px',
-    background: 'rgba(255, 255, 255, 0.08)', // Transparent white
-    border: '1px solid rgba(255, 255, 255, 0.2)',
-    boxShadow: '0 4px 30px rgba(0, 0, 0, 0.1)',
-    zIndex: 1,
-    color: '#fff', // white text for dark background
-  }}
+          backdropFilter: 'blur(8px)',
+    WebkitBackdropFilter: 'blur(8px)', 
+          background: '#fff',
+          padding: '4rem 2rem',
+          textAlign: 'center',
+          borderRadius: '20px',
+          maxWidth: '900px',
+          margin: '4rem auto',
+          zIndex: 1
+  
+        }}
       >
         <Title style={{ color: '#0B3D91', fontSize: '3rem', marginBottom: '1rem' }}>
           Store with Renown, Access Anywhere
@@ -286,22 +281,16 @@ export default function Hero() {
       </motion.div>
 
       {/* Overview Section */}
-      <div 
-        style={{
-    display: 'flex',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    backdropFilter: 'blur(8px)',
-    WebkitBackdropFilter: 'blur(8px)', // For Safari
-    padding: '3rem 2rem',
-    borderRadius: '20px',
-    background: 'rgba(255, 255, 255, 0.08)', // Transparent white
-    border: '1px solid rgba(255, 255, 255, 0.2)',
-    boxShadow: '0 4px 30px rgba(0, 0, 0, 0.1)',
-    maxWidth: '900px',
-    zIndex: 1,
-    color: '#fff', // white text for dark background
-  }}>
+      <div style={{
+      backdropFilter: 'blur(8px)',
+    WebkitBackdropFilter: 'blur(8px)', 
+        background: 'rgba(255,255,255,0.9)',
+        padding: '3rem 2rem',
+        borderRadius: '20px',
+        maxWidth: '1000px',
+        margin: '2rem auto',
+        zIndex: 1
+      }}>
         <Title level={2} style={{ textAlign: 'center', color: '#0B3D91' }}>Overview</Title>
         <Row gutter={[32, 32]} justify="center" style={{ marginTop: '2rem' }}>
           <Col xs={24} sm={12} md={8}>
@@ -422,7 +411,7 @@ export default function Hero() {
   
 <RotatingText
   texts={['Famacloud', 'Store', 'Files', 'images ', 'and', 'Code' ]}
-  mainClassName="p-4 sm:px-2 md:px-3 bg-cyan-300 text-black overflow-hidden py-0.5 sm:py-1 md:py-2 justify-center rounded-lg"
+  mainClassName="px-2 sm:px-2 md:px-3 bg-cyan-300 text-black overflow-hidden py-0.5 sm:py-1 md:py-2 justify-center rounded-lg"
   staggerFrom={"last"}
   initial={{ y: "100%" }}
   animate={{ y: 0 }}
@@ -438,4 +427,3 @@ export default function Hero() {
     </>
   );
 }
-
