@@ -4,22 +4,60 @@ import { BadgeCheck } from 'lucide-react';
 import { Tooltip } from 'antd';
 
 const levels = [
+const levels = [
   {
     title: 'Level 1: Basic CV',
-    price: 'R150',
+    price: 'R50',
     features: ['Simple layout', 'Basic formatting', 'No custom design'],
   },
   {
     title: 'Level 2: Standard CV',
-    price: 'R300',
+    price: 'R80',
     features: ['Modern layout', '1-on-1 support', 'Editable format'],
   },
   {
     title: 'Level 3: Expert CV',
-    price: 'R600',
+    price: 'R100',
     features: ['ATS optimized', 'Fully designed', 'Custom branding'],
   },
+  {
+    title: 'Level 4: CV + Cover Letter',
+    price: 'R110',
+    features: [
+      'Expert CV with matching cover letter',
+      'Tailored for job type',
+      'Includes recruiter-friendly wording',
+    ],
+  },
+  {
+    title: 'Level 5: Signature Design CV',
+    price: 'R130',
+    features: [
+      'Your own style & color palette',
+      'Premium layout (Canva, Figma, PDF)',
+      'Delivered in multiple formats (PDF + Word)',
+    ],
+  },
+  {
+    title: 'Level 6: Handwritten to Digital CV',
+    price: 'R150',
+    features: [
+      'Handwritten CV converted to professional design',
+      'Includes grammar corrections',
+      'Delivered as editable file & PDF',
+    ],
+  },
+  {
+    title: 'Level 7: PDF to PDF Enhanced',
+    price: 'R170',
+    features: [
+      'Take existing PDF CV and upgrade design',
+      'Improve formatting, fonts, visuals',
+      'Optimized for readability & ATS',
+    ],
+  },
 ];
+
 
 const scrollInterval = 4000; // 4 seconds
 
