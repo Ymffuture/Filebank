@@ -142,12 +142,12 @@ export default function FileUpload({ onUpload, currentUserFileCount = 0, userRol
               <Lottie
                 animationData={pdfAnim}
                 
-                style={{ width: 320, height: 320 }}
+                style={{ width: 300, height: 300 }}
               />
             </div>:
                  <Stack
                  randomRotation={true}
-                sensitivity={180}
+                sensitivity={50}
                 sendToBackOnClick={false}
                 cardDimensions={{ width: 300, height: 300 }}
                 cardsData={images}
