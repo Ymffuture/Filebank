@@ -160,11 +160,11 @@ export default function Hero() {
       >
         <Beams
           beamWidth={2.8}
-          beamHeight={12}
-          beamNumber={30}
-          lightColor="red"
+          beamHeight={10}
+          beamNumber={14}
+          lightColor="#1E90FF "
           speed={2}
-          noiseIntensity={3.75}
+          noiseIntensity={1.75}
           scale={0.2}
           rotation={30}
         />
@@ -301,8 +301,8 @@ export default function Hero() {
           <Col xs={24} sm={12} md={8}>
             <Space direction="vertical" align="center">
               <Lottie animationData={LockAnimation} loop style={{ width: 80, height: 80 }} />
-              <Text strong>End-to-End Encryption</Text>
-              <Text type="secondary" style={{ textAlign: 'center' }}>
+              <Text strong style={{color:'#fff'}} >End-to-End Encryption</Text>
+              <Text type="secondary" style={{ textAlign: 'center', color:'#fff' }}>
                 All files are encrypted for maximum security.
               </Text>
             </Space>
@@ -310,8 +310,8 @@ export default function Hero() {
           <Col xs={24} sm={12} md={8}>
             <Space direction="vertical" align="center">
               <Lottie animationData={UploadAnimation} loop style={{ width: 80, height: 80 }} />
-              <Text strong>Unlimited Uploads</Text>
-              <Text type="secondary" style={{ textAlign: 'center' }}>
+              <Text strong style={{color:'#fff'}} >Unlimited Uploads</Text>
+              <Text type="secondary" style={{ textAlign: 'center', color:'#fff' }}>
                 Upload images, videos, PDFs, code, and more.
               </Text>
             </Space>
@@ -319,8 +319,8 @@ export default function Hero() {
           <Col xs={24} sm={12} md={8}>
             <Space direction="vertical" align="center">
               <Lottie animationData={TimeAnimation} loop style={{ width: 80, height: 80 }} />
-              <Text strong>Auto Expiry</Text>
-              <Text type="secondary" style={{ textAlign: 'center' }}>
+              <Text strong style={{color:'#fff'}}>Auto Expiry</Text>
+              <Text type="secondary" style={{ textAlign: 'center', color:'#fff' }}>
                 Files auto-expire after 90 days unless renewed.
               </Text>
             </Space>
@@ -415,8 +415,8 @@ export default function Hero() {
       }}>
   
 <RotatingText
-  texts={['Famacloud', 'Store', 'Files', 'images ', 'and', 'Code' ]}
-  mainClassName="px-2 sm:px-2 md:px-3 bg-cyan-300 text-black overflow-hidden py-0.5 sm:py-1 md:py-2 justify-center rounded-lg"
+  texts={['Famacloud', 'Store', 'Files', 'images ', 'and', 'More' ]}
+  mainClassName="p-4 sm:px-2 md:px-3 bg-cyan-300 text-black overflow-hidden py-0.5 sm:py-1 md:py-2 justify-center rounded"
   staggerFrom={"last"}
   initial={{ y: "100%" }}
   animate={{ y: 0 }}
