@@ -207,15 +207,7 @@ const ErrorFallback = ({ onRetry }) => (
   type="warning"
   showIcon
   closable
-  className="m-8"
-/>
-
-<Alert
-  message="🚫 Warning: Please do not share your personal information (such as email, ID, or passwords) with others to keep your account safe."
-  type="error"
-  showIcon
-  closable
-  className="m-8"
+  className="m-6"
 />
 
       <div className="p-4 shadow-sm rounded-md mb-4 flex flex-wrap gap-4">
@@ -361,6 +353,14 @@ const ErrorFallback = ({ onRetry }) => (
           <Button type="link" onClick={() => setDisplayCount(c => c + 4)}>Load More</Button>
         </div>
       )}
+
+      <Alert
+  message="🚫 Warning: Please do not share your personal information (such as email, ID, or passwords) with others to keep your account safe."
+  type="error"
+  showIcon
+  closable
+  className="m-6"
+/>
     </>} 
         
     </>
