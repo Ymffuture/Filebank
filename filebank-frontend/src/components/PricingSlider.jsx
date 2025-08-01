@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 import { BadgeCheck } from 'lucide-react';
 import { Tooltip } from 'antd';
 
-const levels = [
+
 const levels = [
   {
     title: 'Level 1: Basic CV',
