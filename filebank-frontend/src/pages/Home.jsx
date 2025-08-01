@@ -30,16 +30,16 @@ export default function Home() {
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, ease: 'easeOut' }}
-          className="text-center p-10 bg-[#1E90FF] max-w-4xl mx-auto"
+          className="text-center p-10 bg-[#1E90FF] mx-auto w-[100%]"
         >
-          <h1 className="text-4xl md:text-5xl font-extrabold mb-4 tracking-tight">
+          <h1 className="text-4xl md:text-5xl font-extrabold mb-4 tracking-tight text-[whitesmoke]">
             <TrueFocus 
              sentence="Famacloud Dashboard Upload "
               manualMode={false}
-              blurAmount={5}
+              blurAmount={8}
               borderColor="red"
               animationDuration={2}
-              pauseBetweenAnimations={1}
+              pauseBetweenAnimations={3}
              />
             
           </h1>
@@ -54,7 +54,7 @@ export default function Home() {
               typingSpeed={70}
               pauseDuration={5000}
               showCursor={true}
-              cursorCharacter="_"
+              cursorCharacter="_✍️"
             />
           </div>
         </motion.section>
