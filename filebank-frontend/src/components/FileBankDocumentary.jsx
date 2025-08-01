@@ -8,13 +8,13 @@ const { Panel } = Collapse;
 
 export default function FamacloudDocumentary() {
   return (
-    <div className="min-h-screen bg-[#fff] py-10 px-6">
+    <div className="min-h-screen py-6 px-10">
       <Helmet>
         <title>Famacloud Documentary</title>
         <meta name="description" content="Discover how Famacloud saves your important files, like CVs, certificates, and more, accessible anytime, anywhere with just internet access." />
       </Helmet>
 
-      <main className="mx-auto max-w-4xl bg-white rounded-lg p-8">
+      <main className="mx-auto max-w-4xl p-8">
         <Typography>
           <Title level={2} className="text-center text-[#1E90FF] mb-6">The Story & Vision of Famacloud</Title>
           
