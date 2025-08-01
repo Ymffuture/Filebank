@@ -9,7 +9,7 @@ const Footer = () => {
   return (
     <footer className="bg-white dark:bg-gray-900 dark:border-gray-700 py-6">
     
-<div style={{ width: '100%', height: '600px', position: 'absolute', zIndex: 0, pointerEvents: 'none' }}>
+<div style={{ width: '100%', height: '200px', position: 'absolute', zIndex: 0, pointerEvents: 'none' }}>
   <Particles
     particleColors={['#000', '#1E90FF', 'red' ]}
     particleCount={200}
