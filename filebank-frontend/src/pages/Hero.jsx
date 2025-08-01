@@ -158,14 +158,14 @@ export default function Hero() {
         }}
       >
         <Beams
-          beamWidth={2}
-          beamHeight={15}
-          beamNumber={12}
-          lightColor="#ffffff"
+          beamWidth={2.8}
+          beamHeight={12}
+          beamNumber={30}
+          lightColor="red"
           speed={2}
-          noiseIntensity={1.75}
+          noiseIntensity={3.75}
           scale={0.2}
-          rotation={0}
+          rotation={30}
         />
       </div>
       
