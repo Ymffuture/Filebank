@@ -125,7 +125,7 @@ const username = user?.name || user?.displayName || "Famacloud";
   return (
     <>
 <Helmet>
-        <title> Home | {username}</title>
+        <title>{username} | Home</title>
        <meta name="theme-color" content="#000" />
         <meta name="description" content="Securely upload your files to Famacloud." />
       </Helmet>
@@ -198,8 +198,8 @@ const username = user?.name || user?.displayName || "Famacloud";
     padding: '1rem 2rem',
     borderRadius: '20px',
     background: 'rgba(255, 255, 255, 0.08)', // Transparent white
-    border: '1px solid rgba(255, 255, 255, 0.2)',
-    boxShadow: '0 4px 30px rgba(0, 0, 0, 0.1)',
+    border: '1px solid #d946ef',
+    boxShadow: '0 4px 30px #FF00FF,
     position: 'relative',
     zIndex: 1,
     color: '#fff', // white text for dark background
@@ -270,11 +270,11 @@ const username = user?.name || user?.displayName || "Famacloud";
           padding: '0 2.5rem',
           backdropFilter: 'blur(8px)',
           WebkitBackdropFilter: 'blur(8px)', 
-          background: 'linear-gradient(to bottom, #000000, #1a202c)', 
-          borderRadius: '30px',
+          background: 'linear-gradient(to bottom, #000000, #1a202c, #FF00FF )', 
+          borderRadius: '8px',
           color: '#fff',
           fontWeight: 500,
-          boxShadow: '0 6px 18px rgba(30,144,255,0.4)'
+          boxShadow: '0 6px 18px #FF00FF'
         }} onClick={() => setIsModalVisible(true)}>
           Get Started Free
         </Button>:
@@ -283,11 +283,11 @@ const username = user?.name || user?.displayName || "Famacloud";
           padding: '0 2.5rem',
             backdropFilter: 'blur(8px)',
           WebkitBackdropFilter: 'blur(8px)', 
-          background: 'linear-gradient(to bottom, #000000, #1a202c)', 
+          background: 'linear-gradient(to bottom, #000000, #1a202c,#FF00FF)', 
           borderRadius: '8px',
           color: '#fff',
           fontWeight: 400,
-          boxShadow: '0 6px 18px rgba(30,144,255,0.4)'
+          boxShadow: '0 6px 18px #FF00FF'
         }} >
           <Link to="/dashboard">Go to Dashboard</Link>
         </Button>} 
