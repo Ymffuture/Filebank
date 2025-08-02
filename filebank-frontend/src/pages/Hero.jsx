@@ -269,34 +269,22 @@ export default function Hero() {
           marginTop: '2rem',
           padding: '0 2.5rem',
           background: 'linear-gradient(90deg, #1E90FF 0%, #32CD32 100%)',
-          borderRadius: '30px',
+          borderRadius: '8px',
           color: '#fff',
           fontWeight: 500,
           boxShadow: '0 6px 18px rgba(30,144,255,0.4)'
         }} onClick={() => setIsModalVisible(true)}>
           Get Started Free
         </Button>:
-          <Button size="large" 
-            style={{
-          marginTop: '2rem',
-          padding: '0 2.5rem',
-          background: 'linear-gradient(90deg, #1E90FF 0%, #32CD32 100%)',
-          borderRadius: '8px',
-          color: '#fff',
-          fontWeight: 400,
-          boxShadow: '0 6px 18px rgba(30,144,255,0.4)'
-        }} >
-          <Link to="/dashboard">Go to Dashboard</Link>
-        </Button>} 
- <StarBorder
+          <StarBorder
    style={{
           marginTop: '2rem',
-          padding: '0 2.5rem',
+     //     padding: '0 2.5rem',
          // background: 'linear-gradient(90deg, #1E90FF 0%, #32CD32 100%)',
       //    borderRadius: '8px',
           color: '#fff',
           fontWeight: 400,
-          boxShadow: '0 6px 18px rgba(30,144,255,0.4)'
+         // boxShadow: '0 6px 18px rgba(30,144,255,0.4)'
         }} 
   as="button"
   className="custom-class"
@@ -305,6 +293,8 @@ export default function Hero() {
 >
  <Link to="/dashboard">Go to Dashboard</Link>
 </StarBorder>
+        } 
+ 
 
       </motion.div>
 
