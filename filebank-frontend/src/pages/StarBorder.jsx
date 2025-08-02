@@ -1,9 +1,9 @@
 const StarBorder = ({
   as: Component = "button",
-  className = "",
+  className = "p-2",
   color = "white",
   speed = "6s",
-  thickness = 1,
+  thickness = 2,
   children,
   ...rest
 }) => {
