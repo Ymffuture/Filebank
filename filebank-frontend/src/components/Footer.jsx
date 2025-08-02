@@ -12,7 +12,7 @@ const isHome = location.pathname === '/';
   return (
     <footer className={`relative py-6 overflow-hidden transition-colors duration-300 ${
         isHome
-          ? 'bg-fuchsia-600 text-white'
+          ? 'bg-black text-white'
           : 'bg-white dark:bg-gray-900 dark:border-gray-700 text-gray-600 dark:text-gray-300'
       }`}>
 <div style={{ width: '100%', height: '100px', position: 'absolute', zIndex: 0, pointerEvents: 'none' }}>
@@ -67,13 +67,13 @@ const isHome = location.pathname === '/';
               </a>
             </Tooltip>
           </div>
-          <span className="text-gray-500 dark:text-gray-400 text-xs text-center md:text-left">
+          <span className="dark:text-gray-400 text-xs text-center md:text-left">
             Powered by <span className="font-semibold">Quorvex Institute</span>
           </span>
         </div>
 
         {/* Links + Copyright */}
-        <div className="flex flex-row items-center md:flex-row md:space-x-4 text-gray-500 dark:text-gray-400 text-xs gap-4">
+        <div className="flex flex-row items-center md:flex-row md:space-x-4 dark:text-gray-400 text-xs gap-4">
           <Link
             to="/terms"
             className="hover:text-blue-600 dark:hover:text-blue-400 transition"
@@ -90,8 +90,8 @@ const isHome = location.pathname === '/';
           </Link>
           
         </div>
-          <span className="select-none text-center md:text-left items-center md:flex-row md:space-x-4 text-gray-500 dark:text-gray-400 text-xs">
-            © {new Date().getFullYear()} <span className="font-semibold">Famacloud</span>. All rights reserved.
+          <span className="select-none text-center md:text-left items-center md:flex-row md:space-x-4 dark:text-white text-xs">
+            © {new Date().getFullYear()} <span className="font-semibold text-fuchsia-600">Famacloud</span>. All rights reserved.
           </span>
       </div>
     </footer>
