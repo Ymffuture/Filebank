@@ -18,7 +18,8 @@ import RotatingText from './RotatingText'
 import Beams from './Beams';
 import DecryptedText from './DecryptedText';
 import { AiOutlineDown } from 'react-icons/ai';
-
+import StarBorder from './StarBorder'
+  
 
 
 const { Title, Paragraph, Text } = Typography;
@@ -275,7 +276,8 @@ export default function Hero() {
         }} onClick={() => setIsModalVisible(true)}>
           Get Started Free
         </Button>:
-          <Button size="large" style={{
+          <Button size="large" 
+            style={{
           marginTop: '2rem',
           padding: '0 2.5rem',
           background: 'linear-gradient(90deg, #1E90FF 0%, #32CD32 100%)',
@@ -286,6 +288,24 @@ export default function Hero() {
         }} >
           <Link to="/dashboard">Go to Dashboard</Link>
         </Button>} 
+ <StarBorder
+   style={{
+          marginTop: '2rem',
+          padding: '0 2.5rem',
+         // background: 'linear-gradient(90deg, #1E90FF 0%, #32CD32 100%)',
+      //    borderRadius: '8px',
+          color: '#fff',
+          fontWeight: 400,
+          boxShadow: '0 6px 18px rgba(30,144,255,0.4)'
+        }} 
+  as="button"
+  className="custom-class"
+  color="cyan"
+  speed="5s"
+>
+ <Link to="/dashboard">Go to Dashboard</Link>
+</StarBorder>
+
       </motion.div>
 
       {/* Overview Section */}
