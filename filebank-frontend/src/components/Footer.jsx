@@ -1,12 +1,20 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { FacebookIcon, GithubIcon, LinkedinIcon } from 'lucide-react';
 import { Tooltip } from 'antd';
 import Particles from './Particles'; 
 
 const Footer = () => {
+  
+const location = useLocation();
+const isHome = location.pathname === '/';
+
   return (
-    <footer className="dark:bg-gray-900 dark:border-gray-700 py-6">
+    <footer className={`relative py-6 overflow-hidden transition-colors duration-300 ${
+        isHome
+          ? 'bg-gradient-to-r from-purple-500 via-pink-500 to-red-500 text-white'
+          : 'bg-white dark:bg-gray-900 dark:border-gray-700 text-gray-600 dark:text-gray-300'
+      }`}>
 <div style={{ width: '100%', height: '100px', position: 'absolute', zIndex: 0, pointerEvents: 'none' }}>
 
   <Particles
