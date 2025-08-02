@@ -10,8 +10,8 @@ const Footer = () => {
 <div style={{ width: '100%', height: '100px', position: 'absolute', zIndex: 0, pointerEvents: 'none' }}>
 
   <Particles
-    particleColors={['#000', '#1E90FF', 'red']}
-    particleCount={200}
+    particleColors={['#000', 'red']}
+    particleCount={50}
     particleSpread={10}
     speed={0.3}
     particleBaseSize={100}
