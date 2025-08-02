@@ -416,7 +416,14 @@ export default function Hero() {
         marginTop: '3rem',
         padding: '1rem',
         color: '#777',
-        fontSize: '0.85rem'
+        fontSize: '0.85rem', 
+      backdropFilter: 'blur(8px)',
+    WebkitBackdropFilter: 'blur(8px)', // For Safari
+    padding: '1rem 2rem',
+    borderRadius: '20px',
+    background: 'rgba(255, 255, 255, 0.08)', // Transparent white
+    border: '1px solid rgba(255, 255, 255, 0.2)',
+    boxShadow: '0 4px 30px rgba(0, 0, 0, 0.1)',
       }}>
   
 <RotatingText
