@@ -265,35 +265,37 @@ export default function Hero() {
         <Paragraph style={{ fontSize: '1.2rem', color: '#fff' }}>
           Upload, manage, and access your files anywhere with <strong>Famacloud</strong>.
         </Paragraph>
-        {!user ? (
-  <Button
-    size="large"
-    style={{
-      marginTop: '2rem',
-      padding: '0 2.5rem',
-      background: '#FF00FF',
-      borderRadius: '8px',
-      color: '#fff',
-      fontWeight: 500,
-      boxShadow: '0 6px 18px rgba(30,144,255,0.4)',
-    }}
-    onClick={() => setIsModalVisible(true)}
-  >
-    Get Started Free
-  </Button>
-) : (
-  <StarBorder
-    style={{ marginTop: '2rem' }}
-    as="button"
-    className="px-10 py-4 text-white font-medium rounded-lg"
-    color="cyan"
-    speed="5s"
-  >
-    <Link to="/dashboard" className="text-white no-underline">
-      Go to Dashboard
-    </Link>
-  </StarBorder>
-)}
+        {!user? <Button size="large" style={{
+          marginTop: '2rem',
+          padding: '0 2.5rem',
+          background: 'linear-gradient(90deg, #1E90FF 0%, #32CD32 100%)',
+          borderRadius: '8px',
+          color: '#fff',
+          fontWeight: 500,
+          boxShadow: '0 6px 18px rgba(30,144,255,0.4)'
+        }} onClick={() => setIsModalVisible(true)}>
+          Get Started Free
+        </Button>:
+          <StarBorder
+   style={{
+          marginTop: '2rem',
+     //     padding: '0 2.5rem',
+         // background: 'linear-gradient(90deg, #1E90FF 0%, #32CD32 100%)',
+      //    borderRadius: '8px',
+          color: '#fff',
+          fontWeight: 400,
+         // boxShadow: '0 6px 18px rgba(30,144,255,0.4)'
+        }} 
+  as="button"
+  className="custom-class"
+  color="cyan"
+  speed="5s"
+>
+ <Link to="/dashboard">Go to Dashboard</Link>
+</StarBorder>
+        } 
+ 
+
       </motion.div>
 
       {/* Overview Section */}
