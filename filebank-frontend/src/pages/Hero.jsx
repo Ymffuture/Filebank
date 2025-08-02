@@ -17,7 +17,7 @@ import {Helmet} from 'react-helmet'
 import RotatingText from './RotatingText' 
 import Beams from './Beams';
 import DecryptedText from './DecryptedText';
-
+import { AiOutlineDown } from 'react-icons/ai';
 
 
 
@@ -213,7 +213,7 @@ export default function Hero() {
               <Space style={{ cursor: 'pointer' }}>
                 <Avatar src={user.picture} />
                 <Text style={{color:'#fff'}} >{user.name || user.displayName}</Text>
-                <DownOutlined />
+                <AiOutlineDown style={{color:'red'}} />
               </Space>
             </Dropdown>
           </Space>
@@ -240,7 +240,7 @@ export default function Hero() {
         transition={{ delay: 0.3 }}
         style={{
           backdropFilter: 'blur(8px)',
-    WebkitBackdropFilter: 'blur(8px)', 
+          WebkitBackdropFilter: 'blur(8px)', 
           background: 'rgba(255, 255, 255, 0.08)',
           padding: '4rem 2rem',
           textAlign: 'center',
@@ -248,7 +248,7 @@ export default function Hero() {
           maxWidth: '900px',
           margin: '4rem auto',
           border: '1px solid rgba(255, 255, 255, 0.2)',
-    boxShadow: '0 4px 30px rgba(0, 0, 0, 0.1)',
+          boxShadow: '0 4px 30px rgba(0, 0, 0, 0.1)',
           zIndex: 1
   
         }}
@@ -428,8 +428,8 @@ export default function Hero() {
       }}>
   
 <RotatingText
-  texts={['Famacloud', 'Store', 'Files', 'images ', 'and', 'More' ]}
-  mainClassName="p-4 sm:p-4 md:p-3 bg-cyan-300 text-white overflow-hidden py-0.5 sm:py-2 md:py-2 justify-center rounded"
+  texts={['Famacloud', 'Store', 'The', 'Files', 'images ', 'and', 'More', 'Do not stop 🛑', 'Now.' ]}
+  mainClassName="p-4 font-bold sm:p-4 md:p-3 bg-[#1E90FF] rounded-lg text-white overflow-hidden py-0.5 sm:py-2 md:py-2 justify-center rounded"
   staggerFrom={"last"}
   initial={{ y: "100%" }}
   animate={{ y: 0 }}
