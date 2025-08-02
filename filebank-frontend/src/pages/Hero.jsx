@@ -199,7 +199,7 @@ const username = user?.name || user?.displayName || "Famacloud";
     borderRadius: '20px',
     background: 'rgba(255, 255, 255, 0.08)', // Transparent white
     border: '1px solid #d946ef',
-    boxShadow: '0 4px 30px #FF00FF,
+    boxShadow: '0 4px 30px #FF00FF',
     position: 'relative',
     zIndex: 1,
     color: '#fff', // white text for dark background
