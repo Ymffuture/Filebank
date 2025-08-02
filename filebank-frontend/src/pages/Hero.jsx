@@ -120,11 +120,12 @@ export default function Hero() {
       setLoading(false);
     }
   };
+const username = user?.name || user?.displayName || "Famacloud";
 
   return (
     <>
 <Helmet>
-        <title> Home | {user.name || user.displayName || 'Famacloud ' }</title>
+        <title> Home | {username}</title>
        <meta name="theme-color" content="#000" />
         <meta name="description" content="Securely upload your files to Famacloud." />
       </Helmet>
@@ -267,7 +268,9 @@ export default function Hero() {
         {!user? <Button size="large" style={{
           marginTop: '2rem',
           padding: '0 2.5rem',
-          background: 'linear-gradient(90deg, #1E90FF 0%, #32CD32 100%)',
+          backdropFilter: 'blur(8px)',
+          WebkitBackdropFilter: 'blur(8px)', 
+          background: 'linear-gradient(to bottom, #000000, #1a202c)', 
           borderRadius: '30px',
           color: '#fff',
           fontWeight: 500,
@@ -278,7 +281,9 @@ export default function Hero() {
           <Button size="large" style={{
           marginTop: '2rem',
           padding: '0 2.5rem',
-          background: 'linear-gradient(90deg, #1E90FF 0%, #32CD32 100%)',
+            backdropFilter: 'blur(8px)',
+          WebkitBackdropFilter: 'blur(8px)', 
+          background: 'linear-gradient(to bottom, #000000, #1a202c)', 
           borderRadius: '8px',
           color: '#fff',
           fontWeight: 400,
@@ -291,14 +296,14 @@ export default function Hero() {
       {/* Overview Section */}
       <div style={{
       backdropFilter: 'blur(8px)',
-    WebkitBackdropFilter: 'blur(8px)', 
+       WebkitBackdropFilter: 'blur(8px)', 
         background: 'rgba(255, 255, 255, 0.08)',
         padding: '3rem 2rem',
         borderRadius: '20px',
         maxWidth: '1000px',
         margin: '2rem auto',
-      border: '1px solid rgba(255, 255, 255, 0.2)',
-    boxShadow: '0 4px 30px rgba(0, 0, 0, 0.1)',
+        border: '1px solid rgba(255, 255, 255, 0.2)',
+        boxShadow: '0 4px 30px rgba(0, 0, 0, 0.1)',
         zIndex: 1
       }}>
         <Title level={2} style={{ textAlign: 'center', color: '#0B3D91' }}>Overview</Title>
