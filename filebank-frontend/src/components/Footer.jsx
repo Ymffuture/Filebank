@@ -12,7 +12,7 @@ const isHome = location.pathname === '/';
   return (
     <footer className={`relative py-6 overflow-hidden transition-colors duration-300 ${
         isHome
-          ? 'bg-gradient-to-r from-purple-500 via-pink-500 to-red-500 text-white'
+          ? 'bg-fuchsia-600 text-white'
           : 'bg-white dark:bg-gray-900 dark:border-gray-700 text-gray-600 dark:text-gray-300'
       }`}>
 <div style={{ width: '100%', height: '100px', position: 'absolute', zIndex: 0, pointerEvents: 'none' }}>
