@@ -384,7 +384,7 @@ if (msg.type === 'error') {
             className="text-sm font-medium text-gray-700 dark:text-white hover:text-fuchsia-600 transition"
           >
             <DashboardOutlined className="mr-1" />
-            Dashboard
+            
           </Link>
         </Tooltip>
       </div>
@@ -400,7 +400,7 @@ if (msg.type === 'error') {
           />
         </Tooltip>
 
-        <Tooltip title="Generate Image">
+        <Tooltip title="Generate Image currently not available on this app">
           <Button
             onClick={() => setShowImageModal(true)}
             icon={<PictureOutlined />}
