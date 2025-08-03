@@ -21,6 +21,10 @@ import {Helmet} from 'react-helmet' ;
 import { v4 as uuidv4 } from 'uuid';
 const { Text } = Typography;
 
+import { DashboardOutlined, DeleteOutlined, PictureOutlined } from '@ant-design/icons';
+
+
+
 SyntaxHighlighter.registerLanguage('javascript', js);
 SyntaxHighlighter.registerLanguage('html', html);
 SyntaxHighlighter.registerLanguage('css', css);
@@ -367,29 +371,55 @@ if (msg.type === 'error') {
       </Helmet>
     
     
-    <div className={`${!darkMode ? 'bg-[#333]' : ''} h-screen flex flex-col bg-gradient-to-br from-white to-white dark:from-gray-800 dark:to-gray-900`}>
-      <header className="flex justify-between items-center p-4 bg-white dark:bg-gray-800">
-        <h1 className="text-[14px] font-bold text-[gray] dark:text-white">FamaAI 3.3.1v</h1>
-        <Link to='/dashboard'>Dashboard</Link>
-        <Button onClick={clearChat} size="small">Clear</Button>
-        <Button
-  type="primary"
-  onClick={() => setShowImageModal(true)}
-  className="bg-[#333] text-white hover:bg-gray-700"
->
-  Generate Image
-</Button>
+    <div className={`${!darkMode ? 'bg-[#333]' : 'bg-white'} h-screen flex flex-col bg-gradient-to-br from-white to-white dark:from-gray-800 dark:to-gray-900`}>
+      <header className="flex items-center justify-between px-6 py-4 bg-white dark:bg-[#121212] shadow-sm border-b border-gray-200 dark:border-gray-700">
+      {/* Left Section: Logo/Version */}
+      <div className="flex items-center gap-3">
+        <div className="bg-gradient-to-r from-fuchsia-600 to-pink-500 text-white text-sm font-bold px-3 py-1 rounded-xl shadow">
+          FamaAI v3.31.409
+        </div>
+        <Tooltip title="Go to Dashboard">
+          <Link
+            to="/dashboard"
+            className="text-sm font-medium text-gray-700 dark:text-white hover:text-fuchsia-600 transition"
+          >
+            <DashboardOutlined className="mr-1" />
+            Dashboard
+          </Link>
+        </Tooltip>
+      </div>
 
-        <Space>
-          <Switch
-            checked={darkMode}
-            onChange={setDarkMode}
-            checkedChildren={<BulbOutlined />}
-            unCheckedChildren={<BulbOutlined />}
-            aria-label="Toggle dark mode"
+      {/* Right Section: Buttons & Theme Toggle */}
+      <div className="flex items-center gap-4">
+        <Tooltip title="Clear Chat">
+          <Button
+            onClick={clearChat}
+            icon={<DeleteOutlined />}
+            size="small"
+            className="border border-gray-300 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-700"
           />
-        </Space>
-      </header>
+        </Tooltip>
+
+        <Tooltip title="Generate Image">
+          <Button
+            onClick={() => setShowImageModal(true)}
+            icon={<PictureOutlined />}
+            size="small"
+            className="bg-fuchsia-600 text-white hover:bg-fuchsia-700 transition-all"
+          >
+            Image
+          </Button>
+        </Tooltip>
+
+        <Switch
+          checked={darkMode}
+          onChange={setDarkMode}
+          checkedChildren={<BulbOutlined />}
+          unCheckedChildren={<BulbOutlined />}
+          className="bg-gray-300 dark:bg-gray-600"
+        />
+      </div>
+    </header>
       
       {loading || isTyping ? null : 
         
