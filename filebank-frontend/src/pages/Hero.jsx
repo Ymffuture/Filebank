@@ -116,7 +116,6 @@ useEffect(() => {
   );
 
   const onFinish = async (values) => {
-  const onFinish = async (values) => {
   setLoading(true);
   const email = values.email;
   localStorage.setItem('lastLoginEmail', email);
