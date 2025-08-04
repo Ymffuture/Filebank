@@ -399,7 +399,7 @@ const username = user?.name || user?.displayName || "Famacloud";
   title={isRegistering ? "Create Your Famacloud Account" : "Login to Famacloud"}
   open={isModalVisible}
   onCancel={() => setIsModalVisible(false)}
-  footer={isLockedOut? 'Form Locked 🔒' :'You have 3 login attempts.'}
+  footer={isLockedOut? 'Form Locked 🔒' :'You have 1 login attempts.'}
   centered
   style={{ color: '#666' }}
 >
