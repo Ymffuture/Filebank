@@ -64,7 +64,7 @@ useEffect(() => {
       }
     }).catch(() => {});
   }
-}, []);
+}, 1000);
 
   
   useEffect(() => { if (user) fetchNotifications(); }, [user]);
@@ -388,7 +388,7 @@ const username = user?.name || user?.displayName || "Famacloud";
   title={isRegistering ? "Create Your Famacloud Account" : "Login to Famacloud"}
   open={isModalVisible}
   onCancel={() => setIsModalVisible(false)}
-  footer={null}
+  footer={isLockedOut? 'Form Locked 🔒' :null}
   centered
   style={{ color: '#666' }}
 >
@@ -455,7 +455,7 @@ const username = user?.name || user?.displayName || "Famacloud";
           {isRegistering
             ? 'Register'
             : isLockedOut
-            ? 'Login Disabled (1h)'
+            ? 'Account Locked 🔒'
             : 'Login'}
         </Button>
 
