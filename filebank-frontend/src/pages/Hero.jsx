@@ -39,19 +39,9 @@ export default function Hero() {
   const [remainingTime, setRemainingTime] = useState(0);
 
 useEffect(() => {
-  if (isLockedOut) {
-    const interval = setInterval(() => {
-      const newTime = remainingTime - 1000;
-      setRemainingTime(newTime);
-      if (newTime <= 0) {
-        setIsLockedOut(false);
-        localStorage.removeItem('loginAttempts');
-        localStorage.removeItem('lockUntil');
-      }
-    }, 1000);
-    return () => clearInterval(interval);
-  }
-}, [isLockedOut, remainingTime]);
+  setIsLockedOut(locked);
+  setRemainingTime(remaining);
+}, [locked, remaining]);
 
 
 const useLockCountdown = (email) => {
@@ -59,10 +49,10 @@ const useLockCountdown = (email) => {
   const [locked, setLocked] = useState(false);
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      if (!email) return;
+    if (!email) return;
 
-      api.post('/auth/check-lock', { email }).then(res => {
+    const fetchLockStatus = () => {
+      api.post('/auth/check-lock', { email }).then((res) => {
         const lockedUntil = res.data.lockedUntil;
         const now = Date.now();
 
@@ -74,13 +64,17 @@ const useLockCountdown = (email) => {
           setRemaining(null);
         }
       }).catch(() => {});
-    }, 1000); // refresh every second
+    };
+
+    const interval = setInterval(fetchLockStatus, 1000); // check every second
+    fetchLockStatus(); // initial call
 
     return () => clearInterval(interval);
   }, [email]);
 
   return { locked, remaining };
 };
+
 
 const { locked, remaining } = useLockCountdown(email);
 
@@ -427,14 +421,15 @@ const username = user?.name || user?.displayName || "Famacloud";
         </div>
       )}
 
-      {!isRegistering && isLockedOut && (
-        <Text
-          type="danger"
-          style={{ display: 'block', textAlign: 'center', marginBottom: 12 }}
-        >
-          Too many failed attempts. Try again in {Math.ceil(remainingTime / 60000)} minute(s).
-        </Text>
-      )}
+      {isLockedOut && remainingTime > 0 && (
+  <Text
+    type="danger"
+    style={{ display: 'block', textAlign: 'center', marginBottom: 12 }}
+  >
+    Too many failed attempts. Try again in {Math.ceil(remainingTime / 1000)} seconds.
+  </Text>
+)}
+
 
       {isRegistering && (
         <Form.Item name="name" label="Full Name" rules={[{ required: true }]}>
