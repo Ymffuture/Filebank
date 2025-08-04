@@ -55,17 +55,27 @@ useEffect(() => {
 
   
 useEffect(() => {
-  const email = localStorage.getItem('lastLoginEmail');
-  if (email) {
-    api.post('/auth/check-lock', { email }).then(res => {
-      const { lockedUntil } = res.data;
-      if (lockedUntil && Date.now() < lockedUntil) {
-        setIsLockedOut(true);
-        setRemainingTime(lockedUntil - Date.now());
-      }
-    }).catch(() => {});
-  }
-}, 1000);
+  const interval = setInterval(() => {
+    const email = localStorage.getItem('lastLoginEmail');
+    if (email) {
+      api.post('/auth/check-lock', { email })
+        .then(res => {
+          const { lockedUntil } = res.data;
+          if (lockedUntil && Date.now() < lockedUntil) {
+            setIsLockedOut(true);
+            setRemainingTime(lockedUntil - Date.now());
+          } else {
+            setIsLockedOut(false);
+            setRemainingTime(0);
+          }
+        })
+        .catch(() => {});
+    }
+  }, 1000); // run every 1 second
+
+  return () => clearInterval(interval); // cleanup on unmount
+}, []);
+
 
   
   useEffect(() => { if (user) fetchNotifications(); }, [user]);
