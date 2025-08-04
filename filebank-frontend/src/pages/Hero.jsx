@@ -385,86 +385,134 @@ const username = user?.name || user?.displayName || "Famacloud";
       </div>
 
       {/* Login/Register Modal */}
-      <Modal
-        title={isRegistering ? "Create Your Famacloud Account" : "Login to Famacloud"}
-        open={isModalVisible}
-        onCancel={() => setIsModalVisible(false)}
-        footer={null}
-        centered
-        style={{color:'#666'}} 
-      >
-        {loading ? (
-          <div style={{ textAlign: 'center', padding: '2rem' }}>
-            <Spin size="large" />
-          </div>
-        ) : (
-          <Form layout="vertical" onFinish={onFinish}>
-            
-            {!isRegistering? <div className="flex justify-center mb-4">
-              <Lottie animationData={Lockup} loop style={{ width: 80, height: 80}} />
-            </div>: <div className="flex justify-center mb-4">
-              <Lottie animationData={LockupIn} loop style={{ width: 110, height: 110}} />
-            </div>} 
-            
-              {!isRegistering && isLockedOut && (
-  <Text type="danger" style={{ display: 'block', textAlign: 'center', marginBottom: 12 }}>
-    Too many failed attempts. Try again in {Math.ceil(remainingTime / 60000)} minute(s).
-  </Text>
-)}
-
-            {isRegistering && (
-              <Form.Item name="name" label="Full Name" rules={[{ required: true }]}>
-                <Input placeholder="Your Name" />
-              </Form.Item>
-            )}
-            <Form.Item name="email" label="Email" rules={[{ required: true, type: 'email' }]}>
-              <Input placeholder="yourname@example.com" />
-            </Form.Item>
-            <Form.Item name="password" label="Password" rules={[{ required: true, min: 6 }]}>
-              <Input.Password placeholder="Minimum 6 characters" />
-            </Form.Item>
-            <Form.Item>
-              <Button 
-  htmlType="submit" 
-  block 
-  size="large" 
-  disabled={isLockedOut}
-  style={{
-    background: isLockedOut ? '#999' : 'linear-gradient(117deg, #6366F1, #8B5CF6,#1E90FF)',
-    border: 'none',
-    color: '#fff',
-    borderRadius: '30px',
-    cursor: isLockedOut ? 'not-allowed' : 'pointer'
-  }}
+<Modal
+  title={isRegistering ? "Create Your Famacloud Account" : "Login to Famacloud"}
+  open={isModalVisible}
+  onCancel={() => setIsModalVisible(false)}
+  footer={null}
+  centered
+  style={{ color: '#666' }}
 >
-  {isRegistering ? "Register" : isLockedOut ? "Login Disabled (1h)" : "Login"}
-</Button>
-              
-{isLockedOut && (
-  <Text type="danger" style={{ display: 'block', textAlign: 'center', marginBottom: 10 }}>
-    Try again in {Math.ceil(remainingTime / 60000)} minutes
-  </Text>
-)}
+  {loading ? (
+    <div style={{ textAlign: 'center', padding: '2rem' }}>
+      <Spin size="large" />
+    </div>
+  ) : (
+    <Form layout="vertical" onFinish={onFinish}>
+      {!isRegistering ? (
+        <div className="flex justify-center mb-4">
+          <Lottie animationData={Lockup} loop style={{ width: 80, height: 80 }} />
+        </div>
+      ) : (
+        <div className="flex justify-center mb-4">
+          <Lottie animationData={LockupIn} loop style={{ width: 110, height: 110 }} />
+        </div>
+      )}
 
-            </Form.Item>
-            <Form.Item style={{ textAlign: 'center' }}>
-              <Text type="secondary" style={{ cursor: 'pointer' }} onClick={() => setIsRegistering(!isRegistering)}>
-                {isRegistering ? "Already have an account? Login" : "Don't have an account? Register"}
-              </Text>
-              <br />
-              <Text type="secondary" style={{ cursor: 'pointer', display: isRegistering ? 'none' : 'inline-block', marginTop: '1rem' }} onClick={() => setForgotModalVisible(true)}>
-                Forgot password?
-              </Text>
-              <br/>
-              <Text style={{ cursor: 'pointer', display: 'inline-block', marginTop: '1rem', color:'#1E90FF'}} >
-              <Link to="/terms" style={{ marginRight: 12, color:'#1E90FF' }}>Terms</Link>
-              |
-              <Link to="/privacy" style={{ marginLeft: 12, color:'#1E90FF' }}>Privacy</Link>
-              </Text>
-            </Form.Item>
-          </Form>
+      {!isRegistering && isLockedOut && (
+        <Text
+          type="danger"
+          style={{ display: 'block', textAlign: 'center', marginBottom: 12 }}
+        >
+          Too many failed attempts. Try again in {Math.ceil(remainingTime / 60000)} minute(s).
+        </Text>
+      )}
+
+      {isRegistering && (
+        <Form.Item name="name" label="Full Name" rules={[{ required: true }]}>
+          <Input placeholder="Your Name" />
+        </Form.Item>
+      )}
+      <Form.Item
+        name="email"
+        label="Email"
+        rules={[{ required: true, type: 'email' }]}
+      >
+        <Input placeholder="yourname@example.com" />
+      </Form.Item>
+      <Form.Item
+        name="password"
+        label="Password"
+        rules={[{ required: true, min: 6 }]}
+      >
+        <Input.Password placeholder="Minimum 6 characters" />
+      </Form.Item>
+      <Form.Item>
+        <Button
+          htmlType="submit"
+          block
+          size="large"
+          disabled={isLockedOut}
+          style={{
+            background: isLockedOut
+              ? '#999'
+              : 'linear-gradient(117deg, #6366F1, #8B5CF6,#1E90FF)',
+            border: 'none',
+            color: '#fff',
+            borderRadius: '30px',
+            cursor: isLockedOut ? 'not-allowed' : 'pointer',
+          }}
+        >
+          {isRegistering
+            ? 'Register'
+            : isLockedOut
+            ? 'Login Disabled (1h)'
+            : 'Login'}
+        </Button>
+
+        {isLockedOut && (
+          <Text
+            type="danger"
+            style={{ display: 'block', textAlign: 'center', marginBottom: 10 }}
+          >
+            Try again in {Math.ceil(remainingTime / 60000)} minutes
+          </Text>
         )}
-      </Modal>
+      </Form.Item>
+      <Form.Item style={{ textAlign: 'center' }}>
+        <Text
+          type="secondary"
+          style={{ cursor: 'pointer' }}
+          onClick={() => setIsRegistering(!isRegistering)}
+        >
+          {isRegistering
+            ? 'Already have an account? Login'
+            : "Don't have an account? Register"}
+        </Text>
+        <br />
+        <Text
+          type="secondary"
+          style={{
+            cursor: 'pointer',
+            display: isRegistering ? 'none' : 'inline-block',
+            marginTop: '1rem',
+          }}
+          onClick={() => setForgotModalVisible(true)}
+        >
+          Forgot password?
+        </Text>
+        <br />
+        <Text
+          style={{
+            cursor: 'pointer',
+            display: 'inline-block',
+            marginTop: '1rem',
+            color: '#1E90FF',
+          }}
+        >
+          <Link to="/terms" style={{ marginRight: 12, color: '#1E90FF' }}>
+            Terms
+          </Link>
+          |
+          <Link to="/privacy" style={{ marginLeft: 12, color: '#1E90FF' }}>
+            Privacy
+          </Link>
+        </Text>
+      </Form.Item>
+    </Form>
+  )}
+</Modal>
+
 
       {/* Forgot Password Modal */}
       <Modal
