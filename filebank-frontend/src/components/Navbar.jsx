@@ -201,7 +201,7 @@ export default function Navbar() {
   
   return (
     <>
-      <Header className="flex justify-between sticky top-0 z-50 px-4">
+      <Header className="flex justify-between sticky top-0 z-50 px-4 dark:bg-black">
   {/* Menu icon on far left */}
   <div className="flex items-center">
     <Button
@@ -219,9 +219,9 @@ export default function Navbar() {
     />
     <Link to="/" className="flex items-center relative right-[25%] font-inter">
   <img src={logo} alt="Famacloud Logo" className="w-16 h-16 md:w-16 md:h-16 scale-70" />
-  <span className="text-lg font-semibold flex">
-  <span className="text-green-400">Fama</span>
-  <span className="text-yellow-400">cloud</span>
+  <span className="text-lg flex">
+  <span className="text-[whitesmoke] font-bold ">Fama</span>
+  <span className="text-[#fff] ">cloud</span>
 </span>
 
 </Link>
@@ -329,11 +329,11 @@ export default function Navbar() {
           className="flex-grow overflow-auto"
         />
 
-        <div className="p-1 space-y-2 bg-[#fff] dark:bg-gray-900 text-white">
+        <div className="p-1 space-y-2 text-white">
           <Button
             block
             type="link"
-            icon={<BellOutlined style={{ color: '#fff' }} />}
+            icon={<BellOutlined style={{ color: '#1E90FF' }} />}
             onClick={() => {
               setNotifModalVisible(true);
               setDrawerVisible(false);
@@ -390,7 +390,7 @@ export default function Navbar() {
     setDrawerVisible(false);
       }}
       >🔔 You have a new notification <span className='text-[8px] text-black'>Tap to view</span></span>
-    <Button size="small" onClick={() => setNewNotif(false)}>
+    <Button size="small" onClick={() => setNewNotif(false)} type='link'>
       Dismiss
     </Button>
   </div>
