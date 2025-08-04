@@ -37,6 +37,9 @@ export default function Hero() {
   const [attempts, setAttempts] = useState(0);
   const [isLockedOut, setIsLockedOut] = useState(false);
   const [remainingTime, setRemainingTime] = useState(0);
+  const [email, setEmail] = useState(() => localStorage.getItem('lastLoginEmail') || '');
+
+const { locked, remaining } = useLockCountdown(email);
 
 useEffect(() => {
   setIsLockedOut(locked);
@@ -74,9 +77,6 @@ const useLockCountdown = (email) => {
 
   return { locked, remaining };
 };
-
-
-const { locked, remaining } = useLockCountdown(email);
 
 
   
@@ -131,6 +131,7 @@ const { locked, remaining } = useLockCountdown(email);
   const onFinish = async (values) => {
   setLoading(true);
   const email = values.email;
+  setEmail(email);
   localStorage.setItem('lastLoginEmail', email);
 
   try {
