@@ -33,7 +33,40 @@ export default function Hero() {
   const [forgotModalVisible, setForgotModalVisible] = useState(false);
   const [forgotEmail, setForgotEmail] = useState('');
   const navigate = useNavigate();
+  const [attempts, setAttempts] = useState(0);
+  const [isLockedOut, setIsLockedOut] = useState(false);
+  const [remainingTime, setRemainingTime] = useState(0);
 
+useEffect(() => {
+  if (isLockedOut) {
+    const interval = setInterval(() => {
+      const newTime = remainingTime - 1000;
+      setRemainingTime(newTime);
+      if (newTime <= 0) {
+        setIsLockedOut(false);
+        localStorage.removeItem('loginAttempts');
+        localStorage.removeItem('lockUntil');
+      }
+    }, 1000);
+    return () => clearInterval(interval);
+  }
+}, [isLockedOut, remainingTime]);
+
+  
+useEffect(() => {
+  const email = localStorage.getItem('lastLoginEmail');
+  if (email) {
+    api.post('/auth/check-lock', { email }).then(res => {
+      const { lockedUntil } = res.data;
+      if (lockedUntil && Date.now() < lockedUntil) {
+        setIsLockedOut(true);
+        setRemainingTime(lockedUntil - Date.now());
+      }
+    }).catch(() => {});
+  }
+}, []);
+
+  
   useEffect(() => { if (user) fetchNotifications(); }, [user]);
 
   const fetchNotifications = async () => {
@@ -83,27 +116,40 @@ export default function Hero() {
   );
 
   const onFinish = async (values) => {
-    setLoading(true);
-    try {
-      if (isRegistering) {
-        await api.post('/auth/register', values);
-        enqueueSnackbar('Registration successful! Please verify your email.', { variant: 'success' });
-        setIsRegistering(false);
-      } else {
-        const res = await api.post('/auth/login', values);
-        setUser(res.data.user);
-        localStorage.setItem('filebankUser', JSON.stringify(res.data.user));
-        localStorage.setItem('filebankToken', res.data.token);
-        enqueueSnackbar('Login successful!', { variant: 'success' });
-        navigate('/');
-      }
-      setIsModalVisible(false);
-    } catch (err) {
-      enqueueSnackbar(err.response?.data?.message || 'Failed', { variant: 'error' });
-    } finally {
-      setLoading(false);
+  const onFinish = async (values) => {
+  setLoading(true);
+  const email = values.email;
+  localStorage.setItem('lastLoginEmail', email);
+
+  try {
+    if (isRegistering) {
+      await api.post('/auth/register', values);
+      enqueueSnackbar('Registration successful! Please verify your email.', { variant: 'success' });
+      setIsRegistering(false);
+    } else {
+      const res = await api.post('/auth/login', values);
+      setUser(res.data.user);
+      localStorage.setItem('filebankUser', JSON.stringify(res.data.user));
+      localStorage.setItem('filebankToken', res.data.token);
+      enqueueSnackbar('Login successful!', { variant: 'success' });
+      navigate('/');
     }
-  };
+    setIsModalVisible(false);
+  } catch (err) {
+    await api.post('/auth/track-login-attempt', { email }); // NEW
+    const error = err.response?.data;
+    if (error?.lockedUntil) {
+      setIsLockedOut(true);
+      setRemainingTime(error.lockedUntil - Date.now());
+      enqueueSnackbar('Too many login attempts. Try again later.', { variant: 'error' });
+    } else {
+      enqueueSnackbar(error?.message || 'Login failed', { variant: 'error' });
+    }
+  } finally {
+    setLoading(false);
+  }
+};
+
 
   const handleForgotSubmit = async () => {
     if (!forgotEmail) {
@@ -359,7 +405,13 @@ const username = user?.name || user?.displayName || "Famacloud";
             </div>: <div className="flex justify-center mb-4">
               <Lottie animationData={LockupIn} loop style={{ width: 110, height: 110}} />
             </div>} 
-              
+            
+              {!isRegistering && isLockedOut && (
+  <Text type="danger" style={{ display: 'block', textAlign: 'center', marginBottom: 12 }}>
+    Too many failed attempts. Try again in {Math.ceil(remainingTime / 60000)} minute(s).
+  </Text>
+)}
+
             {isRegistering && (
               <Form.Item name="name" label="Full Name" rules={[{ required: true }]}>
                 <Input placeholder="Your Name" />
@@ -372,14 +424,28 @@ const username = user?.name || user?.displayName || "Famacloud";
               <Input.Password placeholder="Minimum 6 characters" />
             </Form.Item>
             <Form.Item>
-              <Button htmlType="submit" block size="large" style={{
-              background: 'linear-gradient(117deg, #6366F1, #8B5CF6,#1E90FF)',
-              border: 'none',
-              color: '#fff',
-              borderRadius: '30px'
-            }}>
-                {isRegistering ? "Register" : "Login"}
-              </Button>
+              <Button 
+  htmlType="submit" 
+  block 
+  size="large" 
+  disabled={isLockedOut}
+  style={{
+    background: isLockedOut ? '#999' : 'linear-gradient(117deg, #6366F1, #8B5CF6,#1E90FF)',
+    border: 'none',
+    color: '#fff',
+    borderRadius: '30px',
+    cursor: isLockedOut ? 'not-allowed' : 'pointer'
+  }}
+>
+  {isRegistering ? "Register" : isLockedOut ? "Login Disabled (1h)" : "Login"}
+</Button>
+              
+{isLockedOut && (
+  <Text type="danger" style={{ display: 'block', textAlign: 'center', marginBottom: 10 }}>
+    Try again in {Math.ceil(remainingTime / 60000)} minutes
+  </Text>
+)}
+
             </Form.Item>
             <Form.Item style={{ textAlign: 'center' }}>
               <Text type="secondary" style={{ cursor: 'pointer' }} onClick={() => setIsRegistering(!isRegistering)}>
