@@ -18,6 +18,7 @@ import RotatingText from './RotatingText'
 import Beams from './Beams';
 import DecryptedText from './DecryptedText';
 import { AiOutlineDown } from 'react-icons/ai';
+import { FaLock } from 'react-icons/fa'; // 'fa' = font-awesome
 
 
 
@@ -388,7 +389,7 @@ const username = user?.name || user?.displayName || "Famacloud";
   title={isRegistering ? "Create Your Famacloud Account" : "Login to Famacloud"}
   open={isModalVisible}
   onCancel={() => setIsModalVisible(false)}
-  footer={isLockedOut? 'Form Locked 🔒' :null}
+  footer={isLockedOut? 'Form Locked 🔒' :'You have 3 login attempts.'}
   centered
   style={{ color: '#666' }}
 >
@@ -455,7 +456,7 @@ const username = user?.name || user?.displayName || "Famacloud";
           {isRegistering
             ? 'Register'
             : isLockedOut
-            ? 'Account Locked 🔒'
+            ? 'Account Locked'
             : 'Login'}
         </Button>
 
