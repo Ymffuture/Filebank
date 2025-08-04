@@ -37,46 +37,28 @@ export default function Hero() {
   const [attempts, setAttempts] = useState(0);
   const [isLockedOut, setIsLockedOut] = useState(false);
   const [remainingTime, setRemainingTime] = useState(0);
-  const [email, setEmail] = useState(() => localStorage.getItem('lastLoginEmail') || '');
-
-const { locked, remaining } = useLockCountdown(email);
 
 useEffect(() => {
-  setIsLockedOut(locked);
-  setRemainingTime(remaining);
-}, [locked, remaining]);
+  const interval = setInterval(() => {
+    const email = localStorage.getItem('lastLoginEmail');
+    if (email) {
+      api.post('/auth/check-lock', { email })
+        .then(res => {
+          const { lockedUntil } = res.data;
+          if (lockedUntil && Date.now() < lockedUntil) {
+            setIsLockedOut(true);
+            setRemainingTime(lockedUntil - Date.now());
+          } else {
+            setIsLockedOut(false);
+            setRemainingTime(0);
+          }
+        })
+        .catch(() => {});
+    }
+  }, 1000); // run every 1 second
 
-
-const useLockCountdown = (email) => {
-  const [remaining, setRemaining] = useState(null);
-  const [locked, setLocked] = useState(false);
-
-  useEffect(() => {
-    if (!email) return;
-
-    const fetchLockStatus = () => {
-      api.post('/auth/check-lock', { email }).then((res) => {
-        const lockedUntil = res.data.lockedUntil;
-        const now = Date.now();
-
-        if (lockedUntil && now < lockedUntil) {
-          setLocked(true);
-          setRemaining(lockedUntil - now);
-        } else {
-          setLocked(false);
-          setRemaining(null);
-        }
-      }).catch(() => {});
-    };
-
-    const interval = setInterval(fetchLockStatus, 1000); // check every second
-    fetchLockStatus(); // initial call
-
-    return () => clearInterval(interval);
-  }, [email]);
-
-  return { locked, remaining };
-};
+  return () => clearInterval(interval); // cleanup on unmount
+}, []);
 
 
   
@@ -131,7 +113,6 @@ const useLockCountdown = (email) => {
   const onFinish = async (values) => {
   setLoading(true);
   const email = values.email;
-  setEmail(email);
   localStorage.setItem('lastLoginEmail', email);
 
   try {
@@ -422,15 +403,14 @@ const username = user?.name || user?.displayName || "Famacloud";
         </div>
       )}
 
-      {isLockedOut && remainingTime > 0 && (
-  <Text
-    type="danger"
-    style={{ display: 'block', textAlign: 'center', marginBottom: 12 }}
-  >
-    Too many failed attempts. Try again in {Math.ceil(remainingTime / 1000)} seconds.
-  </Text>
-)}
-
+      {!isRegistering && isLockedOut && (
+        <Text
+          type="danger"
+          style={{ display: 'block', textAlign: 'center', marginBottom: 12 }}
+        >
+          Too many failed attempts. Try again in {Math.ceil(remainingTime / 60000)} minute(s).
+        </Text>
+      )}
 
       {isRegistering && (
         <Form.Item name="name" label="Full Name" rules={[{ required: true }]}>
