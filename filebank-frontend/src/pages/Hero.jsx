@@ -459,14 +459,7 @@ const username = user?.name || user?.displayName || "Famacloud";
             : 'Login'}
         </Button>
 
-        {isLockedOut && (
-          <Text
-            type="danger"
-            style={{ display: 'block', textAlign: 'center', marginBottom: 10 }}
-          >
-            Try again in {Math.ceil(remainingTime / 60000)} minutes
-          </Text>
-        )}
+        
       </Form.Item>
       <Form.Item style={{ textAlign: 'center' }}>
         <Text
