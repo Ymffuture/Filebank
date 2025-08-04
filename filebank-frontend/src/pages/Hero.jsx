@@ -53,28 +53,36 @@ useEffect(() => {
   }
 }, [isLockedOut, remainingTime]);
 
-  
-useEffect(() => {
-  const interval = setInterval(() => {
-    const email = localStorage.getItem('lastLoginEmail');
-    if (email) {
-      api.post('/auth/check-lock', { email })
-        .then(res => {
-          const { lockedUntil } = res.data;
-          if (lockedUntil && Date.now() < lockedUntil) {
-            setIsLockedOut(true);
-            setRemainingTime(lockedUntil - Date.now());
-          } else {
-            setIsLockedOut(false);
-            setRemainingTime(0);
-          }
-        })
-        .catch(() => {});
-    }
-  }, 1000); // run every 1 second
 
-  return () => clearInterval(interval); // cleanup on unmount
-}, []);
+const useLockCountdown = (email) => {
+  const [remaining, setRemaining] = useState(null);
+  const [locked, setLocked] = useState(false);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      if (!email) return;
+
+      api.post('/auth/check-lock', { email }).then(res => {
+        const lockedUntil = res.data.lockedUntil;
+        const now = Date.now();
+
+        if (lockedUntil && now < lockedUntil) {
+          setLocked(true);
+          setRemaining(lockedUntil - now);
+        } else {
+          setLocked(false);
+          setRemaining(null);
+        }
+      }).catch(() => {});
+    }, 1000); // refresh every second
+
+    return () => clearInterval(interval);
+  }, [email]);
+
+  return { locked, remaining };
+};
+
+const { locked, remaining } = useLockCountdown(email);
 
 
   
