@@ -535,7 +535,7 @@ const usernamebottom = user?.name || user?.displayName || "Guest";
   
 <RotatingText
   texts={['Hey 👋', usernamebottom , 'Welcome to Famacloud', 'where you can store the files', 'Images', 'and', 'More ', 'Try it', 'Why stop? ', 'Do not stop 🛑', 'Now.' ]}
-  mainClassName="p-4 font-bold text-[20px] sm:p-4 md:p-3 bg-[#1E90FF] rounded-lg text-white overflow-hidden py-0.5 sm:py-2 md:py-2 justify-center rounded"
+  mainClassName="p-6 font-bold text-[16px] sm:p-4 md:p-3 bg-[#1E90FF] rounded-lg text-white overflow-hidden py-0.5 sm:py-2 md:py-2 justify-center rounded"
   staggerFrom={"last"}
   initial={{ y: "100%" }}
   animate={{ y: 0 }}
@@ -543,11 +543,11 @@ const usernamebottom = user?.name || user?.displayName || "Guest";
   staggerDuration={0.025}
   splitLevelClassName="overflow-hidden pb-0.5 sm:pb-1 md:pb-1"
   transition={{ type: "spring", damping: 30, stiffness: 400 }}
-  rotationInterval={4000}
+  rotationInterval={2000}
   style={{ 
     backdropFilter: 'blur(8px)',
     WebkitBackdropFilter: 'blur(8px)', // For Safari
-    padding: '1rem 2rem',
+    padding: '1rem 2.5rem',
     borderRadius: '20px',
     background: 'rgba(255, 255, 255, 0.08)', // Transparent white
     border: '1px solid rgba(255, 255, 255, 0.2)',
