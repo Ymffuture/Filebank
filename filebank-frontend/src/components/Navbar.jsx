@@ -242,9 +242,9 @@ export default function Navbar() {
       style={{
         backgroundColor: '#FF0000',  // custom background color
         color: '#fff',               // text color
-        border: '2px solid #1E90FF',   // border color
+        border: '3px solid #1E90FF',   // border color
         padding: '0 6px',
-        borderRadius: '10px',
+        borderRadius: '50%',
         fontSize: '12px',
         boxShadow: '0 0 4px #1E90FF'
       }}
@@ -253,7 +253,7 @@ export default function Navbar() {
     </span>
   }
   size="medium"
-  offset={[-3, 1]}
+  offset={[-4, 3]}
 >
   <Bell
     className="text-white text-[20px] cursor-pointer hover:text-blue-400 transition"
