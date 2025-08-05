@@ -237,7 +237,7 @@ export default function Navbar() {
   <div className="absolute right-5 top-3 flex items-center space-x-4 gap-3">
   {/* Notification Icon with Badge */}
   <Badge
-  count={
+  count={notifications>0 &&(
     <span
       style={{
         backgroundColor: '#FF0000',  // custom background color
@@ -250,7 +250,7 @@ export default function Navbar() {
       }}
     >
       {notifications}
-    </span>
+    </span>) 
   }
   size="medium"
   offset={[-4, 3]}
