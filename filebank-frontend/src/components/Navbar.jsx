@@ -242,9 +242,9 @@ export default function Navbar() {
       style={{
         backgroundColor: '#FF0000',  // custom background color
         color: '#fff',               // text color
-        border: '3px solid #1E90FF',   // border color
-        padding: '0 6px',
-        borderRadius: '50%',
+        border: '4px solid #1E90FF',   // border color
+        padding: '4px',
+        borderRadius: '50px',
         fontSize: '12px',
         boxShadow: '0 0 4px #1E90FF'
       }}
