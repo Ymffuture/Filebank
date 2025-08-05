@@ -218,7 +218,7 @@ export default function Navbar() {
       }
     />
     <Link to="/" className="flex items-center relative right-[25%] font-inter">
-  <img src={logo} alt="Famacloud Logo" className="w-16 h-16 md:w-16 md:h-16 scale-60" />
+    {/* <img src={logo} alt="Famacloud Logo" className="w-16 h-16 md:w-16 md:h-16 scale-60" />*/} 
   <span className="text-lg flex">
   <span className="text-[whitesmoke] font-bold ">Fama</span>
   <span className="text-[#fff] ">cloud</span>
