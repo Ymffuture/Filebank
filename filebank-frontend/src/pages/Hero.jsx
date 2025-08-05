@@ -161,7 +161,7 @@ useEffect(() => {
     }
   };
 const username = user?.name || user?.displayName || "Famacloud";
-
+const usernamebottom = user?.name || user?.displayName || "Guest";
   return (
     <>
 <Helmet>
@@ -534,7 +534,7 @@ const username = user?.name || user?.displayName || "Famacloud";
       }}>
   
 <RotatingText
-  texts={['Hey 👋', user?.name , 'Welcome to Famacloud', 'where you can store the files', 'Images', 'and', 'More ', 'Try it', 'Why stop? ', 'Do not stop 🛑', 'Now.' ]}
+  texts={['Hey 👋', usernamebottom , 'Welcome to Famacloud', 'where you can store the files', 'Images', 'and', 'More ', 'Try it', 'Why stop? ', 'Do not stop 🛑', 'Now.' ]}
   mainClassName="p-4 font-bold text-[20px] sm:p-4 md:p-3 bg-[#1E90FF] rounded-lg text-white overflow-hidden py-0.5 sm:py-2 md:py-2 justify-center rounded"
   staggerFrom={"last"}
   initial={{ y: "100%" }}
