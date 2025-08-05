@@ -236,7 +236,7 @@ export default function Navbar() {
   {/* Avatar and user dropdown on the right */}
   <div className="absolute right-5 top-3 flex items-center space-x-4 gap-3">
   {/* Notification Icon with Badge */}
-  <Badge count={notifications} size="medium" offset={[-3, 1]} className='border-[3px] border-[white] >
+  <Badge count={notifications} size="medium" offset={[-3, 1]} className='border-[3px] border-[white]' >
     <Bell
       className="text-white text-[20px] cursor-pointer hover:text-blue-400 transition"
       onClick={() => {
