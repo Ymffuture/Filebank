@@ -236,16 +236,34 @@ export default function Navbar() {
   {/* Avatar and user dropdown on the right */}
   <div className="absolute right-5 top-3 flex items-center space-x-4 gap-3">
   {/* Notification Icon with Badge */}
-  <Badge count={notifications} size="medium" offset={[-3, 1]} className='border-[3px] border-[white]' >
-    <Bell
-      className="text-white text-[20px] cursor-pointer hover:text-blue-400 transition"
-      onClick={() => {
-        setNotifModalVisible(true);
-        setDrawerVisible(false);
-      }}
-      style={{color:'#fff'}} 
-    />
-  </Badge>
+  <Badge
+  count={
+    <span
+      style={{
+        backgroundColor: '#FF0000',  // custom background color
+        color: '#fff',               // text color
+        border: '2px solid #1E90FF',   // border color
+        padding: '0 6px',
+        borderRadius: '10px',
+        fontSize: '12px',
+        boxShadow: '0 0 4px #1E90FF'
+      }}
+    >
+      {notifications}
+    </span>
+  }
+  size="medium"
+  offset={[-3, 1]}
+>
+  <Bell
+    className="text-white text-[20px] cursor-pointer hover:text-blue-400 transition"
+    onClick={() => {
+      setNotifModalVisible(true);
+      setDrawerVisible(false);
+    }}
+  />
+</Badge>
+
 
   {/* Avatar with Dropdown */}
   <Dropdown overlay={userMenu} placement="bottomRight" arrow>
