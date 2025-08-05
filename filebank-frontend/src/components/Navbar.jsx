@@ -212,13 +212,13 @@ export default function Navbar() {
         <>
           <MenuOutlined style={{ fontSize: 20, cursor: 'pointer', color: '#fff' }} />
           {notifications > 0 && (
-            <span className="absolute top-1 right-1 block w-3 h-3 bg-[whitesmoke] rounded-full" />
+            <span className="absolute top-0 right-1 block w-3 h-3 bg-[#FFF00] rounded-full" />
           )}
         </>
       }
     />
     <Link to="/" className="flex items-center relative right-[25%] font-inter">
-  <img src={logo} alt="Famacloud Logo" className="w-16 h-16 md:w-16 md:h-16 scale-70" />
+  <img src={logo} alt="Famacloud Logo" className="w-16 h-16 md:w-16 md:h-16 scale-60" />
   <span className="text-lg flex">
   <span className="text-[whitesmoke] font-bold ">Fama</span>
   <span className="text-[#fff] ">cloud</span>
@@ -236,7 +236,7 @@ export default function Navbar() {
   {/* Avatar and user dropdown on the right */}
   <div className="absolute right-5 top-3 flex items-center space-x-4 gap-3">
   {/* Notification Icon with Badge */}
-  <Badge count={notifications} size="medium" offset={[-2, 2]}>
+  <Badge count={notifications} size="medium" offset={[-3, 1]} className='border-[3px] border-[white] >
     <Bell
       className="text-white text-[20px] cursor-pointer hover:text-blue-400 transition"
       onClick={() => {
