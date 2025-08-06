@@ -97,18 +97,10 @@ const isHome = location.pathname === '/';
           </span>
       </div>
       
-      <div className="flex justify-center mt-8">
-      <a
-        href="https://buymeacoffee.com/Ymffuture"
-        target="_blank"
-        rel="noopener noreferrer"
-        className="flex items-center gap-2 bg-yellow-400 hover:bg-yellow-300 text-black font-semibold py-3 px-6 rounded-lg shadow-lg transition-all duration-300"
-      >
-        <Coffee className="w-5 h-5" />
-        <span>Buy me a coffee</span>
-      </a>
-    </div>
 
+
+      <a href="https://www.buymeacoffee.com/ymffuture"><img src="https://img.buymeacoffee.com/button-api/?text=Buy me lunch &emoji=🥪&slug=ymffuture&button_colour=FFDD00&font_colour=000000&font_family=Cookie&outline_colour=000000&coffee_colour=ffffff" /></a>
+      
     </footer>
   );
 };
