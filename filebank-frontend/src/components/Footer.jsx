@@ -99,8 +99,16 @@ const isHome = location.pathname === '/';
       
 
 
-      <a href="https://www.buymeacoffee.com/ymffuture"><img src="https://img.buymeacoffee.com/button-api/?text=Buy me lunch &emoji=🥪&slug=ymffuture&button_colour=FFDD00&font_colour=000000&font_family=Cookie&outline_colour=000000&coffee_colour=ffffff" /></a>
-      
+      <div class="flex justify-center items-center mt-8">
+  <a href="https://www.buymeacoffee.com/ymffuture" target="_blank" rel="noopener noreferrer">
+    <img
+      src="https://img.buymeacoffee.com/button-api/?text=Buy me lunch &emoji=🥪&slug=ymffuture&button_colour=FFDD00&font_colour=000000&font_family=Cookie&outline_colour=000000&coffee_colour=ffffff"
+      alt="Buy me lunch"
+      class="h-auto w-auto"
+    />
+  </a>
+</div>
+
     </footer>
   );
 };
