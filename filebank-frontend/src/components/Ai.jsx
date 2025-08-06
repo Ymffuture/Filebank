@@ -106,8 +106,8 @@ setMessages(prev => [...prev, createMessage('bot', AI_ERROR_MESSAGE, 'error')]);
         onClick={() => setVisible(true)}
         style={{
           position: 'fixed',
-          bottom: 24,
-          right: 24,
+          bottom: 64,
+          right: 64,
           zIndex: 999,
           boxShadow: '0 4px 14px rgba(0,0,0,0.25)',
           backgroundColor: '#1E90FF',
