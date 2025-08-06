@@ -62,18 +62,60 @@ const useContentLock = () => {
     };
 
     const handleBlur = () => {
-      const googleIframe = document.querySelector('iframe[src*="accounts.google.com"]');
-      if (!googleIframe) {
-        document.body.style.transition = 'filter 0.3s ease-in-out';
-        document.body.style.filter = 'blur(10px)';
+      const existingBanner = document.getElementById('focus-lost-banner');
+      if (!existingBanner) {
+        const banner = document.createElement('div');
+        banner.id = 'focus-lost-banner';
+        banner.innerHTML = `
+          <div style="
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: radial-gradient(circle, #000000ee, #1a1a1aee);
+            color: #ffcc00;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            z-index: 9999;
+            font-family: monospace;
+            animation: fadeIn 0.5s ease-out forwards;
+          ">
+            ⚠️ Please stay focused on the app.
+          </div>
+        `;
+        document.body.appendChild(banner);
       }
     };
 
     const handleFocus = () => {
-      document.body.style.transition = 'filter 0.3s ease-in-out';
-      document.body.style.filter = 'none';
+      const banner = document.getElementById('focus-lost-banner');
+      if (banner) {
+        banner.style.animation = 'fadeOut 0.3s ease-in forwards';
+        setTimeout(() => {
+          banner.remove();
+        }, 300);
+      }
     };
 
+    // Add global animation styles
+    const styleTag = document.createElement('style');
+    styleTag.innerHTML = `
+      @keyframes fadeIn {
+        from { opacity: 0; transform: scale(0.98); }
+        to { opacity: 1; transform: scale(1); }
+      }
+
+      @keyframes fadeOut {
+        from { opacity: 1; transform: scale(1); }
+        to { opacity: 0; transform: scale(0.95); }
+      }
+    `;
+    document.head.appendChild(styleTag);
+
+    // Attach listeners
     document.addEventListener("contextmenu", handleContextMenu);
     document.addEventListener("keydown", handleKeyDown);
     document.addEventListener("touchstart", handleTouchStart);
@@ -88,10 +130,11 @@ const useContentLock = () => {
       document.removeEventListener("touchend", handleTouchEnd);
       window.removeEventListener("blur", handleBlur);
       window.removeEventListener("focus", handleFocus);
+      document.head.removeChild(styleTag);
     };
   }, [enqueueSnackbar]);
 
-  return null; // Optional, but makes intent clear
+  return null;
 };
 
 export default useContentLock;
