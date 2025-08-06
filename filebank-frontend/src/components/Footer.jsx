@@ -88,7 +88,14 @@ const isHome = location.pathname === '/';
           >
             Privacy
           </Link>
-   <div class="flex justify-center mt-8">
+   
+
+        </div>
+          <span className="select-none text-center md:text-left items-center md:flex-row md:space-x-4 dark:text-white text-xs">
+            © {new Date().getFullYear()} <span className="font-semibold text-fuchsia-600">Famacloud</span>. All rights reserved.
+          </span>
+      </div>
+      <div class="flex justify-center mt-8">
   <a
     href="https://buymeacoffee.com/Ymffuture"
     target="_blank"
@@ -98,12 +105,6 @@ const isHome = location.pathname === '/';
     ☕ Buy me a coffee
   </a>
 </div>
-
-        </div>
-          <span className="select-none text-center md:text-left items-center md:flex-row md:space-x-4 dark:text-white text-xs">
-            © {new Date().getFullYear()} <span className="font-semibold text-fuchsia-600">Famacloud</span>. All rights reserved.
-          </span>
-      </div>
     </footer>
   );
 };
