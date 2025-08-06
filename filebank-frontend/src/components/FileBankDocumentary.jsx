@@ -2,7 +2,7 @@ import React from 'react';
 import { Collapse, Typography } from 'antd';
 import { Helmet } from 'react-helmet';
 import { FileText, ShieldCheck, Globe, UploadCloud, LockKeyhole } from 'lucide-react';
-
+import BmcAlertWidget from './BmcAlertWidget' ;
 const { Title, Paragraph, Text } = Typography;
 const { Panel } = Collapse;
 
@@ -123,6 +123,7 @@ export default function FamacloudDocumentary() {
             serve as your ultimate Famacloud guide.
           </Paragraph>
         </Typography>
+        <BmcAlertWidget />
       </main>
     </div>
   );
