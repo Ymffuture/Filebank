@@ -119,7 +119,8 @@ setMessages(prev => [...prev, createMessage('bot', AI_ERROR_MESSAGE, 'error')]);
         open={visible}
         onCancel={() => setVisible(false)}
         width={500}
-        bodyStyle={{ maxHeight: '80vh', overflowY: 'auto', paddingBottom: 0 }}
+        style={{ top: 100 }}
+        bodyStyle={{ maxHeight: '100vh', overflowY: 'auto', paddingBottom: 0 }}
       >
         <div style={{ marginBottom: 12 }}>
           {messages.map((msg, idx) => (
