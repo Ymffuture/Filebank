@@ -31,7 +31,7 @@ export default function FeedbackPage() {
     <>
       <Navbar/>
     <div className="min-h-screen flex justify-center items-start bg-gradient-to-tr from-blue-50 to-green-50 p-6">
-      <a href="https://www.buymeacoffee.com/ymffuture"><img src="https://img.buymeacoffee.com/button-api/?text=Buy me lunch &emoji=🥪&slug=ymffuture&button_colour=FFDD00&font_colour=000000&font_family=Cookie&outline_colour=000000&coffee_colour=ffffff" /></a>
+      
       <div className="w-full max-w-2xl bg-white rounded-2xl shadow-md p-8">
         <Title level={2} className="text-center text-[#1E90FF] mb-4">
           File a Complaint or Improvement
