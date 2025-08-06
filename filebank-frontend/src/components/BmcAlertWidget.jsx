@@ -1,20 +1,30 @@
-// components/BmcAlertWidget.jsx
-import React from 'react';
+// components/BuyMeACoffeeWidget.jsx
+import { useEffect } from 'react';
 
-const BmcAlertWidget = () => {
-  return (
-    <div className="w-full flex justify-center mt-6">
-      <iframe
-        src="https://studio.buymeacoffee.com/stream-alert/page/ymffuture?user_key=f03a9e18-a43d-430f-bf3b-95f71c3bd1f7"
-        title="BuyMeACoffee Stream Alert"
-        width="400"
-        height="100"
-        frameBorder="0"
-        allow="autoplay"
-        className="rounded-lg shadow-md"
-      ></iframe>
-    </div>
-  );
+const BuyMeACoffeeWidget = () => {
+  useEffect(() => {
+    const script = document.createElement('script');
+    script.setAttribute('data-name', 'BMC-Widget');
+    script.setAttribute('data-cfasync', 'false');
+    script.setAttribute('src', 'https://cdnjs.buymeacoffee.com/1.0.0/widget.prod.min.js');
+    script.setAttribute('data-id', 'ymffuture');
+    script.setAttribute('data-description', 'Support me on Buy me a coffee!');
+    script.setAttribute('data-message', 'Donate to improve the app');
+    script.setAttribute('data-color', '#FF813F');
+    script.setAttribute('data-position', 'Right');
+    script.setAttribute('data-x_margin', '18');
+    script.setAttribute('data-y_margin', '18');
+    script.async = true;
+
+    document.body.appendChild(script);
+
+    return () => {
+      // Optional cleanup to remove the script on unmount
+      document.body.removeChild(script);
+    };
+  }, []);
+
+  return null; // No visible JSX needed
 };
 
-export default BmcAlertWidget;
+export default BuyMeACoffeeWidget;
