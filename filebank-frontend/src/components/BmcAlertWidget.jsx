@@ -1,7 +1,7 @@
 // components/BuyMeACoffeeWidget.jsx
 import { useEffect } from 'react';
 
-const BuyMeACoffeeWidget = () => {
+const BmcAlertWidget = () => {
   useEffect(() => {
     const script = document.createElement('script');
     script.setAttribute('data-name', 'BMC-Widget');
@@ -27,4 +27,4 @@ const BuyMeACoffeeWidget = () => {
   return null; // No visible JSX needed
 };
 
-export default BuyMeACoffeeWidget;
+export default BmcAlertWidget;
