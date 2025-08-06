@@ -88,7 +88,17 @@ const isHome = location.pathname === '/';
           >
             Privacy
           </Link>
-          
+   <div class="flex justify-center mt-8">
+  <a
+    href="https://buymeacoffee.com/Ymffuture"
+    target="_blank"
+    rel="noopener noreferrer"
+    class="flex items-center gap-3 bg-yellow-400 hover:bg-yellow-300 text-black font-semibold py-3 px-6 rounded-lg shadow-lg transition-all duration-300"
+  >
+    ☕ Buy me a coffee
+  </a>
+</div>
+
         </div>
           <span className="select-none text-center md:text-left items-center md:flex-row md:space-x-4 dark:text-white text-xs">
             © {new Date().getFullYear()} <span className="font-semibold text-fuchsia-600">Famacloud</span>. All rights reserved.
