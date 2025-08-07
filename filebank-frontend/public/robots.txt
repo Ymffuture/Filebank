@@ -1,5 +1,16 @@
+# Allow all bots to crawl the main site
 User-agent: *
-Allow: /
+Disallow:
 
+# Disallow internal routes
+Disallow: /api/
+Disallow: /backend/
+Disallow: /node_modules/
+Disallow: /dashboard
+Disallow: /profile
+Disallow: /settings
+Disallow: /login
+Disallow: /register
+
+# Allow sitemap for SEO
 Sitemap: https://famacloud.vercel.app/sitemap.xml
-
