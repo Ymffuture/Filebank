@@ -279,7 +279,7 @@ export default function Navbar() {
     {user?.hasIssue && (
       <Tooltip title="This account has an issue" color="orange">
   <Badge
-    count={<Info size={16} color="white" />}
+    count={<Info size={12} color="white" />}
     style={{
       backgroundColor: '#ff4d4f',
       borderRadius: '50%',
@@ -293,7 +293,6 @@ export default function Navbar() {
     )}
   </div>
 </Dropdown>
-
 
 </div>
 
