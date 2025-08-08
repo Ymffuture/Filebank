@@ -159,11 +159,14 @@ export default function Navbar() {
   user?.role === 'admin' && { key: 'admin', label: 'Admin Panel', icon: <LayoutDashboard size={18} />, path: '/admin' },
   { key: 'ai', label: 'AI assistant', icon: <Bot size={18} />, path: '/full-screen-ai', feature: 'ai' },
   { key: 'cv-tips', label: 'Build CV & coverletter', icon: <FileText size={18} />, path: '/cv', feature: 'cv-tips' },
-  // { key: 'coverletter-tips', label: 'Cover Letter Tips', icon: <FileText size={18} />, path: '/coverletter-tips', feature: 'cv-tips' },
   { key: 'agent', label: 'Agent', icon: <Headphones size={18} />, path: '/agent', feature: 'agent' },
   { key: 'feedback', label: 'Feedback', icon: <MessageSquare size={18} />, path: '/feedback', feature: 'feedback' },
   { key: 'change-plan', label: 'Change Plan', icon: <CreditCard size={18} />, path: '/change-plan' },
+
+  // NEW ITEM: Only show if user has an issue
+  user?.hasIssue && { key: 'issues', label: 'My Issues', icon: <ShieldCheck size={18} color="orange" />, path: '/issues' },
 ].filter(Boolean);
+
 
 
   const userMenu = (
@@ -264,15 +267,30 @@ export default function Navbar() {
 </Badge>
 
 
-  {/* Avatar with Dropdown */}
-  <Dropdown overlay={userMenu} placement="bottomRight" arrow>
+{/* Avatar with Dropdown */}
+<Dropdown overlay={userMenu} placement="bottomRight" arrow>
+  <div className="relative cursor-pointer">
     <Avatar
       src={user?.picture}
       icon={<UserOutlined />}
-      className="cursor-pointer hover:shadow-lg transition"
+      className="hover:shadow-lg transition"
       size="default"
     />
-  </Dropdown>
+    {user?.hasIssue && (
+      <Tooltip title="This account has an issue" color="orange">
+        <Badge
+          count={<Info size={12} color="white" />}
+          style={{
+            backgroundColor: 'red',
+            boxShadow: '0 0 4px rgba(0,0,0,0.3)',
+          }}
+          offset={[-5, 30]}
+        />
+      </Tooltip>
+    )}
+  </div>
+</Dropdown>
+
 </div>
 
 </Header>
@@ -365,28 +383,37 @@ export default function Navbar() {
             />
           </Button>
 
-          {user ? (
-            <Button
-              block
-              type="link"
-              danger
-              icon={<LogoutOutlined />}
-              onClick={handleLogout}
-              className="bg-red-600 hover:bg-red-700 text-white font-bold rounded-lg m-3"
-              style={{ margin: '4px' }}
-            >
-              Logout
-            </Button>
-          ) : (
-            <GoogleLogin
-              onSuccess={handleLoginSuccess}
-              onError={() => message.error('Login failed.')}
-              shape="pill"
-              theme="filled_blue"
-              text="signin_with"
-              useOneTap
-            />
-          )}
+          {!user ? (
+  user?.isBlocked ? (
+    <Tooltip title="Your account is blocked. Please contact support." color="red">
+      <Button block disabled icon={<Lock />}>
+        Login Disabled
+      </Button>
+    </Tooltip>
+  ) : (
+    <GoogleLogin
+      onSuccess={handleLoginSuccess}
+      onError={() => message.error('Login failed.')}
+      shape="pill"
+      theme="filled_blue"
+      text="signin_with"
+      useOneTap
+    />
+  )
+) : (
+  <Button
+    block
+    type="link"
+    danger
+    icon={<LogoutOutlined />}
+    onClick={handleLogout}
+    className="bg-red-600 hover:bg-red-700 text-white font-bold rounded-lg m-3"
+    style={{ margin: '4px' }}
+  >
+    Logout
+  </Button>
+)}
+
         </div>
       </Drawer>
       
