@@ -278,17 +278,18 @@ export default function Navbar() {
 
     {user?.hasIssue && (
       <Tooltip title="This account has an issue" color="orange">
-        <Badge
-          count={<Info size={10} color="white" />}
-          style={{
-            backgroundColor: '#ff4d4f',
-            borderRadius: '50%',
-            boxShadow: '0 0 6px rgba(0,0,0,0.25)',
-            padding: '4px',
-          }}
-          offset={[-4, 3]}
-        />
-      </Tooltip>
+  <Badge
+    count={<Info size={16} color="white" />}
+    style={{
+      backgroundColor: '#ff4d4f',
+      borderRadius: '50%',
+      boxShadow: '0 0 6px rgba(0,0,0,0.25)',
+      padding: '4px',
+    }}
+    offset={[-6, -6]}  // move left and up
+  />
+</Tooltip>
+
     )}
   </div>
 </Dropdown>
