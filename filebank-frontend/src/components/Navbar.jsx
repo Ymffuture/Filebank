@@ -208,7 +208,7 @@ export default function Navbar() {
   {/* Menu icon on far left */}
   <div className="flex items-center">
     <Button
-      type="dashed"
+      type="text"
       className="md:hidden text-[26px] relative text-white left-[-25%]"
       onClick={() => setDrawerVisible(true)}
       icon={
@@ -268,32 +268,28 @@ export default function Navbar() {
 
 
 {/* Avatar with Dropdown */}
-<Dropdown overlay={menu} placement="bottomRight" arrow>
-  <div className="relative cursor-pointer group">
+<Dropdown overlay={userMenu} placement="bottomRight" arrow>
+  <div className="relative cursor-pointer">
     <Avatar
       src={user?.picture}
       icon={<UserOutlined />}
+      className="hover:shadow-lg transition"
       size="default"
-      className="transition-transform duration-200 ease-in-out group-hover:scale-105 group-hover:shadow-md"
     />
-
     {user?.hasIssue && (
       <Tooltip title="This account has an issue" color="orange">
         <Badge
-          count={<Info size={10} color="white" />}
+          count={<Info size={12} color="white" />}
           style={{
-            backgroundColor: '#ff4d4f',
-            borderRadius: '50%',
-            boxShadow: '0 0 6px rgba(0,0,0,0.25)',
-            padding: '4px',
+            backgroundColor: 'red',
+            boxShadow: '0 0 4px rgba(0,0,0,0.3)',
           }}
-          offset={[-4, 3]}
+          offset={[-5, 30]}
         />
       </Tooltip>
     )}
   </div>
 </Dropdown>
-
 
 </div>
 
@@ -447,4 +443,3 @@ export default function Navbar() {
     </>
   );
 }
-
