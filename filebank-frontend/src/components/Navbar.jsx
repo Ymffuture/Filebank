@@ -273,7 +273,7 @@ export default function Navbar() {
       src={user?.picture}
       icon={<UserOutlined />}
       size="default"
-      className="transition-transform duration-200 ease-in-out group-hover:scale-105 group-hover:shadow-md"
+      className="transition-transform duration-200 ease-in-out"
     />
 
     {user?.hasIssue && (
@@ -286,7 +286,7 @@ export default function Navbar() {
       boxShadow: '0 0 6px rgba(0,0,0,0.25)',
       padding: '4px',
     }}
-    offset={[-6, -6]}  // move left and up
+    offset={[-10, -6]}  // move left and up
   />
 </Tooltip>
 
