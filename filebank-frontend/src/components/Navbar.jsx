@@ -267,29 +267,49 @@ export default function Navbar() {
 </Badge>
 
 
-{/* Avatar with Dropdown */}
-<Dropdown overlay={userMenu} placement="bottomRight" arrow>
-  <div className="relative cursor-pointer">
+{/* Smart Avatar with Dropdown */}
+<Dropdown
+  menu={{ items: userMenu.props.items }}
+  placement="bottomRight"
+  arrow
+>
+  <div className="relative cursor-pointer group">
+    {/* Outer ring animation */}
+    <div className="absolute -inset-1 rounded-full bg-gradient-to-tr from-blue-500 to-purple-500 opacity-0 group-hover:opacity-100 blur-sm transition-all duration-300"></div>
+
+    {/* Avatar */}
     <Avatar
       src={user?.picture}
-      icon={<UserOutlined />}
-      className="hover:shadow-lg transition"
-      size="default"
+      icon={<User size={16} />}
+      className="relative z-10 border-2 border-white dark:border-gray-800 shadow-md hover:shadow-lg transition-all"
+      size={40}
     />
+
+    {/* Role badge in tooltip */}
+    {user?.role && (
+      <Tooltip
+        title={
+          <span className="capitalize">
+            {`You're on the ${user.role} plan`}
+          </span>
+        }
+        color="blue"
+      >
+        <span className="absolute -bottom-1 -right-1 bg-gradient-to-tr from-green-500 to-blue-500 text-white text-[10px] px-2 py-0.5 rounded-full shadow-md">
+          {user.role}
+        </span>
+      </Tooltip>
+    )}
+
+    {/* Issue indicator pulse */}
     {user?.hasIssue && (
       <Tooltip title="This account has an issue" color="orange">
-        <Badge
-          count={<Info size={12} color="white" />}
-          style={{
-            backgroundColor: 'red',
-            boxShadow: '0 0 4px rgba(0,0,0,0.3)',
-          }}
-          offset={[-5, 30]}
-        />
+        <span className="absolute top-0 right-0 w-3 h-3 bg-red-500 rounded-full shadow-lg animate-ping"></span>
       </Tooltip>
     )}
   </div>
 </Dropdown>
+
 
 </div>
 
