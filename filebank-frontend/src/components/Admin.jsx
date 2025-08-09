@@ -184,9 +184,9 @@ useEffect(() => {
 
   const handleIssue = async (id, isIssue) => {
     try {
-      const action = isIssue ? 'noissue' : 'issue';
+      const action =!isIssue ? 'noissue' : 'issue';
       await api.post(`/admin/users/${id}/${action}`);
-      enqueueSnackbar(isIssue ? 'Issue removed' : 'Marked as issue', { variant: 'success' });
+      enqueueSnackbar(`Account has :${isIssue ? 'Issue solved' : 'Issue'} `, { variant: 'success' });
       fetchUsers();
     } catch {
       enqueueSnackbar('Operation failed', { variant: 'error' });
