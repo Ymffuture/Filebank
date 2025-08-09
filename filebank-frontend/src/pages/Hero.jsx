@@ -238,7 +238,7 @@ const usernamebottom = user?.name || user?.displayName || "Guest";
     padding: '1rem 2rem',
     borderRadius: '20px',
     background: 'rgba(255, 255, 255, 0.08)', // Transparent white
-    border: '1px solid #d946ef',
+    border: '1px solid #000',
     boxShadow: '0 4px 30px #000',
     position: 'relative',
     zIndex: 1,
@@ -314,7 +314,7 @@ const usernamebottom = user?.name || user?.displayName || "Guest";
           borderRadius: '8px',
           color: '#fff',
           fontWeight: 500,
-          boxShadow: '0 6px 18px #FF00FF'
+          boxShadow: '0 6px 18px #000'
         }} onClick={() => setIsModalVisible(true)}>
           Get Started Free
         </Button>:
@@ -327,7 +327,7 @@ const usernamebottom = user?.name || user?.displayName || "Guest";
           borderRadius: '8px',
           color: '#fff',
           fontWeight: 400,
-          boxShadow: '0 6px 18px #FF00FF'
+          boxShadow: '0 6px 18px #000'
         }} >
           <Link to="/dashboard">Go to Dashboard</Link>
         </Button>} 
