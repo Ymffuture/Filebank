@@ -198,7 +198,7 @@ useEffect(() => {
       title: 'Picture',
       dataIndex: 'picture',
       key: 'picture',
-      render: pic => <Avatar src={pic} />} 
+      render: pic => <Avatar src={pic} />
     },
     { title: 'Name', dataIndex: 'displayName', key: 'displayName' },
     { title: 'Email', dataIndex: 'email', key: 'email' },
