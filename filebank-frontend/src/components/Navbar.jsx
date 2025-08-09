@@ -268,7 +268,7 @@ export default function Navbar() {
 
 
 <Dropdown overlay={userMenu} placement="bottomRight" arrow>
-  <div className="relative cursor-pointer">
+  <div className="cursor-pointer">
     <Avatar
       src={user?.picture}
       icon={<UserOutlined />}
