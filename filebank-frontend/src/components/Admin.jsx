@@ -175,7 +175,7 @@ useEffect(() => {
     try {
       const action = isBlocked ? 'unblock' : 'block';
       await api.post(`/admin/users/${id}/${action}`);
-      enqueueSnackbar(`User ${isBlocked ? 'unblocked' : 'blocked'}`, { variant: 'success' });
+      enqueueSnackbar(`Account ${isBlocked ? 'unblocked' : 'blocked'}`, { variant: 'success' });
       fetchUsers();
     } catch {
       enqueueSnackbar('Operation failed', { variant: 'error' });
@@ -184,7 +184,7 @@ useEffect(() => {
 
   const handleIssue = async (id, isIssue) => {
     try {
-      const action = isIssue ? 'remove-issue' : 'mark-as-issue';
+      const action = isIssue ? 'Issue resolved ' : 'Issue';
       await api.post(`/admin/users/${id}/${action}`);
       enqueueSnackbar(isIssue ? 'Issue removed' : 'Marked as issue', { variant: 'success' });
       fetchUsers();
@@ -198,7 +198,7 @@ useEffect(() => {
       title: 'Picture',
       dataIndex: 'picture',
       key: 'picture',
-      render: pic => <Avatar src={pic} />
+      render: pic => <Avatar src={pic} /> || 'NC' 
     },
     { title: 'Name', dataIndex: 'displayName', key: 'displayName' },
     { title: 'Email', dataIndex: 'email', key: 'email' },
