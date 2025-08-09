@@ -234,7 +234,7 @@ export default function Navbar() {
           count={<Info size={18} color="black" />}
           style={{
             backgroundColor: 'yellow',
-            BorderRadius:'50%', 
+            borderRadius:'50%', 
             boxShadow: '0 0 4px rgba(0,0,0,0.3)',
           }}
           offset={[-30, - 8]}
@@ -242,9 +242,10 @@ export default function Navbar() {
         />
       </Tooltip>
     )}
-  </div>
 
-  {/* Center menu (desktop only) */}
+
+    
+    {/* Center menu (desktop only) */}
   <div className="hidden md:flex flex-1 justify-center">
     <Menu mode="horizontal" items={mainMenuItems} className="bg-[#1E90FF] google-menu" />
   </div>
@@ -290,6 +291,11 @@ export default function Navbar() {
     />
   </Dropdown>
 </div>
+
+    
+  </div>
+
+  
 
 </Header>
 
