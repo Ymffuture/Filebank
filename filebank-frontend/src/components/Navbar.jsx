@@ -268,7 +268,7 @@ export default function Navbar() {
 
 
 <Dropdown overlay={userMenu} placement="bottomRight" arrow>
-  <div className="cursor-pointer">
+  
     <Avatar
       src={user?.picture}
       icon={<UserOutlined />}
@@ -278,16 +278,17 @@ export default function Navbar() {
     {user?.hasIssue && (
       <Tooltip title="This account has an issue" color="orange">
         <Badge
-          count={<Info size={12} color="white" />}
+          count={<Info size={14} color="white" />}
           style={{
             backgroundColor: 'red',
+            borderRadius:'50%', 
             boxShadow: '0 0 4px rgba(0,0,0,0.3)',
           }}
-          offset={[-5, 30]}
+          offset={[-10, - 8]}
         />
       </Tooltip>
     )}
-  </div>
+  
 </Dropdown>
 
 </div>
