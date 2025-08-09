@@ -204,12 +204,15 @@ export default function Navbar() {
   
   return (
     <>
-      <Header className="flex justify-between sticky top-0 z-50 px-4 dark:bg-black">
-  {/* Menu icon on far left */}
-  <div className="flex items-center">
+
+
+      <Header className="flex items-center justify-between sticky top-0 z-50 px-4 dark:bg-black">
+  {/* Left: Menu + Logo */}
+  <div className="flex items-center gap-3">
+    {/* Mobile menu icon */}
     <Button
       type="text"
-      className="md:hidden text-[26px] relative text-white left-[-25%]"
+      className="md:hidden text-white"
       onClick={() => setDrawerVisible(true)}
       icon={
         <>
@@ -220,81 +223,82 @@ export default function Navbar() {
         </>
       }
     />
-    <Link to="/" className="flex items-center relative right-[25%] font-inter">
-    {/* <img src={logo} alt="Famacloud Logo" className="w-16 h-16 md:w-16 md:h-16 scale-60" />*/} 
-  <span className="text-lg flex">
-  <span className="text-[whitesmoke] font-bold ">Fama</span>
-  <span className="text-[#fff] ">cloud</span>
-</span>
 
-</Link>
-
+    {/* Logo */}
+    <Link to="/" className="flex items-center font-inter">
+      <span className="text-lg flex">
+        <span className="text-[whitesmoke] font-bold">Fama</span>
+        <span className="text-[#fff]">cloud</span>
+      </span>
+    </Link>
   </div>
 
   {/* Center menu (desktop only) */}
-  <div className="hidden md:flex flex-1 justify-center">
+  <div className="hidden md:flex justify-center flex-1">
     <Menu mode="horizontal" items={mainMenuItems} className="bg-[#1E90FF] google-menu" />
   </div>
 
-  {/* Avatar and user dropdown on the right */}
-  <div className="absolute right-5 top-3 flex items-center space-x-4 gap-3">
-  {/* Notification Icon with Badge */}
-  <Badge
-  count={notifications > 0 ? (
-    <span
-      style={{
-        backgroundColor: '#FF0000',  // custom background color
-        color: '#fff',               // text color
-        border: '4px solid #1E90FF',   // border color
-        padding: '4px',
-        borderRadius: '50px',
-        fontSize: '12px',
-        boxShadow: '0 0 4px #1E90FF'
-      }}
-    >
-      {notifications}
-    </span>) : null }
-  size="medium"
-  offset={[-4, 3]}
->
-  <Bell
-    className="text-white text-[20px] cursor-pointer hover:text-blue-400 transition"
-    onClick={() => {
-      setNotifModalVisible(true);
-      setDrawerVisible(false);
-    }}
-  />
-</Badge>
+  {/* Right: Notifications + Avatar */}
+  <div className="flex items-center gap-5">
+    {/* Notifications */}
+    <Badge
+      count={
+        notifications > 0 ? (
+          <span
+            style={{
+              backgroundColor: '#FF0000',
+              color: '#fff',
+              border: '4px solid #1E90FF',
+              padding: '2px 6px',
+              borderRadius: '50%',
+              fontSize: '12px',
+              boxShadow: '0 0 4px #1E90FF',
+            }}
+          >
+            {notifications}
+          </span>
+        ) : null
+      }
+      size="medium"
+      offset={[-4, 3]}
+    >
+      <Bell
+        className="text-white text-[20px] cursor-pointer hover:text-blue-400 transition"
+        onClick={() => {
+          setNotifModalVisible(true);
+          setDrawerVisible(false);
+        }}
+      />
+    </Badge>
 
-<Dropdown overlay={userMenu} placement="bottomRight" arrow>
-  <div className="relative top-2">
-    <Avatar
-      src={user?.picture}
-      icon={<UserOutlined />}
-      className="hover:shadow-lg transition"
-      size="default"
-    />
-    {user?.hasIssue && (
-      <Tooltip title="This account has an issue" color="orange">
-        <Badge
-          count={<Info size={14} color="white" />}
-          style={{
-            backgroundColor: 'red',
-            borderRadius: '50%',
-            boxShadow: '0 0 4px rgba(0,0,0,0.3)',
-          }}
-          offset={[-10, -8]}
-          className="absolute"
+    {/* Avatar with badge for issue */}
+    <Dropdown overlay={userMenu} placement="bottomRight" arrow>
+      <div className="relative">
+        <Avatar
+          src={user?.picture}
+          icon={<UserOutlined />}
+          className="hover:shadow-lg transition"
+          size="default"
         />
-      </Tooltip>
-    )}
+        {user?.hasIssue && (
+          <Tooltip title="This account has an issue" color="orange">
+            <Badge
+              count={<Info size={14} color="white" />}
+              style={{
+                backgroundColor: 'red',
+                borderRadius: '50%',
+                boxShadow: '0 0 4px rgba(0,0,0,0.3)',
+              }}
+              offset={[-6, 30]} // Positions badge top-right
+            />
+          </Tooltip>
+        )}
+      </div>
+    </Dropdown>
   </div>
-</Dropdown>
-
-
-</div>
-
 </Header>
+
+
 
 
       <Drawer
