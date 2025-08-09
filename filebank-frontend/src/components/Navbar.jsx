@@ -267,7 +267,7 @@ export default function Navbar() {
 </Badge>
 
 <Dropdown overlay={userMenu} placement="bottomRight" arrow>
-  <span>
+  <div className="relative">
     <Avatar
       src={user?.picture}
       icon={<UserOutlined />}
@@ -280,14 +280,15 @@ export default function Navbar() {
           count={<Info size={14} color="white" />}
           style={{
             backgroundColor: 'red',
-            borderRadius:'50%', 
+            borderRadius: '50%',
             boxShadow: '0 0 4px rgba(0,0,0,0.3)',
           }}
-          offset={[-10, - 8]}
+          offset={[-10, -8]}
+          className="absolute"
         />
       </Tooltip>
-     )}
-  </span>
+    )}
+  </div>
 </Dropdown>
 
 
