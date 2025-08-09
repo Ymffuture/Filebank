@@ -267,7 +267,7 @@ export default function Navbar() {
 </Badge>
 
 <Dropdown overlay={userMenu} placement="bottomRight" arrow>
-  <div className="relative">
+  <div className="relative top-2">
     <Avatar
       src={user?.picture}
       icon={<UserOutlined />}
