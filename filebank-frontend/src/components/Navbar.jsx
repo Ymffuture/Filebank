@@ -314,7 +314,7 @@ export default function Navbar() {
 
 <div className="p-2 flex items-center gap-4">
 
-  {user.isBlocked && (<motion.div
+  {user?.isBlocked && (<motion.div
       initial={{ opacity: 0, y: -10 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.4 }}
