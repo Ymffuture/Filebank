@@ -206,13 +206,13 @@ export default function Navbar() {
     <>
 
 
-      <Header className="flex items-center justify-between sticky top-0 z-50 px-4 dark:bg-black">
+      <Header className="flex items-start justify-between sticky top-0 z-50 px-4 dark:bg-black">
   {/* Left: Menu + Logo */}
-  <div className="flex items-center gap-3">
+  <div className="flex items-start gap-3">
     {/* Mobile menu icon */}
     <Button
       type="text"
-      className="md:hidden text-white"
+      className="md:hidden text-white h-8 flex items-start"
       onClick={() => setDrawerVisible(true)}
       icon={
         <>
@@ -225,8 +225,8 @@ export default function Navbar() {
     />
 
     {/* Logo */}
-    <Link to="/" className="flex items-center font-inter">
-      <span className="text-lg flex">
+    <Link to="/" className="flex items-start font-inter h-8">
+      <span className="text-lg flex items-start">
         <span className="text-[whitesmoke] font-bold">Fama</span>
         <span className="text-[#fff]">cloud</span>
       </span>
@@ -234,12 +234,12 @@ export default function Navbar() {
   </div>
 
   {/* Center menu (desktop only) */}
-  <div className="hidden md:flex justify-center flex-1">
+  <div className="hidden md:flex items-start justify-center flex-1">
     <Menu mode="horizontal" items={mainMenuItems} className="bg-[#1E90FF] google-menu" />
   </div>
 
   {/* Right: Notifications + Avatar */}
-  <div className="flex items-center gap-5">
+  <div className="flex items-start gap-5">
     {/* Notifications */}
     <Badge
       count={
@@ -260,10 +260,10 @@ export default function Navbar() {
         ) : null
       }
       size="medium"
-      offset={[-4, 3]}
+      offset={[-4, 0]} // Adjusted for top alignment
     >
       <Bell
-        className="text-white text-[20px] cursor-pointer hover:text-blue-400 transition"
+        className="text-white text-[20px] cursor-pointer hover:text-blue-400 transition h-8"
         onClick={() => {
           setNotifModalVisible(true);
           setDrawerVisible(false);
@@ -277,7 +277,7 @@ export default function Navbar() {
         <Avatar
           src={user?.picture}
           icon={<UserOutlined />}
-          className="hover:shadow-lg transition"
+          className="hover:shadow-lg transition h-8"
           size="default"
         />
         {user?.hasIssue && (
@@ -289,7 +289,7 @@ export default function Navbar() {
                 borderRadius: '50%',
                 boxShadow: '0 0 4px rgba(0,0,0,0.3)',
               }}
-              offset={[-6, 30]} // Positions badge top-right
+              offset={[-6, 24]} // Adjusted for 32px height
             />
           </Tooltip>
         )}
