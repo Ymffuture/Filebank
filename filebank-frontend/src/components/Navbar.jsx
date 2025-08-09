@@ -313,40 +313,6 @@ export default function Navbar() {
 
 
 <div className="p-2 flex items-center gap-4">
-
-  {user?.isBlocked && (<motion.div
-      initial={{ opacity: 0, y: -10 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.4 }}
-      className="my-6"
-    >
-      <Alert
-        message={
-          <div className="flex flex-col sm:flex-row items-center gap-3">
-            <LifeBuoy size={22} className="text-red-500" />
-            <span className="text-[15px] font-medium">
-              Your account has been blocked. Please contact support for assistance.
-            </span>
-          </div>
-        }
-        type="error"
-        showIcon={false}
-        className="rounded-xl shadow-lg border border-red-300 bg-red-50 p-4"
-        action={
-          <Button
-            type="primary"
-            danger
-            onClick={onContactSupport}
-            className="rounded-lg px-5 font-semibold"
-          >
-            Contact Support
-          </Button>
-        }
-      />
-    </motion.div>)} 
-  
-
-  
   <Avatar src={user?.picture} size={32} icon={<UserOutlined />} />
 
   <div className="flex-1">
