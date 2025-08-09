@@ -198,7 +198,7 @@ useEffect(() => {
       title: 'Picture',
       dataIndex: 'picture',
       key: 'picture',
-      render: pic => <Avatar src={pic} /> || 'NC' 
+      render: pic => <Avatar src={pic} />} 
     },
     { title: 'Name', dataIndex: 'displayName', key: 'displayName' },
     { title: 'Email', dataIndex: 'email', key: 'email' },
@@ -236,10 +236,10 @@ useEffect(() => {
     <Menu.Item key="issue" onClick={() => handleIssue(record._id, record.isIssue)}>
       {record.isIssue ? 'Remove Issue' : 'Mark as Issue'}
     </Menu.Item>
-    <Menu.SubMenu key="changeRole" title="Change Role">
+    <Menu.SubMenu key="changeRole" title="Update plan">
   {['admin', 'moderator', 'premium', 'standard', 'free'].map(role => (
     <Menu.Item key={role} onClick={() => handleChangeRole(record._id, role)}>
-      Make {role.toUpperCase()}
+      {role.toUpperCase()}
     </Menu.Item>
   ))}
 </Menu.SubMenu>
