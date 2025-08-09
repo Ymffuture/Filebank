@@ -231,12 +231,14 @@ export default function Navbar() {
 {user?.hasIssue && (
       <Tooltip title="This account has an issue" color="orange">
         <Badge
-          count={<Info size={12} color="white" />}
+          count={<Info size={18} color="black" />}
           style={{
-            backgroundColor: 'red',
+            backgroundColor: 'yellow',
+            BorderRadius:'50%', 
             boxShadow: '0 0 4px rgba(0,0,0,0.3)',
           }}
           offset={[-30, - 8]}
+          className='animate-pulse transition-all' 
         />
       </Tooltip>
     )}
