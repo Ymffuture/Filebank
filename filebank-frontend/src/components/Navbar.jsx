@@ -266,9 +266,8 @@ export default function Navbar() {
   />
 </Badge>
 
-
 <Dropdown overlay={userMenu} placement="bottomRight" arrow>
-  
+  <span>
     <Avatar
       src={user?.picture}
       icon={<UserOutlined />}
@@ -287,9 +286,10 @@ export default function Navbar() {
           offset={[-10, - 8]}
         />
       </Tooltip>
-    )}
-  
+     )}
+  </span>
 </Dropdown>
+
 
 </div>
 
