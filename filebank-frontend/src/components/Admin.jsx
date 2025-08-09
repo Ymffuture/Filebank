@@ -193,6 +193,17 @@ useEffect(() => {
     }
   };
 
+
+  useEffect(() =>{
+setTimeout(() =>{
+  fetchUsers();
+      fetchAllFeedback();
+      fetchUploadCounts();
+      fetchPaymentRequests();
+  
+}, 3000)
+    
+  }, []) 
   const columns = [
     {
       title: 'Picture',
@@ -234,7 +245,7 @@ useEffect(() => {
       {record.isBlocked ? 'Unblock' : 'Block'}
     </Menu.Item>
     <Menu.Item key="issue" onClick={() => handleIssue(record._id, record.isIssue)}>
-      {record.isIssue ? 'Remove Issue' : 'Mark as Issue'}
+      {record.isIssue ? 'Issue resolved' : 'Issue'}
     </Menu.Item>
     <Menu.SubMenu key="changeRole" title="Update plan">
   {['admin', 'moderator', 'premium', 'standard', 'free'].map(role => (
