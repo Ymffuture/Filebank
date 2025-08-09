@@ -268,28 +268,24 @@ export default function Navbar() {
 
 
 <Dropdown overlay={userMenu} placement="bottomRight" arrow>
-  <div className="cursor-pointer">
+  <div className="relative cursor-pointer">
     <Avatar
       src={user?.picture}
       icon={<UserOutlined />}
+      className="hover:shadow-lg transition"
       size="default"
-      className="transition-transform duration-200 ease-in-out"
     />
-
     {user?.hasIssue && (
       <Tooltip title="This account has an issue" color="orange">
-  <Badge
-    count={<Info size={12} color="white" />}
-    style={{
-      backgroundColor: '#ff4d4f',
-      borderRadius: '50%',
-      boxShadow: '0 0 6px rgba(0,0,0,0.25)',
-      padding: '4px',
-    }}
-    offset={[-10, -6]}  // move left and up
-  />
-</Tooltip>
-
+        <Badge
+          count={<Info size={12} color="white" />}
+          style={{
+            backgroundColor: 'red',
+            boxShadow: '0 0 4px rgba(0,0,0,0.3)',
+          }}
+          offset={[-5, 30]}
+        />
+      </Tooltip>
     )}
   </div>
 </Dropdown>
