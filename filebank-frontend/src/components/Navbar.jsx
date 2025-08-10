@@ -44,7 +44,8 @@ import {
 
 // end
 
-
+import ShinyText from './ShinyText';
+  
 import { GoogleLogin, googleLogout } from '@react-oauth/google';
 import { Link, useNavigate } from 'react-router-dom';
 import { MdOutlineFeedback } from 'react-icons/md';
@@ -434,12 +435,17 @@ export default function Navbar() {
     }}
     
   >
+    
     <span
       onClick={() => {
     setNotifModalVisible(true);
     setDrawerVisible(false);
       }}
-      >🔔 You have a new notification <span className='text-[8px] text-black'>Tap to view</span></span>
+      >
+       
+      <ShinyText text="🔔 You have a new notification" disabled={false} speed={3} className='custom-class' />
+
+      <span className='text-[8px] text-black'>Tap to view</span></span>
     <Button size="small" onClick={() => setNewNotif(false)} type='link'>
       Dismiss
     </Button>
