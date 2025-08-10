@@ -1,9 +1,16 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   content: ["./index.html", "./src/**/*.{js,jsx}"],
-  darkMode: 'class',
+  darkMode: 'class', // Enables dark theme via "class"
   theme: {
     extend: {
+      colors: {
+        // Theme variables
+        primary: 'var(--color-primary)',
+        secondary: 'var(--color-secondary)',
+        background: 'var(--color-bg)',
+        text: 'var(--color-text)',
+      },
       animation: {
         'fade-in': 'fadeIn 0.3s ease-in-out',
         'star-movement-bottom': 'star-movement-bottom linear infinite alternate',
