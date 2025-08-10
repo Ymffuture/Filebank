@@ -226,6 +226,7 @@ export default function Navbar() {
     />
     <Link to="/" className="flex items-center relative right-[25%] font-inter">
     {/* <img src={logo} alt="Famacloud Logo" className="w-16 h-16 md:w-16 md:h-16 scale-60" />*/} 
+      <ShinyText text="Fama" disabled={false} speed={3} className='custom-class' />
   <span className="text-lg flex">
   <span className="text-[whitesmoke] font-bold ">Fama</span>
   <span className="text-[#fff] ">cloud</span>
@@ -443,8 +444,8 @@ export default function Navbar() {
       }}
       >
        
-      <ShinyText text="🔔 You have a new notification" disabled={false} speed={3} className='custom-class' />
-
+      
+🔔 You have a new notification
       <span className='text-[8px] text-black'>Tap to view</span></span>
     <Button size="small" onClick={() => setNewNotif(false)} type='link'>
       Dismiss
