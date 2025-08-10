@@ -301,7 +301,7 @@ const usernamebottom = user?.name || user?.displayName || "Guest";
   
         }}
       >
-        <Title style={{ color: '#0B3D91', fontSize: '3rem', marginBottom: '1rem' }}>
+        <Title style={{ color: getRandomColor(), fontSize: '3rem', marginBottom: '1rem' }}>
             <DecryptedText
                text="Store with Renown, Access Anywhere" 
                animateOn="view"
@@ -323,7 +323,7 @@ const usernamebottom = user?.name || user?.displayName || "Guest";
           fontWeight: 500,
           boxShadow: '0 6px 18px #000'
         }} onClick={() => setIsModalVisible(true)}>
-          Get Started Free
+          Get Started
         </Button>:
           <Button size="large" style={{
           marginTop: '2rem',
@@ -389,7 +389,7 @@ const usernamebottom = user?.name || user?.displayName || "Guest";
 <Modal
   title={
     <span style={{ color: '#0d6efd' }}> 
-      {isRegistering ? "Create Your Famacloud Account" : "Login to Famacloud"}
+      {isRegistering ? "Create Your Famacloud Account" : "Welcome back! "}
     </span>
   }
   open={isModalVisible}
@@ -398,11 +398,11 @@ const usernamebottom = user?.name || user?.displayName || "Guest";
   centered
   style={{
     color: '#0d6efd', // text color
-    border: '2px solid #0d6efd',
+    border: '2px solid #000',
     borderRadius: '10px'
   }}
   bodyStyle={{
-    backgroundColor: '#e7f1ff', // light blue background
+    backgroundColor: '#fff', // light blue background
     color: '#0d6efd',
     fontWeight: 500
   }}
@@ -410,13 +410,14 @@ const usernamebottom = user?.name || user?.displayName || "Guest";
 
   {loading ? (
     <div style={{ textAlign: 'center', padding: '2rem' }}>
-      <Spin size="large" />
-    </div>
+  <Spin size="large" style={{ color: 'black' }} />
+</div>
+
   ) : (
     <Form layout="vertical" onFinish={onFinish}>
       {!isRegistering ? (
         <div className="flex justify-center mb-4">
-          <Lottie animationData={Lockup} loop style={{ width: 80, height: 80 }} />
+          <Lottie animationData={Lockup} loop style={{ width: 100, height: 100 }} />
         </div>
       ) : (
         <div className="flex justify-center mb-4">
