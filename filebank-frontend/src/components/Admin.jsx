@@ -184,14 +184,17 @@ useEffect(() => {
 
   const handleIssue = async (id, hasIssue) => {
   try {
-    const action = hasIssue ? 'noissue' : 'issue';
-    await api.post(`/admin/users/${id}/${action}`);
-    enqueueSnackbar(hasIssue ? 'Issue solved' : 'Issue Detected', { variant: 'success' });
+    await api.post(`/admin/users/${id}/issue-toggle`, { hasIssue: !hasIssue });
+    enqueueSnackbar(
+      !hasIssue ? 'Issue Detected' : 'Issue solved', 
+      { variant: 'success' }
+    );
     fetchUsers();
   } catch {
-    enqueueSnackbar('Operation failed', { variant: 'error' });
+    enqueueSnackbar('Operation failed:issues', { variant: 'error' });
   }
 };
+
 
 
   useEffect(() =>{
