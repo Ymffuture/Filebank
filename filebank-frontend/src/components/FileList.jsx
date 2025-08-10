@@ -97,7 +97,7 @@ export default function FileList() {
 
 const ErrorFallback = ({ onRetry }) => (
   <motion.div
-    className="flex flex-col items-center justify-center min-h-[60vh] text-center bg-white dark:bg-gray-900 rounded-xl shadow-lg p-8"
+    className="flex flex-col items-center justify-center min-h-[100vh] text-center bg-white dark:bg-gray-900 shadow-lg p-8"
     initial={{ opacity: 0, y: 20 }}
     animate={{ opacity: 1, y: 0 }}
   >
