@@ -162,6 +162,13 @@ useEffect(() => {
   };
 const username = user?.name || user?.displayName || "Famacloud";
 const usernamebottom = user?.name || user?.displayName || "Guest";
+
+  const getRandomColor = () => {
+  const colors = ['red', 'blue', 'green', 'yellow', 'orange', 'purple', 'pink', 'cyan'];
+  return colors[Math.floor(Math.random() * colors.length)];
+};
+
+  
   return (
     <>
 <Helmet>
@@ -203,7 +210,7 @@ const usernamebottom = user?.name || user?.displayName || "Guest";
           beamWidth={2.8}
           beamHeight={10}
           beamNumber={14}
-          lightColor="pink"
+          lightColor={getRandomColor()}
           speed={2}
           noiseIntensity={1.75}
           scale={0.2}
