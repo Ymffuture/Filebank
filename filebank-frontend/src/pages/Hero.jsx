@@ -398,8 +398,9 @@ const usernamebottom = user?.name || user?.displayName || "Guest";
   centered
   style={{
     color: '#0d6efd', // text color
-    border: '2px solid #000',
-    borderRadius: '10px'
+    border: '4px solid gray',
+    borderRadius: '10px', 
+    zIndex:9999,
   }}
   bodyStyle={{
     backgroundColor: '#fff', // light blue background
