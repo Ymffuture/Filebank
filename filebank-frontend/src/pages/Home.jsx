@@ -21,7 +21,7 @@ export default function Home() {
   }, []);
 
   return (
-    <div className="dark:bg-[#333] dark:text-[whitesmoke] min-h-screen">
+    <div className="dark:bg-background dark:text-primary min-h-screen">
       <Navbar />
       <main className="mx-auto space-y-6">
         
