@@ -122,4 +122,27 @@ body {
   font-weight: 500;
   border-radius: 8px;
 }
+/* Light theme */
+:root {
+  --color-primary: #0d6efd;
+  --color-secondary: #6c757d;
+  --color-bg: #ffffff;
+  --color-text: #000000;
+}
+
+/* Dark theme */
+.dark {
+  --color-primary: #0d6efd;
+  --color-secondary: #adb5bd;
+  --color-bg: #121212;
+  --color-text: #ffffff;
+}
+
+/* Black theme */
+.theme-black {
+  --color-primary: #000000;
+  --color-secondary: #333333;
+  --color-bg: #000000;
+  --color-text: #ffffff;
+}
 
