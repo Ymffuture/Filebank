@@ -164,7 +164,7 @@ const username = user?.name || user?.displayName || "Famacloud";
 const usernamebottom = user?.name || user?.displayName || "Guest";
 
   const getRandomColor = () => {
-  const colors = ['red', 'blue', 'green', 'yellow', 'orange', 'purple', 'pink', 'cyan'];
+  const colors = ['red', 'blue', 'green', 'yellow', 'orange', 'purple', 'pink', 'cyan', '#e7f1ff', 'gold' ];
   return colors[Math.floor(Math.random() * colors.length)];
 };
 
@@ -317,7 +317,7 @@ const usernamebottom = user?.name || user?.displayName || "Guest";
           padding: '0 2.5rem',
           backdropFilter: 'blur(8px)',
           WebkitBackdropFilter: 'blur(8px)', 
-          background: 'linear-gradient(to bottom, #000000, #1a202c, #FF00FF )', 
+          background: 'linear-gradient(to bottom, #000000, #1a202c, gray )', 
           borderRadius: '8px',
           color: '#fff',
           fontWeight: 500,
@@ -330,9 +330,9 @@ const usernamebottom = user?.name || user?.displayName || "Guest";
           padding: '0 2.5rem',
             backdropFilter: 'blur(8px)',
           WebkitBackdropFilter: 'blur(8px)', 
-          background: 'linear-gradient(to bottom, #000000, #1a202c,#FF00FF)', 
+          background: 'linear-gradient(to bottom, #000000, #1a202c,gray)', 
           borderRadius: '8px',
-          color: '#fff',
+          color: getRandomColor(),
           fontWeight: 400,
           boxShadow: '0 6px 18px #000'
         }} >
@@ -387,13 +387,27 @@ const usernamebottom = user?.name || user?.displayName || "Guest";
 
       {/* Login/Register Modal */}
 <Modal
-  title={isRegistering ? "Create Your Famacloud Account" : "Login to Famacloud"}
+  title={
+    <span style={{ color: '#0d6efd' }}> 
+      {isRegistering ? "Create Your Famacloud Account" : "Login to Famacloud"}
+    </span>
+  }
   open={isModalVisible}
   onCancel={() => setIsModalVisible(false)}
-  footer={isLockedOut? 'Form Locked 🔒' :'You have 1 login attempts.'}
+  footer={isLockedOut ? 'Form Locked 🔒' : 'You have 1 login attempt.'}
   centered
-  style={{ color: '#666' }}
+  style={{
+    color: '#0d6efd', // text color
+    border: '2px solid #0d6efd',
+    borderRadius: '10px'
+  }}
+  bodyStyle={{
+    backgroundColor: '#e7f1ff', // light blue background
+    color: '#0d6efd',
+    fontWeight: 500
+  }}
 >
+
   {loading ? (
     <div style={{ textAlign: 'center', padding: '2rem' }}>
       <Spin size="large" />
