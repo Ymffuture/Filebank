@@ -92,8 +92,8 @@ export default function NotificationsModal({ visible, onClose }) {
     <Drawer
       title={
         <Space>
-          <BellOutlined /> Notifications
-          <Badge count={notifications.filter((n) => !n.read).length} />
+          <Bell style={{color:'#fff'}} /> Notifications
+          <Badge count={notifications.filter((n) => !n.read).length} style={{color:'#fff'}} />
           
         </Space>
       }
@@ -102,7 +102,7 @@ export default function NotificationsModal({ visible, onClose }) {
       open={visible}
       onClose={onClose}
       styles={{
-        body: { borderRadius: '25px 25px 0 0', paddingBottom: 60 },
+        body: { paddingBottom: 40, color:'#fff' },
       }}
       footer={
         <div style={{ display: 'flex', justifyContent: 'space-between', padding: '8px 16px' }}>
@@ -119,15 +119,7 @@ export default function NotificationsModal({ visible, onClose }) {
     </Button>
   </span>
 </Tooltip>
-          <Button
-            onClick={onClose}
-            icon={<CloseOutlined />}
-            type="link"
-            danger
-            style={{ fontSize: 16 }}
-          >
-            Close
-          </Button>
+          
         </div>
       }
     >
