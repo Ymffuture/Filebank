@@ -121,7 +121,7 @@ export default function NotificationsModal({ visible, onClose }) {
       placement="bottom"
       height={580}
       open={visible}
-      onClose={null}
+      onClose={onClose}
       styles={{
         body: { paddingBottom: 40, color:'#fff' },
       }}
