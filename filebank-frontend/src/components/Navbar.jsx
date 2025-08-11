@@ -309,15 +309,11 @@ export default function Navbar() {
 
 
       <Drawer
-  placement="left"
-  open={drawerVisible}
-  onClose={() => setDrawerVisible(false)}
-  styles={{
-    body: { padding: 0, background: '#202124' },
-    header: { background: '#202124' },
-    footer: { background: '#202124' }
-  }}
->
+        placement="left"
+        open={drawerVisible}
+        onClose={() => setDrawerVisible(false)}
+        bodyStyle={{ padding: 0, display: 'flex', flexDirection: 'column', height: '100%', background: '#202124' }}
+      >
         
 
 
