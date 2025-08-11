@@ -109,8 +109,8 @@ setMessages(prev => [...prev, createMessage('bot', AI_ERROR_MESSAGE, 'error')]);
           bottom: 24,
           left: 24,
           zIndex: 999,
-          boxShadow: '0 4px 14px rgba(0,0,0,0.25)',
-          backgroundColor: '#1E90FF',
+          boxShadow: '0 4px 14px #202124',
+          backgroundColor: '#202124',
         }}
       />
 
@@ -119,6 +119,7 @@ setMessages(prev => [...prev, createMessage('bot', AI_ERROR_MESSAGE, 'error')]);
         open={visible}
         onCancel={() => setVisible(false)}
         width={500}
+        footer={'FamaAI'} 
         style={{ top: 100 }}
         bodyStyle={{ maxHeight: '100vh', overflowY: 'auto', paddingBottom: 0 }}
       >
@@ -142,7 +143,7 @@ setMessages(prev => [...prev, createMessage('bot', AI_ERROR_MESSAGE, 'error')]);
             value={input}
             onChange={(e) => setInput(e.target.value)}
             onKeyDown={(e) => e.key === 'Enter' && sendMessage()}
-            style={{border:'none', padding:'8px', margin:'8px'}} 
+            style={{border:'#202124', padding:'8px', margin:'8px'}} 
           />
           <Button type="link" loading={loading} onClick={sendMessage} >
             <ArrowUp className="rounded-full bg-black text-white" />
