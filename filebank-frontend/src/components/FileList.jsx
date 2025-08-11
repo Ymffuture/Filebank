@@ -197,7 +197,7 @@ const ErrorFallback = ({ onRetry }) => (
       
 
       <Alert
-  message="📌 Tip: Make sure to rename your file before downloading — for example, change `<slug> myfilepdf` to `myfile.pdf`. If you rename the file after downloading, it might not open correctly. To avoid issues, enable the rename option before download in your browser settings or save the file with the correct name immediately."
+  message="Tip: Make sure to rename your file before downloading — for example, change `<slug> myfilepdf` to `myfile.pdf`. If you rename the file after downloading, it might not open correctly. To avoid issues, enable the rename option before download in your browser settings or save the file with the correct name immediately."
   type="warning"
   showIcon
   closable
@@ -259,7 +259,7 @@ const ErrorFallback = ({ onRetry }) => (
         shape="circle"
         icon={<CopyOutlined />}
         onClick={() => copyLink(downloadUrl)}
-        style={{ background: '#fa8c16', color: '#fff' }}
+        style={{ background: '#fff', color: '#fa8c16' }}
       />
     </Tooltip>, 
 
@@ -273,7 +273,7 @@ const ErrorFallback = ({ onRetry }) => (
           type="text"
           shape="circle"
           icon={<FaWhatsapp />}
-          style={{ background: '#25D366', color: '#fff' }}
+          style={{ background: '#fff', color: '#25D366' }}
         />
       </a>
     </Tooltip>, 
@@ -288,7 +288,7 @@ const ErrorFallback = ({ onRetry }) => (
           type="text"
           shape="circle"
           icon={<FaXTwitter />}
-          style={{ background: '#000', color: '#fff' }}
+          style={{ background: '#ffg', color: '#000' }}
         />
       </a>
     </Tooltip>, 
@@ -303,7 +303,7 @@ const ErrorFallback = ({ onRetry }) => (
           type="text"
           shape="circle"
           icon={<FaLinkedin />}
-          style={{ background: '#0077B5', color: '#fff' }}
+          style={{ background: '#fff', color: '#0077B5' }}
         />
       </a>
     </Tooltip>, 
@@ -319,7 +319,7 @@ const ErrorFallback = ({ onRetry }) => (
           shape="circle"
           icon={<DeleteOutlined />}
           loading={deleting === file.slug}
-          style={{ background: '#ff4d4f', color: '#fff' }}
+          style={{ background: '#fff', color: '#ff4d4f' }}
         />
       </Popconfirm>
     </Tooltip>
@@ -328,7 +328,7 @@ const ErrorFallback = ({ onRetry }) => (
                 style={{color:'whitesmoke'}} 
               >
                 
-                <p className="text-gray-700"><ClockCircleOutlined style={{ marginRight: 4 }} /><strong>Uploaded:</strong> {formatted}</p>
+                <p className="text-[#202124] "><ClockCircleOutlined style={{ marginRight: 4 }} /><strong>Uploaded:</strong> {formatted}</p>
                 {age > 0 && age < 90 && (
                   <Alert type="warning" showIcon className="m-4" message={`This file will be deleted in ${90 - age} days, for security. `} />
                 )}
@@ -337,19 +337,19 @@ const ErrorFallback = ({ onRetry }) => (
           })
         ) : (
           <Card className="text-center text-[gray]" bodyStyle={{ minHeight: 200 }}>
-            <p>No files match your search.</p>
+            <p className='text-[#202124] font-bold p-5 animate-pulse' >No files match your search.</p>
           </Card>
         )}
       </div>
 
       {displayedFiles.length < filteredFiles.length && (
-        <div className="text-center m-6">
+        <div className="text-center m-8">
           <Button type="link" onClick={() => setDisplayCount(c => c + 4)}>Load More</Button>
         </div>
       )}
 
       <Alert
-  message="🚫 Warning: Please do not share your personal information (such as email, ID, or passwords) with others to keep your account safe."
+  message="Warning: Please do not share your personal information (such as email, ID, or passwords) with others to keep your account safe."
   type="error"
   showIcon
   closable
