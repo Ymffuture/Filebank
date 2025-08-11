@@ -152,4 +152,15 @@ body {
   animation: shine 5s linear infinite;
 }
 
+.ant-drawer-body {
+  background: #202124 !important;
+}
+
+.ant-drawer-header {
+  background: #202124 !important;
+}
+
+.ant-drawer-footer {
+  background: #202124 !important;
+}
 
