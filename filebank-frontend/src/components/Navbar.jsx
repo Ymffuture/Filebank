@@ -18,6 +18,7 @@ import {
   CreditCardOutlined,
   LockOutlined,
   SwapOutlined,
+  CloseOutlined, 
 } from '@ant-design/icons';
 
 // replace
@@ -225,7 +226,7 @@ export default function Navbar() {
       }
     />
     <Link to="/" className="flex items-center relative right-[25%] font-inter">
-    {/* <img src={logo} alt="Famacloud Logo" className="w-16 h-16 md:w-16 md:h-16 scale-60" />*/} 
+    {/* <img src={logo} alt="Famacloud Logo" className="w-16 h-16 md:w-16 md:h-16 scale-60" #032B44/>*/} 
       
   <span className="text-lg flex">
   <span className="text-[whitesmoke] font-bold ">Fama</span>
@@ -240,7 +241,7 @@ export default function Navbar() {
         <Badge
           count={<Info size={18} color="#fff" />}
           style={{
-            backgroundColor: '#032B44',
+            backgroundColor: '#121212',
             borderRadius:'50%', 
             boxShadow: '0 0 4px black',
           }}
@@ -308,11 +309,15 @@ export default function Navbar() {
 
 
       <Drawer
-        placement="left"
-        open={drawerVisible}
-        onClose={() => setDrawerVisible(false)}
-        bodyStyle={{ padding: 0, display: 'flex', flexDirection: 'column', height: '100%', background: '#032B44' }}
-      >
+  placement="left"
+  open={drawerVisible}
+  onClose={() => setDrawerVisible(false)}
+  styles={{
+    body: { padding: 0, background: '#202124' },
+    header: { background: '#202124' },
+    footer: { background: '#202124' }
+  }}
+>
         
 
 
@@ -379,7 +384,7 @@ export default function Navbar() {
           <Button
             block
             type="link"
-            icon={<BellOutlined style={{ color: '#fff' }} />}
+            icon={<BellOutlined style={{ color: '#202124' }} />}
             onClick={() => {
               setNotifModalVisible(true);
               setDrawerVisible(false);
@@ -390,7 +395,7 @@ export default function Navbar() {
             <Badge
               count={notifications}
               offset={[6, 0]}
-              style={{ backgroundColor: '#0D6EFD', color: '#fff', marginLeft: 8 }}
+              style={{ backgroundColor: '#202124', color: '#fff', marginLeft: 8 }}
             />
           </Button>
 
@@ -429,7 +434,7 @@ export default function Navbar() {
       
 {newNotif && (
   <div
-    className="bg-[#032B44] border border-[#032B44] text-white px-4 py-2 text-center font-medium animate-fade-in sticky top-[64px] z-50"
+    className="bg-[#202124] border border-[#202124] text-white px-4 py-2 text-center font-medium animate-fade-in sticky top-[64px] z-50"
     style={{
       display: 'flex',
       justifyContent: 'space-between',
@@ -444,13 +449,10 @@ export default function Navbar() {
     setNotifModalVisible(true);
     setDrawerVisible(false);
       }}
-      >
-       
-      
-🔔 You have a new notification
-      <span className='text-[8px] text-gray'>Tap to view</span></span>
+      >   
+🔔 You have a new notification <span className='text-[8px] text-gray'>Tap to view</span></span>
     <Button size="small" onClick={() => setNewNotif(false)} type='link'>
-      Dismiss
+      <CloseOutlined/>
     </Button>
   </div>
 )}
