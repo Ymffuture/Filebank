@@ -30,9 +30,9 @@ export default function Home() {
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, ease: 'easeOut' }}
-          className="text-center p-10 bg-[#1E90FF] mx-auto w-[100%]"
+          className="text-center p-10 bg-[#202124] mx-auto w-[100%]"
         >
-          <h1 className="text-4xl md:text-5xl font-extrabold mb-4 tracking-tight text-[whitesmoke]">
+          <h1 className="text-4xl md:text-5xl font-extrabold mb-4 tracking-tight text-[#fff]">
             <TrueFocus 
              sentence="Famacloud Dashboard Upload "
               manualMode={false}
