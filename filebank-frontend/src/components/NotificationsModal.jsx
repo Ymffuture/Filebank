@@ -91,16 +91,37 @@ export default function NotificationsModal({ visible, onClose }) {
   return (
     <Drawer
       title={
-        <Space>
-          <Bell style={{color:'#fff'}} /> Notifications
-          <Badge count={notifications.filter((n) => !n.read).length} style={{color:'#fff'}} />
-          
-        </Space>
-      }
+  <div style={{ textAlign: 'center', width: '100%' }}>
+    {/* Drag handle line */}
+    <div
+      style={{
+        width: 40,
+        height: 4,
+        background: '#555',
+        borderRadius: 2,
+        margin: '0 auto 8px',
+        opacity: 0.6
+      }}
+    />
+    
+    <Space style={{ color: '#fff' }}>
+      <Bell style={{ color: '#fff' }} /> Notifications
+      <Badge
+        count={notifications.filter((n) => !n.read).length}
+        style={{
+          backgroundColor: '#ff4d4f',
+          color: '#fff',
+          boxShadow: '0 0 0 1px #000 inset'
+        }}
+      />
+    </Space>
+  </div>
+}
+
       placement="bottom"
       height={580}
       open={visible}
-      onClose={onClose}
+      onClose={null}
       styles={{
         body: { paddingBottom: 40, color:'#fff' },
       }}
@@ -132,9 +153,9 @@ export default function NotificationsModal({ visible, onClose }) {
           renderItem={(item) => (
             <List.Item
               style={{
-                backgroundColor: !item.read ? '#fffbe6' : 'transparent',
+                backgroundColor: !item.read ? '#fffbe6' : 'whitesmoke',
                 borderRadius: 8,
-                padding: '12px 16px',
+                padding: '8px 12px',
                 marginBottom: 8,
                 boxShadow: !item.read ? '0 2px 8px rgba(0,0,0,0.05)' : 'none',
               }}
