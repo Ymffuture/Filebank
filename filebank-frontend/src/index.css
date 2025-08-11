@@ -3,17 +3,17 @@
 .ant-upload-list-item-name{
 font-weight:800;
     font-size:"18px";
-    color:#014e14;
+    color:#032B44;
     background:whitesmoke;
-    padding:'4px';
+    padding:'8px';
     margin:'5px'
 }
 
 .ant-progress-bg{
-    background: #014e14;
+    background: #032B44;
 }
 .ant-layout-header{
-    background: #0D6EFD !important;
+    background:#202124 ;
 }
 code, pre {
   font-family: 'JetBrains Mono', 'Fira Code', monospace;
