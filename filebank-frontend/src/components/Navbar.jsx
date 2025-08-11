@@ -238,11 +238,11 @@ export default function Navbar() {
 {user?.hasIssue && (
       <Tooltip title="This account has an issue" color="orange">
         <Badge
-          count={<Info size={18} color="black" />}
+          count={<Info size={18} color="#fff" />}
           style={{
-            backgroundColor: 'yellow',
+            backgroundColor: '#032B44',
             borderRadius:'50%', 
-            boxShadow: '0 0 4px rgba(0,0,0,0.3)',
+            boxShadow: '0 0 4px black',
           }}
           offset={[-30, - 8]}
           className='animate-pulse transition-all' 
@@ -254,7 +254,7 @@ export default function Navbar() {
     
     {/* Center menu (desktop only) */}
   <div className="hidden md:flex flex-1 justify-center">
-    <Menu mode="horizontal" items={mainMenuItems} className="bg-[#1E90FF] google-menu" />
+    <Menu mode="horizontal" items={mainMenuItems} className="bg-[#202124] google-menu" />
   </div>
 
   {/* Avatar and user dropdown on the right */}
@@ -266,11 +266,11 @@ export default function Navbar() {
       style={{
         backgroundColor: '#FF0000',  // custom background color
         color: '#fff',               // text color
-        border: '4px solid #1E90FF',   // border color
+        border: '4px solid #202124',   // border color
         padding: '4px',
-        borderRadius: '50px',
+        borderRadius: '30px',
         fontSize: '12px',
-        boxShadow: '0 0 4px #1E90FF'
+        boxShadow: '0 0 4px #202124'
       }}
     >
       {notifications}
@@ -311,7 +311,7 @@ export default function Navbar() {
         placement="left"
         open={drawerVisible}
         onClose={() => setDrawerVisible(false)}
-        bodyStyle={{ padding: 0, display: 'flex', flexDirection: 'column', height: '100%', background: '#0B3D91' }}
+        bodyStyle={{ padding: 0, display: 'flex', flexDirection: 'column', height: '100%', background: '#032B44' }}
       >
         
 
@@ -429,7 +429,7 @@ export default function Navbar() {
       
 {newNotif && (
   <div
-    className="bg-yellow-100 border border-yellow-300 text-yellow-800 px-4 py-2 text-center font-medium animate-fade-in sticky top-[64px] z-50"
+    className="bg-[#032B44] border border-[#032B44] text-white px-4 py-2 text-center font-medium animate-fade-in sticky top-[64px] z-50"
     style={{
       display: 'flex',
       justifyContent: 'space-between',
@@ -448,7 +448,7 @@ export default function Navbar() {
        
       
 🔔 You have a new notification
-      <span className='text-[8px] text-black'>Tap to view</span></span>
+      <span className='text-[8px] text-gray'>Tap to view</span></span>
     <Button size="small" onClick={() => setNewNotif(false)} type='link'>
       Dismiss
     </Button>
