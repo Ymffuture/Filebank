@@ -3,8 +3,8 @@
   "short_name": "Famacloud",
   "start_url": ".",
   "display": "standalone",
-  "theme_color": "#1E90FF",
-  "background_color": "#F0F8FF",
+  "theme_color": "#202124",
+  "background_color": "#202124",
   "description": "Secure, fast file sharing & storage powered by AI.",
   "orientation": "portrait-primary",
   "icons": [
