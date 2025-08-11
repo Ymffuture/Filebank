@@ -13,7 +13,7 @@ font-weight:800;
     background: #014e14;
 }
 .ant-layout-header{
-    background: #1E90FF;
+    background: #0D6EFD ;
 }
 code, pre {
   font-family: 'JetBrains Mono', 'Fira Code', monospace;
@@ -146,7 +146,7 @@ body {
   --color-text: #ffffff;
 }
 
-.shiny {
+.shine {
   background: linear-gradient(120deg, transparent 30%, rgba(255,255,255,0.7) 50%, transparent 70%);
   background-size: 200% 100%;
   animation: shine 5s linear infinite;
