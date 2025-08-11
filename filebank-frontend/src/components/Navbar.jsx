@@ -208,7 +208,7 @@ export default function Navbar() {
   
   return (
     <>
-      <Header className="flex justify-between sticky top-0 z-50 px-4 dark:bg-black">
+      <Header className="flex justify-between sticky top-0 z-50 px-4">
   {/* Menu icon on far left */}
   <div className="flex items-center">
     <Button
@@ -375,11 +375,11 @@ export default function Navbar() {
           className="flex-grow overflow-auto"
         />
 
-        <div className="p-1 space-y-2 text-white">
+        <div className="p-1 space-y-2 text-[#0D6EFD] bg-white">
           <Button
             block
             type="link"
-            icon={<BellOutlined style={{ color: '#1E90FF' }} />}
+            icon={<BellOutlined style={{ color: '#fff' }} />}
             onClick={() => {
               setNotifModalVisible(true);
               setDrawerVisible(false);
@@ -390,7 +390,7 @@ export default function Navbar() {
             <Badge
               count={notifications}
               offset={[6, 0]}
-              style={{ backgroundColor: '#0B3D91', color: '#fff', marginLeft: 8 }}
+              style={{ backgroundColor: '#0D6EFD', color: '#fff', marginLeft: 8 }}
             />
           </Button>
 
