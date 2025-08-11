@@ -194,13 +194,7 @@ const ErrorFallback = ({ onRetry }) => (
     :
     <>
       <Navbar/>
-      {location.pathname === '/files' && (
-        <div className="p-2 sticky top-0 bg-white z-50">
-          <Link to="/dashboard">
-            <Button type="link" icon={<ArrowBigLeftDashIcon />}>Back to Dashboard</Button>
-          </Link>
-        </div>
-      )}
+      
 
       <Alert
   message="📌 Tip: Make sure to rename your file before downloading — for example, change `<slug> myfilepdf` to `myfile.pdf`. If you rename the file after downloading, it might not open correctly. To avoid issues, enable the rename option before download in your browser settings or save the file with the correct name immediately."
