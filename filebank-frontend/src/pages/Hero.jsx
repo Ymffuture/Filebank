@@ -164,9 +164,21 @@ const username = user?.name || user?.displayName || "Famacloud";
 const usernamebottom = user?.name || user?.displayName || "Guest";
 
   const getRandomColor = () => {
-  const colors = ['red', 'blue', 'green', 'yellow', 'orange', 'purple', 'pink', 'cyan', '#e7f1ff', 'gold' ];
+  const colors = [
+    '#A5D8FF', // soft sky blue
+    '#B5EAD7', // mint green
+    '#FFD6A5', // light peach
+    '#FFB5E8', // pastel pink
+    '#FFF3B0', // pale yellow
+    '#C9A7EB', // soft lavender
+    '#FFDAC1', // cream coral
+    '#BEE3DB', // aqua mist
+    '#FAD2E1', // blush pink
+    '#D7E3FC'  // powder blue
+  ];
   return colors[Math.floor(Math.random() * colors.length)];
 };
+
 
   
   return (
@@ -207,13 +219,13 @@ const usernamebottom = user?.name || user?.displayName || "Guest";
         }}
       >
         <Beams
-          beamWidth={2.8}
-          beamHeight={10}
+          beamWidth={3}
+          beamHeight={12}
           beamNumber={14}
           lightColor={getRandomColor()}
-          speed={2}
+          speed={1}
           noiseIntensity={1.75}
-          scale={0.2}
+          scale={0.3}
           rotation={30}
         />
       </div>
@@ -245,8 +257,8 @@ const usernamebottom = user?.name || user?.displayName || "Guest";
     padding: '1rem 2rem',
     borderRadius: '20px',
     background: 'rgba(255, 255, 255, 0.08)', // Transparent white
-    border: '1px solid #000',
-    boxShadow: '0 4px 30px #000',
+    border: '1px solid #202124',
+    boxShadow: '0 4px 30px #202124',
     position: 'relative',
     zIndex: 1,
     color: '#fff', // white text for dark background
@@ -261,7 +273,7 @@ const usernamebottom = user?.name || user?.displayName || "Guest";
               <Space style={{ cursor: 'pointer' }}>
                 <Avatar src={user.picture} />
                 <Text style={{color:'#fff'}} >{user.name || user.displayName}</Text>
-                <AiOutlineDown style={{color:'red'}} />
+                <AiOutlineDown style={{color:'#fff'}} />
               </Space>
             </Dropdown>
           </Space>
@@ -301,7 +313,7 @@ const usernamebottom = user?.name || user?.displayName || "Guest";
   
         }}
       >
-        <Title style={{ color: getRandomColor(), fontSize: '3rem', marginBottom: '1rem' }}>
+        <Title style={{ color: '#fff' , fontSize: '3rem', marginBottom: '1rem' }}>
             <DecryptedText
                text="Store with Renown, Access Anywhere" 
                animateOn="view"
@@ -317,7 +329,7 @@ const usernamebottom = user?.name || user?.displayName || "Guest";
           padding: '0 2.5rem',
           backdropFilter: 'blur(8px)',
           WebkitBackdropFilter: 'blur(8px)', 
-          background: 'linear-gradient(to bottom, #000000, #1a202c, gray )', 
+          background: 'linear-gradient(to bottom, #202124, #121212, #fff )', 
           borderRadius: '8px',
           color: '#fff',
           fontWeight: 500,
@@ -330,11 +342,11 @@ const usernamebottom = user?.name || user?.displayName || "Guest";
           padding: '0 2.5rem',
             backdropFilter: 'blur(8px)',
           WebkitBackdropFilter: 'blur(8px)', 
-          background: 'linear-gradient(to bottom, #000000, #1a202c,gray)', 
+          background: 'linear-gradient(to bottom, #202124, #121212,#fff)', 
           borderRadius: '8px',
-          color: getRandomColor(),
+          color: '#fff' ,
           fontWeight: 400,
-          boxShadow: '0 6px 18px #000'
+          boxShadow: '0 6px 18px #121212'
         }} >
           <Link to="/dashboard">Go to Dashboard</Link>
         </Button>} 
@@ -557,7 +569,7 @@ const usernamebottom = user?.name || user?.displayName || "Guest";
       }}>
   
 <RotatingText
-  texts={['Hey 👋', usernamebottom , 'Welcome to Famacloud', 'where you store the files', 'Images', 'and', 'More ', 'Try it', 'Why stop? ', 'Do not stop 🛑', 'Now.' ]}
+  texts={['Hey 👋', usernamebottom , 'Welcome to Famacloud', 'Start uploading', 'Images', 'and', 'Files', 'Try it', 'Why stop? ', 'Do not stop 🛑', 'Now.' ]}
   mainClassName="p-6 font-bold text-[16px] sm:p-4 md:p-3 bg-[#1E90FF] rounded-lg text-white overflow-hidden py-0.5 sm:py-2 md:py-2 justify-center rounded"
   staggerFrom={"last"}
   initial={{ y: "100%" }}
