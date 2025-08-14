@@ -97,8 +97,8 @@ export default function SlotMachine() {
   };
 
   return (
-    <div className="w-full max-w-lg mx-auto p-6 bg-gradient-to-br from-gray-900 via-black to-gray-800 rounded-xl shadow-lg text-white">
-      <Title level={2} className="text-center text-yellow-400">🎰 Quorvex Institute Slot Machine</Title>
+    <div className="w-full max-w-lg mx-auto p-6 h-100vh">
+      <Title level={2} className="text-center text-yellow-400">🎰 Famacloud Slot Machine</Title>
       <Text className="block text-center mb-4">Balance: R{balance}</Text>
 
       {!gameOver && balance === 0 && (
@@ -115,15 +115,15 @@ export default function SlotMachine() {
             <Select.Option value={3}>3 Lines</Select.Option>
           </Select>
           <InputNumber
-            min={1}
+            min={10}
             value={bet}
             onChange={setBet}
             className="w-full"
             placeholder="Bet per line"
           />
           <Button
-            type="primary"
-            className="bg-yellow-500 hover:bg-yellow-600"
+            type="dashed"
+            className="bg-yellow-500 hover:bg-yellow-600 m-4"
             onClick={spin}
             disabled={spinningReels.some((r) => r)}
           >
@@ -132,7 +132,7 @@ export default function SlotMachine() {
         </div>
       )}
 
-      <div className="flex justify-center gap-3 mb-6">
+      <div className="flex justify-center gap-5 mb-8">
         {Array.from({ length: COLS }).map((_, i) => (
           <SlotReel
             key={i}
@@ -142,7 +142,7 @@ export default function SlotMachine() {
         ))}
       </div>
 
-      {message && <p className="text-center text-yellow-400">{message}</p>}
+      {message && <p className="text-center text-yellow-400 bg-[whitesmoke] ">{message}</p>}
 
       {gameOver && (
         <Button
@@ -167,7 +167,7 @@ export default function SlotMachine() {
         okText="Deposit"
       >
         <InputNumber
-          min={1}
+          min={10}
           value={deposit}
           onChange={setDeposit}
           className="w-full"
