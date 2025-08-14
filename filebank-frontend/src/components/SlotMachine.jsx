@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from "react";
 import SlotReel from "./SlotReel";
-import { Button, InputNumber, Select, Modal, Typography } from "antd";
+import { Button, InputNumber, Select, Modal, Typography, Alert } from "antd";
 import { motion } from "framer-motion";
 import { AiOutlineTrophy, AiOutlineReload } from "react-icons/ai";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const { Title, Text } = Typography;
 const ROWS = 3;
@@ -18,6 +20,7 @@ export default function SlotMachine() {
   const [bet, setBet] = useState(1);
   const [rows, setRows] = useState([]);
   const [message, setMessage] = useState("");
+  const [messageType, setMessageType] = useState("info");
   const [spinningReels, setSpinningReels] = useState([false, false, false]);
   const [gameOver, setGameOver] = useState(false);
   const [showDepositModal, setShowDepositModal] = useState(false);
@@ -30,9 +33,13 @@ export default function SlotMachine() {
     if (deposit > 0) {
       setBalance((prev) => prev + deposit);
       setMessage(`Deposited R${deposit}`);
+      setMessageType("success");
+      toast.success(`💰 Successfully deposited R${deposit}`, { position: "top-center" });
       setShowDepositModal(false);
     } else {
       setMessage("Enter a valid amount");
+      setMessageType("error");
+      toast.error("Please enter a valid deposit amount", { position: "top-center" });
     }
   };
 
@@ -77,8 +84,11 @@ export default function SlotMachine() {
   const spin = () => {
     if (bet * lines > balance) {
       setMessage("Not enough balance for this bet");
+      setMessageType("error");
+      toast.error("Not enough balance!", { position: "top-center" });
       return;
     }
+
     setMessage("");
     const { rows: newRows } = generateSpin();
     setSpinningReels([true, true, true]);
@@ -91,7 +101,17 @@ export default function SlotMachine() {
       const newBalance = balance - bet * lines + winnings;
       setRows(newRows);
       setBalance(newBalance);
-      setMessage(winnings > 0 ? `🎉 You won R${winnings}!` : "No win this time.");
+
+      if (winnings > 0) {
+        setMessage(`🎉 You won R${winnings}!`);
+        setMessageType("success");
+        toast.success(`🏆 Congrats! You won R${winnings}!`, { position: "top-center" });
+      } else {
+        setMessage("No win this time.");
+        setMessageType("warning");
+        toast.info("No win this time. Try again!", { position: "top-center" });
+      }
+
       if (newBalance <= 0) setGameOver(true);
     }, 2000);
   };
@@ -142,11 +162,18 @@ export default function SlotMachine() {
         ))}
       </div>
 
-      {message && <p className="text-center text-yellow-400 bg-[whitesmoke] p-6 rounded">{message}</p>}
+      {message && (
+        <Alert
+          message={message}
+          type={messageType}
+          showIcon
+          className="mb-4 text-center"
+        />
+      )}
 
       {gameOver && (
         <Button
-          type="danger"
+          danger
           icon={<AiOutlineReload />}
           className="mt-4 w-full"
           onClick={() => {
@@ -174,6 +201,8 @@ export default function SlotMachine() {
           placeholder="Enter deposit amount"
         />
       </Modal>
+
+      <ToastContainer />
     </div>
   );
 }
