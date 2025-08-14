@@ -1,7 +1,10 @@
-// SlotMachine.jsx
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import SlotReel from "./SlotReel";
+import { Button, InputNumber, Select, Modal, Typography } from "antd";
+import { motion } from "framer-motion";
+import { AiOutlineTrophy, AiOutlineReload } from "react-icons/ai";
 
+const { Title, Text } = Typography;
 const ROWS = 3;
 const COLS = 3;
 const SYMBOLS_COUNT = { A: 2, B: 4, C: 6, D: 8 };
@@ -9,22 +12,27 @@ const SYMBOL_VALUES = { A: 5, B: 4, C: 3, D: 2 };
 const SYMBOL_EMOJIS = { A: "🍒", B: "🍋", C: "🍉", D: "⭐" };
 
 export default function SlotMachine() {
-  const [balance, setBalance] = useState(0);
-  const [deposit, setDeposit] = useState("");
+  const [balance, setBalance] = useState(() => Number(localStorage.getItem("balance")) || 0);
+  const [deposit, setDeposit] = useState(0);
   const [lines, setLines] = useState(1);
-  const [bet, setBet] = useState("");
+  const [bet, setBet] = useState(1);
   const [rows, setRows] = useState([]);
   const [message, setMessage] = useState("");
   const [spinningReels, setSpinningReels] = useState([false, false, false]);
   const [gameOver, setGameOver] = useState(false);
+  const [showDepositModal, setShowDepositModal] = useState(false);
+
+  useEffect(() => {
+    localStorage.setItem("balance", balance);
+  }, [balance]);
 
   const handleDeposit = () => {
-    const amount = parseFloat(deposit);
-    if (isNaN(amount) || amount <= 0) {
-      setMessage("Invalid deposit amount");
+    if (deposit > 0) {
+      setBalance((prev) => prev + deposit);
+      setMessage(`Deposited R${deposit}`);
+      setShowDepositModal(false);
     } else {
-      setBalance(amount);
-      setMessage(`Deposited R${amount}`);
+      setMessage("Enter a valid amount");
     }
   };
 
@@ -45,7 +53,6 @@ export default function SlotMachine() {
       }
     }
 
-    // Transpose to rows
     const transposed = [];
     for (let i = 0; i < ROWS; i++) {
       transposed.push([]);
@@ -68,95 +75,63 @@ export default function SlotMachine() {
   };
 
   const spin = () => {
-    const betAmount = parseFloat(bet);
-    if (isNaN(betAmount) || betAmount <= 0) {
-      setMessage("Invalid bet amount");
-      return;
-    }
-    if (betAmount * lines > balance) {
+    if (bet * lines > balance) {
       setMessage("Not enough balance for this bet");
       return;
     }
-
     setMessage("");
-    const { reels, rows: newRows } = generateSpin();
-
-    // Start all reels spinning
+    const { rows: newRows } = generateSpin();
     setSpinningReels([true, true, true]);
 
-    // Stop reel 1
     setTimeout(() => setSpinningReels((r) => [false, r[1], r[2]]), 1000);
-    // Stop reel 2
     setTimeout(() => setSpinningReels((r) => [false, false, r[2]]), 1500);
-    // Stop reel 3 & calculate winnings
     setTimeout(() => {
       setSpinningReels([false, false, false]);
-      const winnings = calculateWinnings(newRows, betAmount, lines);
-      const newBalance = balance - betAmount * lines + winnings;
+      const winnings = calculateWinnings(newRows, bet, lines);
+      const newBalance = balance - bet * lines + winnings;
       setRows(newRows);
       setBalance(newBalance);
-      setMessage(winnings > 0 ? `🎉 You won R${winnings}` : "No win this time.");
-      if (newBalance <= 0) {
-        setMessage("💀 You ran out of money! Game Over.");
-        setGameOver(true);
-      }
+      setMessage(winnings > 0 ? `🎉 You won R${winnings}!` : "No win this time.");
+      if (newBalance <= 0) setGameOver(true);
     }, 2000);
   };
 
   return (
-    <div className="w-full max-w-md p-6 h-100vh">
-      <h1 className="text-3xl font-bold text-center mb-4">🎰 Slot Machine</h1>
-      <p className="text-center mb-2">Balance: R{balance}</p>
+    <div className="w-full max-w-lg mx-auto p-6 bg-gradient-to-br from-gray-900 via-black to-gray-800 rounded-xl shadow-lg text-white">
+      <Title level={2} className="text-center text-yellow-400">🎰 Quorvex Institute Slot Machine</Title>
+      <Text className="block text-center mb-4">Balance: R{balance}</Text>
 
       {!gameOver && balance === 0 && (
-        <div className="flex gap-2 mb-4">
-          <input
-            type="number"
-            className="flex-1 p-2 rounded bg-gray-700"
-            placeholder="Deposit"
-            value={deposit}
-            onChange={(e) => setDeposit(e.target.value)}
-          />
-          <button
-            className="px-4 py-2 bg-green-600 rounded hover:bg-green-700"
-            onClick={handleDeposit}
-          >
-            Deposit
-          </button>
-        </div>
+        <Button type="primary" className="w-full" onClick={() => setShowDepositModal(true)}>
+          Deposit to Start
+        </Button>
       )}
 
       {!gameOver && balance > 0 && (
-        <div className="flex flex-col gap-2 mb-4">
-          <select
-            className="p-2 rounded bg-gray-700"
-            value={lines}
-            onChange={(e) => setLines(parseInt(e.target.value))}
-          >
-            <option value={1}>1 Line</option>
-            <option value={2}>2 Lines</option>
-            <option value={3}>3 Lines</option>
-          </select>
-          <input
-            type="number"
-            className="p-2 rounded bg-gray-700"
-            placeholder="Bet per line"
+        <div className="flex flex-col gap-3 mb-4">
+          <Select value={lines} onChange={setLines}>
+            <Select.Option value={1}>1 Line</Select.Option>
+            <Select.Option value={2}>2 Lines</Select.Option>
+            <Select.Option value={3}>3 Lines</Select.Option>
+          </Select>
+          <InputNumber
+            min={1}
             value={bet}
-            onChange={(e) => setBet(e.target.value)}
+            onChange={setBet}
+            className="w-full"
+            placeholder="Bet per line"
           />
-          <button
-            className={`px-4 py-2 rounded bg-yellow-500 hover:bg-yellow-600 ${
-              spinningReels.some((r) => r) ? "opacity-50 cursor-not-allowed" : ""
-            }`}
+          <Button
+            type="primary"
+            className="bg-yellow-500 hover:bg-yellow-600"
             onClick={spin}
             disabled={spinningReels.some((r) => r)}
           >
             {spinningReels.some((r) => r) ? "Spinning..." : "Spin"}
-          </button>
+          </Button>
         </div>
       )}
 
-      {/* Slot reels */}
       <div className="flex justify-center gap-3 mb-6">
         {Array.from({ length: COLS }).map((_, i) => (
           <SlotReel
@@ -167,16 +142,39 @@ export default function SlotMachine() {
         ))}
       </div>
 
-      {message && <p className="text-center mt-2">{message}</p>}
+      {message && <p className="text-center text-yellow-400">{message}</p>}
 
       {gameOver && (
-        <button
-          className="mt-4 w-full bg-red-600 py-2 rounded hover:bg-red-700"
-          onClick={() => window.location.reload()}
+        <Button
+          type="danger"
+          icon={<AiOutlineReload />}
+          className="mt-4 w-full"
+          onClick={() => {
+            setBalance(0);
+            localStorage.removeItem("balance");
+            window.location.reload();
+          }}
         >
           Restart Game
-        </button>
+        </Button>
       )}
+
+      <Modal
+        title="Deposit Funds"
+        open={showDepositModal}
+        onOk={handleDeposit}
+        onCancel={() => setShowDepositModal(false)}
+        okText="Deposit"
+      >
+        <InputNumber
+          min={1}
+          value={deposit}
+          onChange={setDeposit}
+          className="w-full"
+          placeholder="Enter deposit amount"
+        />
+      </Modal>
     </div>
   );
 }
+
