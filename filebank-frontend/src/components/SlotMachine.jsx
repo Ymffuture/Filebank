@@ -104,7 +104,7 @@ export default function SlotMachine() {
   };
 
   return (
-    <div className="w-full max-w-md p-6 rounded-lg bg-gray-800 shadow-lg">
+    <div className="w-full max-w-md p-6 h-100vh">
       <h1 className="text-3xl font-bold text-center mb-4">🎰 Slot Machine</h1>
       <p className="text-center mb-2">Balance: R{balance}</p>
 
