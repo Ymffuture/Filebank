@@ -12,6 +12,7 @@ import { ToastContainer, Slide } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import GoogleLoading from './pages/GoogleLoading';
 import GoogleLogout from './pages/GoogleLogout';
+import SlotMachine from "./components/SlotMachine";
 
 const MyIssues =lazy(() =>import('./components/MyIssues')) ;
 const Agent = lazy(() =>import('./pages/Agent')) ;
@@ -103,6 +104,7 @@ function AppContent() {
         <Route path="/signing-out" element={<GoogleLogout />} />
         <Route path="/change-plan" element={<ChangePlanPage />} />
         <Route path="/issues" element={<MyIssues />} />
+        <Route path="/playtowin" element={<SlotMachine />} />
       </Routes>
       <Footer />
     </Suspense>
