@@ -101,8 +101,8 @@ export default function SlotMachine() {
       <Title level={2} className="text-center text-yellow-400">🎰 Famacloud Slot Machine</Title>
       <Text className="block text-center mb-4">Balance: R{balance}</Text>
 
-      {!gameOver && balance === 0 && (
-        <Button type="primary" className="w-full" onClick={() => setShowDepositModal(true)}>
+      {!gameOver && balance <= 10 && (
+        <Button type="link" className="w-full" onClick={() => setShowDepositModal(true)}>
           Deposit to Start
         </Button>
       )}
@@ -115,7 +115,7 @@ export default function SlotMachine() {
             <Select.Option value={3}>3 Lines</Select.Option>
           </Select>
           <InputNumber
-            min={10}
+            min={1}
             value={bet}
             onChange={setBet}
             className="w-full"
@@ -142,7 +142,7 @@ export default function SlotMachine() {
         ))}
       </div>
 
-      {message && <p className="text-center text-yellow-400 bg-[whitesmoke] ">{message}</p>}
+      {message && <p className="text-center text-yellow-400 bg-[whitesmoke] p-6 rounded">{message}</p>}
 
       {gameOver && (
         <Button
@@ -167,7 +167,7 @@ export default function SlotMachine() {
         okText="Deposit"
       >
         <InputNumber
-          min={10}
+          min={1}
           value={deposit}
           onChange={setDeposit}
           className="w-full"
