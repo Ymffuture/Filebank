@@ -24,7 +24,7 @@ export default function SlotMachine() {
       setMessage("Invalid deposit amount");
     } else {
       setBalance(amount);
-      setMessage(`Deposited $${amount}`);
+      setMessage(`Deposited R${amount}`);
     }
   };
 
@@ -95,7 +95,7 @@ export default function SlotMachine() {
       const newBalance = balance - betAmount * lines + winnings;
       setRows(newRows);
       setBalance(newBalance);
-      setMessage(winnings > 0 ? `🎉 You won $${winnings}` : "No win this time.");
+      setMessage(winnings > 0 ? `🎉 You won R${winnings}` : "No win this time.");
       if (newBalance <= 0) {
         setMessage("💀 You ran out of money! Game Over.");
         setGameOver(true);
@@ -106,7 +106,7 @@ export default function SlotMachine() {
   return (
     <div className="w-full max-w-md p-6 rounded-lg bg-gray-800 shadow-lg">
       <h1 className="text-3xl font-bold text-center mb-4">🎰 Slot Machine</h1>
-      <p className="text-center mb-2">Balance: ${balance}</p>
+      <p className="text-center mb-2">Balance: R{balance}</p>
 
       {!gameOver && balance === 0 && (
         <div className="flex gap-2 mb-4">
@@ -157,7 +157,7 @@ export default function SlotMachine() {
       )}
 
       {/* Slot reels */}
-      <div className="flex justify-center gap-2 mb-4">
+      <div className="flex justify-center gap-3 mb-6">
         {Array.from({ length: COLS }).map((_, i) => (
           <SlotReel
             key={i}
