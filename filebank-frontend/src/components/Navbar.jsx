@@ -166,7 +166,8 @@ export default function Navbar() {
   { key: 'cv-tips', label: 'Build CV & coverletter', icon: <FileText size={18} />, path: '/cv', feature: 'cv-tips' },
   { key: 'agent', label: 'Agent', icon: <Headphones size={18} />, path: '/agent', feature: 'agent' },
   { key: 'feedback', label: 'Feedback', icon: <MessageSquare size={18} />, path: '/feedback', feature: 'feedback' },
-  { key: 'change-plan', label: 'Change Plan', icon: <CreditCard size={18} />, path: '/change-plan' },
+  { key: 'change-plan', label: 'Change Plan', icon: <CreditCard size={18} />, path: '/change-plan' }, 
+  { key: 'playtowin', label: 'Play to win', icon: <SwapOutlined size={18} />, path: '/playtowin' },
 
   // NEW ITEM: Only show if user has an issue
   user?.hasIssue && { key: 'issues', label: 'My Issues', icon: <ShieldCheck size={18} color="orange" />, path: '/issues' },
