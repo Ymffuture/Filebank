@@ -41,7 +41,7 @@ const Loader = () => (
     <svg width="100" height="100" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
       <defs>
         <linearGradient id="ratGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%" stopColor="#121212" />
+          <stop offset="0%" stopColor="#fff" />
           <stop offset="50%" stopColor="transparent" />
           <stop offset="100%" stopColor="#A5D8FF" />
         </linearGradient>
