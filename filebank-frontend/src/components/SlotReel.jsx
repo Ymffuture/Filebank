@@ -6,7 +6,7 @@ export default function SlotReel({ spinning, symbols }) {
   const repeatedSymbols = ["🍒", "🍋", "🍉", "⭐", "🍒", "🍋", "🍉", "⭐"];
 
   return (
-    <div className="w-16 h-24 bg-gray-900 rounded-lg overflow-hidden flex items-center justify-center">
+    <div className="w-20 h-34 bg-gray-900 rounded-lg overflow-hidden flex items-center justify-center">
       <motion.div
         animate={{
           y: spinning ? ["0%", "-100%"] : "0%",
