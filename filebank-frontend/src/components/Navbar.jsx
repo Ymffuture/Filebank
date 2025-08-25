@@ -46,7 +46,7 @@ import {
 // end
 
 import ShinyText from './ShinyText';
-  
+import { FaUserCircle } from "react-icons/fa";
 import { GoogleLogin, googleLogout } from '@react-oauth/google';
 import { Link, useNavigate } from 'react-router-dom';
 import { MdOutlineFeedback } from 'react-icons/md';
@@ -293,7 +293,7 @@ export default function Navbar() {
   {/* Avatar with Dropdown */}
   <Dropdown overlay={userMenu} placement="bottomRight" arrow>
     <Avatar
-      icon={<UserOutlined />}
+      icon={<FaUserCircle className="text-gray-400 text-2xl" />}
       className="cursor-pointer hover:shadow-lg transition"
       size="default"
     />
