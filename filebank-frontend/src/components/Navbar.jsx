@@ -292,9 +292,10 @@ export default function Navbar() {
 
   {/* Avatar with Dropdown */}
   <Dropdown overlay={userMenu} placement="bottomRight" arrow>
-  <Tooltip title={user?.name || "User"}>
+  
     <Avatar
-      src={user?.picture}
+      {/* src={user?.picture}*/} 
+    
       icon={<UserOutlined />}
       className="cursor-pointer hover:shadow-lg transition"
       size="default"
