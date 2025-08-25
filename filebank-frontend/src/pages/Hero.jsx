@@ -117,64 +117,33 @@ useEffect(() => {
 
   try {
     if (isRegistering) {
-      // Create FormData
-      const formData = new FormData();
-
-      // Append JSON as a string
-      formData.append(
-        "data",
-        JSON.stringify({
-          email: values.email,
-          password: values.password,
-          name: values.name || "",
-        })
-      );
-
-      // Append file only if exists
-      if (profilePic instanceof File) {
-        formData.append("image", profilePic);
-      }
-
-      // Send multipart request
-      const res = await api.post("/auth/register", formData, {
-        headers: { "Content-Type": "multipart/form-data" },
-      });
-
-      enqueueSnackbar("Registration successful! Please verify your email.", {
-        variant: "success",
-      });
+      await api.post('/auth/register', values);
+      enqueueSnackbar('Registration successful! Please verify your email.', { variant: 'success' });
       setIsRegistering(false);
     } else {
-      // Login (JSON only, no image needed)
-      const res = await api.post("/auth/login", values);
+      const res = await api.post('/auth/login', values);
       setUser(res.data.user);
-      localStorage.setItem("filebankUser", JSON.stringify(res.data.user));
-      localStorage.setItem("filebankToken", res.data.token);
-      enqueueSnackbar("Login successful!", { variant: "success" });
-      navigate("/");
+      localStorage.setItem('filebankUser', JSON.stringify(res.data.user));
+      localStorage.setItem('filebankToken', res.data.token);
+      enqueueSnackbar('Login successful!', { variant: 'success' });
+      navigate('/');
     }
-
     setIsModalVisible(false);
   } catch (err) {
-    await api.post("/auth/track-login-attempt", { email });
+    await api.post('/auth/track-login-attempt', { email }); // NEW
     const error = err.response?.data;
-
     if (error?.lockedUntil) {
       setIsLockedOut(true);
       setRemainingTime(error.lockedUntil - Date.now());
-      enqueueSnackbar("Too many login attempts. Try again later.", {
-        variant: "error",
-      });
+      enqueueSnackbar('Too many login attempts. Try again later.', { variant: 'error' });
     } else {
-      enqueueSnackbar(error?.message || "Login failed", { variant: "error" });
+      enqueueSnackbar(error?.message || 'Login failed', { variant: 'error' });
     }
   } finally {
     setLoading(false);
-    setProfilePic(null);
+    setProfilePic(null) ;
   }
 };
-
-
 
 
   const handleForgotSubmit = async () => {
