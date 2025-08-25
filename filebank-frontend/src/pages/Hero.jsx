@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { GoogleLogin, googleLogout } from '@react-oauth/google';
 import { Button, Typography, message, Avatar, Dropdown, Menu, Badge, Space, Row, Col, Modal, Form, Input, Spin, Upload, Image} from 'antd';
 import { BellOutlined, DashboardFilled, DownOutlined, LogoutOutlined, UserOutlined } from '@ant-design/icons';
-import { AiOutlineUser } from "react-icons/ai";
+import { FaUserCircle } from "react-icons/fa";
 import { Link, useNavigate } from 'react-router-dom';
 import api from '../api/fileApi';
 import { useSnackbar } from 'notistack';
@@ -494,7 +494,7 @@ const usernamebottom = user?.name || user?.displayName || "Guest";
           <img src={URL.createObjectURL(profilePic)} alt="avatar" style={{ width: '100%' }} />
         ) : (
           <div style={{ textAlign: 'center' }}>
-            <AiOutlineUser style={{ fontSize: 32 }} />
+            <FaUserCircle style={{ fontSize: 32 }} />
             <div style={{ marginTop: 8 }}>Upload</div>
           </div>
         )}
