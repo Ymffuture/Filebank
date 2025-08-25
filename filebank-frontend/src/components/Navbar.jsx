@@ -292,13 +292,17 @@ export default function Navbar() {
 
   {/* Avatar with Dropdown */}
   <Dropdown overlay={userMenu} placement="bottomRight" arrow>
+  <Tooltip title={user?.name || "User"}>
     <Avatar
       src={user?.picture}
       icon={<UserOutlined />}
       className="cursor-pointer hover:shadow-lg transition"
       size="default"
+      alt={user?.name || "FamaAI"}
+      onError={() => true} // fallback to icon if image fails to load
     />
-  </Dropdown>
+  </Tooltip>
+</Dropdown>
 </div>
 
     
