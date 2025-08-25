@@ -219,7 +219,7 @@ export default function Navbar() {
       onClick={() => setDrawerVisible(true)}
       icon={
         <>
-          <MenuOutlined style={{ fontSize: 20, cursor: 'pointer', color: '#fff' }} />
+          <MenuOutlined style={{ fontSize: 20, cursor: 'pointer', color: '#9CA3AF' }} />
           {notifications > 0 && (
             <span className="absolute top-0 right-1 block w-3 h-3 bg-[#FFF00] rounded-full" />
           )}
@@ -230,9 +230,9 @@ export default function Navbar() {
     {/* <img src={logo} alt="Famacloud Logo" className="w-16 h-16 md:w-16 md:h-16 scale-60" #032B44/>*/} 
       
   <span className="text-lg flex">
-  <span className="text-gray-400 font-bold ">Fama</span>
-  <span className="text-[#fff] ">cloud</span>
-    <ShinyText text="Pro" disabled={false} speed={3} className='shine' />
+  <span className="text-gray-400 font-bold "></span>
+  <span className="text-[#fff] "></span>
+    <ShinyText text="Famacloud" disabled={false} speed={3} className='shine' />
       
 </span>
 
