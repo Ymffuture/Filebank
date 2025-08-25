@@ -195,7 +195,7 @@ const sendMessage = async (overrideInput) => {
     const fullReply = res.data.reply;
 
     setIsTyping(true);
-    useEffect(() => {
+  
   let current = "";
   let i = 0;
 
@@ -215,7 +215,6 @@ const sendMessage = async (overrideInput) => {
       setIsTyping(false);
     }
   }, 1); // ✅ minimum possible, browser will clamp to ~4ms
-}, [fullReply]);
 
 
     // Cleanup interval on unmount
