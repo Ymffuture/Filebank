@@ -489,43 +489,7 @@ const usernamebottom = user?.name || user?.displayName || "Guest";
       {isRegistering && (
       
  <>
-    <Form.Item label="Profile Picture">
-      <Upload
-        name="image" // key must match backend: upload.single('image')
-        listType="picture-card"
-        showUploadList={false}
-        beforeUpload={(file) => {
-          const isImage = file.type.startsWith('image/');
-          if (!isImage) message.error('You can only upload images!');
-          const isLt2M = file.size / 1024 / 1024 < 2;
-          if (!isLt2M) message.error('Image must be smaller than 2MB!');
-          return isImage && isLt2M ? true : Upload.LIST_IGNORE;
-        }}
-        customRequest={({ file, onSuccess }) => {
-          // store the file in state to append later to FormData
-          setProfilePic(file);
-          onSuccess("ok");
-        }}
-      >
-        {profilePic ? (
-  <img
-    src={
-      profilePic instanceof File
-        ? URL.createObjectURL(profilePic)
-        : profilePic
-    }
-    alt="avatar"
-    style={{ width: '100%', objectFit: 'cover' }}
-  />
-) : (
-  <div style={{ textAlign: 'center' }}>
-    <FaUserCircle style={{ fontSize: 32, color: '#888' }} />
-    <div style={{ marginTop: 8, color: '#555' }}>Upload</div>
-  </div>
-)}
-
-      </Upload>
-    </Form.Item>
+    
  
       
         <Form.Item name="name" label="Full Name" rules={[{ required: true }]}>
