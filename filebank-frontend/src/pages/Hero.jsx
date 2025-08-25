@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { GoogleLogin, googleLogout } from '@react-oauth/google';
 import { Button, Typography, message, Avatar, Dropdown, Menu, Badge, Space, Row, Col, Modal, Form, Input, Spin, Upload, Image} from 'antd';
 import { BellOutlined, DashboardFilled, DownOutlined, LogoutOutlined, UserOutlined } from '@ant-design/icons';
-import { FaUserCircle } from "react-icons/fa";
 import { Link, useNavigate } from 'react-router-dom';
 import api from '../api/fileApi';
 import { useSnackbar } from 'notistack';
