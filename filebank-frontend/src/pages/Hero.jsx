@@ -154,6 +154,7 @@ useEffect(() => {
     }
   } finally {
     setLoading(false);
+    setProfilePic(null);
   }
 };
 
