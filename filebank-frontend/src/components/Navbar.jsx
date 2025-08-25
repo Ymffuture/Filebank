@@ -230,21 +230,21 @@ export default function Navbar() {
     {/* <img src={logo} alt="Famacloud Logo" className="w-16 h-16 md:w-16 md:h-16 scale-60" #032B44/>*/} 
       
   <span className="text-lg flex">
-  <span className="text-[whitesmoke] font-bold ">Fama</span>
+  <span className="text-gray-400 font-bold ">Fama</span>
   <span className="text-[#fff] ">cloud</span>
-    <ShinyText text="®" disabled={false} speed={3} className='shine' />
+    <ShinyText text="Pro" disabled={false} speed={3} className='shine' />
       
 </span>
 
 </Link>
 {user?.hasIssue && (
-      <Tooltip title="This account has an issue" color="orange">
+      <Tooltip title="This account has an issue" color="gold">
         <Badge
-          count={<Info size={14} color="#fff" />}
+          count={<Info size={10} color="#9CA3AF" />}
           style={{
             backgroundColor: '#121212',
             borderRadius:'50%', 
-            boxShadow: '0 0 4px black',
+            boxShadow: '0 0 4px gray',
           }}
           offset={[-30, - 8]}
           className='animate-pulse transition-all' 
@@ -281,7 +281,7 @@ export default function Navbar() {
   offset={[-4, 3]}
 >
   <Bell
-    className="text-white text-[20px] cursor-pointer hover:text-blue-400 transition"
+    className="text-gray-400 text-[20px] cursor-pointer hover:text-blue-400 transition"
     onClick={() => {
       setNotifModalVisible(true);
       setDrawerVisible(false);
