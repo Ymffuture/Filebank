@@ -491,13 +491,22 @@ const usernamebottom = user?.name || user?.displayName || "Guest";
         }}
       >
         {profilePic ? (
-          <img src={URL.createObjectURL(profilePic)} alt="avatar" style={{ width: '100%' }} />
-        ) : (
-          <div style={{ textAlign: 'center' }}>
-            <FaUserCircle style={{ fontSize: 32 }} />
-            <div style={{ marginTop: 8 }}>Upload</div>
-          </div>
-        )}
+  <img
+    src={
+      profilePic instanceof File
+        ? URL.createObjectURL(profilePic)
+        : profilePic
+    }
+    alt="avatar"
+    style={{ width: '100%', objectFit: 'cover' }}
+  />
+) : (
+  <div style={{ textAlign: 'center' }}>
+    <FaUserCircle style={{ fontSize: 32, color: '#888' }} />
+    <div style={{ marginTop: 8, color: '#555' }}>Upload</div>
+  </div>
+)}
+
       </Upload>
     </Form.Item>
  
