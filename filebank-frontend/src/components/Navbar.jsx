@@ -240,7 +240,7 @@ export default function Navbar() {
 {user?.hasIssue && (
       <Tooltip title="This account has an issue" color="orange">
         <Badge
-          count={<Info size={18} color="#fff" />}
+          count={<Info size={14} color="#fff" />}
           style={{
             backgroundColor: '#121212',
             borderRadius:'50%', 
@@ -293,7 +293,7 @@ export default function Navbar() {
   {/* Avatar with Dropdown */}
   <Dropdown overlay={userMenu} placement="bottomRight" arrow>
     <Avatar
-      icon={<FaUserCircle className="text-gray-400 text-2xl" />}
+      icon={<FaUserCircle className="text-gray-400 text-4xl" />}
       className="cursor-pointer hover:shadow-lg transition"
       size="default"
     />
