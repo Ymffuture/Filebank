@@ -471,7 +471,7 @@ const usernamebottom = user?.name || user?.displayName || "Guest";
 
       {isRegistering && (
       
-    {/* Profile Picture Upload */}
+ <>
     <Form.Item label="Profile Picture">
       <Upload
         name="image" // key must match backend: upload.single('image')
@@ -505,6 +505,7 @@ const usernamebottom = user?.name || user?.displayName || "Guest";
         <Form.Item name="name" label="Full Name" rules={[{ required: true }]}>
           <Input placeholder="Your Name" />
         </Form.Item>
+ </>
       )}
       <Form.Item
         name="email"
