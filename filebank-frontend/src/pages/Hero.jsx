@@ -38,7 +38,8 @@ export default function Hero() {
   const [attempts, setAttempts] = useState(0);
   const [isLockedOut, setIsLockedOut] = useState(false);
   const [remainingTime, setRemainingTime] = useState(0);
-
+  const [profilePic, setProfilePic] = useState(null);
+  
 useEffect(() => {
   const interval = setInterval(() => {
     const email = localStorage.getItem('lastLoginEmail');
