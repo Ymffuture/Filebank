@@ -117,60 +117,30 @@ useEffect(() => {
 
   try {
     if (isRegistering) {
-      // Create FormData
-      const formData = new FormData();
-
-      // Append JSON as a string
-      formData.append(
-        "data",
-        JSON.stringify({
-          email: values.email,
-          password: values.password,
-          name: values.name || "",
-        })
-      );
-
-      // Append file only if exists
-      if (profilePic instanceof File) {
-        formData.append("image", profilePic);
-      }
-
-      // Send multipart request
-      const res = await api.post("/auth/register", formData, {
-        headers: { "Content-Type": "multipart/form-data" },
-      });
-
-      enqueueSnackbar("Registration successful! Please verify your email.", {
-        variant: "success",
-      });
+      await api.post('/auth/register', values);
+      enqueueSnackbar('Registration successful! Please verify your email.', { variant: 'success' });
       setIsRegistering(false);
     } else {
-      // Login (JSON only, no image needed)
-      const res = await api.post("/auth/login", values);
+      const res = await api.post('/auth/login', values);
       setUser(res.data.user);
-      localStorage.setItem("filebankUser", JSON.stringify(res.data.user));
-      localStorage.setItem("filebankToken", res.data.token);
-      enqueueSnackbar("Login successful!", { variant: "success" });
-      navigate("/");
+      localStorage.setItem('filebankUser', JSON.stringify(res.data.user));
+      localStorage.setItem('filebankToken', res.data.token);
+      enqueueSnackbar('Login successful!', { variant: 'success' });
+      navigate('/');
     }
-
     setIsModalVisible(false);
   } catch (err) {
-    await api.post("/auth/track-login-attempt", { email });
+    await api.post('/auth/track-login-attempt', { email }); // NEW
     const error = err.response?.data;
-
     if (error?.lockedUntil) {
       setIsLockedOut(true);
       setRemainingTime(error.lockedUntil - Date.now());
-      enqueueSnackbar("Too many login attempts. Try again later.", {
-        variant: "error",
-      });
+      enqueueSnackbar('Too many login attempts. Try again later.', { variant: 'error' });
     } else {
-      enqueueSnackbar(error?.message || "Login failed", { variant: "error" });
+      enqueueSnackbar(error?.message || 'Login failed', { variant: 'error' });
     }
   } finally {
     setLoading(false);
-    setProfilePic(null);
   }
 };
 
@@ -196,14 +166,14 @@ const usernamebottom = user?.name || user?.displayName || "Guest";
   const getRandomColor = () => {
   const colors = [
     '#A5D8FF', // soft sky blue
-    '#B5EAD7', // mint green
-    '#FFD6A5', // light peach
-    '#FFB5E8', // pastel pink
-    '#FFF3B0', // pale yellow
+ //   '#B5EAD7', // mint green
+  //  '#FFD6A5', // light peach
+  //  '#FFB5E8', // pastel pink
+  //  '#FFF3B0', // pale yellow
     '#C9A7EB', // soft lavender
-    '#FFDAC1', // cream coral
+  //  '#FFDAC1', // cream coral
     '#BEE3DB', // aqua mist
-    '#FAD2E1', // blush pink
+    //'#FAD2E1', // blush pink
     '#D7E3FC'  // powder blue
   ];
   return colors[Math.floor(Math.random() * colors.length)];
@@ -304,7 +274,7 @@ const usernamebottom = user?.name || user?.displayName || "Guest";
   </Badge>
   <Dropdown overlay={userMenu}>
     <Space style={{ cursor: "pointer" }}>
-      <Avatar  icon={ <FaUserCircle className="text-gray-400 text-2xl" />} />
+      <Avatar  icon={ <FaUserCircle className="text-gray-400 text-4xl" />} />
       <Text style={{ color: "#fff" }}>
         {user.name || user.displayName
           ? (user.name || user.displayName).length > 6
