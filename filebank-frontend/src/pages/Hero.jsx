@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { GoogleLogin, googleLogout } from '@react-oauth/google';
 import { Button, Typography, message, Avatar, Dropdown, Menu, Badge, Space, Row, Col, Modal, Form, Input, Spin } from 'antd';
-import { BellOutlined, DashboardFilled, DownOutlined, LogoutOutlined } from '@ant-design/icons';
+import { BellOutlined, DashboardFilled, DownOutlined, LogoutOutlined, UserOutlined } from '@ant-design/icons';
 import { Link, useNavigate } from 'react-router-dom';
 import api from '../api/fileApi';
 import { useSnackbar } from 'notistack';
@@ -18,8 +18,8 @@ import RotatingText from './RotatingText'
 import Beams from './Beams';
 import DecryptedText from './DecryptedText';
 import { AiOutlineDown } from 'react-icons/ai';
-import { FaLock } from 'react-icons/fa'; // 'fa' = font-awesome
-
+import { FaLock, FaUserCircle } from 'react-icons/fa'; // 'fa' = font-awesome
+import { Bell } from "react-icons";
 
 
 const { Title, Paragraph, Text } = Typography;
@@ -103,9 +103,8 @@ useEffect(() => {
   const userMenu = (
     <Menu
       items={[
-        { key: '1', label: <Link to="/profile">Profile</Link> },
-        { key: '2', label: <Link to="/feedback"> Feedback</Link> },
-        { key: '3', label: <span onClick={handleLogout} className="text-[red]"><LogoutOutlined /> Logout</span> },
+        { key: 'RGJ65R', label: <Link to="/profile"><UserOutlined/> Profile</Link> },
+        { key: 'TRS75Y', label: <span onClick={handleLogout} className="text-[red]"><LogoutOutlined /> Logout</span> },
       ]}
     />
   );
@@ -266,17 +265,26 @@ const usernamebottom = user?.name || user?.displayName || "Guest";
         <Title level={3} style={{ margin: 0, color: '#0B3D91' }}>Famacloud</Title>
         {user ? (
           <Space>
-            <Badge count={notifications} size="small" offset={[-4,3]}>
-              <BellOutlined style={{ fontSize: 24, cursor: 'pointer', color: '#fff' }} onClick={fetchNotifications} />
-            </Badge>
-            <Dropdown overlay={userMenu}>
-              <Space style={{ cursor: 'pointer' }}>
-                <Avatar src={user.picture} />
-                <Text style={{color:'#fff'}} >{user.name || user.displayName}</Text>
-                <AiOutlineDown style={{color:'#fff'}} />
-              </Space>
-            </Dropdown>
-          </Space>
+  <Badge count={notifications} size="small" offset={[-4, 3]}>
+    <Bell
+      style={{ fontSize: 24, cursor: "pointer", color: "#fff" }}
+      onClick={fetchNotifications}
+    />
+  </Badge>
+  <Dropdown overlay={userMenu}>
+    <Space style={{ cursor: "pointer" }}>
+      <Avatar  icon={ <FaUserCircle className="text-gray-400 text-2xl" />} />
+      <Text style={{ color: "#fff" }}>
+        {user.name || user.displayName
+          ? (user.name || user.displayName).length > 6
+            ? (user.name || user.displayName).slice(0, 6) + "..."
+            : user.name || user.displayName
+          : "Famacloud"}
+      </Text>
+      
+    </Space>
+  </Dropdown>
+</Space>
         ) : (
           <Space>
             <GoogleLogin
