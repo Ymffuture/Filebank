@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { GoogleLogin, googleLogout } from '@react-oauth/google';
-import { Button, Typography, message, Avatar, Dropdown, Menu, Badge, Space, Row, Col, Modal, Form, Input, Spin } from 'antd';
-import { BellOutlined, DashboardFilled, DownOutlined, LogoutOutlined, UserOutlined } from '@ant-design/icons';
+import { Button, Typography, message, Avatar, Dropdown, Menu, Badge, Space, Row, Col, Modal, Form, Input, Spin, Upload, Image} from 'antd';
+import { BellOutlined, DashboardFilled, DownOutlined, LogoutOutlined, UserOutlined, AiOutlineUser } from '@ant-design/icons';
 import { Link, useNavigate } from 'react-router-dom';
 import api from '../api/fileApi';
 import { useSnackbar } from 'notistack';
@@ -116,7 +116,17 @@ useEffect(() => {
 
   try {
     if (isRegistering) {
-      await api.post('/auth/register', values);
+      // Prepare FormData for image upload
+      const formData = new FormData();
+      formData.append('email', values.email);
+      formData.append('password', values.password);
+      formData.append('name', values.name || '');
+      if (profilePic) formData.append('image', profilePic); // profilePic stored from Upload component
+
+      const res = await api.post('/auth/register', formData, {
+        headers: { 'Content-Type': 'multipart/form-data' },
+      });
+
       enqueueSnackbar('Registration successful! Please verify your email.', { variant: 'success' });
       setIsRegistering(false);
     } else {
@@ -127,10 +137,12 @@ useEffect(() => {
       enqueueSnackbar('Login successful!', { variant: 'success' });
       navigate('/');
     }
+
     setIsModalVisible(false);
   } catch (err) {
-    await api.post('/auth/track-login-attempt', { email }); // NEW
+    await api.post('/auth/track-login-attempt', { email }); // Track attempts
     const error = err.response?.data;
+
     if (error?.lockedUntil) {
       setIsLockedOut(true);
       setRemainingTime(error.lockedUntil - Date.now());
@@ -142,6 +154,7 @@ useEffect(() => {
     setLoading(false);
   }
 };
+
 
 
   const handleForgotSubmit = async () => {
@@ -456,6 +469,38 @@ const usernamebottom = user?.name || user?.displayName || "Guest";
       )}
 
       {isRegistering && (
+      
+    {/* Profile Picture Upload */}
+    <Form.Item label="Profile Picture">
+      <Upload
+        name="image" // key must match backend: upload.single('image')
+        listType="picture-card"
+        showUploadList={false}
+        beforeUpload={(file) => {
+          const isImage = file.type.startsWith('image/');
+          if (!isImage) message.error('You can only upload images!');
+          const isLt2M = file.size / 1024 / 1024 < 2;
+          if (!isLt2M) message.error('Image must be smaller than 2MB!');
+          return isImage && isLt2M ? true : Upload.LIST_IGNORE;
+        }}
+        customRequest={({ file, onSuccess }) => {
+          // store the file in state to append later to FormData
+          setProfilePic(file);
+          onSuccess("ok");
+        }}
+      >
+        {profilePic ? (
+          <img src={URL.createObjectURL(profilePic)} alt="avatar" style={{ width: '100%' }} />
+        ) : (
+          <div style={{ textAlign: 'center' }}>
+            <AiOutlineUser style={{ fontSize: 32 }} />
+            <div style={{ marginTop: 8 }}>Upload</div>
+          </div>
+        )}
+      </Upload>
+    </Form.Item>
+ 
+      
         <Form.Item name="name" label="Full Name" rules={[{ required: true }]}>
           <Input placeholder="Your Name" />
         </Form.Item>
@@ -604,3 +649,5 @@ const usernamebottom = user?.name || user?.displayName || "Guest";
     </>
   );
 }
+
+
