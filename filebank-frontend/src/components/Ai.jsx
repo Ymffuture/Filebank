@@ -110,7 +110,8 @@ setMessages(prev => [...prev, createMessage('bot', AI_ERROR_MESSAGE, 'error')]);
           left: 24,
           zIndex: 999,
           boxShadow: '0 4px 14px #202124',
-          backgroundColor: '#202124',
+          backgroundColor: '#fff',
+          color:'#202124', 
         }}
       />
 
@@ -120,7 +121,7 @@ setMessages(prev => [...prev, createMessage('bot', AI_ERROR_MESSAGE, 'error')]);
         onCancel={() => setVisible(false)}
         width={500}
         footer={'FamaAI'} 
-        style={{ top: 100 }}
+        style={{ top: 30 }}
         bodyStyle={{ maxHeight: '100vh', overflowY: 'auto', paddingBottom: 0 }}
       >
         <div style={{ marginBottom: 12 }}>
