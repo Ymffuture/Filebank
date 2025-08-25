@@ -212,7 +212,7 @@ const sendMessage = async (overrideInput) => {
         setBotTypingText('');
         setIsTyping(false);
       }
-    }, 20);
+    }, 5);
 
     // Cleanup interval on unmount
     const cleanup = () => clearInterval(typeInterval);
