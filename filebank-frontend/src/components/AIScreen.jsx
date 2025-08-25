@@ -40,6 +40,7 @@ export default function AIScreen() {
   const [botTypingText, setBotTypingText] = useState('');
   const [isTyping, setIsTyping] = useState(false);
   const [isRecording, setIsRecording] = useState(false);
+const [value, setValue] = useState(0.1);
 
 const [showImageModal, setShowImageModal] = useState(false);
 const [imagePrompt, setImagePrompt] = useState('');
@@ -194,25 +195,28 @@ const sendMessage = async (overrideInput) => {
     const fullReply = res.data.reply;
 
     setIsTyping(true);
-    let current = '';
-    let i = 0;
+    useEffect(() => {
+  let current = "";
+  let i = 0;
 
-    const typeInterval = setInterval(() => {
-      current += fullReply[i];
-      setBotTypingText(current);
-      i++;
+  const typeInterval = setInterval(() => {
+    current += fullReply[i];
+    setBotTypingText(current);
+    i++;
 
-      if (i === 1) {
-        speak(fullReply); // Start TTS only once
-      }
+    if (i === 1) {
+      speak(fullReply); // Start TTS only once
+    }
 
-      if (i >= fullReply.length) {
-        clearInterval(typeInterval);
-        setMessages(prev => [...prev, { from: 'bot', text: fullReply }]);
-        setBotTypingText('');
-        setIsTyping(false);
-      }
-    }, 100);
+    if (i >= fullReply.length) {
+      clearInterval(typeInterval);
+      setMessages(prev => [...prev, { from: 'bot', text: fullReply }]);
+      setBotTypingText('');
+      setIsTyping(false);
+    }
+  }, 1); // ✅ minimum possible, browser will clamp to ~4ms
+}, [fullReply]);
+
 
     // Cleanup interval on unmount
     const cleanup = () => clearInterval(typeInterval);
