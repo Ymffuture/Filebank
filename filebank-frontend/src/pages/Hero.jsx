@@ -19,7 +19,7 @@ import Beams from './Beams';
 import DecryptedText from './DecryptedText';
 import { AiOutlineDown } from 'react-icons/ai';
 import { FaLock, FaUserCircle } from 'react-icons/fa'; // 'fa' = font-awesome
-import { Bell } from "react-icons";
+import { Bell } from "lucide-react";
 
 
 const { Title, Paragraph, Text } = Typography;
