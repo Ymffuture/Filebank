@@ -571,7 +571,6 @@ const usernamebottom = user?.name || user?.displayName || "Guest";
         style={{
         textAlign: 'center',
         marginTop: '3rem',
-        padding: '1rem',
         color: '#777',
         fontSize: '0.85rem', 
       backdropFilter: 'blur(8px)',
