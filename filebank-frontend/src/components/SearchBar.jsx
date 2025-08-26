@@ -1,6 +1,7 @@
+// src/components/SearchBar.jsx
 import React, { useState, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Search, X } from "lucide-react";
+import { SearchOutlined, CloseOutlined } from "@ant-design/icons"; // ✅ Ant Design Icons
 
 const links = [
   { name: "Home", url: "/" },
@@ -25,16 +26,21 @@ const SearchBar = () => {
   );
 
   return (
-    <div className="relative">
+    <div className="relative inline-block">
       {/* Toggle icon */}
       <button
         onClick={() => setOpen((prev) => !prev)}
-        className="p-2 rounded-full hover:bg-gray-200 transition"
+        className="p-2 rounded-full hover:bg-white/10 transition"
         aria-label="Toggle search"
       >
-        {open ? <X className="w-5 h-5" /> : <Search className="w-5 h-5" />}
+        {open ? (
+          <CloseOutlined style={{ fontSize: 20, color: "#fff" }} />
+        ) : (
+          <SearchOutlined style={{ fontSize: 20, color: "#fff" }} />
+        )}
       </button>
 
+      {/* Search dropdown */}
       <AnimatePresence>
         {open && (
           <motion.div
@@ -44,6 +50,7 @@ const SearchBar = () => {
             transition={{ duration: 0.2 }}
             className="absolute right-0 mt-2 w-72 bg-white shadow-lg rounded-lg p-4 z-50"
           >
+            {/* Input */}
             <input
               type="text"
               value={query}
@@ -53,6 +60,7 @@ const SearchBar = () => {
               autoFocus
             />
 
+            {/* Results */}
             <ul className="mt-3 max-h-60 overflow-y-auto">
               {filteredLinks.length > 0 ? (
                 filteredLinks.map((link) => (
@@ -79,4 +87,3 @@ const SearchBar = () => {
 };
 
 export default SearchBar;
-
