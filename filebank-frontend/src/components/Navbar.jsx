@@ -44,7 +44,7 @@ import {
 
 
 // end
-
+import SL from './SearchLink';
 import ShinyText from './ShinyText';
 import { FaUserCircle } from "react-icons/fa";
 import { GoogleLogin, googleLogout } from '@react-oauth/google';
@@ -262,6 +262,7 @@ export default function Navbar() {
   {/* Avatar and user dropdown on the right */}
   <div className="absolute right-5 top-3 flex items-center space-x-4 gap-3">
   {/* Notification Icon with Badge */}
+    <SL/>
   <Badge
   count={notifications > 0 ? (
     <span
