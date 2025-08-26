@@ -258,11 +258,11 @@ export default function Navbar() {
   <div className="hidden md:flex flex-1 justify-center">
     <Menu mode="horizontal" items={mainMenuItems} className="bg-[#202124] google-menu" />
   </div>
-
+<SearchBar />
   {/* Avatar and user dropdown on the right */}
   <div className="absolute right-5 top-3 flex items-center space-x-4 gap-3">
   {/* Notification Icon with Badge */}
-    <SearchBar />
+    
   <Badge
   count={notifications > 0 ? (
     <span
