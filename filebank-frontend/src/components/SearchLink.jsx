@@ -5,9 +5,9 @@ import { Search, X } from "lucide-react";
 const links = [
   { name: "Home", url: "/" },
   { name: "About Us", url: "/about" },
-  { name: "Services", url: "/services" },
-  { name: "Pricing", url: "/pricing" },
-  { name: "Contact", url: "/contact" },
+  { name: "AI assistant", url: "/full-screen-ai" },
+  { name: "Pricing", url: "/change-plan" },
+  { name: "Files", url: "/contact" },
   { name: "Blog", url: "/blog" },
   { name: "Dashboard", url: "/dashboard" },
 ];
