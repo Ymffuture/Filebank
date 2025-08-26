@@ -48,7 +48,7 @@ const SearchBar = () => {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
             transition={{ duration: 0.2 }}
-            className="absolute left-0 mt-2 w-72 bg-[#202124] rounded-lg p-2 z-50"
+            className="absolute right-0 mt-2 w-72 bg-[#202124] rounded-lg p-2 z-50"
           >
             {/* Input */}
             <input
