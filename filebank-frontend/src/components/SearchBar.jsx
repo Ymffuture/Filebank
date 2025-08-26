@@ -26,7 +26,7 @@ const SearchBar = () => {
   );
 
   return (
-    <div className="search absolute">
+    <div className="search absolute left-0">
       {/* Toggle icon */}
       <button
         onClick={() => setOpen((prev) => !prev)}
