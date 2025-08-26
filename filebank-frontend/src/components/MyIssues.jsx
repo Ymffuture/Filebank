@@ -2,9 +2,9 @@ import React, { useState } from "react";
 import { Card, List, Button, Empty, Typography } from "antd";
 import { HelpCircle, MessageCircle, AlertTriangle } from "lucide-react";
 import { motion } from "framer-motion";
-import search from './SearchLink' ;
+import search from './SearchBar' ;
 const { Paragraph } = Typography;
-
+import nav from './Navbar'
 const MyIssues = () => {
   const [issues] = useState([
     { id: 1, title: "Unable to log in", explanation: "Cannot access your account using your credentials." },
@@ -82,6 +82,9 @@ const MyIssues = () => {
   };
 
   return (
+    <>
+    <nav/>
+    
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
@@ -126,6 +129,7 @@ const MyIssues = () => {
       </Card>
       <search />
     </motion.div>
+    </>
   );
 };
 
