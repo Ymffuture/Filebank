@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Card, List, Button, Empty, Typography } from "antd";
 import { HelpCircle, MessageCircle, AlertTriangle } from "lucide-react";
 import { motion } from "framer-motion";
-
+import search from './SearchLink' ;
 const { Paragraph } = Typography;
 
 const MyIssues = () => {
@@ -124,6 +124,7 @@ const MyIssues = () => {
           </Button>
         </div>
       </Card>
+      <search />
     </motion.div>
   );
 };
