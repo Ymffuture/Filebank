@@ -36,7 +36,7 @@ const SearchBar = () => {
         {open ? (
           <CloseOutlined style={{ fontSize: 20, color: "#fff" }} />
         ) : (
-          <SearchOutlined style={{ fontSize: 20, color: "#fff" }} />
+          <SearchOutlined style={{ fontSize: 26, color: "#fff" }} />
         )}
       </button>
 
@@ -48,7 +48,7 @@ const SearchBar = () => {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
             transition={{ duration: 0.2 }}
-            className="absolute right-0 mt-2 w-72 bg-[#202124] rounded-lg p-4 z-50"
+            className="absolute left-0 mt-2 w-72 bg-[#202124] rounded-lg p-2 z-50"
           >
             {/* Input */}
             <input
@@ -61,13 +61,13 @@ const SearchBar = () => {
             />
 
             {/* Results */}
-            <ul className="mt-3 max-h-60 overflow-y-auto">
+            <ul className="mt-3 max-h-60 overflow-y-auto text-white">
               {filteredLinks.length > 0 ? (
                 filteredLinks.map((link) => (
                   <li key={link.url}>
                     <a
                       href={link.url}
-                      className="block px-8 py-2 rounded-md hover:bg-blue-50 transition"
+                      className="block px-8 py-2 rounded-md hover:bg-blue-50 transition text-gray-400"
                     >
                       {link.name}
                     </a>
