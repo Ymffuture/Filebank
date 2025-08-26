@@ -91,7 +91,7 @@ const SearchBar = () => {
               }}
               onKeyDown={(e) => e.key === "Enter" && handleAIQuery()}
               placeholder="Smart navigation..."
-              className="w-full border rounded-md focus:outline-none focus:ring-2 focus:ring-red-500"
+              className="w-full border rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500"
               autoFocus
             />
 
