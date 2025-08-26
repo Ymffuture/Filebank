@@ -301,7 +301,7 @@ export default function Navbar() {
 </Dropdown>
 </div>
 
-    <SearchBar />
+    <SearchBar className='absolute right-0' />
   </div>
 
   
