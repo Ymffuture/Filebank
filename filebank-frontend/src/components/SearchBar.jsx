@@ -1,8 +1,8 @@
-// src/components/SearchBar.jsx
-import React, { useState, useMemo, useEffect } from "react";
+import React, { useState, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Search, X } from "lucide-react";
-import api from '../api/apiFile';
+import { Search, X, Loader2 } from "lucide-react";
+import api from "../api/fileApi"; // your axios/fetch wrapper
+
 const links = [
   { name: "Home", url: "/" },
   { name: "About Us", url: "/about-us" },
@@ -35,30 +35,20 @@ const SearchBar = () => {
     [query]
   );
 
-  // 🔹 Call AI only if no results
-  useEffect(() => {
-    const fetchAI = async () => {
-      if (query && filteredLinks.length === 0) {
-        setLoading(true);
-        try {
-          // Replace with your backend or AI API call
-          const res = await api.get(`/api?q=${encodeURIComponent(query)}`);
-          const data = await res.json();
-          setAiResults(data.results || []);
-        } catch (err) {
-          console.error("AI search failed:", err);
-          setAiResults([]);
-        } finally {
-          setLoading(false);
-        }
-      } else {
-        setAiResults([]);
-      }
-    };
-
-    const delayDebounce = setTimeout(fetchAI, 600); // debounce
-    return () => clearTimeout(delayDebounce);
-  }, [query, filteredLinks]);
+  const handleAIQuery = async () => {
+    if (!query) return;
+    setLoading(true);
+    setAiResults([]);
+    try {
+      const res = await api.post("/chat", { query }); // returns array of {name, url}
+      setAiResults(res.data || []);
+    } catch (err) {
+      console.error(err);
+      setAiResults([{ name: "Error fetching AI results", url: "#" }]);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <div className="search absolute right-[25%]">
@@ -92,54 +82,61 @@ const SearchBar = () => {
             transition={{ duration: 0.2 }}
             className="absolute right-0 mt-2 w-70 bg-[whitesmoke] shadow rounded-lg p-3 z-50"
           >
-            {/* Input */}
             <input
               type="text"
               value={query}
-              onChange={(e) => setQuery(e.target.value)}
-              placeholder="Smart navigation... "
-              className="w-full border rounded-md focus:outline-none focus:ring-2 focus:ring-red-500 p-2"
+              onChange={(e) => {
+                setQuery(e.target.value);
+                setAiResults([]);
+              }}
+              onKeyDown={(e) => e.key === "Enter" && handleAIQuery()}
+              placeholder="Smart navigation..."
+              className="w-full border rounded-md focus:outline-none focus:ring-2 focus:ring-red-500"
               autoFocus
             />
 
-            {/* Results */}
-            <ul className="mt-3 max-h-60 overflow-y-auto">
-              {filteredLinks.length > 0 ? (
-                filteredLinks.map((link) => (
-                  <li key={link.url}>
-                    <a
-                      style={{ color: "#202124" }}
-                      href={link.url}
-                      className="block px-8 py-2 rounded-md hover:bg-blue-50 transition text-gray-700"
-                    >
-                      {link.name}
-                    </a>
-                  </li>
-                ))
-              ) : loading ? (
-                <li className="px-3 py-2 text-gray-500 text-sm">Searching AI...</li>
-              ) : aiResults.length > 0 ? (
-                <>
-                  <li className="px-3 py-2 text-xs text-gray-400">AI Suggestions:</li>
-                  {aiResults.map((item, idx) => (
-                    <li key={idx}>
+            <ul className="mt-3 max-h-60 overflow-y-auto text-white">
+              {filteredLinks.length > 0
+                ? filteredLinks.map((link) => (
+                    <li key={link.url}>
                       <a
                         style={{ color: "#202124" }}
-                        href={item.url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="block px-8 py-2 rounded-md hover:bg-green-50 transition text-gray-700"
+                        href={link.url}
+                        className="block px-8 py-2 rounded-md hover:bg-blue-50 transition text-gray-400"
                       >
-                        {item.name}
+                        {link.name}
                       </a>
                     </li>
-                  ))}
-                </>
-              ) : (
-                <li className="px-3 py-2 text-gray-500 text-sm">
-                  No results for <strong>{query}</strong>
-                </li>
-              )}
+                  ))
+                : loading
+                ? (
+                    <li className="px-3 py-2 text-gray-500 flex items-center gap-2">
+                      <Loader2 className="animate-spin w-4 h-4" /> Searching AI...
+                    </li>
+                  )
+                : aiResults.length > 0
+                ? aiResults.map((link) => (
+                    <li key={link.url}>
+                      <a
+                        style={{ color: "#202124" }}
+                        href={link.url}
+                        className="block px-8 py-2 rounded-md hover:bg-blue-50 transition text-gray-400"
+                      >
+                        {link.name}
+                      </a>
+                    </li>
+                  ))
+                : (
+                    <li className="px-3 py-2 text-gray-500 text-sm flex items-center gap-2">
+                      No results for <strong>{query}</strong>{" "}
+                      <button
+                        onClick={handleAIQuery}
+                        className="ml-2 text-blue-500 hover:underline"
+                      >
+                        Ask FamaAI
+                      </button>
+                    </li>
+                  )}
             </ul>
           </motion.div>
         )}
