@@ -9,12 +9,12 @@
   "orientation": "portrait-primary",
   "icons": [
     {
-      "src": "/Loogo.png",
+      "src": "/logodark.jpg",
       "sizes": "192x192",
       "type": "image/png"
     },
     {
-      "src": "/Loogo.png",
+      "src": "/file logo.jpg",
       "sizes": "512x512",
       "type": "image/png"
     }
