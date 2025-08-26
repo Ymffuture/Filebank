@@ -35,30 +35,20 @@ const SearchBar = () => {
     [query]
   );
 
-  const handleAIQuery = async () => {
-  if (!query) return;
-  setLoading(true);
-  setAiResults([]);
-  try {
-    // Call backend /search endpoint
-    const res = await api.post("/search", { query });
-
-    // Ensure response is an array
-    const results = Array.isArray(res.data) ? res.data : [];
-
-    // Optional: remove duplicates, keep first 10
-    const uniqueResults = results
-      .filter((v, i, a) => a.findIndex(r => r.url === v.url) === i)
-      .slice(0, 10);
-
-    setAiResults(uniqueResults);
-  } catch (err) {
-    console.error(err);
-    setAiResults([{ name: "Error fetching AI results", url: "#" }]);
-  } finally {
-    setLoading(false);
-  }
-};
+const handleAIQuery = async () => {
+    if (!query) return;
+    setLoading(true);
+    setAiResults([]);
+    try {
+      const res = await api.post("/search", { query }); // returns array of {name, url}
+      setAiResults(res.data || []);
+    } catch (err) {
+      console.error(err);
+      setAiResults([{ name: "AI: Oops something went wrong. ", url: "#" }]);
+    } finally {
+      setLoading(false);
+    }
+  };
 
 
   return (
