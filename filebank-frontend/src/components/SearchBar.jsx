@@ -102,7 +102,7 @@ const SearchBar = () => {
                       <a
                         style={{ color: "#202124" }}
                         href={link.url}
-                        className="block px-8 py-2 rounded-md hover:bg-blue-50 transition text-gray-400"
+                        className="block px-3 py-2 rounded-md hover:bg-blue-50 transition text-gray-400"
                       >
                         {link.name}
                       </a>
