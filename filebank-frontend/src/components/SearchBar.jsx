@@ -1,7 +1,8 @@
 // src/components/SearchBar.jsx
 import React, { useState, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { SearchOutlined, CloseOutlined } from "@ant-design/icons"; // ✅ Ant Design Icons
+import { Search, X } from "lucide-react";
+ 
 
 const links = [
   { name: "Home", url: "/" },
@@ -34,9 +35,9 @@ const SearchBar = () => {
         aria-label="Toggle search"
       >
         {open ? (
-          <CloseOutlined style={{ fontSize: 20, color: "#fff" }} />
+          <X style={{ fontSize: 20, color: "#fff" }} />
         ) : (
-          <SearchOutlined style={{ fontSize: 26, color: "#fff" }} />
+          <Search style={{ fontSize: 26, color: "#9CA3AF" }} />
         )}
       </button>
 
@@ -48,7 +49,7 @@ const SearchBar = () => {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
             transition={{ duration: 0.2 }}
-            className="absolute right-0 mt-2 w-72 bg-[#202124] rounded-lg p-2 z-50"
+            className="absolute right-0 mt-2 w-72 bg-[#fff] rounded-lg p-2 z-50"
           >
             {/* Input */}
             <input
@@ -66,6 +67,7 @@ const SearchBar = () => {
                 filteredLinks.map((link) => (
                   <li key={link.url}>
                     <a
+                      style={{ color: "#202124" }}
                       href={link.url}
                       className="block px-8 py-2 rounded-md hover:bg-blue-50 transition text-gray-400"
                     >
