@@ -263,7 +263,7 @@ const usernamebottom = user?.name || user?.displayName || "Guest";
     zIndex: 1,
     color: '#fff', // white text for dark background
   }}>
-        <Title level={3} style={{ margin: 0, color: '#0B3D91' }}>Famacloud</Title>
+        <Title level={3} style={{ margin: 0, color: '#9CA3AF' }}>Famacloud</Title>
         {user ? (
           <Space>
   <Badge count={notifications} size="small" offset={[-4, 3]}>
