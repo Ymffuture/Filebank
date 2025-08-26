@@ -132,9 +132,9 @@ const handleAIQuery = async () => {
                       No results for <strong>{query}</strong>{" "}
                       <button
                         onClick={handleAIQuery}
-                        className="ml-2 text-blue-500 hover:underline"
+                        className="ml-2 text-blue-500 hover:underline "
                       >
-                        Ask FamaAI
+                        Go smart
                       </button>
                     </li>
                   )}
