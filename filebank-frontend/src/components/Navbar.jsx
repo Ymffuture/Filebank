@@ -52,7 +52,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { MdOutlineFeedback } from 'react-icons/md';
 import api from '../api/fileApi';
 import NotificationsModal from './NotificationsModal';
-import logo from '/Loogo.png';
+import logo from '/filelogo.jpg';
 import { useSnackbar } from 'notistack';
 import { FaLock } from 'react-icons/fa';
 import { ShieldCheck, CheckCircle, Bell, Crown, BadgeCheck} from 'lucide-react';
@@ -227,7 +227,7 @@ export default function Navbar() {
       }
     />
     <Link to="/" className="flex items-center relative right-[20%] font-inter">
-    {/* <img src={logo} alt="Famacloud Logo" className="w-16 h-16 md:w-16 md:h-16 scale-60" #032B44/>*/} 
+  <img src={logo} alt="Famacloud Logo" className="w-16 h-16 md:w-16 md:h-16 scale-60"/>
       
   <span className="text-lg flex">
   <span className="text-gray-400 font-bold "></span>
