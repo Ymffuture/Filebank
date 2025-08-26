@@ -1,4 +1,6 @@
 import React, { useState, useMemo } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { Search, X } from "lucide-react";
 
 const links = [
   { name: "Home", url: "/" },
@@ -10,10 +12,10 @@ const links = [
   { name: "Dashboard", url: "/dashboard" },
 ];
 
-export default function SearchLinks() {
+export default function SearchBar() {
+  const [open, setOpen] = useState(false);
   const [query, setQuery] = useState("");
 
-  // Filter links based on search
   const filteredLinks = useMemo(() => {
     return links.filter((link) =>
       link.name.toLowerCase().includes(query.toLowerCase())
@@ -21,19 +23,60 @@ export default function SearchLinks() {
   }, [query]);
 
   return (
-    <div className="min-h-screen bg-gray-50 flex flex-col items-center p-6">
-      <h1 className="text-2xl font-bold mb-4">🔎 Live Search Links</h1>
+    <div className="relative">
+      {/* Search Icon */}
+      <button
+        onClick={() => setOpen((prev) => !prev)}
+        className="p-2 rounded-full hover:bg-gray-200 transition"
+      >
+        {open ? <X className="w-5 h-5" /> : <Search className="w-5 h-5" />}
+      </button>
 
-      {/* Search Input */}
-      <input
-        type="text"
-        value={query}
-        onChange={(e) => setQuery(e.target.value)}
-        placeholder="Search links..."
-        className="w-full max-w-md p-3 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-      />
+      {/* AnimatePresence for smooth mount/unmount */}
+      <AnimatePresence>
+        {open && (
+          <motion.div
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
+            transition={{ duration: 0.2 }}
+            className="absolute right-0 mt-2 w-72 bg-white shadow-lg rounded-lg p-4 z-50"
+          >
+            {/* Input */}
+            <input
+              type="text"
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              placeholder="Search links..."
+              className="w-full p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              autoFocus
+            />
 
-      {/* Results */}
+            {/* Results */}
+            <ul className="mt-3 max-h-60 overflow-y-auto">
+              {filteredLinks.length > 0 ? (
+                filteredLinks.map((link) => (
+                  <li key={link.url}>
+                    <a
+                      href={link.url}
+                      className="block px-3 py-2 rounded-md hover:bg-blue-50 transition"
+                    >
+                      {link.name}
+                    </a>
+                  </li>
+                ))
+              ) : (
+                <p className="text-gray-500 text-sm mt-2">
+                  No results for <strong>{query}</strong>
+                </p>
+              )}
+            </ul>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
+  );
+}
       <ul className="mt-6 w-full max-w-md space-y-2">
         {filteredLinks.length > 0 ? (
           filteredLinks.map((link) => (
