@@ -6,13 +6,22 @@ import { Search, X } from "lucide-react";
 
 const links = [
   { name: "Home", url: "/" },
-  { name: "About Us", url: "/about" },
-  { name: "Files", url: "/services" },
-  { name: "AI assistant", url: "/full-screen-ai" },
-  { name: "Contact", url: "/change-plan" },
+  { name: "About Us", url: "/about-us" },
+  { name: "Files", url: "/files" },
+  { name: "AI Assistant", url: "/full-screen-ai" },
+  { name: "Change Plan", url: "/change-plan" },
   { name: "Blog", url: "/blog" },
   { name: "Dashboard", url: "/dashboard" },
+  { name: "Login", url: "/login" },
+  { name: "Register", url: "/register" },
+  { name: "Profile", url: "/profile" },
+  { name: "Settings", url: "/settings" },
+  { name: "Support", url: "/support" },
+  { name: "FAQ", url: "/faq" },
+  { name: "Terms & Conditions", url: "/terms" },
+  { name: "Privacy Policy", url: "/privacy" },
 ];
+
 
 const SearchBar = () => {
   const [open, setOpen] = useState(false);
@@ -35,9 +44,9 @@ const SearchBar = () => {
         aria-label="Toggle search"
       >
         {open ? (
-          <X style={{ fontSize: 20, color: "#fff" }} />
+          <X style={{ fontSize: 20, color: "#FF0000", background:"white", borderRadius:"50px"}} />
         ) : (
-          <Search style={{ fontSize: 26, color: "#9CA3AF" }} />
+          <Search style={{ fontSize: 30, color: "#9CA3AF" }} />
         )}
       </button>
 
@@ -49,15 +58,15 @@ const SearchBar = () => {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
             transition={{ duration: 0.2 }}
-            className="absolute right-0 mt-2 w-72 bg-[#fff] rounded-lg p-2 z-50"
+            className="absolute right-0 mt-2 w-100 bg-[whitesmoke] shadow rounded-lg p-3 z-50"
           >
             {/* Input */}
             <input
               type="text"
               value={query}
               onChange={(e) => setQuery(e.target.value)}
-              placeholder="Search links..."
-              className="w-full border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              placeholder="Smart navigation... "
+              className="w-full border rounded-md focus:outline-none focus:ring-2 focus:ring-red-500"
               autoFocus
             />
 
