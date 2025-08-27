@@ -125,8 +125,9 @@ const SearchBar = () => {
             <ul className="mt-2 max-h-60 overflow-y-auto">
               {loading ? (
                 <li className="px-3 py-2 text-blue-500 flex items-center gap-1">
-                  <Loader2 className="animate-spin w-4 h-4" /> <span className="animate-pulse text-gray-400" > AI Searching...
-                </li></span>
+             <Loader2 className="animate-spin w-4 h-4" /> <span className="animate-pulse text-gray-400"> AI Searching...
+                    </span> 
+                </li>
               ) : filteredLinks.length > 0 ? (
                 filteredLinks.map((link) => (
                   <li key={link.url}>
