@@ -45,7 +45,7 @@ const SearchBar = () => {
   setLoading(true);
   setAiResults([]);
   try {
-    const res = await api.post("/ai/chat/askme", { query }, {
+    const res = await api.post("/chat", { query }, {
       headers: { "Content-Type": "application/json" }
     });
     const results = Array.isArray(res.data)
