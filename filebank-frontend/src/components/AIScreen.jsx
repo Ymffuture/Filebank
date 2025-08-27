@@ -302,7 +302,7 @@ if (msg.type === 'error') {
               showLineNumbers={true}
               style={atomDark}
               wrapLongLines
-               customStyle={{ borderRadius: "8px", fontSize: "12px" }}     
+               customStyle={{ borderRadius: "8px", fontSize: "14px" }}     
               lineNumberStyle={{
                 color: darkMode ? '#999' : '#aaa',
                 fontSize: 12,
@@ -317,13 +317,14 @@ if (msg.type === 'error') {
               <Tooltip title="Copy code">
                 <Button
                   type="text"
+                  style={{color:'white', fontSize:'16px' }} 
                   size="small"
                   icon={<CopyOutlined />}
                   onClick={() => {
                     copy(part.trim());
                     message.success('Code copied to clipboard');
                   }}
-                  className="text-green-500 hover:border-sky-500 hover:text-sky-600 transition duration-200"
+                  className="transition duration-200"
                   aria-label="Copy code"
                 />
               </Tooltip>
@@ -333,33 +334,40 @@ if (msg.type === 'error') {
       } else {
         
         const html = highlightKeywords(part
-  // strikethrough ~~text~~
+  // Strikethrough ~~text~~
   .replace(/~~(.*?)~~/g, '<span style="text-decoration: line-through;">$1</span>')
 
-  // bold **text**
+  // Bold **text**
   .replace(/\*\*(.*?)\*\*/g, '<strong style="font-weight:600;">$1</strong>')
 
-  // italic _text_
+  // Italic _text_
   .replace(/(^|[^*])_([^_]+)_/g, '$1<em style="font-style: italic;">$2</em>')
 
-  // inline code `code`
+  // Inline code `code`
   .replace(/`([^`]+)`/g, '<code style="background:#f6f8fa;border-radius:4px;padding:2px 6px;font-size:13px;color:#c7254e;">$1</code>')
 
-  // newlines → <br/>
-  .replace(/\n/g, '<br/>')
+  // Headings
+  .replace(/####\s*(.*?)(<br\/>|$)/g, '<strong style="font-size:16px; font-weight:700; display:block; margin:6px 0;">$1</strong>$2')
+  .replace(/###\s*(.*?)(<br\/>|$)/g, '<strong style="font-size:18px; font-weight:700; display:block; margin:6px 0;">$1</strong>$2')
+  .replace(/##\s*(.*?)(<br\/>|$)/g, '<strong style="font-size:20px; font-weight:700; display:block; margin:6px 0;">$1</strong>$2')
+  .replace(/#\s*(.*?)(<br\/>|$)/g, '<strong style="font-size:22px; font-weight:700; display:block; margin:6px 0;">$1</strong>$2')
 
-  // links
+  // Bullets * → →
+  .replace(/^\s*\*\s+/gm, '→ ')
+
+  // Horizontal rule ---
+  .replace(/-{3,}/g, '<hr style="border: none; border-top: 3px solid #ddd; margin: 4px 0;" />')
+
+  // Links
   .replace(/((https?:\/\/|www\.)[^\s<]+)/g, (match) => {
     const url = match.startsWith('http') ? match : `https://${match}`;
-    return `<a href="${url}" target="_blank" rel="noopener noreferrer" class="text-sky-500 hover:underline break-all inline-flex items-center">${match}</a>`;
+    return `<a href="${url}" target="_blank" rel="noopener noreferrer" class="text-sky-500 underline break-all inline-flex items-center">${match}</a>`;
   })
 
-  // #### heading → bold (you can style however you want)
-  .replace(/####\s*(.*?)(<br\/>|$)/g, '<strong style="font-size:16px; font-weight:700; display:block; margin:6px 0;">$1</strong>$2')
-
-  // --- horizontal rule
-  .replace(/-{3,}/g, '<hr style="border: none; border-top: 1px solid #ddd; margin: 8px 0;" />')
+  // Newlines → <br/>
+  .replace(/\n/g, '<br/>')
 );
+
 
 
         return (
