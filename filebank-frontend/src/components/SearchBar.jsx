@@ -125,14 +125,15 @@ const SearchBar = () => {
             <ul className="mt-2 max-h-60 overflow-y-auto">
               {loading ? (
                 <li className="px-3 py-2 text-blue-500 flex items-center gap-1">
-                  <Loader2 className="animate-spin w-4 h-4" /> AI Searching...
-                </li>
+                  <Loader2 className="animate-spin w-4 h-4" /> <span className="animate-pulse text-gray-400" > AI Searching...
+                </li></span>
               ) : filteredLinks.length > 0 ? (
                 filteredLinks.map((link) => (
                   <li key={link.url}>
                     <a
+                      style={{color:"#202124"}} 
                       href={link.url}
-                      className="block px-3 py-2 rounded-md hover:bg-gray-100 transition text-gray-800"
+                      className="block rounded-md hover:bg-gray-100 transition"
                     >
                       {link.name}
                     </a>
@@ -142,6 +143,7 @@ const SearchBar = () => {
                 aiResults.map((link, i) => (
                   <li key={i}>
                     <a
+                      style={{color:"#202124"}} 
                       href={link.url}
                       target={link.url.startsWith("http") ? "_blank" : "_self"}
                       rel={
@@ -149,15 +151,15 @@ const SearchBar = () => {
                           ? "noopener noreferrer"
                           : undefined
                       }
-                      className="block p-2 rounded-md hover:bg-gray-100 transition text-gray-800"
+                      className="block p-2 rounded-md hover:bg-gray-100 transition"
                     >
                       {link.name}
                     </a>
                   </li>
                 ))
               ) : (
-                <li className="px-4 py-1 text-gray-500 text-sm">
-                  No results for <strong>{query}</strong>
+                <li className="px-4 py-3 text-gray-500 text-sm">
+                  No results for <strong className="text-red-600">'{query}'</strong>
                 </li>
               )}
             </ul>
