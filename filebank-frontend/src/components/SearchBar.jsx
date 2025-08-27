@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Search, X, Loader2 } from "lucide-react";
 import api from "../api/fileApi"; // your axios/fetch wrapper
@@ -35,21 +35,29 @@ const SearchBar = () => {
     [query]
   );
 
-const handleAIQuery = async () => {
+  const handleAIQuery = async () => {
     if (!query) return;
     setLoading(true);
     setAiResults([]);
     try {
-      const res = await api.post("/chat/askme", { query }); // returns array of {name, url}
+      const res = await api.post("/chat/askme", { query });
       setAiResults(res.data || []);
     } catch (err) {
       console.error(err);
-      setAiResults([{ name: "AI: Oops something went wrong. ", url: "#" }]);
+      setAiResults([{ name: "AI: Oops something went wrong.", url: "#" }]);
     } finally {
       setLoading(false);
     }
   };
 
+  useEffect(() => {
+    if (filteredLinks.length === 0 && query.length > 2) {
+      const timer = setTimeout(handleAIQuery, 500);
+      return () => clearTimeout(timer);
+    } else {
+      setAiResults([]);
+    }
+  }, [query, filteredLinks]);
 
   return (
     <div className="search absolute right-[25%]">
@@ -81,64 +89,52 @@ const handleAIQuery = async () => {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
             transition={{ duration: 0.2 }}
-            className="absolute right-16 mt-2 w-75 bg-[whitesmoke] shadow-lg rounded-lg p-3 z-50"
+            className="absolute right-1 mt-2 w-80 bg-white shadow-lg rounded-lg p-3 z-50"
           >
             <input
               type="text"
               value={query}
-              onChange={(e) => {
-                setQuery(e.target.value);
-                setAiResults([]);
-              }}
+              onChange={(e) => setQuery(e.target.value)}
               onKeyDown={(e) => e.key === "Enter" && handleAIQuery()}
               placeholder="Smart navigation..."
-              className="w-full border rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500"
+              className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500"
               autoFocus
             />
 
-            <ul className="mt-3 max-h-60 overflow-y-auto text-white">
-              {filteredLinks.length > 0
-                ? filteredLinks.map((link) => (
-                    <li key={link.url}>
-                      <a
-                        style={{ color: "#202124" }}
-                        href={link.url}
-                        className="block px-3 py-2 rounded-md hover:bg-blue-50 transition text-gray-400"
-                      >
-                        {link.name}
-                      </a>
-                    </li>
-                  ))
-                : loading
-                ? (
-                    <li className="px-3 py-2 text-gray-500 flex items-center gap-2">
-                      <Loader2 className="animate-spin w-4 h-4" /> Searching AI...
-                    </li>
-                  )
-                : aiResults.length > 0
-                ? aiResults.map((link) => (
-                    <li key={link.url}>
-                      <a
-                        style={{ color: "#202124" }}
-                        href={link.url}
-                        className="block px-8 py-2 rounded-md hover:bg-blue-50 transition text-gray-400"
-                      >
-                        {link.name}
-                      </a>
-                    </li>
-                  ))
-                : (
-                    <li className="px-3 py-2 text-gray-500 text-sm flex items-center gap-3">
-                      No results for <strong>{query}</strong>{" "}
-                      <button
-                        onClick={handleAIQuery}
-                        style={{color:'royalblue'}} 
-                        className="ml-2 text-blue-500 hover:underline "
-                      >
-                        Go smart
-                      </button>
-                    </li>
-                  )}
+            <ul className="mt-3 max-h-60 overflow-y-auto">
+              {loading ? (
+                <li className="px-3 py-2 text-gray-500 flex items-center gap-2">
+                  <Loader2 className="animate-spin w-4 h-4" /> Searching...
+                </li>
+              ) : filteredLinks.length > 0 ? (
+                filteredLinks.map((link) => (
+                  <li key={link.url}>
+                    <a
+                      href={link.url}
+                      className="block px-3 py-2 rounded-md hover:bg-gray-100 transition text-gray-800"
+                    >
+                      {link.name}
+                    </a>
+                  </li>
+                ))
+              ) : aiResults.length > 0 ? (
+                aiResults.map((link) => (
+                  <li key={link.url}>
+                    <a
+                      href={link.url}
+                      target={link.url.startsWith("http") ? "_blank" : "_self"}
+                      rel={link.url.startsWith("http") ? "noopener noreferrer" : ""}
+                      className="block px-3 py-2 rounded-md hover:bg-gray-100 transition text-gray-800"
+                    >
+                      {link.name}
+                    </a>
+                  </li>
+                ))
+              ) : (
+                <li className="px-3 py-2 text-gray-500 text-sm">
+                  No results for <strong>{query}</strong>
+                </li>
+              )}
             </ul>
           </motion.div>
         )}
@@ -148,4 +144,3 @@ const handleAIQuery = async () => {
 };
 
 export default SearchBar;
-
