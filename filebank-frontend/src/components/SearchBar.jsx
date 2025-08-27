@@ -40,7 +40,7 @@ const handleAIQuery = async () => {
     setLoading(true);
     setAiResults([]);
     try {
-      const res = await api.post("/search", { query }); // returns array of {name, url}
+      const res = await api.post("/chat", { query }); // returns array of {name, url}
       setAiResults(res.data || []);
     } catch (err) {
       console.error(err);
