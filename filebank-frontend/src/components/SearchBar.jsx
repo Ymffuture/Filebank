@@ -101,7 +101,7 @@ const SearchBar = () => {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
             transition={{ duration: 0.2 }}
-            className="absolute right-1 mt-2 w-80 bg-white shadow-lg rounded-lg p-3 z-50"
+            className="absolute right-1 mt-4 w-75 bg-white shadow-lg rounded-lg p-2 z-50"
           >
             {/* Input */}
             <input
@@ -110,15 +110,15 @@ const SearchBar = () => {
               onChange={(e) => setQuery(e.target.value)}
               onKeyDown={(e) => e.key === "Enter" && handleAIQuery()}
               placeholder="Smart navigation..."
-              className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500"
+              className="w-full px-2 py-1 border rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500"
               autoFocus
             />
 
             {/* Results */}
-            <ul className="mt-3 max-h-60 overflow-y-auto">
+            <ul className="mt-2 max-h-60 overflow-y-auto">
               {loading ? (
-                <li className="px-3 py-2 text-gray-500 flex items-center gap-2">
-                  <Loader2 className="animate-spin w-4 h-4" /> Searching...
+                <li className="px-3 py-2 text-blue-500 flex items-center gap-1">
+                  <Loader2 className="animate-spin w-4 h-4" /> AI Searching...
                 </li>
               ) : filteredLinks.length > 0 ? (
                 filteredLinks.map((link) => (
@@ -142,14 +142,14 @@ const SearchBar = () => {
                           ? "noopener noreferrer"
                           : undefined
                       }
-                      className="block px-3 py-2 rounded-md hover:bg-gray-100 transition text-gray-800"
+                      className="block p-2 rounded-md hover:bg-gray-100 transition text-gray-800"
                     >
                       {link.name}
                     </a>
                   </li>
                 ))
               ) : (
-                <li className="px-3 py-2 text-gray-500 text-sm">
+                <li className="px-4 py-1 text-gray-500 text-sm">
                   No results for <strong>{query}</strong>
                 </li>
               )}
