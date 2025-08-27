@@ -42,7 +42,7 @@ const SearchBar = () => {
     setLoading(true);
     setAiResults([]);
     try {
-      const res = await api.post("/chat/askme", { query });
+      const res = await api.post("/ai/chat/askme", { query });
 
       // 🔑 Normalize response → convert JSON to { name, url }
       const results = Array.isArray(res.data)
