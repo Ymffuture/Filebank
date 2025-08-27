@@ -331,16 +331,36 @@ if (msg.type === 'error') {
           </div>
         );
       } else {
+        
         const html = highlightKeywords(part
-          .replace(/~~(.*?)~~/g, '<span style="text-decoration: line-through;">$1</span>')
-          .replace(/\*\*(.*?)\*\*/g, '<strong style="font-weight:600;">$1</strong>')
-          .replace(/(^|[^*])_([^_]+)_/g, '$1<em style="font-style: italic;">$2</em>')
-          .replace(/`([^`]+)`/g, '<code style="background:#f6f8fa;border-radius:4px;padding:2px 6px;font-size:13px;color:#c7254e;">$1</code>')
-          .replace(/\n/g, '<br/>')
-          .replace(/((https?:\/\/|www\.)[^\s<]+)/g, (match) => {
-            const url = match.startsWith('http') ? match : `https://${match}`;
-            return `<a href="${url}" target="_blank" rel="noopener noreferrer" class="text-sky-500 hover:underline break-all inline-flex items-center">${match}</a>`;
-          }));
+  // strikethrough ~~text~~
+  .replace(/~~(.*?)~~/g, '<span style="text-decoration: line-through;">$1</span>')
+
+  // bold **text**
+  .replace(/\*\*(.*?)\*\*/g, '<strong style="font-weight:600;">$1</strong>')
+
+  // italic _text_
+  .replace(/(^|[^*])_([^_]+)_/g, '$1<em style="font-style: italic;">$2</em>')
+
+  // inline code `code`
+  .replace(/`([^`]+)`/g, '<code style="background:#f6f8fa;border-radius:4px;padding:2px 6px;font-size:13px;color:#c7254e;">$1</code>')
+
+  // newlines → <br/>
+  .replace(/\n/g, '<br/>')
+
+  // links
+  .replace(/((https?:\/\/|www\.)[^\s<]+)/g, (match) => {
+    const url = match.startsWith('http') ? match : `https://${match}`;
+    return `<a href="${url}" target="_blank" rel="noopener noreferrer" class="text-sky-500 hover:underline break-all inline-flex items-center">${match}</a>`;
+  })
+
+  // #### heading → bold (you can style however you want)
+  .replace(/####\s*(.*?)(<br\/>|$)/g, '<strong style="font-size:16px; font-weight:700; display:block; margin:6px 0;">$1</strong>$2')
+
+  // --- horizontal rule
+  .replace(/-{3,}/g, '<hr style="border: none; border-top: 1px solid #ddd; margin: 8px 0;" />')
+);
+
 
         return (
           <div
