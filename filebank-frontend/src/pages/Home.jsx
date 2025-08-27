@@ -25,7 +25,7 @@ export default function Home() {
       <Navbar />
       <main className="mx-auto space-y-6">
         
-        {/* 🔥 Smart Hero Section with Animation */}
+        {/* 🔥 Smart Hero Section with Animation
         <motion.section
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
@@ -58,7 +58,7 @@ export default function Home() {
             />
           </div>
         </motion.section>
-
+*/} 
         <section>
           <FileUpload onUpload={() => setRefresh((r) => r + 1)} userRole={userRole} />
         </section>
