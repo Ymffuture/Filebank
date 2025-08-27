@@ -40,7 +40,7 @@ const handleAIQuery = async () => {
     setLoading(true);
     setAiResults([]);
     try {
-      const res = await api.post("/chat", { query }); // returns array of {name, url}
+      const res = await api.post("/search", { query }); // returns array of {name, url}
       setAiResults(res.data || []);
     } catch (err) {
       console.error(err);
@@ -81,7 +81,7 @@ const handleAIQuery = async () => {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
             transition={{ duration: 0.2 }}
-            className="absolute right-8 mt-2 w-70 bg-[whitesmoke] shadow rounded-lg p-3 z-50"
+            className="absolute right-8 mt-2 w-75 bg-[whitesmoke] shadow-lg rounded-lg p-3 z-50"
           >
             <input
               type="text"
@@ -128,10 +128,11 @@ const handleAIQuery = async () => {
                     </li>
                   ))
                 : (
-                    <li className="px-3 py-2 text-gray-500 text-sm flex items-center gap-2">
+                    <li className="px-3 py-2 text-gray-500 text-sm flex items-center gap-3">
                       No results for <strong>{query}</strong>{" "}
                       <button
                         onClick={handleAIQuery}
+                        style={{color:'royalblue'}} 
                         className="ml-2 text-blue-500 hover:underline "
                       >
                         Go smart
