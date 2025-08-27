@@ -81,7 +81,7 @@ const handleAIQuery = async () => {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
             transition={{ duration: 0.2 }}
-            className="absolute right-8 mt-2 w-75 bg-[whitesmoke] shadow-lg rounded-lg p-3 z-50"
+            className="absolute right-16 mt-2 w-75 bg-[whitesmoke] shadow-lg rounded-lg p-3 z-50"
           >
             <input
               type="text"
