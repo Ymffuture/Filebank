@@ -316,14 +316,14 @@ if (msg.type === 'error') {
             <div className="absolute top-2 right-2 z-10">
               <Tooltip title="Copy code">
                 <Button
-                  type="default"
+                  type="text"
                   size="small"
                   icon={<CopyOutlined />}
                   onClick={() => {
                     copy(part.trim());
                     message.success('Code copied to clipboard');
                   }}
-                  className="bg-white dark:bg-gray-800 text-gray-800 dark:text-white border border-gray-300 dark:border-gray-600 hover:border-sky-500 hover:text-sky-600 transition duration-200"
+                  className="text-green-500 hover:border-sky-500 hover:text-sky-600 transition duration-200"
                   aria-label="Copy code"
                 />
               </Tooltip>
