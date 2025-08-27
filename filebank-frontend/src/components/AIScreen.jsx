@@ -334,41 +334,22 @@ if (msg.type === 'error') {
       } else {
         
         const html = highlightKeywords(part
-  // Strikethrough ~~text~~
   .replace(/~~(.*?)~~/g, '<span style="text-decoration: line-through;">$1</span>')
-
-  // Bold **text**
   .replace(/\*\*(.*?)\*\*/g, '<strong style="font-weight:600;">$1</strong>')
-
-  // Italic _text_
   .replace(/(^|[^*])_([^_]+)_/g, '$1<em style="font-style: italic;">$2</em>')
-
-  // Inline code `code`
   .replace(/`([^`]+)`/g, '<code style="background:#f6f8fa;border-radius:4px;padding:2px 6px;font-size:13px;color:#c7254e;">$1</code>')
-
-  // Headings
-  .replace(/####\s*(.*?)(<br\/>|$)/g, '<strong style="font-size:16px; font-weight:700; display:block; margin:6px 0;">$1</strong>$2')
-  .replace(/###\s*(.*?)(<br\/>|$)/g, '<strong style="font-size:18px; font-weight:700; display:block; margin:6px 0;">$1</strong>$2')
-  .replace(/##\s*(.*?)(<br\/>|$)/g, '<strong style="font-size:20px; font-weight:700; display:block; margin:6px 0;">$1</strong>$2')
-  .replace(/#\s*(.*?)(<br\/>|$)/g, '<strong style="font-size:22px; font-weight:700; display:block; margin:6px 0;">$1</strong>$2')
-
-  // Bullets * → →
+  .replace(/^####\s*(.*)$/gm, '<strong style="font-size:16px; font-weight:700; display:block; margin:6px 0;">$1</strong>')
+  .replace(/^###\s*(.*)$/gm, '<strong style="font-size:18px; font-weight:700; display:block; margin:6px 0;">$1</strong>')
+  .replace(/^##\s*(.*)$/gm, '<strong style="font-size:20px; font-weight:700; display:block; margin:6px 0;">$1</strong>')
+  .replace(/^#\s*(.*)$/gm, '<strong style="font-size:22px; font-weight:700; display:block; margin:6px 0;">$1</strong>')
   .replace(/^\s*\*\s+/gm, '→ ')
-
-  // Horizontal rule ---
   .replace(/-{3,}/g, '<hr style="border: none; border-top: 3px solid #ddd; margin: 4px 0;" />')
-
-  // Links
   .replace(/((https?:\/\/|www\.)[^\s<]+)/g, (match) => {
     const url = match.startsWith('http') ? match : `https://${match}`;
-    return `<a href="${url}" target="_blank" rel="noopener noreferrer" class="text-sky-500 underline break-all inline-flex items-center">${match}</a>`;
+    return `<a href="${url}" target="_blank" rel="noopener noreferrer" class="text-sky-500 text-decoration: underline dashed break-all inline-flex items-center">${match}</a>`;
   })
-
-  // Newlines → <br/>
   .replace(/\n/g, '<br/>')
 );
-
-
 
         return (
           <div
