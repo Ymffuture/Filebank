@@ -138,13 +138,7 @@ export default function FileUpload({ onUpload, currentUserFileCount = 0, userRol
                 loop={false}
                 style={{ width: 300, height: 300 }}
               />
-            </div>: !uploading? <div className="flex justify-center mb-4">
-              <Lottie
-                animationData={pdfAnim}
-                
-                style={{ width: 300, height: 300 }}
-              />
-            </div>:
+            </div>: !uploading? null:
                  <Stack
                  randomRotation={true}
                 sensitivity={50}
