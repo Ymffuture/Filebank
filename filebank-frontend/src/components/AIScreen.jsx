@@ -3,14 +3,14 @@ import { Input, Button, Space, Switch, Tooltip, Typography, message, Modal } fro
 import { Input as AntInput } from 'antd';
 import { CopyOutlined, BulbOutlined } from '@ant-design/icons';
 import api from '../api/fileApi';
+
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { atomDark } from "react-syntax-highlighter/dist/esm/styles/prism";
+import js from "react-syntax-highlighter/dist/esm/languages/prism/javascript";
+import css from "react-syntax-highlighter/dist/esm/languages/prism/css";
+import python from "react-syntax-highlighter/dist/esm/languages/prism/python";
+import html from "react-syntax-highlighter/dist/esm/languages/prism/markup";
 
-import js from 'react-syntax-highlighter/dist/esm/languages/hljs/javascript';
-import html from 'react-syntax-highlighter/dist/esm/languages/hljs/xml';  // for HTML
-import css from 'react-syntax-highlighter/dist/esm/languages/hljs/css';
-import python from 'react-syntax-highlighter/dist/esm/languages/hljs/python';
-import { dracula, github } from 'react-syntax-highlighter/dist/esm/styles/hljs';
 import copy from 'copy-to-clipboard';
 import { SendHorizonal, Mic, ArrowUp } from 'lucide-react';
 import { Link } from 'react-router-dom';
