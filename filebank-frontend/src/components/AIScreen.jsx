@@ -25,13 +25,6 @@ const { Text } = Typography;
 
 import { DashboardOutlined, DeleteOutlined, PictureOutlined } from '@ant-design/icons';
 
-
-
-SyntaxHighlighter.registerLanguage('javascript', js);
-SyntaxHighlighter.registerLanguage('html', html);
-SyntaxHighlighter.registerLanguage('css', css);
-SyntaxHighlighter.registerLanguage('python', python);
-
 export default function AIScreen() {
   const [messages, setMessages] = useState([
     { from: 'bot', text: 'Hello I’m famaAI , your assistant. Ask me anything!' }
@@ -296,13 +289,16 @@ if (msg.type === 'error') {
 
 {msg.type === 'image' && <img src={msg.text} alt="Generated Image" />}
     
-    const parts = msg.text.split(/```([\s\S]*?)```/g);
-    return parts.map((part, i) => {
-      if (i % 2 === 1) {
+    const parts = msg.text.split(/```(\w+)?\n([\s\S]*?)```/g);
+
+ return parts.map((part, i) => {
+  const lang = part || "javascript"; 
+  const code = parts[i + 1] || "";
+      if (i % 3 === 1) {
         return (
           <div key={`${idx}-code-${i}`} className="relative my-4 group animate-fade-in border rounded-lg overflow-hidden">
             <SyntaxHighlighter
-              language="javascript"
+              language={lang} 
               showLineNumbers={true}
               style={atomDark}
               wrapLongLines
@@ -313,7 +309,7 @@ if (msg.type === 'error') {
                 paddingRight: 16,
               }}
             >
-              {part.trim()}
+              {code.trim()}
               
             </SyntaxHighlighter>
 
