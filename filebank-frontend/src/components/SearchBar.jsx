@@ -45,7 +45,7 @@ const SearchBar = () => {
   setLoading(true);
   setAiResults([]);
   try {
-    const res = await api.post("/chat", { query }, {
+    const res = await api.post("/chat/ai", { query }, {
       headers: { "Content-Type": "application/json" }
     });
     const results = Array.isArray(res.data)
@@ -57,7 +57,7 @@ const SearchBar = () => {
     setAiResults(results);
   } catch (err) {
     console.error("Error:", err.response?.status, err.response?.data || err.message);
-    setAiResults([{ name: "AI: Request failed", url: "#" }]);
+    setAiResults([{ name: "Oops failed to load search results. ", url: "#" }]);
   } finally {
     setLoading(false);
   }
@@ -91,7 +91,7 @@ const SearchBar = () => {
             }}
           />
         ) : (
-          <Search style={{ fontSize: 30, color: "#9CA3AF" }} />
+          <Search style={{ fontSize: 32, color: "#9CA3AF" }} />
         )}
       </button>
 
@@ -103,7 +103,7 @@ const SearchBar = () => {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
             transition={{ duration: 0.2 }}
-            className="absolute right-1 mt-4 w-75 bg-white shadow-lg rounded-lg p-2 z-50"
+            className="absolute right-2 mt-4 w-75 bg-[whitesmoke] shadow-lg rounded-lg p-2 z-50"
           >
             {/* Input */}
             <input
@@ -112,7 +112,7 @@ const SearchBar = () => {
               onChange={(e) => setQuery(e.target.value)}
               onKeyDown={(e) => e.key === "Enter" && handleAIQuery()}
               placeholder="Smart navigation..."
-              className="w-full px-2 py-1 border rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500"
+              className="w-full p-1 border rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500"
               autoFocus
             />
 
