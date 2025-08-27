@@ -3,7 +3,9 @@ import { Input, Button, Space, Switch, Tooltip, Typography, message, Modal } fro
 import { Input as AntInput } from 'antd';
 import { CopyOutlined, BulbOutlined } from '@ant-design/icons';
 import api from '../api/fileApi';
-import { Light as SyntaxHighlighter } from 'react-syntax-highlighter';
+import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
+import { atomDark } from "react-syntax-highlighter/dist/esm/styles/prism";
+
 import js from 'react-syntax-highlighter/dist/esm/languages/hljs/javascript';
 import html from 'react-syntax-highlighter/dist/esm/languages/hljs/xml';  // for HTML
 import css from 'react-syntax-highlighter/dist/esm/languages/hljs/css';
@@ -302,16 +304,9 @@ if (msg.type === 'error') {
             <SyntaxHighlighter
               language="javascript"
               showLineNumbers={true}
-              style={darkMode ? github : dracula}
-              customStyle={{
-                padding: '20px',
-                margin: 0,
-                background: '#0d1117',
-                fontSize: 14,
-                fontFamily: `'Fira Code', 'JetBrains Mono', monospace`,
-                overflowX: 'auto',
-                lineHeight: '1.6',
-              }}
+              style={atomDark}
+              wrapLongLines
+               customStyle={{ borderRadius: "8px", fontSize: "12px" }}     
               lineNumberStyle={{
                 color: darkMode ? '#999' : '#aaa',
                 fontSize: 12,
