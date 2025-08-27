@@ -38,30 +38,28 @@ const SearchBar = () => {
 
   // ✅ Query AI when no local match
   const handleAIQuery = async () => {
-  if (!query?.trim()) {
-    setAiResults([{ name: "Please enter a query", url: "#" }]);
-    return;
-  }
-  setLoading(true);
-  setAiResults([]);
-  try {
-    const res = await api.post("/chat/ai", { query }, {
-      headers: { "Content-Type": "application/json" }
-    });
-    const results = Array.isArray(res.data)
-      ? res.data.map((item, i) => ({
-          name: item.name || item.title || `Result ${i + 1}`,
-          url: item.url || item.link || "#",
-        }))
-      : [];
-    setAiResults(results);
-  } catch (err) {
-    console.error("Error:", err.response?.status, err.response?.data || err.message);
-    setAiResults([{ name: "Oops failed to load search results. ", url: "#" }]);
-  } finally {
-    setLoading(false);
-  }
-};
+    if (!query) return;
+    setLoading(true);
+    setAiResults([]);
+    try {
+      const res = await api.post("/chat/ai", { query });
+
+      // 🔑 Normalize response → convert JSON to { name, url }
+      const results = Array.isArray(res.data)
+        ? res.data.map((item, i) => ({
+            name: item.title || item.name || `Result ${i + 1}`,
+            url: item.link || item.url || "#",
+          }))
+        : [];
+
+      setAiResults(results);
+    } catch (err) {
+      console.error(err);
+      setAiResults([{ name: "Oops something went wrong.", url: "#" }]);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   // ✅ Trigger AI when local search fails
   useEffect(() => {
