@@ -54,9 +54,16 @@ const SearchBar = () => {
 
       setAiResults(results);
     } catch (err) {
-      console.error(err);
-      setAiResults([{ name: "Oops something went wrong.", url: "#" }]);
-    } finally {
+  console.error("AI Query Error:", err);
+
+  // Show same error in UI
+  setAiResults([
+    { 
+      name: "Error: " + (err.message || " Oops Something went wrong."), 
+      url: "#" 
+    }
+  ]);
+} finally {
       setLoading(false);
     }
   };
