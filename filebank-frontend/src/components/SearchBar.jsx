@@ -64,7 +64,7 @@ const SearchBar = () => {
   // ✅ Trigger AI when local search fails
   useEffect(() => {
     if (filteredLinks.length === 0 && query.length > 2) {
-      const timer = setTimeout(handleAIQuery, 1500);
+      const timer = setTimeout(handleAIQuery, 500);
       return () => clearTimeout(timer);
     } else {
       setAiResults([]);
@@ -101,7 +101,7 @@ const SearchBar = () => {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
             transition={{ duration: 0.2 }}
-            className="absolute right-0 mt-4 w-80 bg-white shadow-lg rounded-lg p-2 z-50"
+            className="absolute right-1 mt-4 w-75 bg-white shadow-lg rounded-lg p-2 z-50"
           >
             {/* Input */}
             <input
@@ -124,9 +124,8 @@ const SearchBar = () => {
                 filteredLinks.map((link) => (
                   <li key={link.url}>
                     <a
-                      style={{color:'#202124'}} 
                       href={link.url}
-                      className="block rounded-md hover:bg-gray-100 transition text-gray-800"
+                      className="block px-3 py-2 rounded-md hover:bg-gray-100 transition text-gray-800"
                     >
                       {link.name}
                     </a>
@@ -136,7 +135,6 @@ const SearchBar = () => {
                 aiResults.map((link, i) => (
                   <li key={i}>
                     <a
-                      style={{color:'#202124'}} 
                       href={link.url}
                       target={link.url.startsWith("http") ? "_blank" : "_self"}
                       rel={
