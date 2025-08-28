@@ -97,44 +97,60 @@ export default function Profile() {
 
         {/* Profile Info */}
         {editing ? (
-          <div className="mt-4 space-y-3">
-            <input
-              type="text"
-              placeholder="Full Name"
-              value={form.name}
-              onChange={(e) => setForm({ ...form, name: e.target.value })}
-              className="w-full px-3 py-2 border rounded-lg focus:ring focus:ring-indigo-200"
-            />
-            <input
-              type="email"
-              value={form.email}
-              disabled
-              className="w-full px-3 py-2 border rounded-lg bg-gray-100 text-gray-500"
-            />
+          <div className="mt-6 space-y-4">
+  {/* Name Input */}
+  <div>
+    <label className="block text-sm font-medium text-gray-700 mb-1">
+      Full Name
+    </label>
+    <input
+      type="text"
+      placeholder="Enter your full name"
+      value={form.name}
+      onChange={(e) => setForm({ ...form, name: e.target.value })}
+      className="w-full px-4 py-2 border border-gray-300 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all shadow-sm"
+    />
+  </div>
 
-            <div className="flex justify-between mt-4">
-              <button
-                onClick={handleUpdate}
-                disabled={uploading}
-                className="flex items-center gap-2 bg-indigo-600 text-white px-4 py-2 rounded-lg shadow hover:bg-indigo-700 disabled:opacity-50"
-              >
-                <CheckIcon className="h-5 w-5" /> {uploading ? "Saving..." : "Save"}
-              </button>
-              <button
-                onClick={() => setEditing(false)}
-                className="flex items-center gap-2 bg-gray-200 px-4 py-2 rounded-lg shadow hover:bg-gray-300"
-              >
-                <XMarkIcon className="h-5 w-5" /> Cancel
-              </button>
-            </div>
-          </div>
+  {/* Email Input */}
+  <div>
+    <label className="block text-sm font-medium text-gray-700 mb-1">
+      Email Address
+    </label>
+    <input
+      type="email"
+      value={form.email}
+      disabled
+      className="w-full px-4 py-2 border border-gray-200 rounded-xl bg-gray-100 text-gray-500 shadow-sm cursor-not-allowed"
+    />
+  </div>
+
+  {/* Action Buttons */}
+  <div className="flex items-center justify-end gap-3 pt-2">
+    <button
+      onClick={() => setEditing(false)}
+      className="flex items-center gap-2 px-5 py-2 rounded-xl bg-gray-100 text-gray-700 shadow hover:bg-gray-200 transition-all"
+    >
+      <XMarkIcon className="h-5 w-5" />
+      Cancel
+    </button>
+    <button
+      onClick={handleUpdate}
+      disabled={uploading}
+      className="flex items-center gap-2 px-5 py-2 rounded-xl bg-indigo-600 text-white shadow hover:bg-indigo-700 disabled:opacity-50 transition-all"
+    >
+      <CheckIcon className="h-5 w-5" />
+      {uploading ? "Saving..." : "Save"}
+    </button>
+  </div>
+</div>
         ) : (
           <div className="mt-6 space-y-2 text-sm text-gray-700">
             <p><span className="font-semibold">Name:</span> {user.displayName || user.name}</p>
             <p className="flex items-center gap-2">
               <EnvelopeIcon className="h-4 w-4" /> {user.email}
             </p>
-            <p><span className="font-semibold">Role:</span> {user.role?.toUpperCase() || 'USER'}</p>
+            <p><span className="font-semibold">Plan:</span> {user.role?.toUpperCase() || '-'}</p>
 
             <button
               onClick={() => setEditing(true)}
