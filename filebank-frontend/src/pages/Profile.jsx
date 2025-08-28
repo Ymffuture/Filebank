@@ -33,6 +33,10 @@ export default function Profile() {
     }
   };
 
+
+const fallbackId = useMemo(() => {
+  return "APP-" + Math.random().toString(36).substring(2, 10).toUpperCase();
+}, [user.googleId]);
   const handleUpdate = async () => {
     try {
       const formData = new FormData();
@@ -56,8 +60,8 @@ export default function Profile() {
   if (loading || !user) {
     return (
       <div className="flex flex-col justify-center items-center min-h-[100vh] gap-2">
-        <Spin size="large" />
-        <span className="text-gray-600 animate-pulse">Famacloud profile loading...</span>
+        <Spin size="large" style={{color:"#202124"}} />
+        <span className="text-gray-600 animate-pulse"><span className="font-bold text-gray-900">{user.displayName || ''} </span> profile loading...</span>
       </div>
     );
   }
@@ -171,15 +175,15 @@ export default function Profile() {
   <p className="flex items-center gap-2">
     <TagIcon className="h-5 w-5 text-indigo-500" />
     <span className="font-semibold">Plan:</span>
-    <span>{user.role?.toUpperCase() || "-"}</span>
+    <span>{user.role?.toUpperCase() || "Please Login"}</span>
   </p>
 
   {/* App ID */}
   <p className="flex items-center gap-2">
-    <IdentificationIcon className="h-5 w-5 text-indigo-500" />
-    <span className="font-semibold">App Id:</span>
-    <span>{user.googleId || "-"}</span>
-  </p>
+  <IdentificationIcon className="h-5 w-5 text-indigo-500" />
+  <span className="font-semibold">App Id:</span>
+  <span>{user.googleId || fallbackId}</span>
+</p>
 
   {/* Issue / Blocked */}
   <p className="flex items-center gap-2">
