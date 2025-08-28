@@ -1,17 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import {
-  Card, Avatar, Descriptions, Spin, Upload, Button,
-  Input, Typography, Space
-} from 'antd';
-import {
-  UserOutlined, UploadOutlined, EditOutlined, SaveOutlined,
-  CloseOutlined, MailOutlined, IdcardOutlined, ArrowLeftOutlined
-} from '@ant-design/icons';
+import { Spin } from 'antd'; // keep only loader
 import { Link } from 'react-router-dom';
 import { useSnackbar } from 'notistack';
+import { ArrowLeftIcon, PencilSquareIcon, XMarkIcon, CheckIcon, EnvelopeIcon } from '@heroicons/react/24/solid';
 import api from '../api/fileApi';
-
-const { Title } = Typography;
 
 export default function Profile() {
   const [user, setUser] = useState(null);
@@ -35,7 +27,7 @@ export default function Profile() {
       });
       localStorage.setItem('filebankUser', JSON.stringify(res.data));
     } catch {
-      enqueueSnackbar('Failed to load profile');
+      enqueueSnackbar('Failed to load profile', { variant: 'error' });
     } finally {
       setLoading(false);
     }
@@ -50,10 +42,9 @@ export default function Profile() {
       setUploading(true);
 
       const res = await api.put('/auth/update-profile', formData);
-
       setUser(res.data.data);
       localStorage.setItem('filebankUser', JSON.stringify(res.data.data));
-      enqueueSnackbar('Profile updated successfully');
+      enqueueSnackbar('Profile updated successfully', { variant: 'success' });
       setEditing(false);
     } catch (err) {
       enqueueSnackbar(err.response?.data?.message || 'Server error', { variant: 'error' });
@@ -64,117 +55,102 @@ export default function Profile() {
 
   if (loading || !user) {
     return (
-      <div className="flex justify-center items-center min-h-[60vh]">
+      <div className="flex flex-col justify-center items-center min-h-[60vh] gap-2">
         <Spin size="large" />
-        <span >Famacloud profile loading...</span >
+        <span className="text-gray-600">Famacloud profile loading...</span>
       </div>
     );
   }
 
   return (
     <div className="flex justify-center items-center min-h-[80vh] p-4 bg-[#fafafa]">
-      <Card
-        style={{
-          maxWidth: 460,
-          width: '100%',
-          borderRadius: '24px',
-          border: 'none',
-          boxShadow: '0 4px 24px rgba(0,0,0,0.06)',
-          background: '#fff',
-          padding: 24
-        }}
-        hoverable
-      >
-        <Space direction="vertical" style={{ width: '100%' }} align="center">
-          <div style={{ position: 'relative' }}>
-            <Avatar
-              size={100}
-              src={form.picture}
-              icon={<UserOutlined />}
-              style={{
-                border: '4px solid #eee',
-                transition: 'transform 0.3s',
-                cursor: editing ? 'pointer' : 'default'
-              }}
+      <div className="w-full max-w-md bg-white rounded-2xl shadow-lg p-6">
+        
+        {/* Avatar + Edit Image */}
+        <div className="flex flex-col items-center">
+          <div className="relative">
+            <img
+              src={form.picture || "https://via.placeholder.com/150"}
+              alt="avatar"
+              className="w-28 h-28 rounded-full object-cover border-4 border-gray-200"
             />
             {editing && (
-              <Upload
-                showUploadList={false}
-                accept="image/*"
-                beforeUpload={(file) => {
-                  setFile(file);
-                  setForm({ ...form, picture: URL.createObjectURL(file) });
-                  return false;
-                }}
-              >
-                <Button
-                  size="small"
-                  icon={<UploadOutlined />}
-                  loading={uploading}
-                  style={{
-                    position: 'absolute',
-                    bottom: -10,
-                    right: -10,
-                    backgroundColor: '#fafafa',
-                    border: '1px solid #ccc'
+              <label className="absolute bottom-0 right-0 bg-white border rounded-full p-2 cursor-pointer shadow">
+                <input
+                  type="file"
+                  accept="image/*"
+                  className="hidden"
+                  onChange={(e) => {
+                    const f = e.target.files[0];
+                    setFile(f);
+                    setForm({ ...form, picture: URL.createObjectURL(f) });
                   }}
-                >
-                  Change
-                </Button>
-              </Upload>
+                />
+                <PencilSquareIcon className="h-5 w-5 text-gray-700" />
+              </label>
             )}
           </div>
-        </Space>
+        </div>
 
-        <Title level={4} className="text-center mt-4 font-inter">My Profile</Title>
+        {/* Title */}
+        <h2 className="text-center text-lg font-semibold mt-4">My Profile</h2>
 
+        {/* Profile Info */}
         {editing ? (
-          <>
-            <Input
-              prefix={<UserOutlined />}
+          <div className="mt-4 space-y-3">
+            <input
+              type="text"
               placeholder="Full Name"
               value={form.name}
               onChange={(e) => setForm({ ...form, name: e.target.value })}
-              style={{ marginBottom: 12 }}
+              className="w-full px-3 py-2 border rounded-lg focus:ring focus:ring-indigo-200"
             />
-            <Input
-              prefix={<MailOutlined />}
-              placeholder="Email"
+            <input
+              type="email"
               value={form.email}
               disabled
-              style={{ marginBottom: 12 }}
+              className="w-full px-3 py-2 border rounded-lg bg-gray-100 text-gray-500"
             />
-            <Space style={{ width: '100%', justifyContent: 'space-between' }}>
-              <Button icon={<SaveOutlined />} type="primary" onClick={handleUpdate} loading={uploading}>
-                Save
-              </Button>
-              <Button icon={<CloseOutlined />} onClick={() => setEditing(false)}>Cancel</Button>
-            </Space>
-          </>
+
+            <div className="flex justify-between mt-4">
+              <button
+                onClick={handleUpdate}
+                disabled={uploading}
+                className="flex items-center gap-2 bg-indigo-600 text-white px-4 py-2 rounded-lg shadow hover:bg-indigo-700 disabled:opacity-50"
+              >
+                <CheckIcon className="h-5 w-5" /> {uploading ? "Saving..." : "Save"}
+              </button>
+              <button
+                onClick={() => setEditing(false)}
+                className="flex items-center gap-2 bg-gray-200 px-4 py-2 rounded-lg shadow hover:bg-gray-300"
+              >
+                <XMarkIcon className="h-5 w-5" /> Cancel
+              </button>
+            </div>
+          </div>
         ) : (
-          <>
-            <Descriptions column={1} size="small" bordered style={{ marginTop: 16 }}>
-              <Descriptions.Item label="Name">{user.displayName || user.name}</Descriptions.Item>
-              <Descriptions.Item label="Email"><MailOutlined /> {user.email}</Descriptions.Item>
-              <Descriptions.Item label="Role"><IdcardOutlined /> {user.role?.toUpperCase() || 'USER'}</Descriptions.Item>
-            </Descriptions>
-            <Button
-              icon={<EditOutlined />}
-              type="default"
-              block
-              style={{ marginTop: 16 }}
+          <div className="mt-6 space-y-2 text-sm text-gray-700">
+            <p><span className="font-semibold">Name:</span> {user.displayName || user.name}</p>
+            <p className="flex items-center gap-2">
+              <EnvelopeIcon className="h-4 w-4" /> {user.email}
+            </p>
+            <p><span className="font-semibold">Role:</span> {user.role?.toUpperCase() || 'USER'}</p>
+
+            <button
               onClick={() => setEditing(true)}
+              className="w-full mt-4 bg-gray-100 py-2 rounded-lg hover:bg-gray-200 flex items-center justify-center gap-2"
             >
-              Edit Profile
-            </Button>
+              <PencilSquareIcon className="h-5 w-5" /> Edit Profile
+            </button>
+
             <Link to="/dashboard">
-              <Button icon={<ArrowLeftOutlined />} type="link" block style={{ marginTop: 8 }}>
-                Back to Dashboard
-              </Button>
+              <button className="w-full mt-2 text-indigo-600 flex items-center justify-center gap-2">
+                <ArrowLeftIcon className="h-5 w-5" /> Back to Dashboard
+              </button>
             </Link>
-          </>
+          </div>
         )}
-      </Card>
+      </div>
     </div>
   );
 }
