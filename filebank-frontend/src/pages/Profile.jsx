@@ -66,7 +66,7 @@ useEffect(() => {
   if (loading || !user) {
   return (
     <div className="flex flex-col justify-center items-center min-h-[100vh] gap-2">
-      <Spin size="large" style={{ color: "#202124" }} />
+      <Spin size="large" style={{ color: "#202124" ,background:'#202124' }} />
       <span className="text-gray-600 animate-pulse">
         <span className="font-bold text-gray-900">{user?.displayName || "Your"} </span>
         profile loading...
@@ -81,14 +81,14 @@ useEffect(() => {
     <>
     <Nav/>
     
-    <div className="flex justify-center items-center min-h-[80vh] p-4 bg-[#fafafa]">
+    <div className="flex justify-center items-center min-h-[100vh] p-4 bg-[#fafafa]">
       <div className="w-full max-w-md bg-white rounded-2xl shadow-lg p-6">
         
         {/* Avatar + Edit Image */}
         <div className="flex flex-col items-center">
           <div className="relative">
             <img
-              src={form.picture || "https://via.placeholder.com/150"}
+              src={form.picture || "https://famacloud.vercel.app/filelogo.jpg"}
               alt="avatar"
               className="w-28 h-28 rounded-full object-cover border-4 border-gray-200"
             />
