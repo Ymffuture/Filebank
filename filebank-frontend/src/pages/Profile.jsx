@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useMemo } from 'react';
+import React, { useEffect, useState} from 'react';
 import { Spin } from 'antd'; // keep only loader
 import { Link } from 'react-router-dom';
 import { useSnackbar } from 'notistack';
@@ -34,9 +34,13 @@ const [fallbackId, setFallbackId] = useState(null);
   };
 
 
-const fallbackId = useMemo(() => {
-  return "APP-" + Math.random().toString(36).substring(2, 10).toUpperCase();
-}, [user.googleId]);
+useEffect(() => {
+  if (!user?.googleId) {
+    setFallbackId(
+      "APP-" + Math.random().toString(36).substring(2, 10).toUpperCase()
+    );
+  }
+}, [user?.googleId]);
 
   
   const handleUpdate = async () => {
