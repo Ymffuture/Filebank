@@ -62,7 +62,7 @@ const fallbackId = useMemo(() => {
     <div className="flex flex-col justify-center items-center min-h-[100vh] gap-2">
       <Spin size="large" style={{ color: "#202124" }} />
       <span className="text-gray-600 animate-pulse">
-        <span className="font-bold text-gray-900">{user?.displayName || "Your"} </span>
+        <span className="font-bold text-gray-900">{"Your"} </span>
         profile loading...
       </span>
     </div>
