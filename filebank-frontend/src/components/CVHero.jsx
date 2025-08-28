@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Lightbulb, UserCheck } from 'lucide-react';
 import {Link} from 'react-router-dom' ;
+import Page from './Page';
 const typingTexts = [
   'Step-by-step guidance.',
   'Professional tips.',
@@ -49,6 +50,7 @@ const CVHero = () => {
           <UserCheck className="text-green-600 w-8 h-8" />
         </div>
       </div>
+      <Page/>
     </section>
   );
 };
