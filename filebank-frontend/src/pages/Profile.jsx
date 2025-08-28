@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import { useSnackbar } from 'notistack';
 import { ArrowLeftIcon, PencilSquareIcon, XMarkIcon, CheckIcon, EnvelopeIcon } from '@heroicons/react/24/solid';
 import api from '../api/fileApi';
-import nav from '../components/Navbar' ;
+import Nav from '../components/Navbar' ;
 export default function Profile() {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -27,7 +27,7 @@ export default function Profile() {
       });
       localStorage.setItem('filebankUser', JSON.stringify(res.data));
     } catch {
-      enqueueSnackbar('Failed to load profile', { variant: 'error' });
+      enqueueSnackbar('Failed to load profile', { variant: 'default' });
     } finally {
       setLoading(false);
     }
@@ -44,7 +44,7 @@ export default function Profile() {
       const res = await api.put('/auth/update-profile', formData);
       setUser(res.data.data);
       localStorage.setItem('filebankUser', JSON.stringify(res.data.data));
-      enqueueSnackbar('Profile updated successfully', { variant: 'success' });
+      enqueueSnackbar('Profile updated successfully', { variant: 'info' });
       setEditing(false);
     } catch (err) {
       enqueueSnackbar(err.response?.data?.message || 'Server error', { variant: 'error' });
@@ -57,14 +57,14 @@ export default function Profile() {
     return (
       <div className="flex flex-col justify-center items-center min-h-[100vh] gap-2">
         <Spin size="large" />
-        <span className="text-gray-600">Famacloud profile loading...</span>
+        <span className="text-gray-600 animate-pulse">Famacloud profile loading...</span>
       </div>
     );
   }
 
   return (
     <>
-    <nav/>
+    <Nav/>
     
     <div className="flex justify-center items-center min-h-[80vh] p-4 bg-[#fafafa]">
       <div className="w-full max-w-md bg-white rounded-2xl shadow-lg p-6">
@@ -164,7 +164,7 @@ export default function Profile() {
             </button>
 
             <Link to="/dashboard">
-              <button className="w-full mt-2 text-indigo-600 flex items-center justify-center gap-2 mt-4 mb-3">
+              <button className="w-full mt-4 text-indigo-600 flex items-center justify-center gap-2">
                 <ArrowLeftIcon className="h-5 w-5" /> Back to Dashboard
               </button>
             </Link>
