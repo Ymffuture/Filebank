@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import { useSnackbar } from 'notistack';
 import { ArrowLeftIcon, PencilSquareIcon, XMarkIcon, CheckIcon, EnvelopeIcon } from '@heroicons/react/24/solid';
 import api from '../api/fileApi';
-
+import nav from '../components/Navbar' ;
 export default function Profile() {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -55,7 +55,7 @@ export default function Profile() {
 
   if (loading || !user) {
     return (
-      <div className="flex flex-col justify-center items-center min-h-[60vh] gap-2">
+      <div className="flex flex-col justify-center items-center min-h-[100vh] gap-2">
         <Spin size="large" />
         <span className="text-gray-600">Famacloud profile loading...</span>
       </div>
@@ -63,6 +63,9 @@ export default function Profile() {
   }
 
   return (
+    <>
+    <nav/>
+    
     <div className="flex justify-center items-center min-h-[80vh] p-4 bg-[#fafafa]">
       <div className="w-full max-w-md bg-white rounded-2xl shadow-lg p-6">
         
@@ -161,7 +164,7 @@ export default function Profile() {
             </button>
 
             <Link to="/dashboard">
-              <button className="w-full mt-2 text-indigo-600 flex items-center justify-center gap-2">
+              <button className="w-full mt-2 text-indigo-600 flex items-center justify-center gap-2 mt-4 mb-3">
                 <ArrowLeftIcon className="h-5 w-5" /> Back to Dashboard
               </button>
             </Link>
@@ -169,6 +172,7 @@ export default function Profile() {
         )}
       </div>
     </div>
+    </>
   );
 }
 
