@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Spin } from 'antd'; // keep only loader
 import { Link } from 'react-router-dom';
 import { useSnackbar } from 'notistack';
-import { ArrowLeftIcon, PencilSquareIcon, XMarkIcon, CheckIcon, EnvelopeIcon } from '@heroicons/react/24/solid';
+import { ArrowLeftIcon, PencilSquareIcon, XMarkIcon, CheckIcon, EnvelopeIcon, IdentificationIcon, ShieldExclamationIcon, UserIcon, CalendarIcon, TagIcon } from '@heroicons/react/24/solid';
 import api from '../api/fileApi';
 import Nav from '../components/Navbar' ;
 export default function Profile() {
@@ -150,11 +150,55 @@ export default function Profile() {
 </div>
         ) : (
           <div className="mt-6 space-y-2 text-sm text-gray-700">
-            <p><span className="font-semibold">Name:</span> {user.displayName || user.name}</p>
-            <p className="flex items-center gap-2">
-              <EnvelopeIcon className="h-4 w-4" /> {user.email}
-            </p>
-            <p><span className="font-semibold">Plan:</span> {user.role?.toUpperCase() || '-'}</p>
+            
+
+<div className="mt-6 space-y-3 text-sm text-gray-700">
+  {/* Name */}
+  <p className="flex items-center gap-2">
+    <UserIcon className="h-5 w-5 text-indigo-500" />
+    <span className="font-semibold">Username:</span>
+    <span>{user.displayName || user.name}</span>
+  </p>
+
+  {/* Email */}
+  <p className="flex items-center gap-2">
+    <EnvelopeIcon className="h-5 w-5 text-indigo-500" />
+    <span className="font-semibold">Email:</span>
+    <span>{user.email}</span>
+  </p>
+
+  {/* Plan */}
+  <p className="flex items-center gap-2">
+    <TagIcon className="h-5 w-5 text-indigo-500" />
+    <span className="font-semibold">Plan:</span>
+    <span>{user.role?.toUpperCase() || "-"}</span>
+  </p>
+
+  {/* App ID */}
+  <p className="flex items-center gap-2">
+    <IdentificationIcon className="h-5 w-5 text-indigo-500" />
+    <span className="font-semibold">App Id:</span>
+    <span>{user.googleId || "-"}</span>
+  </p>
+
+  {/* Issue / Blocked */}
+  <p className="flex items-center gap-2">
+    <ShieldExclamationIcon className="h-5 w-5 text-indigo-500" />
+    <span className="font-semibold">Issue / Blocked:</span>
+    <span>
+      {user.hasIssue ? "Yes" : "No"} / {user.isBlocked ? "Yes" : "No"}
+    </span>
+  </p>
+
+  {/* Created At */}
+  <p className="flex items-center gap-2">
+    <CalendarIcon className="h-5 w-5 text-indigo-500" />
+    <span className="font-semibold">Member since:</span>
+    <span>
+      {user.createdAt ? new Date(user.createdAt).toLocaleDateString() : "-"}
+    </span>
+  </p>
+</div>
 
             <button
               onClick={() => setEditing(true)}
