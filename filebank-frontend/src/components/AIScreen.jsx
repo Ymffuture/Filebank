@@ -86,7 +86,7 @@ const generateImage = async () => {
     ]);
   } catch (err) {
     console.error("Image generation error:", err);
-    message.error("Image generation failed. Check console for details.");
+    message.error("Image generation failed. For details:", err.message);
   } finally {
     setImageLoading(false);
     setImagePrompt("");
