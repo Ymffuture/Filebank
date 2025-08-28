@@ -62,29 +62,37 @@ const sessionId = getSessionId();
 // image code
 const generateImage = async () => {
   if (!imagePrompt.trim()) return;
-  
+
   setImageLoading(true);
-  
+
   try {
-    const res = await api.post('/generate-image', { prompt: imagePrompt });
+    const res = await api.post("/generate-image", { prompt: imagePrompt });
+
+    if (!res.data?.image) {
+      throw new Error("No image returned from server");
+    }
+
+    // Show generated image
     setGeneratedImage(res.data.image);
-    setShowImageModal(false);
 
-    // Optionally add image to messages flow
-    setMessages(prev => [
+    // Keep modal open so user sees the image
+    setShowImageModal(true);
+
+    // Add to messages flow
+    setMessages((prev) => [
       ...prev,
-      { from: 'user', text: imagePrompt },
-      { from: 'bot', text: res.data.image, type: 'image' }
+      { from: "user", text: imagePrompt },
+      { from: "bot", type: "image", text: res.data.image },
     ]);
-
   } catch (err) {
-    message.error("Image generation failed.");
-    console.error(err);
+    console.error("Image generation error:", err);
+    message.error("Image generation failed. Check console for details.");
   } finally {
     setImageLoading(false);
-    setImagePrompt('');
+    setImagePrompt("");
   }
 };
+
 
   
   // Auto-resize effect
