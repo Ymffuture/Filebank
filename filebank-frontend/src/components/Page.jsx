@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { saveAs } from 'file-saver';
-import { ClipboardIcon, CheckIcon } from '@heroicons/react/24/solid'; // optional for nice icons
+import { CheckOutlined, DownloadOutlined, CopyOutlined, SmileOutlined } from '@ant-design/icons';
+import { Dropdown, Menu, Button, message } from 'antd';
 
 const Page = () => {
   const API_KEY = "AIzaSyDE5c4rUcO-mny8cREEqfMESVYCAtU0SYk";
@@ -11,7 +12,7 @@ const Page = () => {
   const [feedback, setFeedback] = useState('');
   const [showFeedback, setShowFeedback] = useState(false);
   const [copied, setCopied] = useState(false);
-  const [reaction, setReaction] = useState(''); // stores emoji reaction
+  const [reaction, setReaction] = useState('');
 
   const preventDefaults = (e) => { e.preventDefault(); e.stopPropagation(); };
   const handleDrag = (e, addClasses) => {
@@ -105,15 +106,27 @@ const Page = () => {
   const copyFeedback = () => {
     navigator.clipboard.writeText(feedback.replace(/<br\/>/g, '\n')).then(() => {
       setCopied(true);
+      message.success("Copied to clipboard!");
       setTimeout(() => setCopied(false), 2000);
     });
   };
 
-  const handleReaction = (emoji) => setReaction(emoji);
+  const reactionMenu = (
+    <Menu
+      items={['👍', '❤️', '😮', '🎯'].map(emoji => ({
+        key: emoji,
+        label: (
+          <span onClick={() => setReaction(emoji)} className="cursor-pointer text-xl">
+            {emoji}
+          </span>
+        ),
+      }))}
+    />
+  );
 
   return (
     <div className="bg-gray-50 flex items-center justify-center min-h-screen p-4">
-      <div className="bg-white p-8 rounded-2xl shadow-xl max-w-2xl w-full">
+      <div className="bg-white p-6 sm:p-8 rounded-2xl shadow-xl max-w-2xl w-full">
         <h1 className="text-3xl font-extrabold text-gray-800 text-center mb-2">CV Analyzer</h1>
         <p className="text-gray-500 text-center mb-6">Upload your CV to get instant feedback powered by FamaAI.</p>
 
@@ -140,34 +153,20 @@ const Page = () => {
             </div>
 
             {/* Actions */}
-            <div className="flex gap-4 mt-4 items-center">
-              <button
-                onClick={downloadFeedback}
-                className="px-4 py-2 bg-green-500 text-white rounded-lg shadow hover:bg-green-600 transition"
-              >
+            <div className="flex flex-wrap gap-4 mt-4 items-center">
+              <Button type="primary" icon={<DownloadOutlined />} onClick={downloadFeedback}>
                 Download (.txt)
-              </button>
+              </Button>
 
-              <button
-                onClick={copyFeedback}
-                className={`px-4 py-2 bg-blue-500 text-white rounded-lg shadow hover:bg-blue-600 transition flex items-center gap-2`}
-              >
+              <Button type="default" icon={<CopyOutlined />} onClick={copyFeedback}>
                 {copied ? 'Copied!' : 'Copy'}
-                {copied && <CheckIcon className="w-4 h-4" />}
-              </button>
+              </Button>
 
-              {/* Emoji reactions */}
-              <div className="flex gap-2 text-2xl cursor-pointer select-none">
-                {['👍', '❤️', '😮', '🎯'].map((emoji) => (
-                  <span
-                    key={emoji}
-                    onClick={() => handleReaction(emoji)}
-                    className={`transition transform hover:scale-125 ${reaction === emoji ? 'animate-bounce' : ''}`}
-                  >
-                    {emoji}
-                  </span>
-                ))}
-              </div>
+              <Dropdown overlay={reactionMenu} placement="bottomLeft" trigger={['click']}>
+                <Button icon={<SmileOutlined />}>
+                  {reaction ? reaction : 'React'}
+                </Button>
+              </Dropdown>
 
               {reaction && <span className="ml-2 text-lg">You reacted: {reaction}</span>}
             </div>
