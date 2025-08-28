@@ -294,6 +294,7 @@ export default function Navbar() {
   {/* Avatar with Dropdown */}
   <Dropdown overlay={userMenu} placement="bottomRight" arrow>
     <Avatar
+      src={user?.picture}
       icon={<FaUserCircle className="text-gray-400 text-4xl" />}
       className="cursor-pointer hover:shadow-lg transition"
       size="default"
