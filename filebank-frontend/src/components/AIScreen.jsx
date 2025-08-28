@@ -85,9 +85,10 @@ const generateImage = async () => {
       { from: "bot", type: "image", text: res.data.image },
     ]);
   } catch (err) {
-    console.error("Image generation error:", err);
-    message.error("Image generation failed. For details:", err.message);
-  } finally {
+  console.error("Image generation error:", err);
+  message.error(`Image generation failed: ${err.message || "Unknown error"}`);
+}
+ finally {
     setImageLoading(false);
     setImagePrompt("");
   }
