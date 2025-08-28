@@ -75,20 +75,21 @@ export default function Profile() {
               className="w-28 h-28 rounded-full object-cover border-4 border-gray-200"
             />
             {editing && (
-              <label className="absolute bottom-0 right-0 bg-white border rounded-full p-2 cursor-pointer shadow">
-                <input
-                  type="file"
-                  accept="image/*"
-                  className="hidden"
-                  onChange={(e) => {
-                    const f = e.target.files[0];
-                    setFile(f);
-                    setForm({ ...form, picture: URL.createObjectURL(f) });
-                  }}
-                />
-                <PencilSquareIcon className="h-5 w-5 text-gray-700" />
-              </label>
-            )}
+  <label className="absolute bottom-2 right-2 bg-white rounded-full p-2 cursor-pointer shadow-lg border border-gray-200 hover:bg-gray-50 transition">
+    <input
+      type="file"
+      accept="image/*"
+      className="hidden"
+      onChange={(e) => {
+        const f = e.target.files[0];
+        if (!f) return;
+        setFile(f);
+        setForm({ ...form, picture: URL.createObjectURL(f) });
+      }}
+    />
+    <PencilSquareIcon className="h-5 w-5 text-gray-600 hover:text-indigo-600 transition" />
+  </label>
+)}
           </div>
         </div>
 
