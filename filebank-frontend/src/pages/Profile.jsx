@@ -91,6 +91,7 @@ useEffect(() => {
               src={form.picture || "https://famacloud.vercel.app/filelogo.jpg"}
               alt="avatar"
               className="w-28 h-28 rounded-full object-cover border-4 border-gray-200"
+              onClick={() => setEditing(true)} 
             />
             {editing && (
   <label className="absolute bottom-2 right-2 bg-white rounded-full p-2 cursor-pointer shadow-lg border border-gray-200 hover:bg-gray-50 transition">
@@ -112,7 +113,7 @@ useEffect(() => {
         </div>
 
         {/* Title */}
-        <h2 className="text-center text-lg font-semibold mt-4" onClick={() => setEditing(true)}><PencilSquareIcon className="h-5 w-5" /> </h2>
+        <h2 className="text-center text-lg font-semibold mt-4">Profile</h2>
 
         {/* Profile Info */}
         {editing ? (
@@ -215,7 +216,7 @@ useEffect(() => {
   </p>
 </div>
 
-            <button
+            {/* <button
               onClick={() => setEditing(true)}
               className="w-full mt-4 bg-gray-100 py-2 rounded-lg hover:bg-gray-200 flex items-center justify-center gap-2"
             >
@@ -227,6 +228,8 @@ useEffect(() => {
                 <ArrowLeftIcon className="h-5 w-5" /> Back to Dashboard
               </button>
             </Link>
+            */} 
+            
           </div>
         )}
       </div>
