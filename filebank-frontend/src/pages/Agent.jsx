@@ -1,5 +1,5 @@
 // ChatRoom.jsx
-import React, { useState, useRef, useEffect, useCallback, useMemo } from "react";
+import React, { useState, useRef, useEffect, useCallback } from "react";
 import { io } from "socket.io-client";
 import { motion } from "framer-motion";
 import {
@@ -9,11 +9,16 @@ import {
   Sparkles,
   Loader2,
   Mail,
-  Check,
   X,
 } from "lucide-react";
-import api from "../api/fileApi"; // your axios instance
-// Ensure you have REACT_APP_SOCKET_URL in env when using live mode
+import api from "../api/fileApi";
+
+// --- ENV: works for CRA (REACT_APP_*) and Vite (VITE_*) ---
+const SOCKET_URL =
+  (typeof import.meta !== "undefined" && import.meta.env && import.meta.env.VITE_SOCKET_URL) ||
+  process.env.REACT_APP_SOCKET_URL ||
+  // fallback to same origin (useful when server and client are on same host)
+  `${window.location.origin}`;
 
 // Minimal message id generator
 const uid = () =>
@@ -21,13 +26,8 @@ const uid = () =>
 
 function ChatMessage({ m }) {
   const isUser = m.from === "user";
-  const isAgent = m.from === "agent";
-  const isAI = m.from === "ai";
   return (
-    <div
-      className={`flex ${isUser ? "justify-end" : "justify-start"} mb-3`}
-      aria-live={isUser ? "polite" : "polite"}
-    >
+    <div className={`flex ${isUser ? "justify-end" : "justify-start"} mb-3`} aria-live="polite">
       <div
         className={`max-w-[80%] p-3 rounded-lg ${
           isUser ? "bg-indigo-600 text-white" : "bg-gray-100 text-gray-800"
@@ -64,60 +64,56 @@ export default function ChatRoom() {
   const [verifCode, setVerifCode] = useState("");
   const listRef = useRef(null);
 
-  // memoized conversation ID for AI (persist across re-renders)
   const conversationId = useRef(uid()).current;
 
-  // helper: append message
   const pushMessage = useCallback((m) => {
     setMessages((s) => [...s, m]);
-    // auto-scroll
     setTimeout(() => {
       listRef.current?.scrollTo({ top: listRef.current.scrollHeight, behavior: "smooth" });
-    }, 50);
+    }, 30);
   }, []);
 
-  // AI chat handler
+  // ---------------- AI CHAT ----------------
   const sendAiMessage = useCallback(
     async (payloadText) => {
       if (!payloadText?.trim()) return;
+
       const tempId = uid();
-      const tempMsg = {
+      pushMessage({
         id: tempId,
         from: "user",
         text: payloadText,
         status: "sent",
         createdAt: Date.now(),
-      };
-      pushMessage(tempMsg);
+      });
 
-      // placeholder for AI response (optimistic)
       const aiId = uid();
-      const aiTemp = {
+      pushMessage({
         id: aiId,
         from: "ai",
         text: "Thinking...",
         status: "pending",
         createdAt: Date.now(),
-      };
-      pushMessage(aiTemp);
+      });
 
       setLoadingAi(true);
       try {
+        // IMPORTANT: your server mounts /api/*, so call /api/chat
         const res = await api.post("/chat", {
           message: payloadText,
           conversationId,
           mode: "ai",
         });
-        // backend should return { id, text }
-        const aiText = res.data?.text ?? res.data?.data?.text ?? "No response";
-        // update the ai message
+        const aiText = res?.data?.text ?? res?.data?.data?.text ?? "No response";
         setMessages((prev) =>
           prev.map((m) => (m.id === aiId ? { ...m, text: aiText, status: "done" } : m))
         );
       } catch (err) {
         console.error("AI chat error", err);
         setMessages((prev) =>
-          prev.map((m) => (m.id === aiId ? { ...m, text: "Failed to get response", status: "error" } : m))
+          prev.map((m) =>
+            m.id === aiId ? { ...m, text: "Failed to get response", status: "error" } : m
+          )
         );
       } finally {
         setLoadingAi(false);
@@ -126,56 +122,80 @@ export default function ChatRoom() {
     [conversationId, pushMessage]
   );
 
-  // Live (socket) handlers
+  // ---------------- LIVE CHAT (SOCKET) ----------------
   const connectSocket = useCallback(() => {
-    if (!process.env.REACT_APP_SOCKET_URL) {
-      console.warn("REACT_APP_SOCKET_URL not set");
+    if (!SOCKET_URL) {
+      console.warn("SOCKET_URL env not set");
+      pushMessage({ id: uid(), from: "ai", text: "Socket URL not configured.", status: "error" });
       return;
     }
-    if (socketRef.current) return;
+    if (socketRef.current?.connected) return;
 
-    const socket = io(process.env.REACT_APP_SOCKET_URL, {
+    const socket = io(SOCKET_URL, {
       autoConnect: false,
       transports: ["websocket"],
       auth: { token: localStorage.getItem("chat_token") || null },
+      reconnection: true,
+      reconnectionAttempts: 8,
+      reconnectionDelay: 800,
+      // path: "/socket.io", // uncomment if your server uses a custom path
+      withCredentials: true,
     });
 
     socketRef.current = socket;
 
     socket.on("connect", () => {
       setConnected(true);
-      // register/join room
       socket.emit("join", { email: email || `anon-${conversationId}` });
+      pushMessage({
+        id: uid(),
+        from: "ai",
+        text: "Connected to live support.",
+        status: "done",
+      });
     });
 
-    socket.on("disconnect", () => setConnected(false));
+    socket.on("disconnect", (reason) => {
+      setConnected(false);
+      console.warn("socket disconnect:", reason);
+    });
+
+    socket.on("connect_error", (err) => {
+      console.error("socket connect_error:", err);
+      pushMessage({
+        id: uid(),
+        from: "ai",
+        text: `Live chat failed to connect (${err?.message || "error"})`,
+        status: "error",
+      });
+    });
 
     socket.on("live:message", (msg) => {
-      // msg: { id, from, text, createdAt }
       pushMessage({ ...msg, status: "done" });
     });
 
+    // optional typing / agent state
     socket.on("agent:typing", ({ isTyping }) => {
-      // optional: show typing indicator
-      // add a ephemeral message or state
+      // implement typing indicator if desired
     });
 
     socket.open();
   }, [email, conversationId, pushMessage]);
 
   const disconnectSocket = useCallback(() => {
-    if (!socketRef.current) return;
-    socketRef.current.disconnect();
-    socketRef.current = null;
-    setConnected(false);
+    try {
+      socketRef.current?.disconnect();
+    } finally {
+      socketRef.current = null;
+      setConnected(false);
+    }
   }, []);
 
-  // toggle mode: if switching to live and not verified, open register modal
+  // Toggle mode: connect live only if verified
   useEffect(() => {
     if (mode === "live") {
       if (!isVerified) {
         setRegisterOpen(true);
-        // don't connect yet until verified
       } else {
         connectSocket();
       }
@@ -183,27 +203,35 @@ export default function ChatRoom() {
       disconnectSocket();
     }
     // cleanup on unmount
-    return () => {
-      // don't disconnect here to allow re-entry; leave it safe
-    };
+    return () => {};
   }, [mode, isVerified, connectSocket, disconnectSocket]);
 
-  // send live message via socket
+  // Disconnect on unmount to avoid leaks
+  useEffect(() => () => disconnectSocket(), [disconnectSocket]);
+
   const sendLiveMessage = async (payloadText) => {
+    if (!payloadText?.trim()) return;
+
+    // If not connected, use the send button to connect (instead of disabling it)
     if (!socketRef.current || !connected) {
-      pushMessage({
-        id: uid(),
-        from: "ai", // system info
-        text: "Not connected to live support. Try again or switch to AI.",
-        status: "error",
-      });
+      if (!isVerified) {
+        setRegisterOpen(true);
+        return;
+      }
+      connectSocket();
       return;
     }
-    const m = { id: uid(), from: "user", text: payloadText, status: "sent", createdAt: Date.now() };
+
+    const m = {
+      id: uid(),
+      from: "user",
+      text: payloadText,
+      status: "sent",
+      createdAt: Date.now(),
+    };
     pushMessage(m);
-    // emit to socket
+
     socketRef.current.emit("live:message", { text: payloadText }, (ack) => {
-      // optional ack handling
       if (ack?.ok) {
         setMessages((prev) => prev.map((x) => (x.id === m.id ? { ...x, status: "done" } : x)));
       } else if (ack?.error) {
@@ -212,20 +240,30 @@ export default function ChatRoom() {
     });
   };
 
-  // unified send handler
+  // Unified send
   const handleSend = async (e) => {
     e?.preventDefault?.();
     const payload = text.trim();
-    if (!payload) return;
-    setText("");
+    if (!payload && mode === "ai") return;
     if (mode === "ai") {
+      setText("");
       await sendAiMessage(payload);
     } else {
+      // in live mode: if not connected, pressing send attempts connect
+      if (!connected) {
+        if (!isVerified) {
+          setRegisterOpen(true);
+        } else {
+          connectSocket();
+        }
+        return;
+      }
+      setText("");
       await sendLiveMessage(payload);
     }
   };
 
-  // Registration & verification flows
+  // ---------------- REGISTRATION / VERIFY ----------------
   const registerEmail = async () => {
     if (!email || !/\S+@\S+\.\S+/.test(email)) {
       pushMessage({ id: uid(), from: "ai", text: "Please enter a valid email", status: "error" });
@@ -234,8 +272,13 @@ export default function ChatRoom() {
     try {
       await api.post("/auth/register", { email });
       localStorage.setItem("chat_email", email);
-      setRegisterOpen(true); // show verify
-      pushMessage({ id: uid(), from: "ai", text: "Verification code sent to your email", status: "done" });
+      setRegisterOpen(true);
+      pushMessage({
+        id: uid(),
+        from: "ai",
+        text: "Verification code sent to your email",
+        status: "done",
+      });
     } catch (err) {
       console.error("register error", err);
       pushMessage({ id: uid(), from: "ai", text: "Failed to register email", status: "error" });
@@ -244,14 +287,18 @@ export default function ChatRoom() {
 
   const verifyEmail = async () => {
     try {
-      const res = await api.post("/auth/verify-email", { email, code: verifCode });
-      // backend may return token
+      const res = await api.post("/api/auth/verify-email", { email, code: verifCode });
       const token = res.data?.token || res.data?.data?.token;
       if (token) localStorage.setItem("chat_token", token);
       localStorage.setItem("chat_verified", "1");
       setIsVerified(true);
       setRegisterOpen(false);
-      pushMessage({ id: uid(), from: "ai", text: "Email verified — connecting you to live agents...", status: "done" });
+      pushMessage({
+        id: uid(),
+        from: "ai",
+        text: "Email verified — connecting you to live agents...",
+        status: "done",
+      });
       connectSocket();
     } catch (err) {
       console.error("verify error", err);
@@ -259,7 +306,6 @@ export default function ChatRoom() {
     }
   };
 
-  // helper: quickly switch mode UI-friendly
   const ModeToggle = () => (
     <div className="flex items-center gap-2 bg-white p-2 rounded-full shadow-sm">
       <button
@@ -281,7 +327,6 @@ export default function ChatRoom() {
     </div>
   );
 
-  // keyboard submit: press Enter to send, Shift+Enter for newline
   const handleKeyDown = (e) => {
     if (e.key === "Enter" && !e.shiftKey) {
       e.preventDefault();
@@ -327,8 +372,9 @@ export default function ChatRoom() {
               <div className="text-sm">Ask the AI or switch to Live Chat to speak with a real person.</div>
             </div>
           )}
-
-          {messages.map((m) => <ChatMessage key={m.id} m={m} />)}
+          {messages.map((m) => (
+            <ChatMessage key={m.id} m={m} />
+          ))}
         </div>
       </main>
 
@@ -339,7 +385,7 @@ export default function ChatRoom() {
             value={text}
             onChange={(e) => setText(e.target.value)}
             onKeyDown={handleKeyDown}
-            placeholder={mode === "ai" ? "Ask AI (press Enter to send)" : "Chat with a real person..."}
+            placeholder={mode === "ai" ? "Ask AI (press Enter to send)" : (connected ? "Chat with a real person..." : "Connect to live support")}
             rows={1}
             className="flex-1 resize-none border rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-200"
             aria-label="Message input"
@@ -347,12 +393,21 @@ export default function ChatRoom() {
 
           <button
             type="submit"
-            className="inline-flex items-center gap-2 bg-indigo-600 text-white px-4 py-2 rounded-xl"
-            aria-label="Send message"
-            disabled={mode === "ai" ? loadingAi : (mode === "live" && !connected)}
+            className={`inline-flex items-center gap-2 ${
+              mode === "live" && !connected ? "bg-green-600" : "bg-indigo-600"
+            } text-white px-4 py-2 rounded-xl`}
+            aria-label={mode === "live" && !connected ? "Connect" : "Send message"}
+            // IMPORTANT: don't disable when live & disconnected — let it initiate connect
+            disabled={mode === "ai" ? loadingAi : false}
           >
-            {mode === "ai" && loadingAi ? <Loader2 className="h-4 w-4 animate-spin" /> : <Send className="h-4 w-4" />}
-            <span className="text-sm">{mode === "ai" ? (loadingAi ? "Thinking..." : "Send") : (connected ? "Send" : "Connect")}</span>
+            {mode === "ai" && loadingAi ? (
+              <Loader2 className="h-4 w-4 animate-spin" />
+            ) : (
+              <Send className="h-4 w-4" />
+            )}
+            <span className="text-sm">
+              {mode === "live" && !connected ? "Connect" : mode === "ai" ? (loadingAi ? "Thinking..." : "Send") : "Send"}
+            </span>
           </button>
         </div>
 
@@ -364,7 +419,7 @@ export default function ChatRoom() {
               <>
                 {" • "}
                 <span className={`font-medium ${connected ? "text-green-600" : "text-red-500"}`}>
-                  {connected ? "Connected" : isVerified ? "Connecting..." : "Not verified"}
+                  {connected ? "Connected" : isVerified ? "Not connected" : "Not verified"}
                 </span>
               </>
             )}
@@ -382,18 +437,10 @@ export default function ChatRoom() {
         </div>
       </form>
 
-      {/* registration / verify modal (simple inline modal) */}
+      {/* registration / verify modal */}
       {registerOpen && (
-        <div
-          className="fixed inset-0 bg-black/40 flex items-center justify-center p-4 z-50"
-          role="dialog"
-          aria-modal="true"
-        >
-          <motion.div
-            initial={{ y: 20, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            className="bg-white rounded-xl max-w-md w-full p-6 shadow-xl"
-          >
+        <div className="fixed inset-0 bg-black/40 flex items-center justify-center p-4 z-50" role="dialog" aria-modal="true">
+          <motion.div initial={{ y: 20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} className="bg-white rounded-xl max-w-md w-full p-6 shadow-xl">
             <div className="flex items-center justify-between mb-3">
               <div className="flex items-center gap-3">
                 <Mail className="h-5 w-5 text-indigo-600" />
@@ -406,7 +453,9 @@ export default function ChatRoom() {
 
             {!isVerified ? (
               <>
-                <p className="text-sm text-gray-600 mb-4">Enter your email to receive a verification code for live chat access.</p>
+                <p className="text-sm text-gray-600 mb-4">
+                  Enter your email to receive a verification code for live chat access.
+                </p>
                 <input
                   type="email"
                   className="w-full border rounded-lg px-3 py-2 mb-3"
@@ -416,19 +465,10 @@ export default function ChatRoom() {
                   aria-label="Email"
                 />
                 <div className="flex gap-3">
-                  <button
-                    className="flex-1 bg-indigo-600 text-white px-4 py-2 rounded-lg"
-                    onClick={registerEmail}
-                  >
+                  <button className="flex-1 bg-indigo-600 text-white px-4 py-2 rounded-lg" onClick={registerEmail}>
                     Send code
                   </button>
-                  <button
-                    className="flex-1 bg-gray-100 text-gray-700 px-4 py-2 rounded-lg"
-                    onClick={() => {
-                      // If user already got code, show verify input
-                      // Keep modal open so they can enter code
-                    }}
-                  >
+                  <button className="flex-1 bg-gray-100 text-gray-700 px-4 py-2 rounded-lg" onClick={() => {}}>
                     I have code
                   </button>
                 </div>
@@ -442,10 +482,7 @@ export default function ChatRoom() {
                       value={verifCode}
                       onChange={(e) => setVerifCode(e.target.value)}
                     />
-                    <button
-                      className="bg-green-600 text-white px-4 py-2 rounded-lg"
-                      onClick={verifyEmail}
-                    >
+                    <button className="bg-green-600 text-white px-4 py-2 rounded-lg" onClick={verifyEmail}>
                       Verify
                     </button>
                   </div>
