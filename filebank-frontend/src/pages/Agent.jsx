@@ -16,7 +16,7 @@ import api from "../api/fileApi";
 // --- ENV: works for CRA (REACT_APP_*) and Vite (VITE_*) ---
 const SOCKET_URL =
   (typeof import.meta !== "undefined" && import.meta.env && import.meta.env.VITE_SOCKET_URL) ||
-  process.env.REACT_APP_SOCKET_URL ||
+  'https://filebankserver.onrender.com' ||
   // fallback to same origin (useful when server and client are on same host)
   `${window.location.origin}`;
 
@@ -287,7 +287,7 @@ export default function ChatRoom() {
 
   const verifyEmail = async () => {
     try {
-      const res = await api.post("/api/auth/verify-email", { email, code: verifCode });
+      const res = await api.post("/verify-email", { email, code: verifCode });
       const token = res.data?.token || res.data?.data?.token;
       if (token) localStorage.setItem("chat_token", token);
       localStorage.setItem("chat_verified", "1");
