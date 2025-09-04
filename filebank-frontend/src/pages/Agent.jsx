@@ -1,4 +1,3 @@
-// ChatRoom.jsx
 import React, { useState, useRef, useEffect, useCallback } from "react";
 import { io } from "socket.io-client";
 import { motion } from "framer-motion";
@@ -11,13 +10,13 @@ import {
   Mail,
   X,
 } from "lucide-react";
+import TextareaAutosize from "react-textarea-autosize";
 import api from "../api/fileApi";
 
 // --- ENV: works for CRA (REACT_APP_*) and Vite (VITE_*) ---
 const SOCKET_URL =
   (typeof import.meta !== "undefined" && import.meta.env && import.meta.env.VITE_SOCKET_URL) ||
   'https://filebankserver.onrender.com' ||
-  // fallback to same origin (useful when server and client are on same host)
   `${window.location.origin}`;
 
 // Minimal message id generator
@@ -62,6 +61,7 @@ export default function ChatRoom() {
   const [email, setEmail] = useState(() => localStorage.getItem("chat_email") || "");
   const [isVerified, setIsVerified] = useState(() => !!localStorage.getItem("chat_verified"));
   const [verifCode, setVerifCode] = useState("");
+  const [showCodeInput, setShowCodeInput] = useState(false);
   const listRef = useRef(null);
 
   const conversationId = useRef(uid()).current;
@@ -98,7 +98,6 @@ export default function ChatRoom() {
 
       setLoadingAi(true);
       try {
-        // IMPORTANT: your server mounts /api/*, so call /api/chat
         const res = await api.post("/chat", {
           message: payloadText,
           conversationId,
@@ -138,7 +137,6 @@ export default function ChatRoom() {
       reconnection: true,
       reconnectionAttempts: 8,
       reconnectionDelay: 800,
-      // path: "/socket.io", // uncomment if your server uses a custom path
       withCredentials: true,
     });
 
@@ -174,9 +172,8 @@ export default function ChatRoom() {
       pushMessage({ ...msg, status: "done" });
     });
 
-    // optional typing / agent state
     socket.on("agent:typing", ({ isTyping }) => {
-      // implement typing indicator if desired
+      // Implement typing indicator if desired
     });
 
     socket.open();
@@ -202,17 +199,12 @@ export default function ChatRoom() {
     } else {
       disconnectSocket();
     }
-    // cleanup on unmount
-    return () => {};
+    return () => disconnectSocket();
   }, [mode, isVerified, connectSocket, disconnectSocket]);
-
-  // Disconnect on unmount to avoid leaks
-  useEffect(() => () => disconnectSocket(), [disconnectSocket]);
 
   const sendLiveMessage = async (payloadText) => {
     if (!payloadText?.trim()) return;
 
-    // If not connected, use the send button to connect (instead of disabling it)
     if (!socketRef.current || !connected) {
       if (!isVerified) {
         setRegisterOpen(true);
@@ -249,7 +241,6 @@ export default function ChatRoom() {
       setText("");
       await sendAiMessage(payload);
     } else {
-      // in live mode: if not connected, pressing send attempts connect
       if (!connected) {
         if (!isVerified) {
           setRegisterOpen(true);
@@ -272,7 +263,7 @@ export default function ChatRoom() {
     try {
       await api.post("/auth/register", { email });
       localStorage.setItem("chat_email", email);
-      setRegisterOpen(true);
+      setShowCodeInput(true);
       pushMessage({
         id: uid(),
         from: "ai",
@@ -293,6 +284,7 @@ export default function ChatRoom() {
       localStorage.setItem("chat_verified", "1");
       setIsVerified(true);
       setRegisterOpen(false);
+      setShowCodeInput(false);
       pushMessage({
         id: uid(),
         from: "ai",
@@ -381,23 +373,22 @@ export default function ChatRoom() {
       {/* composer */}
       <form onSubmit={(e) => { e.preventDefault(); handleSend(); }} className="p-3 bg-white border-t">
         <div className="max-w-2xl mx-auto flex items-end gap-3">
-          <textarea
+          <TextareaAutosize
             value={text}
             onChange={(e) => setText(e.target.value)}
             onKeyDown={handleKeyDown}
             placeholder={mode === "ai" ? "Ask AI (press Enter to send)" : (connected ? "Chat with a real person..." : "Connect to live support")}
-            rows={1}
-            className="flex-1 resize-none border rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-200"
+            minRows={1}
+            maxRows={4}
+            className="flex-1 border rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-200"
             aria-label="Message input"
           />
-
           <button
             type="submit"
             className={`inline-flex items-center gap-2 ${
               mode === "live" && !connected ? "bg-green-600" : "bg-indigo-600"
             } text-white px-4 py-2 rounded-xl`}
             aria-label={mode === "live" && !connected ? "Connect" : "Send message"}
-            // IMPORTANT: don't disable when live & disconnected — let it initiate connect
             disabled={mode === "ai" ? loadingAi : false}
           >
             {mode === "ai" && loadingAi ? (
@@ -465,28 +456,40 @@ export default function ChatRoom() {
                   aria-label="Email"
                 />
                 <div className="flex gap-3">
-                  <button className="flex-1 bg-indigo-600 text-white px-4 py-2 rounded-lg" onClick={registerEmail}>
+                  <button
+                    className="flex-1 bg-indigo-600 text-white px-4 py-2 rounded-lg"
+                    onClick={registerEmail}
+                  >
                     Send code
                   </button>
-                  <button className="flex-1 bg-gray-100 text-gray-700 px-4 py-2 rounded-lg" onClick={() => {}}>
+                  <button
+                    className="flex-1 bg-gray-100 text-gray-700 px-4 py-2 rounded-lg"
+                    onClick={() => setShowCodeInput(true)}
+                  >
                     I have code
                   </button>
                 </div>
 
-                <div className="mt-3">
-                  <label className="block text-xs text-gray-500 mb-1">Verification code</label>
-                  <div className="flex gap-2">
-                    <input
-                      className="flex-1 border rounded-lg px-3 py-2"
-                      placeholder="123456"
-                      value={verifCode}
-                      onChange={(e) => setVerifCode(e.target.value)}
-                    />
-                    <button className="bg-green-600 text-white px-4 py-2 rounded-lg" onClick={verifyEmail}>
-                      Verify
-                    </button>
+                {showCodeInput && (
+                  <div className="mt-3">
+                    <label className="block text-xs text-gray-500 mb-1">Verification code</label>
+                    <div className="flex gap-2">
+                      <input
+                        className="flex-1 border rounded-lg px-3 py-2"
+                        placeholder="123456"
+                        value={verifCode}
+                        onChange={(e) => setVerifCode(e.target.value)}
+                        aria-label="Verification code"
+                      />
+                      <button
+                        className="bg-green-600 text-white px-4 py-2 rounded-lg"
+                        onClick={verifyEmail}
+                      >
+                        Verify
+                      </button>
+                    </div>
                   </div>
-                </div>
+                )}
               </>
             ) : (
               <div>
@@ -510,4 +513,3 @@ export default function ChatRoom() {
     </div>
   );
 }
-
