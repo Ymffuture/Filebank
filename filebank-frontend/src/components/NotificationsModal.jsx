@@ -134,7 +134,7 @@ export default function NotificationsModal({ visible, onClose }) {
       icon={currentUser?.role === 'free' ? <Crown size={18} /> : <CheckOutlined />}
       loading={markAllLoading}
       type="dashed"
-      disabled={currentUser?.role === 'free' || notification <0}
+      disabled={currentUser?.role === 'free' || notifications <0}
     >
       Mark All as Read
     </Button>
