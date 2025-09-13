@@ -97,15 +97,15 @@ export default function NotificationsModal({ visible, onClose }) {
       style={{
         width: 40,
         height: 4,
-        background: '#555',
+        background: '#fff',
         borderRadius: 2,
         margin: '0 auto 8px',
         opacity: 0.6
       }}
     />
     
-    <Space style={{ color: '#fff' }}>
-      <Bell style={{ color: '#fff' }} /> Notifications
+    <Space style={{ color: '#202124' }}>
+      <Bell style={{ color: '#555' }} /> Notifications
       <Badge
         count={notifications.filter((n) => !n.read).length}
         style={{
@@ -134,7 +134,7 @@ export default function NotificationsModal({ visible, onClose }) {
       icon={currentUser?.role === 'free' ? <Crown size={18} /> : <CheckOutlined />}
       loading={markAllLoading}
       type="dashed"
-      disabled={currentUser?.role === 'free'}
+      disabled={currentUser?.role === 'free' || notification <0}
     >
       Mark All as Read
     </Button>
