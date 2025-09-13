@@ -100,7 +100,8 @@ const ShinyText = ({
     backgroundSize: "200% 100%", // make wider for movement
     WebkitBackgroundClip: "text",
     backgroundClip: "text",
-    color: "transparent", // make text show gradient
+  //  color: "transparent", 
+    color:"#6b7280", // make text show gradient
     WebkitTextFillColor: "transparent", // Safari
     // animation
     animationName: disabled || prefersReducedMotion ? "none" : "shiny-text-shimmer",
