@@ -2,7 +2,7 @@ import React, { useState, useMemo, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Search, X, Loader2 } from "lucide-react";
 import api from "../api/fileApi"; // your axios/fetch wrapper
-
+import ShinyText from './ShinyText';
 const links = [
   { name: "Home", url: "/" },
   { name: "About Us", url: "/about-us" },
