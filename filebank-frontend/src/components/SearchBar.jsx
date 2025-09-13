@@ -121,10 +121,10 @@ const SearchBar = () => {
             />
 
             {/* Results */}
-            <ul className="mt-2 max-h-60 overflow-y-auto">
+            <ul className="mt-2 max-h-70 overflow-y-auto">
               {loading ? (
-                <li className="px-3 py-2 text-gray-500 flex items-center gap-1">
-             <Loader2 className="animate-spin w-3 h-3" /> <ShinyText text="Smart Searching..." disabled={false} speed={3} style={{color:'rgba(255, 255, 255, 0.15)'}} />
+                <li className="text-gray-500 flex items-center">
+             <Loader2 className="animate-spin w-3 h-3" /> <ShinyText text="Smart Searching..." disabled={false} speed={3} style={{color:'rgba(255, 255, 255, 0.15)', fontSize:'8px'}} />
                 </li>
               ) : filteredLinks.length > 0 ? (
                 filteredLinks.map((link) => (
@@ -150,7 +150,7 @@ const SearchBar = () => {
                           ? "noopener noreferrer"
                           : undefined
                       }
-                      className="block p-2 rounded-md hover:bg-gray-100 transition"
+                      className="block  rounded-md hover:bg-gray-100 transition"
                     >
                       {link.name}
                     </a>
