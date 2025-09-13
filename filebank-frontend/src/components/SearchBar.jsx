@@ -70,7 +70,7 @@ const SearchBar = () => {
   // ✅ Trigger AI when local search fails
   useEffect(() => {
     if (filteredLinks.length === 0 && query.length > 2) {
-      const timer = setTimeout(handleAIQuery, 500);
+      const timer = setTimeout(handleAIQuery, 2000);
       return () => clearTimeout(timer);
     } else {
       setAiResults([]);
@@ -95,7 +95,7 @@ const SearchBar = () => {
             }}
           />
         ) : (
-          <Search style={{ fontSize: 32, color: "#9CA3AF" }} />
+          <Search style={{ fontSize: 34, color: "#9CA3AF" }} />
         )}
       </button>
 
@@ -107,7 +107,7 @@ const SearchBar = () => {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
             transition={{ duration: 0.2 }}
-            className="absolute right-2 mt-8 w-75 bg-[whitesmoke] shadow-lg rounded-lg p-2 z-[999999]"
+            className="absolute right-2 mt-8 w-80 bg-[whitesmoke] shadow-lg rounded-lg p-2 z-[999999]"
           >
             {/* Input */}
             <input
