@@ -370,7 +370,7 @@ const usernamebottom = user?.name || user?.displayName || "Guest";
         borderRadius: '20px',
         maxWidth: '1000px',
         margin: '2rem auto',
-        border: '1px solid rgba(255, 255, 255, 0.2)',
+       // border: '1px solid rgba(255, 255, 255, 0.2)',
         boxShadow: '0 4px 30px rgba(0, 0, 0, 0.1)',
         zIndex: 1
       }}>
