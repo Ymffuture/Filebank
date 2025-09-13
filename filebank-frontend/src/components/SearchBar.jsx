@@ -11,8 +11,7 @@ const links = [
   { name: "Change Plan", url: "/change-plan" },
   { name: "Blog", url: "/blog" },
   { name: "Dashboard", url: "/dashboard" },
-  { name: "Login", url: "/login" },
-  { name: "Register", url: "/register" },
+
   { name: "Profile", url: "/profile" },
   { name: "Settings", url: "/settings" },
   { name: "Support", url: "/support" },
@@ -108,7 +107,7 @@ const SearchBar = () => {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
             transition={{ duration: 0.2 }}
-            className="absolute right-2 mt-4 w-75 bg-[whitesmoke] shadow-lg rounded-lg p-2 z-50"
+            className="absolute right-2 mt-8 w-75 bg-[whitesmoke] shadow-lg rounded-lg p-2 z-[999999]"
           >
             {/* Input */}
             <input
