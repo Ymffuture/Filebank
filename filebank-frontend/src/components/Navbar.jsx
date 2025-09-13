@@ -232,7 +232,7 @@ export default function Navbar() {
   <span className="text-lg flex">
   <span className="text-gray-400 font-bold "></span>
   <span className="text-[#fff] "></span>
-    <ShinyText text="Famacloud" disabled={false} speed={3} className='shine' />
+    <ShinyText text="Famacloud" disabled={true} speed={3} className='shine' />
       
 </span>
 
