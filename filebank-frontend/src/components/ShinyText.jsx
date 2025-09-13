@@ -46,7 +46,7 @@ const ShinyText = ({
   text,
   children,
   disabled = false,
-  speed = 5,
+  speed = 2,
   className = "",
   gradientColors = ["rgba(255,255,255,0)", "rgba(255,255,255,0.9)", "rgba(255,255,255,0)"],
   direction = "right",
