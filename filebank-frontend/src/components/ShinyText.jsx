@@ -47,12 +47,12 @@ const ShinyText = ({
   children,
   disabled = false,
   speed = 2,
-  className = "",
+  className = "text-gray-600",
   gradientColors = ["rgba(255,255,255,0)", "rgba(255,255,255,0.9)", "rgba(255,255,255,0)"],
-  direction = "right",
+  direction = "left",
   shimmerWidthPercent = 30,
   pauseOnHover = true,
-  style = {},
+  style = {color:"gray"},
   ...rest
 }) => {
   // prefer-reduced-motion check
