@@ -124,7 +124,7 @@ const SearchBar = () => {
             <ul className="mt-2 max-h-60 overflow-y-auto">
               {loading ? (
                 <li className="px-3 py-2 text-gray-500 flex items-center gap-1">
-             <Loader2 className="animate-spin w-3 h-3" /> <ShinyText text="Famacloud" disabled={false} speed={3} className='shine' />
+             <Loader2 className="animate-spin w-3 h-3" /> <ShinyText text="Famacloud" disabled={false} speed={3} className='shine text-gray-600' />
                 </li>
               ) : filteredLinks.length > 0 ? (
                 filteredLinks.map((link) => (
