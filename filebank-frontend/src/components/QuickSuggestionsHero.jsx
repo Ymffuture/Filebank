@@ -37,7 +37,7 @@ function getGreetingByHour(hour) {
   return "Good evening";
 }
 
-function QuickSuggestionsHero({ sendMessage, suggestions = DEFAULT_SUGGESTIONS, autoDismissMs = 4000, persistKey = "quickSuggestions.dismissed.v1", className = "" }) {
+function QuickSuggestionsHero({ sendMessage, suggestions = DEFAULT_SUGGESTIONS, autoDismissMs = 10000, persistKey = "quickSuggestions.dismissed.v1", className = "" }) {
   const [visible, setVisible] = useState(false);
   const [greeting, setGreeting] = useState("");
   const [paused, setPaused] = useState(false);
