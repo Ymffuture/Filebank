@@ -35,7 +35,7 @@ function injectKeyframesIfNeeded() {
 
     /* keep selection readable: when text is selected fall back to color */
     .shiny-text::selection {
-      background: rgba(255,255,255,0.15);
+      background: rgba(0,0,0,0.75);
     }
   `;
 
