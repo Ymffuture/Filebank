@@ -33,7 +33,7 @@ const QuickSuggestionsHero = ({ sendMessage }) => {
   const greeting = useMemo(() => getGreeting(), []);
 
   useEffect(() => {
-    const timer = setTimeout(() => setVisible(false), 30000); // 30s auto dismiss
+    const timer = setTimeout(() => setVisible(false), 3000); // 3s auto dismiss
     return () => clearTimeout(timer);
   }, []);
 
