@@ -26,7 +26,7 @@ export default function GoogleLoading() {
     // Simulate loading then redirect
     const timer = setTimeout(() => {
       navigate("/");
-    }, 5000);
+    }, 8000);
 
     return () => clearTimeout(timer);
   }, [navigate]);
@@ -41,17 +41,17 @@ export default function GoogleLoading() {
         <Lottie animationData={LoadingAnimation} loop />
       </div>
 
-      <Title level={2} style={{ color: '#fff' }}>
+      <Title level={2} style={{ color: '#666' }}>
         Logging in...
       </Title>
 
-      <Text code style={{ color: '#f0f0f0' }}>
+      <Text code style={{ color: '#666' }}>
         Please wait while we prepare your Home page.
       </Text>
 
       {userEmail && (
-        <Text strong style={{ marginTop: 16, color: '#fff' }}>
-          Signed in as: <span className="text-yellow-300">{userEmail}</span>
+        <Text strong style={{ marginTop: 16, color: '#000' }}>
+          Signed in as: <span className="text-gray-300">{userEmail}</span>
         </Text>
       )}
     </motion.div>
