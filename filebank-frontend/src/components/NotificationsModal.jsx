@@ -104,7 +104,7 @@ export default function NotificationsModal({ visible, onClose }) {
       }}
     />
     
-    <Space style={{ color: '#202124' }}>
+    <Space style={{ color: '#fff' }}>
       <Bell style={{ color: '#555' }} /> Notifications
       <Badge
         count={notifications.filter((n) => !n.read).length}
