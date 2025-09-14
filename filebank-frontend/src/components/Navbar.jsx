@@ -351,8 +351,6 @@ useEffect(() => {
       </>
     )}
   </div>
-</div>
-
 
   {!isPremium ? (
     <Tooltip
