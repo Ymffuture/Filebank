@@ -322,9 +322,7 @@ useEffect(() => {
     </Dropdown>
   )}
 </div>
-    {loading? null :
-
-    <SearchBar />} 
+    {loading ? null :<SearchBar />} 
     
   </div>
 
