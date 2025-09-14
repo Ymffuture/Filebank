@@ -22,7 +22,7 @@ import {
 } from '@ant-design/icons';
 
 // replace
-
+import { Skeleton } from "antd";
 import { motion } from "framer-motion";
 
 import {
@@ -64,7 +64,8 @@ export default function Navbar() {
   const [drawerVisible, setDrawerVisible] = useState(false);
   const [notifModalVisible, setNotifModalVisible] = useState(false);
   const [newNotif, setNewNotif] = useState(false);
-
+  const [loading, setLoading] = useState(true); 
+  
   const navigate = useNavigate();
   const { enqueueSnackbar } = useSnackbar();
   const playSound = () => {
@@ -80,6 +81,14 @@ export default function Navbar() {
     });
   };
 
+
+useEffect(() => {
+  const timer = setTimeout(() => {
+    setLoading(false); // simulate fetch done
+  }, 1500);
+  return () => clearTimeout(timer);
+}, []);
+ 
   const fetchNotifications = useCallback(async () => {
     try {
       const res = await api.get('/notifications');
@@ -292,14 +301,18 @@ export default function Navbar() {
 
 
   {/* Avatar with Dropdown */}
-  <Dropdown overlay={userMenu} placement="bottomRight" arrow>
-    <Avatar
-      src={user?.picture}
-      icon={<FaUserCircle className="text-gray-400 text-4xl" />}
-      className="cursor-pointer hover:shadow-lg transition"
-      size="default"
-    />
-</Dropdown>
+  {loading ? (
+    <Skeleton.Avatar active size="default" shape="circle" />
+  ) : (
+    <Dropdown overlay={userMenu} placement="bottomRight" arrow>
+      <Avatar
+        src={user?.picture}
+        icon={<FaUserCircle className="text-gray-400 text-4xl" />}
+        className="cursor-pointer hover:shadow-lg transition"
+        size="default"
+      />
+    </Dropdown>
+  )}
 </div>
 
     <SearchBar className='absolute right-0' />
@@ -320,15 +333,26 @@ export default function Navbar() {
 
 
 <div className="p-2 flex items-center gap-4">
-  <Avatar src={user?.picture} size={32} icon={<UserOutlined />} />
+  {loading ? (
+    <Skeleton.Avatar active size={32} shape="circle" />
+  ) : (
+    <Avatar src={user?.picture} size={32} icon={<UserOutlined />} />
+  )}
 
-  <div className="flex-1">
-    <div className="flex items-center gap-1 text-black text-[14px] font-semibold">
-      {user?.displayName || 'Account'}
-      {isPremium && <Crown className="text-yellow-400 w-4 h-4 bg-black rounded" />}
-    </div>
-    <div className="text-[10px] text-gray/80">{user?.email}</div>
-  </div>
+  <div className="flex-1">
+    {loading ? (
+      <Skeleton.Input active size="small" style={{ width: 120 }} />
+    ) : (
+      <>
+        <div className="flex items-center gap-1 text-black text-[14px] font-semibold">
+          {user?.displayName || "Account"}
+        </div>
+        <div className="text-[10px] text-gray/80">{user?.email}</div>
+      </>
+    )}
+  </div>
+</div>
+
 
   {!isPremium ? (
     <Tooltip
