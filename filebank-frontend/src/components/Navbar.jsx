@@ -248,7 +248,8 @@ useEffect(() => {
 </span>
 
 </Link>
-    ) 
+    )} 
+    
 {user?.hasIssue && (
       <Tooltip title="This account has an issue" color="gold">
         <Badge
