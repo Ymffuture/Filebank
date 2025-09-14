@@ -323,11 +323,11 @@ export default function Navbar() {
   <Avatar src={user?.picture} size={32} icon={<UserOutlined />} />
 
   <div className="flex-1">
-    <div className="flex items-center gap-1 text-white text-[14px] font-semibold">
+    <div className="flex items-center gap-1 text-black text-[14px] font-semibold">
       {user?.displayName || 'Account'}
-      {isPremium && <Crown className="text-yellow-400 w-4 h-4" />}
+      {isPremium && <Crown className="text-yellow-400 w-4 h-4 bg-black rounded-lg p-2" />}
     </div>
-    <div className="text-[10px] text-white/80">{user?.email}</div>
+    <div className="text-[10px] text-gray/80">{user?.email}</div>
   </div>
 
   {!isPremium ? (
