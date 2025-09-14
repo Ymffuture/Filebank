@@ -235,7 +235,7 @@ useEffect(() => {
         </>
       }
     />
-    {loading? <Skeleton.Input active size="default" style={{ width: 150 }} className="flex items-center" />
+    {loading? <Skeleton.Input active size="default" style={{ width: 150 }} className="flex items-center relative right-[14%] text-gray-600" />
      : ( 
     <Link to="/" className="flex items-center relative right-[14%] font-inter">
   <img src={logo} alt="Famacloud Logo" className="w-16 h-16 md:w-16 md:h-16 scale-50"/>
@@ -277,7 +277,7 @@ useEffect(() => {
 <div className="absolute right-5 top-3 flex items-center space-x-4 gap-3">
   {/* Notification Icon */}
   {loading ? (
-    <Skeleton.Avatar active size="default" shape="circle" style={{backgroundColor:'gray'}} />
+    <Skeleton.Input active size="default" shape="circle" style={{backgroundColor:'gray'}} className="right-4"/>
   ) : (
     <Badge
       count={notifications > 0 ? (
