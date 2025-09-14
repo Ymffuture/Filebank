@@ -78,7 +78,7 @@ const SearchBar = () => {
   }, [query, filteredLinks]);
 
   return (
-    <div className="search absolute right-[22%]">
+    <div className="search absolute right-[23%]">
       {/* Toggle icon */}
       <button
         onClick={() => setOpen((prev) => !prev)}
@@ -88,14 +88,14 @@ const SearchBar = () => {
         {open ? (
           <X
             style={{
-              fontSize: 20,
+              fontSize: 24,
               color: "#FF0000",
               background: "white",
               borderRadius: "50px",
             }}
           />
         ) : (
-          <Search style={{ fontSize: 34, color: "#9CA3AF" }} />
+          <Search style={{ fontSize: 36, color: "#9CA3AF" }} />
         )}
       </button>
 
@@ -123,7 +123,7 @@ const SearchBar = () => {
             {/* Results */}
             <ul className="mt-2 max-h-70 overflow-y-auto">
               {loading ? (
-                <li className="text-gray-500 flex items-center">
+                <li className="text-gray-500 flex items-center gap-2">
              <Loader2 className="animate-spin w-3 h-3" /> <ShinyText text="Smart Searching..." disabled={false} speed={3} style={{color:'rgba(255, 255, 255, 0.15)', fontSize:'12px'}} />
                 </li>
               ) : filteredLinks.length > 0 ? (
