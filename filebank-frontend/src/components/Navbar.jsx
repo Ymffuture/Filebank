@@ -85,7 +85,7 @@ export default function Navbar() {
 useEffect(() => {
   const timer = setTimeout(() => {
     setLoading(false); // simulate fetch done
-  }, 1500);
+  }, 3000);
   return () => clearTimeout(timer);
 }, []);
  
@@ -235,6 +235,8 @@ useEffect(() => {
         </>
       }
     />
+    {loading? <Skeleton.Input active size="small" style={{ width: 150 }} />
+    ) : ( 
     <Link to="/" className="flex items-center relative right-[16%] font-inter">
   <img src={logo} alt="Famacloud Logo" className="w-16 h-16 md:w-16 md:h-16 scale-50 rounded-full"/>
       
@@ -246,6 +248,7 @@ useEffect(() => {
 </span>
 
 </Link>
+    ) 
 {user?.hasIssue && (
       <Tooltip title="This account has an issue" color="gold">
         <Badge
@@ -273,7 +276,7 @@ useEffect(() => {
 <div className="absolute right-5 top-3 flex items-center space-x-4 gap-3">
   {/* Notification Icon */}
   {loading ? (
-    <Skeleton.Avatar active size="small" shape="circle" />
+    <Skeleton.Avatar active size="small" shape="circle" style={{color:'gray'}} />
   ) : (
     <Badge
       count={notifications > 0 ? (
