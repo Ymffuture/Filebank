@@ -236,7 +236,7 @@ useEffect(() => {
       }
     />
     {loading? <Skeleton.Input active size="small" style={{ width: 150 }} />
-    ) : ( 
+     : ( 
     <Link to="/" className="flex items-center relative right-[16%] font-inter">
   <img src={logo} alt="Famacloud Logo" className="w-16 h-16 md:w-16 md:h-16 scale-50 rounded-full"/>
       
