@@ -162,8 +162,8 @@ export default function NotificationsModal({ visible, onClose }) {
       >
         <List.Item.Meta
           avatar={<Skeleton.Avatar active size="small" shape="circle" />}
-          title={<Skeleton.Input style={{ width: 120 }} active size="small" />}
-          description={<Skeleton.Input style={{ width: 80 }} active size="small" />}
+          title={<Skeleton.Input style={{ width: 120 }} active  />}
+          description={<Skeleton.Input style={{ width: 80 }} active />}
         />
         <Skeleton paragraph={{ rows: 2 }} active />
       </List.Item>
