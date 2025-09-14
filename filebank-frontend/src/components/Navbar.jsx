@@ -323,7 +323,7 @@ useEffect(() => {
   )}
 </div>
 
-    <SearchBar className='absolute right-0' />
+    <SearchBar />
   </div>
 
   
