@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Drawer, List, Badge, Button, Space, Popconfirm, Spin, Typography, Tooltip, Skeleton} from 'antd';
+import { Drawer, List, Badge, Button, Space, Popconfirm, Spin, Typography, Tooltip} from 'antd';
 import { DeleteOutlined, CheckOutlined, BellOutlined, CloseOutlined } from '@ant-design/icons';
 import { useSnackbar } from 'notistack';
 import Lottie from 'lottie-react';
@@ -144,32 +144,9 @@ export default function NotificationsModal({ visible, onClose }) {
         </div>
       }
     >
-
-{loading ? (
-  // Skeleton list instead of Spin
-  <List
-    itemLayout="vertical"
-    dataSource={Array.from({ length: 4 })} // 4 skeleton rows
-    renderItem={(_, idx) => (
-      <List.Item
-        key={idx}
-        style={{
-          backgroundColor: "whitesmoke",
-          borderRadius: 8,
-          padding: "8px 12px",
-          marginBottom: 8,
-        }}
-      >
-        <List.Item.Meta
-          avatar={<Skeleton.Avatar active size="small" shape="circle" />}
-          title={<Skeleton.Input style={{ width: 120 }} active size="default" />}
-          description={<Skeleton.Input style={{ width: 80 }} active size="default" />}
-        />
-        <Skeleton paragraph={{ rows: 2 }} active />
-      </List.Item>
-    )}
-  />
-)  : (
+      {loading ? (
+        <Spin />
+      ) : (
         <List
           itemLayout="vertical"
           dataSource={notifications}
