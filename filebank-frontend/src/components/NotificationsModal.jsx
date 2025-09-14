@@ -1,14 +1,26 @@
-import React, { useEffect, useState } from 'react';
-import { Drawer, List, Badge, Button, Space, Popconfirm, Spin, Typography, Tooltip} from 'antd';
-import { DeleteOutlined, CheckOutlined, BellOutlined, CloseOutlined } from '@ant-design/icons';
-import { useSnackbar } from 'notistack';
-import Lottie from 'lottie-react';
-import verifyAnimation from '../assets/Verified.json'; 
-import api from '../api/fileApi';
-import { ShieldCheck, CheckCircle, Bell, Crown, BadgeCheck} from 'lucide-react';
-import parse from 'html-react-parser';
-import DOMPurify from 'dompurify';
-const { Paragraph, Text } = Typography;
+// NotificationsModal.jsx
+import React, { useEffect, useState } from "react";
+import {
+  Drawer,
+  List,
+  Badge,
+  Button,
+  Space,
+  Popconfirm,
+  Typography,
+  Tooltip,
+  Skeleton,
+  Empty,
+} from "antd";
+import { DeleteOutlined, CheckOutlined } from "@ant-design/icons";
+import { useSnackbar } from "notistack";
+import Lottie from "lottie-react";
+import verifyAnimation from "../assets/Verified.json";
+import api from "../api/fileApi";
+import { Bell, Crown, BadgeCheck } from "lucide-react";
+import DOMPurify from "dompurify";
+
+const { Text } = Typography;
 
 export default function NotificationsModal({ visible, onClose }) {
   const { enqueueSnackbar } = useSnackbar();
@@ -16,15 +28,25 @@ export default function NotificationsModal({ visible, onClose }) {
   const [loading, setLoading] = useState(false);
   const [processing, setProcessing] = useState({});
   const [markAllLoading, setMarkAllLoading] = useState(false);
-  const currentUser = JSON.parse(localStorage.getItem('filebankUser'));
+
+  // parse user from localStorage safely
+  let currentUser = null;
+  try {
+    currentUser = JSON.parse(localStorage.getItem("filebankUser"));
+  } catch (err) {
+    currentUser = null;
+  }
 
   const loadNotifications = async () => {
     setLoading(true);
     try {
-      const res = await api.get('/notifications/all');
-      setNotifications(res.data);
+      const res = await api.get("/notifications/all");
+      // ensure array fallback
+      setNotifications(Array.isArray(res.data) ? res.data : []);
     } catch (err) {
-      enqueueSnackbar('Failed to load notifications', { variant: 'error' });
+      console.error("loadNotifications error", err);
+      enqueueSnackbar("Failed to load notifications", { variant: "error" });
+      setNotifications([]);
     } finally {
       setLoading(false);
     }
@@ -32,6 +54,8 @@ export default function NotificationsModal({ visible, onClose }) {
 
   useEffect(() => {
     if (visible) loadNotifications();
+    // don't re-run on every render
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [visible]);
 
   const markAsRead = async (id) => {
@@ -41,10 +65,11 @@ export default function NotificationsModal({ visible, onClose }) {
     }));
     try {
       await api.put(`notifications/${id}/read`);
-      enqueueSnackbar('Marked as read', { variant: 'success' });
-      loadNotifications();
-    } catch {
-      enqueueSnackbar('Failed to mark as read', { variant: 'error' });
+      enqueueSnackbar("Marked as read", { variant: "success" });
+      await loadNotifications();
+    } catch (err) {
+      console.error("markAsRead error", err);
+      enqueueSnackbar("Failed to mark as read", { variant: "error" });
     } finally {
       setProcessing((prev) => ({
         ...prev,
@@ -60,10 +85,11 @@ export default function NotificationsModal({ visible, onClose }) {
     }));
     try {
       await api.delete(`notifications/${id}`);
-      enqueueSnackbar('Deleted', { variant: 'info' });
-      loadNotifications();
-    } catch {
-      enqueueSnackbar('Failed to delete', { variant: 'error' });
+      enqueueSnackbar("Deleted", { variant: "info" });
+      await loadNotifications();
+    } catch (err) {
+      console.error("deleteNotification error", err);
+      enqueueSnackbar("Failed to delete", { variant: "error" });
     } finally {
       setProcessing((prev) => ({
         ...prev,
@@ -75,165 +101,205 @@ export default function NotificationsModal({ visible, onClose }) {
   const markAllAsRead = async () => {
     setMarkAllLoading(true);
     try {
-      await Promise.all(
-        notifications.filter((n) => !n.read).map((n) => api.put(`/notifications/${n._id}/read`))
-      );
-      enqueueSnackbar('All marked as read', { variant: 'success' });
-      loadNotifications();
-    } catch {
-      enqueueSnackbar('Failed to mark all', { variant: 'error' });
+      const unread = notifications.filter((n) => !n.read);
+      await Promise.all(unread.map((n) => api.put(`/notifications/${n._id}/read`)));
+      enqueueSnackbar("All marked as read", { variant: "success" });
+      await loadNotifications();
+    } catch (err) {
+      console.error("markAllAsRead error", err);
+      enqueueSnackbar("Failed to mark all", { variant: "error" });
     } finally {
       setMarkAllLoading(false);
     }
   };
 
-  
+  // count unread safely
+  const unreadCount = Array.isArray(notifications) ? notifications.filter((n) => !n.read).length : 0;
+
   return (
     <Drawer
       title={
-  <div style={{ textAlign: 'center', width: '100%' }}>
-    {/* Drag handle line */}
-    <div
-      style={{
-        width: 40,
-        height: 4,
-        background: '#555',
-        borderRadius: 2,
-        margin: '0 auto 8px',
-        opacity: 0.6
-      }}
-    />
-    
-    <Space style={{ color: '#fff' }}>
-      <Bell style={{ color: '#fff' }} /> Notifications
-      <Badge
-        count={notifications.filter((n) => !n.read).length}
-        style={{
-          backgroundColor: '#ff4d4f',
-          color: '#fff',
-          boxShadow: '0 0 0 1px #000 inset'
-        }}
-      />
-    </Space>
-  </div>
-}
-
+        <div style={{ textAlign: "center", width: "100%" }}>
+          {/* Drag handle line */}
+          <div
+            style={{
+              width: 40,
+              height: 4,
+              background: "#555",
+              borderRadius: 2,
+              margin: "0 auto 8px",
+              opacity: 0.6,
+            }}
+          />
+          <Space style={{ color: "#fff" }}>
+            <Bell style={{ color: "#fff" }} /> Notifications
+            <Badge
+              count={unreadCount}
+              style={{
+                backgroundColor: "#ff4d4f",
+                color: "#fff",
+                boxShadow: "0 0 0 1px #000 inset",
+              }}
+            />
+          </Space>
+        </div>
+      }
       placement="bottom"
       height={580}
       open={visible}
       onClose={onClose}
-      styles={{
-        body: { paddingBottom: 40, color:'#fff' },
-      }}
+      bodyStyle={{ paddingBottom: 40, color: "#fff" }}
       footer={
-        <div style={{ display: 'flex', justifyContent: 'space-between', padding: '8px 16px' }}>
-  <Tooltip title={currentUser?.role === 'free' ? "Upgrade to use this feature" : "Mark all notifications as read"}>
-  <span>
-    <Button
-      onClick={currentUser?.role === 'free' ? undefined : markAllAsRead}
-      icon={currentUser?.role === 'free' ? <Crown size={18} /> : <CheckOutlined />}
-      loading={markAllLoading}
-      type="dashed"
-      disabled={currentUser?.role === 'free'}
-    >
-      Mark All as Read
-    </Button>
-  </span>
-</Tooltip>
-          
+        <div style={{ display: "flex", justifyContent: "space-between", padding: "8px 16px" }}>
+          <Tooltip
+            title={currentUser?.role === "free" ? "Upgrade to use this feature" : "Mark all notifications as read"}
+          >
+            <span>
+              <Button
+                onClick={currentUser?.role === "free" ? undefined : markAllAsRead}
+                icon={currentUser?.role === "free" ? <Crown size={18} /> : <CheckOutlined />}
+                loading={markAllLoading}
+                type="dashed"
+                disabled={currentUser?.role === "free"}
+              >
+                Mark All as Read
+              </Button>
+            </span>
+          </Tooltip>
         </div>
       }
     >
       {loading ? (
-        <Spin />
-      ) : (
+        // Skeleton placeholders (list of 4)
         <List
           itemLayout="vertical"
-          dataSource={notifications}
-          renderItem={(item) => (
+          dataSource={Array.from({ length: 4 })}
+          renderItem={(_, idx) => (
             <List.Item
+              key={idx}
               style={{
-                backgroundColor: !item.read ? '#fffbe6' : 'whitesmoke',
+                backgroundColor: "whitesmoke",
                 borderRadius: 8,
-                padding: '8px 12px',
+                padding: "8px 12px",
                 marginBottom: 8,
-                boxShadow: !item.read ? '0 2px 8px rgba(0,0,0,0.05)' : 'none',
               }}
-              actions={[
-                !item.read && (
-                  <Popconfirm
-                    title="Mark as read?"
-                    onConfirm={() => markAsRead(item._id)}
-                    okText="Yes"
-                    cancelText="No"
-                  >
-                    <Button
-                      type="link"
-                      size="small"
-                      icon={<CheckOutlined />}
-                      loading={processing[item._id]?.markAsRead}
-                    />
-                  </Popconfirm>
-                ),
-                <Popconfirm
-                  title="Delete this notification?"
-                  onConfirm={() => deleteNotification(item._id)}
-                  okText="Yes"
-                  cancelText="No"
-                >
-                  <Button
-                    type="link"
-                    size="small"
-                    icon={<DeleteOutlined />}
-                    loading={processing[item._id]?.delete}
-                  />
-                </Popconfirm>,
-              ]}
             >
               <List.Item.Meta
-                title={
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                    <span style={{ fontSize: 14 }}>
-                      {item.fromUser?.role === 'admin' ? 'Famacloud' : 'Famacloud Notification'}
-                    </span>
-                    {item.fromUser?.role === 'admin' ? (
-                      <Lottie
-                        animationData={verifyAnimation}
-                        loop={true}
-                        style={{ width: 20, height: 20 }}
-                      />
-                    ) : (
-                    
-          item.fromUser?.role !== 'free' ? 
-  <span style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
-    <BadgeCheck color="gold" size={18} />
-    <Bell color="#1E90FF" size={16} />
-  </span> :  <Bell color="#1E90FF" size={20} />
-
-
-                    )}
-                    
-                  </div>
-                }
-                description={
-                  <Text type="secondary" style={{ fontSize: 12 }}>
-                    {new Date(item.createdAt).toLocaleString('en-ZA', { hour12: false })}
-                  </Text>
-                }
+                avatar={<Skeleton.Avatar active size="small" shape="circle" />}
+                title={<Skeleton.Input active size="small" style={{ width: 140 }} />}
+                description={<Skeleton.Input active size="small" style={{ width: 90 }} />}
               />
-              <div
-  style={{ marginTop: 4, fontSize: 13 }}
-  dangerouslySetInnerHTML={{
-    __html: DOMPurify.sanitize(item.message, {
-      ALLOWED_TAGS: ['b', 'i', 'strong', 'em', 'a', 'p', 'span', 'div', 'br', 'ul', 'li', 'ol', 'img', 'button'],
-      ALLOWED_ATTR: ['href', 'target', 'rel', 'style', 'class', 'onclick'],
-    }),
-  }}
-/>
+              <Skeleton paragraph={{ rows: 2 }} active />
             </List.Item>
           )}
         />
+      ) : (
+        <>
+          {(!notifications || notifications.length === 0) ? (
+            <div style={{ padding: 24 }}>
+              <Empty description="No notifications" style={{ color: "#fff" }} />
+            </div>
+          ) : (
+            <List
+              itemLayout="vertical"
+              dataSource={notifications}
+              renderItem={(item) => (
+                <List.Item
+                  key={item._id}
+                  style={{
+                    backgroundColor: !item.read ? "#fffbe6" : "whitesmoke",
+                    borderRadius: 8,
+                    padding: "8px 12px",
+                    marginBottom: 8,
+                    boxShadow: !item.read ? "0 2px 8px rgba(0,0,0,0.05)" : "none",
+                  }}
+                  actions={[
+                    !item.read && (
+                      <Popconfirm
+                        title="Mark as read?"
+                        onConfirm={() => markAsRead(item._id)}
+                        okText="Yes"
+                        cancelText="No"
+                      >
+                        <Button
+                          type="link"
+                          size="small"
+                          icon={<CheckOutlined />}
+                          loading={processing[item._id]?.markAsRead}
+                        />
+                      </Popconfirm>
+                    ),
+                    <Popconfirm
+                      title="Delete this notification?"
+                      onConfirm={() => deleteNotification(item._id)}
+                      okText="Yes"
+                      cancelText="No"
+                    >
+                      <Button
+                        type="link"
+                        size="small"
+                        icon={<DeleteOutlined />}
+                        loading={processing[item._id]?.delete}
+                      />
+                    </Popconfirm>,
+                  ]}
+                >
+                  <List.Item.Meta
+                    title={
+                      <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                        <span style={{ fontSize: 14 }}>
+                          {item.fromUser?.role === "admin" ? "Famacloud" : "Famacloud Notification"}
+                        </span>
+
+                        {item.fromUser?.role === "admin" ? (
+                          <Lottie animationData={verifyAnimation} loop style={{ width: 20, height: 20 }} />
+                        ) : item.fromUser?.role !== "free" ? (
+                          <span style={{ display: "flex", alignItems: "center", gap: 4 }}>
+                            <BadgeCheck color="gold" size={18} />
+                            <Bell color="#1E90FF" size={16} />
+                          </span>
+                        ) : (
+                          <Bell color="#1E90FF" size={20} />
+                        )}
+                      </div>
+                    }
+                    description={
+                      <Text type="secondary" style={{ fontSize: 12 }}>
+                        {new Date(item.createdAt).toLocaleString("en-ZA", { hour12: false })}
+                      </Text>
+                    }
+                  />
+                  <div
+                    style={{ marginTop: 4, fontSize: 13 }}
+                    dangerouslySetInnerHTML={{
+                      __html: DOMPurify.sanitize(item.message, {
+                        ALLOWED_TAGS: [
+                          "b",
+                          "i",
+                          "strong",
+                          "em",
+                          "a",
+                          "p",
+                          "span",
+                          "div",
+                          "br",
+                          "ul",
+                          "li",
+                          "ol",
+                          "img",
+                          "button",
+                        ],
+                        ALLOWED_ATTR: ["href", "target", "rel", "style", "class", "onclick"],
+                      }),
+                    }}
+                  />
+                </List.Item>
+              )}
+            />
+          )}
+        </>
       )}
     </Drawer>
   );
 }
+I 
