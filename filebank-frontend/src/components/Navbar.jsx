@@ -235,7 +235,7 @@ useEffect(() => {
         </>
       }
     />
-    {loading? <Skeleton.Input active size="default" style={{ width: 150 }} className="flex items-center relative right-[18%] text-gray-600" />
+    {loading? <Skeleton.Input active size="default" style={{ width: 150 }} className="flex items-center relative right-[18%]" />
      : ( 
     <Link to="/" className="flex items-center relative right-[18%] font-inter">
   <img src={logo} alt="Famacloud Logo" className="w-16 h-16 md:w-16 md:h-16 scale-50"/>
@@ -257,7 +257,7 @@ useEffect(() => {
           style={{
             backgroundColor: '#121212',
             borderRadius:'50%', 
-            boxShadow: '0 0 4px gray',
+            boxShadow: '0 0 4px #202124',
           }}
           offset={[-30, - 8]}
           className='animate-pulse transition-all' 
