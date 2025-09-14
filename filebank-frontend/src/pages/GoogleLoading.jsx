@@ -37,7 +37,7 @@ export default function GoogleLoading() {
       animate={{ opacity: 1, scale: 1 }}
       className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-br from-[#fff] to-[whitesmoke] text-white p-6"
     >
-      <div className="w-72 h-72 mb-8">
+      <div className="w-52 h-52 mb-8">
         <Lottie animationData={LoadingAnimation} loop />
       </div>
 
