@@ -269,35 +269,39 @@ useEffect(() => {
   </div>
 
   {/* Avatar and user dropdown on the right */}
-  <div className="absolute right-5 top-3 flex items-center space-x-4 gap-3">
-  {/* Notification Icon with Badge */}
-    
-  <Badge
-  count={notifications > 0 ? (
-    <span
-      style={{
-        backgroundColor: '#FF0000',  // custom background color
-        color: '#fff',               // text color
-        border: '4px solid #202124',   // border color
-        padding: '4px',
-        borderRadius: '30px',
-        fontSize: '12px',
-        boxShadow: '0 0 4px #202124'
-      }}
+  
+<div className="absolute right-5 top-3 flex items-center space-x-4 gap-3">
+  {/* Notification Icon */}
+  {loading ? (
+    <Skeleton.Avatar active size="small" shape="circle" />
+  ) : (
+    <Badge
+      count={notifications > 0 ? (
+        <span style={{
+          backgroundColor: '#FF0000',
+          color: '#fff',
+          border: '4px solid #202124',
+          padding: '4px',
+          borderRadius: '20px',
+          fontSize: '12px',
+          boxShadow: '0 0 4px #202124'
+        }}>
+          {notifications}
+        </span>
+      ) : null}
+      size="medium"
+      offset={[-4, 3]}
     >
-      {notifications}
-    </span>) : null }
-  size="medium"
-  offset={[-4, 3]}
->
-  <Bell
-    className="text-gray-400 text-[20px] cursor-pointer hover:text-blue-400 transition"
-    onClick={() => {
-      setNotifModalVisible(true);
-      setDrawerVisible(false);
-    }}
-  />
-</Badge>
+      <Bell
+        className="text-gray-400 text-[20px] cursor-pointer hover:text-blue-400 transition"
+        onClick={() => {
+          setNotifModalVisible(true);
+          setDrawerVisible(false);
+        }}
+      />
+    </Badge>
+  )}
+
 
 
   {/* Avatar with Dropdown */}
