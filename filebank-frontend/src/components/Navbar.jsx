@@ -235,28 +235,20 @@ useEffect(() => {
         </>
       }
     />
-<div className="flex items-center justify-center">
-  {loading ? (
-    <Skeleton.Input 
-      active 
-      size="default" 
-      style={{ width: 150, height: 40, borderRadius: 8 }} 
-    />
-  ) : (
-    <Link to="/" className="flex items-center font-inter gap-2">
-      <img 
-        src={logo} 
-        alt="Famacloud Logo" 
-        className="w-12 h-12 md:w-16 md:h-16 object-contain" 
-      />
-      <span className="text-lg flex">
-        <span className="text-gray-400 font-bold">Fama</span>
-        <span className="text-white">cloud</span>
-      </span>
-    </Link>
-  )}
-</div>
+    {loading? <Skeleton.Input active size="default" style={{ width: 150 }} className="flex items-center relative right-[18%] text-gray-600" />
+     : ( 
+    <Link to="/" className="flex items-center relative right-[18%] font-inter">
+  <img src={logo} alt="Famacloud Logo" className="w-16 h-16 md:w-16 md:h-16 scale-50"/>
+      
+  <span className="text-lg flex">
+  <span className="text-gray-400 font-bold ">Fama</span>
+  <span className="text-[#fff] ">cloud</span>
+    
+      
+</span>
 
+</Link>
+    )} 
     
 {user?.hasIssue && (
       <Tooltip title="This account has an issue" color="gold">
@@ -265,7 +257,7 @@ useEffect(() => {
           style={{
             backgroundColor: '#121212',
             borderRadius:'50%', 
-            boxShadow: '0 0 4px #202124',
+            boxShadow: '0 0 4px gray',
           }}
           offset={[-30, - 8]}
           className='animate-pulse transition-all' 
