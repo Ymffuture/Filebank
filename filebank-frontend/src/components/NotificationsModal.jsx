@@ -145,7 +145,7 @@ export default function NotificationsModal({ visible, onClose }) {
       }
     >
       {loading ? (
-        <Spin /> <span>Loading... </span>
+        <Spin />
       ) : (
         <List
           itemLayout="vertical"
