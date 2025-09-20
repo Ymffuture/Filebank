@@ -257,28 +257,25 @@ setMessages(prev => [
       
 // end
   const highlightKeywords = (text) => {
-  return text
-    .replace(/\bmap\(\)/g, '<code style="color:#1677ff;background:#f0f5ff;padding:2px 4px;border-radius:4px;">map()</code>')
-    .replace(/\bfilter\(\)/g, '<code style="color:#52c41a;background:#f6ffed;padding:2px 4px;border-radius:4px;">filter()</code>')
-    .replace(/\breduce\(\)/g, '<code style="color:#fa8c16;background:#fff7e6;padding:2px 4px;border-radius:4px;">reduce()</code>')
-    .replace(/\bsort\(\)/g, '<code style="color:#13c2c2;background:#e6fffb;padding:2px 4px;border-radius:4px;">sort()</code>')
-    .replace(/\bforEach\(\)/g, '<code style="color:#722ed1;background:#f9f0ff;padding:2px 4px;border-radius:4px;">forEach()</code>')
-    .replace(/\blambda\b/g, '<code style="color:#eb2f96;background:#fff0f6;padding:2px 4px;border-radius:4px;">lambda</code>')
-    .replace(/\bdef\b/g, '<code style="color:#fa541c;background:#fff2e8;padding:2px 4px;border-radius:4px;">def</code>')
-    .replace(/\bimport\b/g, '<code style="color:#5cdbd3;background:#e6fffb;padding:2px 4px;border-radius:4px;">import</code>')
-    .replace(/\bprint\(/g, '<code style="color:#2f54eb;background:#f0f5ff;padding:2px 4px;border-radius:4px;">print(</code>')
-    .replace(/\bpublic\b/g, '<code style="color:#d46b08;background:#fff7e6;padding:2px 4px;border-radius:4px;">public</code>')
-    .replace(/\bstatic\b/g, '<code style="color:#9254de;background:#f9f0ff;padding:2px 4px;border-radius:4px;">static</code>')
-    .replace(/\bvoid\b/g, '<code style="color:#08979c;background:#e6fffb;padding:2px 4px;border-radius:4px;">void</code>')
-    .replace(/\bSystem\.out\.println\(/g, '<code style="color:#0050b3;background:#e6f7ff;padding:2px 4px;border-radius:4px;">System.out.println(</code>')
-    .replace(/\b#include\b/g, '<code style="color:#1890ff;background:#f0f5ff;padding:2px 4px;border-radius:4px;">#include</code>')
-    .replace(/\bstd::cout\b/g, '<code style="color:#f5222d;background:#fff1f0;padding:2px 4px;border-radius:4px;">std::cout</code>')
-    .replace(/\bstd::endl\b/g, '<code style="color:#722ed1;background:#f9f0ff;padding:2px 4px;border-radius:4px;">std::endl</code>')
-    .replace(/\bint\b/g, '<code style="color:#3f6600;background:#f6ffed;padding:2px 4px;border-radius:4px;">int</code>')
-    // 👇 Add this regex for Markdown-style links
-    .replace(/\[([^\]]+)\]\((https?:\/\/[^\s)]+)\)/g, '<a href="$2" target="_blank" rel="noopener noreferrer" style="color:#1677ff; text-decoration:underline;">$1</a>');
-};
-
+    return text
+      .replace(/\bmap\(\)/g, '<code style="color:#1677ff;background:#f0f5ff;padding:2px 4px;border-radius:4px;">map()</code>')
+      .replace(/\bfilter\(\)/g, '<code style="color:#52c41a;background:#f6ffed;padding:2px 4px;border-radius:4px;">filter()</code>')
+      .replace(/\breduce\(\)/g, '<code style="color:#fa8c16;background:#fff7e6;padding:2px 4px;border-radius:4px;">reduce()</code>')
+      .replace(/\bsort\(\)/g, '<code style="color:#13c2c2;background:#e6fffb;padding:2px 4px;border-radius:4px;">sort()</code>')
+      .replace(/\bforEach\(\)/g, '<code style="color:#722ed1;background:#f9f0ff;padding:2px 4px;border-radius:4px;">forEach()</code>')
+      .replace(/\blambda\b/g, '<code style="color:#eb2f96;background:#fff0f6;padding:2px 4px;border-radius:4px;">lambda</code>')
+      .replace(/\bdef\b/g, '<code style="color:#fa541c;background:#fff2e8;padding:2px 4px;border-radius:4px;">def</code>')
+      .replace(/\bimport\b/g, '<code style="color:#5cdbd3;background:#e6fffb;padding:2px 4px;border-radius:4px;">import</code>')
+      .replace(/\bprint\(/g, '<code style="color:#2f54eb;background:#f0f5ff;padding:2px 4px;border-radius:4px;">print(</code>')
+      .replace(/\bpublic\b/g, '<code style="color:#d46b08;background:#fff7e6;padding:2px 4px;border-radius:4px;">public</code>')
+      .replace(/\bstatic\b/g, '<code style="color:#9254de;background:#f9f0ff;padding:2px 4px;border-radius:4px;">static</code>')
+      .replace(/\bvoid\b/g, '<code style="color:#08979c;background:#e6fffb;padding:2px 4px;border-radius:4px;">void</code>')
+      .replace(/\bSystem\.out\.println\(/g, '<code style="color:#0050b3;background:#e6f7ff;padding:2px 4px;border-radius:4px;">System.out.println(</code>')
+      .replace(/\b#include\b/g, '<code style="color:#1890ff;background:#f0f5ff;padding:2px 4px;border-radius:4px;">#include</code>')
+      .replace(/\bstd::cout\b/g, '<code style="color:#f5222d;background:#fff1f0;padding:2px 4px;border-radius:4px;">std::cout</code>')
+      .replace(/\bstd::endl\b/g, '<code style="color:#722ed1;background:#f9f0ff;padding:2px 4px;border-radius:4px;">std::endl</code>')
+      .replace(/\bint\b/g, '<code style="color:#3f6600;background:#f6ffed;padding:2px 4px;border-radius:4px;">int</code>');
+  };
 
   const renderMessage = (msg, idx) => {
 if (msg.type === 'error') {
