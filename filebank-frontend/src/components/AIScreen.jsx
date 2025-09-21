@@ -3,7 +3,7 @@ import { Input, Button, Space, Switch, Tooltip, Typography, message, Modal } fro
 import { Input as AntInput } from 'antd';
 import { CopyOutlined, BulbOutlined } from '@ant-design/icons';
 import api from '../api/fileApi';
-
+import ShinyText from './ShinyText';
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { atomDark } from "react-syntax-highlighter/dist/esm/styles/prism";
 import js from "react-syntax-highlighter/dist/esm/languages/prism/javascript";
@@ -467,8 +467,8 @@ if (msg.type === 'error') {
           <div className="flex flex-col" aria-live="polite">
             {renderMessage({ from: 'bot', text: botTypingText }, 'typing')}
             <div className="ai-typing-bubble dark:bg-gray-700 dark:text-white">
-              <span className='animate-pulse text-[gray]'>typing</span>
-              <div className="flex ml-2 gap-1">
+              <ShinyText text="typing" disabled={false} speed={6} style={{color:'rgba(255, 255, 255, 0.15)', fontSize:'12px'}} />
+              <div className="flex ml-2">
                 <span className="ai-dot"></span>
                 <span className="ai-dot"></span>
                 <span className="ai-dot"></span>
@@ -486,7 +486,7 @@ if (msg.type === 'error') {
       value={input}
       onChange={(e) => setInput(e.target.value)}
       onKeyDown={handleKeyDown}
-      placeholder="Ask famaAI..."
+      placeholder="Ask anything"
       aria-label="Type your message to famaAI"
       rows={1}
       className="w-full resize-none border-0 bg-transparent px-4 py-3 text-sm text-gray-900 dark:text-white focus:outline-none focus:ring-0"
@@ -521,7 +521,7 @@ if (msg.type === 'error') {
           </div>
 
           <p className="text-xs text-center text-gray-500 dark:text-gray-400 mt-2">
-            <b>famaAI</b> may produce errors. Verify answers before using.
+            <b>famaAI</b> may produce errors. Verify answers before using. <span className='underline' >Learn more</span >
           </p>
         </div>
       </footer>
