@@ -265,8 +265,8 @@ export default function ChangePlanPage() {
                         {plan.name}
                       </Text>
                       <Text>
-                      {plans.best && (
-                        <Tag color="green" className="font-bold">
+                      {plan.best && (
+                        <Tag color="green" className="font-bold shadow">
                           Recommended
                         </Tag>
                       )}
@@ -274,7 +274,7 @@ export default function ChangePlanPage() {
                       
                     }
                     bordered={false}
-                    className={`transition-all duration-300 rounded-xl shadow-md hover:shadow-xl ${
+                    className={`transition-all duration-300 rounded-xl shadow-md hover:shadow-xl p-2 ${
                       isSelected ? "ring-2 ring-[#a52a2a]" : "border"
                     }`}
                     style={{
@@ -287,7 +287,7 @@ export default function ChangePlanPage() {
                         block
                         size="large"
                         disabled={isCurrent}
-                        className={`rounded-lg font-semibold m-3 ${
+                        className={`rounded-lg font-semibold m-3 p-3 ${
                           isCurrent
                             ? "bg-gray-100 text-gray-500"
                             : "bg-[#202124] hover:bg-[#7a1e1e] text-white shadow-md"
