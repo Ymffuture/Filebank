@@ -264,7 +264,7 @@ export default function ChangePlanPage() {
                       <Text strong className="text-lg text-[#202124]">
                         {plan.name}
                       </Text>
-                      {plan.best && (
+                      {plans.best && (
                         <Tag color="green" className="font-bold">
                           Recommended
                         </Tag>
