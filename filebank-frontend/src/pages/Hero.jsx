@@ -56,7 +56,7 @@ useEffect(() => {
         })
         .catch(() => {});
     }
-  }, 1000); // run every 1 second
+  }, 100); // run every 1 second
 
   return () => clearInterval(interval); // cleanup on unmount
 }, []);
