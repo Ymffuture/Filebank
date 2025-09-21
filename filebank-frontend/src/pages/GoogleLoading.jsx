@@ -26,7 +26,7 @@ export default function GoogleLoading() {
     // Simulate loading then redirect
     const timer = setTimeout(() => {
       navigate("/");
-    }, 8000);
+    }, 10000);
 
     return () => clearTimeout(timer);
   }, [navigate]);
