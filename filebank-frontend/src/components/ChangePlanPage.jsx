@@ -264,11 +264,14 @@ export default function ChangePlanPage() {
                       <Text strong className="text-lg text-[#202124]">
                         {plan.name}
                       </Text>
+                      <Text>
                       {plans.best && (
                         <Tag color="green" className="font-bold">
                           Recommended
                         </Tag>
                       )}
+                      </Text>
+                      
                     }
                     bordered={false}
                     className={`transition-all duration-300 rounded-xl shadow-md hover:shadow-xl ${
