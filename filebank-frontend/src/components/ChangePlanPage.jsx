@@ -230,8 +230,18 @@ export default function ChangePlanPage() {
       <Helmet>
         <title>Change plan | best-selling R39</title>
       </Helmet>
-      
-      <div className="bg-gradient-to-r from-[#202124] to-[#1677ff] text-white py-12 text-center">
+
+      <div className="min-h-screen bg-gradient-to-br from-[#202124] via-[gray] to-white p-6">
+        <div className="max-w-6xl mx-auto">
+          <div className="flex items-center justify-between mb-6">
+            
+            <Title level={3} style={{ marginBottom: 0, color: "#fff" }}>
+              🔥 Best pricing board
+            </Title>
+            <div />
+          </div>
+
+          <div className="bg-gradient-to-r from-[#202124] to-[#1677ff] text-white py-12 text-center">
         <Title level={2} style={{ color: "#fff" }}>
           💎 Upgrade Your Famacloud Experience
         </Title>
