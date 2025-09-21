@@ -38,8 +38,8 @@ const planFeatures = {
   free: {
     upload: true,
     support: true,
-    share: false,
-    autoDelete: false,
+    share: true,
+    autoDelete: true,
     ai: false,
     cv: false,
     agents: false,
@@ -71,15 +71,16 @@ const plans = [
   { name: "Free", price: "R0", description: "Basic access", role: "free" },
   {
     name: "Standard",
-    price: "R19 Once",
+    price: "R39 Once",
     description: "CV + Cover Letter help",
     role: "standard",
   },
   {
     name: "Premium",
-    price: "R39 Once",
+    price: "R59 Once",
     description: "AI assistant + early features",
     role: "premium",
+    best:true, 
   },
 ];
 
@@ -195,7 +196,7 @@ export default function ChangePlanPage() {
         )}
         {upgradeStatus === "rejected" && statusData?.rejectionReason && (
           <Paragraph type="danger" className="text-red-600 text-xs">
-            Reason: {statusData.rejectionReason}
+            <b>Reason</b>: {statusData.rejectionReason}
           </Paragraph>
         )}
       </div>
@@ -231,7 +232,7 @@ export default function ChangePlanPage() {
         <title>Change plan | best-selling R39</title>
       </Helmet>
 
-      <div className="min-h-screen bg-gradient-to-br from-[#202124] via-[gray] to-white p-6">
+      <div className="min-h-screen bg-gradient-to-br from-[#fff] via-[#202124] to-white p-6">
         <div className="max-w-6xl mx-auto">
           <div className="flex items-center justify-between mb-6">
             
@@ -241,7 +242,7 @@ export default function ChangePlanPage() {
             <div />
           </div>
 
-          <div className="bg-gradient-to-r from-[#202124] to-[#1677ff] text-white py-12 text-center">
+          <div className="bg-gradient-to-r from-[#202124] to-[#1677ff] text-white py-12 text-center mt-2">
         <Title level={2} style={{ color: "#fff" }}>
           💎 Upgrade Your Famacloud Experience
         </Title>
@@ -263,6 +264,11 @@ export default function ChangePlanPage() {
                       <Text strong className="text-lg text-[#202124]">
                         {plan.name}
                       </Text>
+                      {plan.best && (
+                        <Tag color="green" className="font-bold">
+                          Recommended
+                        </Tag>
+                      )}
                     }
                     bordered={false}
                     className={`transition-all duration-300 rounded-xl shadow-md hover:shadow-xl ${
@@ -278,10 +284,10 @@ export default function ChangePlanPage() {
                         block
                         size="large"
                         disabled={isCurrent}
-                        className={`rounded-lg font-semibold ${
+                        className={`rounded-lg font-semibold m-3 ${
                           isCurrent
                             ? "bg-gray-100 text-gray-500"
-                            : "bg-[#a52a2a] hover:bg-[#7a1e1e] text-white shadow-md"
+                            : "bg-[#202124] hover:bg-[#7a1e1e] text-white shadow-md"
                         }`}
                         onClick={() => !isCurrent && handleChoosePlan(plan)}
                       >
@@ -314,7 +320,7 @@ export default function ChangePlanPage() {
                       />
                       <PlanFeature
                         enabled={features.autoDelete}
-                        label="Auto delete after 180 days"
+                        label="Auto delete after 90 days"
                       />
                       <PlanFeature
                         enabled={features.ai}
