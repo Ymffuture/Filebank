@@ -2,14 +2,16 @@ import React from "react";
 import { Typography, Button, Tooltip, message } from "antd";
 import { Link } from "react-router-dom";
 import {
-  CopyIcon,
+  Copy,
   FileText,
   UserCircle,
   Lock,
   Shield,
   AlertTriangle,
   RefreshCw,
+  Calendar,
 } from "lucide-react";
+import { ArrowLeftIcon } from "@heroicons/react/24/outline";
 
 const { Title, Paragraph } = Typography;
 
@@ -60,7 +62,7 @@ const sections = [
 ];
 
 export default function Terms() {
-  const handleCopy = async (text: string) => {
+  const handleCopy = async (text) => {
     try {
       await navigator.clipboard.writeText(text);
       message.success("Copied to clipboard!");
@@ -80,16 +82,19 @@ export default function Terms() {
         boxShadow: "0 6px 24px rgba(0,0,0,0.08)",
       }}
     >
-      <Title
-        level={2}
-        style={{
-          color: ratColors.darkBlue,
-          marginBottom: "1.5rem",
-          textAlign: "center",
-        }}
-      >
-        📜 Terms of Service
-      </Title>
+      <div className="flex items-center justify-center gap-2 mb-6">
+        <FileText className="w-6 h-6 text-blue-700" />
+        <Title
+          level={2}
+          style={{
+            color: ratColors.darkBlue,
+            marginBottom: 0,
+            textAlign: "center",
+          }}
+        >
+          Terms of Service
+        </Title>
+      </div>
 
       <Paragraph style={{ fontSize: "1rem", color: "#444" }}>
         Welcome to <strong>famacloud</strong>. By using our website and
@@ -120,7 +125,7 @@ export default function Terms() {
           <Tooltip title="Copy section">
             <Button
               type="text"
-              icon={<CopyIcon size={16} />}
+              icon={<Copy size={16} />}
               onClick={() => handleCopy(`${section.title}\n${section.content}`)}
               style={{ position: "absolute", top: 12, right: 12 }}
             />
@@ -136,22 +141,23 @@ export default function Terms() {
           textAlign: "center",
         }}
       >
-        📅 Last updated: June 2025
+        <Calendar className="inline w-4 h-4 mr-1 text-gray-600" /> Last updated:
+        June 2025
       </Paragraph>
 
       <div className="flex gap-4 justify-center mt-6">
         <Link to="/privacy">
-          <Button type="dashed" size="large">
-            🔐 Privacy Policy
+          <Button type="dashed" size="large" icon={<Lock className="w-4 h-4" />}>
+            Privacy Policy
           </Button>
         </Link>
         <Link to="/">
-          <Button type="link" size="large">
-            ⬅ Back to Home
+          <Button type="link" size="large" icon={<ArrowLeftIcon className="w-4 h-4" />}>
+            Back to Home
           </Button>
         </Link>
       </div>
     </div>
   );
 }
-
+ 
