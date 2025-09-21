@@ -8,7 +8,7 @@ import {
   Form,
   Input,
   Badge as AntBadge,
-  Tag,
+  Steps,
 } from "antd";
 import Navbar from "./Navbar";
 import { ArrowLeftOutlined } from "@ant-design/icons";
@@ -21,17 +21,16 @@ import { Helmet } from "react-helmet";
 
 dayjs.extend(relativeTime);
 const { Title, Paragraph, Text } = Typography;
+const { Step } = Steps;
 
 const PlanFeature = ({ enabled, label }) => (
-  <div className="flex items-center gap-2 text-sm">
-    <div
-      className={`w-5 h-5 flex items-center justify-center rounded-full ${
-        enabled ? "bg-green-100 text-green-600" : "bg-red-100 text-red-500"
-      }`}
-    >
-      {enabled ? <Check size={14} /> : <X size={14} />}
-    </div>
-    <span className="text-gray-700">{label}</span>
+  <div className="flex items-center gap-2 text-sm text-gray-700">
+    {enabled ? (
+      <Check className="text-green-600 w-4 h-4" />
+    ) : (
+      <X className="text-red-500 w-4 h-4" />
+    )}
+    <span>{label}</span>
   </div>
 );
 
@@ -69,12 +68,7 @@ const planFeatures = {
 };
 
 const plans = [
-  {
-    name: "Free",
-    price: "R0",
-    description: "Basic access",
-    role: "free",
-  },
+  { name: "Free", price: "R0", description: "Basic access", role: "free" },
   {
     name: "Standard",
     price: "R19 Once",
@@ -86,7 +80,6 @@ const plans = [
     price: "R39 Once",
     description: "AI assistant + early features",
     role: "premium",
-    best: true,
   },
 ];
 
@@ -136,6 +129,7 @@ export default function ChangePlanPage() {
         `Code submitted! Waiting for admin to approve your ${selectedPlan.role} plan.`
       );
     } catch (err) {
+      console.error(err);
       enqueueSnackbar("Code submission failed");
     } finally {
       setLoading(false);
@@ -150,34 +144,57 @@ export default function ChangePlanPage() {
         text: "Pending Approval",
         icon: <Hourglass className="text-yellow-500 w-4 h-4" />,
         color: "gold",
+        step: 0,
       },
       approved: {
         text: "Plan Approved",
         icon: <ThumbsUp className="text-green-600 w-4 h-4" />,
         color: "green",
+        step: 1,
       },
       rejected: {
         text: "Rejected by Famacloud",
         icon: <ThumbsDown className="text-red-500 w-4 h-4" />,
         color: "red",
+        step: 0,
       },
     };
 
     const current = statusMap[upgradeStatus];
 
     return (
-      <div className="flex flex-col items-center justify-center mt-4 gap-1">
-        <div className="flex items-center gap-2">
+      <div className="flex flex-col items-center justify-center mt-4 gap-2">
+        <div
+          className={`flex items-center gap-2 px-3 py-1 rounded-full text-sm font-medium shadow-sm ${
+            upgradeStatus === "pending"
+              ? "bg-yellow-100 text-yellow-700 animate-pulse"
+              : upgradeStatus === "approved"
+              ? "bg-green-100 text-green-700"
+              : "bg-red-100 text-red-600"
+          }`}
+        >
           {current.icon}
-          <AntBadge color={current.color} text={current.text} />
+          {current.text}
         </div>
+
+        <Steps
+          size="small"
+          current={current.step}
+          status={upgradeStatus === "rejected" ? "error" : "process"}
+          className="w-full max-w-sm"
+        >
+          <Step title="Pending" />
+          <Step title="Approved" />
+          <Step title="Active" />
+        </Steps>
+
         {statusData?.createdAt && (
           <Text type="secondary" className="text-xs">
             Submitted {dayjs(statusData.createdAt).fromNow()}
           </Text>
         )}
         {upgradeStatus === "rejected" && statusData?.rejectionReason && (
-          <Paragraph type="danger" className="text-red-600 text-sm">
+          <Paragraph type="danger" className="text-red-600 text-xs">
             Reason: {statusData.rejectionReason}
           </Paragraph>
         )}
@@ -199,7 +216,9 @@ export default function ChangePlanPage() {
             if (match) setSelectedPlan(match);
           }
         }
-      } catch {}
+      } catch (err) {
+        console.warn("No upgrade status found:", err);
+      }
     };
     fetchStatus();
   }, [user?._id]);
@@ -207,11 +226,11 @@ export default function ChangePlanPage() {
   return (
     <>
       <Navbar />
-      <Helmet>
-        <title>Change plan | Famacloud Pricing</title>
-      </Helmet>
 
-      {/* Hero Section */}
+      <Helmet>
+        <title>Change plan | best-selling R39</title>
+      </Helmet>
+      
       <div className="bg-gradient-to-r from-[#202124] to-[#1677ff] text-white py-12 text-center">
         <Title level={2} style={{ color: "#fff" }}>
           💎 Upgrade Your Famacloud Experience
@@ -221,132 +240,146 @@ export default function ChangePlanPage() {
         </Paragraph>
       </div>
 
-      <div className="min-h-screen bg-gray-50 p-8">
-        <Row gutter={[24, 24]} justify="center">
-          {plans.map((plan) => {
-            const features = planFeatures[plan.role];
-            const isCurrent = user?.role === plan.role;
-            const isSelected = selectedPlan?.role === plan.role;
+          <Row gutter={[24, 24]} justify="center">
+            {plans.map((plan) => {
+              const features = planFeatures[plan.role];
+              const isCurrent = user?.role === plan.role;
+              const isSelected = selectedPlan?.role === plan.role;
 
-            return (
-              <Col xs={24} sm={12} md={8} key={plan.name}>
-                <Card
-                  className={`rounded-xl shadow-lg transition-transform duration-300 hover:scale-105 ${
-                    plan.best ? "border-2 border-yellow-500" : ""
-                  }`}
-                  title={
-                    <div className="flex justify-between items-center">
-                      <Text strong>{plan.name}</Text>
-                      {plan.best && (
-                        <Tag color="gold" className="font-bold">
-                          ⭐ Best Seller
-                        </Tag>
-                      )}
-                    </div>
-                  }
-                  bordered
-                  style={{
-                    textAlign: "center",
-                    borderColor: isSelected ? "#1677ff" : "#f0f0f0",
-                  }}
-                  actions={[
-                    <Button
-                      type={isCurrent ? "default" : "primary"}
-                      block
-                      size="large"
-                      disabled={isCurrent}
-                      className="rounded-lg font-semibold"
+              return (
+                <Col xs={24} sm={12} md={8} key={plan.name}>
+                  <Card
+                    title={
+                      <Text strong className="text-lg text-[#202124]">
+                        {plan.name}
+                      </Text>
+                    }
+                    bordered={false}
+                    className={`transition-all duration-300 rounded-xl shadow-md hover:shadow-xl ${
+                      isSelected ? "ring-2 ring-[#a52a2a]" : "border"
+                    }`}
+                    style={{
+                      textAlign: "center",
+                      background: "linear-gradient(135deg, #fff, #f9f9f9)",
+                    }}
+                    actions={[
+                      <Button
+                        type={isCurrent ? "default" : "primary"}
+                        block
+                        size="large"
+                        disabled={isCurrent}
+                        className={`rounded-lg font-semibold ${
+                          isCurrent
+                            ? "bg-gray-100 text-gray-500"
+                            : "bg-[#a52a2a] hover:bg-[#7a1e1e] text-white shadow-md"
+                        }`}
+                        onClick={() => !isCurrent && handleChoosePlan(plan)}
+                      >
+                        {isCurrent ? "✔ Current Plan" : "✨ Choose Plan"}
+                      </Button>,
+                    ]}
+                  >
+                    <Title
+                      level={2}
+                      className="font-bold"
                       style={{
-                        background: isCurrent
-                          ? "#f0f0f0"
-                          : "linear-gradient(90deg,#1677ff,#0052cc)",
-                        color: isCurrent ? "#666" : "#fff",
+                        color: isSelected ? "#a52a2a" : "#202124",
                       }}
-                      onClick={() => !isCurrent && handleChoosePlan(plan)}
                     >
-                      {isCurrent ? "✔ Current Plan" : "✨ Choose Plan"}
-                    </Button>,
+                      {plan.price}
+                    </Title>
+                    <Paragraph className="text-gray-600">
+                      {plan.description}
+                    </Paragraph>
+
+                    <div className="text-left space-y-2 mt-4">
+                      <PlanFeature
+                        enabled={features.upload}
+                        label="Can upload 5 files per upload"
+                      />
+                      <PlanFeature enabled={features.support} label="Support" />
+                      <PlanFeature
+                        enabled={features.share}
+                        label="Share to social media"
+                      />
+                      <PlanFeature
+                        enabled={features.autoDelete}
+                        label="Auto delete after 180 days"
+                      />
+                      <PlanFeature
+                        enabled={features.ai}
+                        label="AI Assistant"
+                      />
+                      <PlanFeature
+                        enabled={features.cv}
+                        label="CV & Cover Letter"
+                      />
+                      <PlanFeature
+                        enabled={features.agents}
+                        label="CV Agents"
+                      />
+                      <PlanFeature
+                        enabled={features.feedback}
+                        label="Feedback from Experts"
+                      />
+                    </div>
+
+                    {isSelected && !isCurrent && renderStatusBadge()}
+                  </Card>
+                </Col>
+              );
+            })}
+          </Row>
+
+          {selectedPlan && upgradeStatus !== "approved" && (
+            <div className="mt-10 max-w-xl mx-auto bg-white p-6 rounded-lg shadow-lg">
+              <Title level={4} style={{ color: "#333" }}>
+                What’s Next for the {selectedPlan.name} Plan
+              </Title>
+              <Paragraph>
+                After sending the WhatsApp message, return here and paste your
+                transaction code. The code will be verified by Famacloud.
+              </Paragraph>
+              <ul className="list-disc ml-6 text-sm text-gray-700">
+                <li>
+                  <strong>Pending:</strong> Waiting for Famacloud confirmation
+                </li>
+                <li>
+                  <strong>Approved:</strong> Your plan is active
+                </li>
+                <li>
+                  <strong>Rejected:</strong> Code invalid or payment issue
+                </li>
+              </ul>
+
+              <Form
+                form={form}
+                layout="vertical"
+                onFinish={handleSimulatePayment}
+                className="mt-6"
+              >
+                <Form.Item
+                  name="paymentCode"
+                  label="Transaction Code"
+                  rules={[
+                    { required: true, message: "Please enter your payment code." },
                   ]}
                 >
-                  <Title level={3} style={{ color: "#1677ff" }}>
-                    {plan.price}
-                  </Title>
-                  <Paragraph>{plan.description}</Paragraph>
-
-                  <div className="text-left space-y-2 mt-4">
-                    <PlanFeature
-                      enabled={features.upload}
-                      label="Can upload 5 files per upload"
-                    />
-                    <PlanFeature enabled={features.support} label="Support" />
-                    <PlanFeature
-                      enabled={features.share}
-                      label="Share to social media"
-                    />
-                    <PlanFeature
-                      enabled={features.autoDelete}
-                      label="Auto delete after 180 days"
-                    />
-                    <PlanFeature enabled={features.ai} label="AI Assistant" />
-                    <PlanFeature
-                      enabled={features.cv}
-                      label="CV & Cover Letter"
-                    />
-                    <PlanFeature enabled={features.agents} label="CV Agents" />
-                    <PlanFeature
-                      enabled={features.feedback}
-                      label="Feedback from Experts"
-                    />
-                  </div>
-
-                  {isSelected && !isCurrent && renderStatusBadge()}
-                </Card>
-              </Col>
-            );
-          })}
-        </Row>
-
-        {/* Transaction Code Section */}
-        {selectedPlan && upgradeStatus !== "approved" && (
-          <div className="mt-12 max-w-2xl mx-auto bg-white p-8 rounded-xl shadow-md">
-            <Title level={4}>🔑 Submit Your Transaction Code</Title>
-            <Paragraph className="text-gray-600">
-              After sending the WhatsApp message, paste your transaction code
-              here for verification by Famacloud.
-            </Paragraph>
-
-            <Form
-              form={form}
-              layout="vertical"
-              onFinish={handleSimulatePayment}
-              className="mt-6"
-            >
-              <Form.Item
-                name="paymentCode"
-                label="Transaction Code"
-                rules={[
-                  { required: true, message: "Please enter your payment code." },
-                ]}
-              >
-                <Input placeholder="e.g. 45TRJ970" className="rounded-lg" />
-              </Form.Item>
-              <Button
-                type="primary"
-                htmlType="submit"
-                loading={loading}
-                block
-                disabled={loading}
-                className="rounded-lg"
-                style={{
-                  background: "linear-gradient(90deg,#1677ff,#0052cc)",
-                  border: "none",
-                }}
-              >
-                Submit Code
-              </Button>
-            </Form>
-          </div>
-        )}
+                  <Input placeholder="e.g. 45TRJ970" />
+                </Form.Item>
+                <Button
+                  type="dashed"
+                  htmlType="submit"
+                  loading={loading}
+                  block
+                  disabled={loading}
+                >
+                  Submit the code
+                </Button>
+              </Form>
+            </div>
+          )}
+        </div>
       </div>
     </>
   );
