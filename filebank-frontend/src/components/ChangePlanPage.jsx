@@ -93,6 +93,17 @@ export default function ChangePlanPage() {
   const [form] = Form.useForm();
   const { enqueueSnackbar } = useSnackbar();
   const user = JSON.parse(localStorage.getItem("filebankUser"));
+  const [user, setUser] = useState(() =>
+  JSON.parse(localStorage.getItem("filebankUser"))
+);
+
+useEffect(() => {
+  const handleStorage = () => {
+    setUser(JSON.parse(localStorage.getItem("filebankUser")));
+  };
+  window.addEventListener("storage", handleStorage);
+  return () => window.removeEventListener("storage", handleStorage);
+}, []);
 
   const handleChoosePlan = (plan) => {
     setSelectedPlan(plan);
@@ -205,29 +216,35 @@ export default function ChangePlanPage() {
   };
 
   useEffect(() => {
-    const fetchStatus = async () => {
-      if (!user?._id) return;
-      try {
-        const { data } = await api.get(`/admin/payment-requests/${user._id}`);
-        if (data?.status) {
-  setStatusData(data);
-  setUpgradeStatus(data.status);
+  const fetchStatus = async () => {
+    if (!user?._id) return;
+    try {
+      const { data } = await api.get(`/admin/payment-requests/${user._id}`);
+      if (data?.status) {
+        setStatusData(data);
+        setUpgradeStatus(data.status);
 
-  if (data.plan) {
-    const match = plans.find((p) => p.role === data.plan);
-    if (match) setSelectedPlan(match);
+        if (data.plan) {
+          const match = plans.find((p) => p.role === data.plan);
+          if (match) setSelectedPlan(match);
 
-    // ⬇️ Update user role in localStorage when approved
-    if (data.status === "approved") {
-      const updatedUser = { ...user, role: data.plan };
-      localStorage.setItem("filebankUser", JSON.stringify(updatedUser));
-    }
-  } catch (err) {
-        console.warn("No upgrade status found:", err);
+          // ✅ Update user role locally if approved
+          if (data.status === "approved") {
+            const updatedUser = { ...user, role: data.plan };
+            localStorage.setItem("filebankUser", JSON.stringify(updatedUser));
+
+            // Optional: force UI refresh with new role
+            window.dispatchEvent(new Event("storage"));
+          }
+        }
       }
-    };
-    fetchStatus();
-  }, [user?._id]);
+    } catch (err) {
+      console.warn("No upgrade status found:", err);
+    }
+  };
+  fetchStatus();
+}, [user?._id]);
+
 
   return (
     <>
