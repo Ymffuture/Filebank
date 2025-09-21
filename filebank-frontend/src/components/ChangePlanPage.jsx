@@ -222,8 +222,7 @@ export default function ChangePlanPage() {
       const updatedUser = { ...user, role: data.plan };
       localStorage.setItem("filebankUser", JSON.stringify(updatedUser));
     }
-  }
-} catch (err) {
+  } catch (err) {
         console.warn("No upgrade status found:", err);
       }
     };
