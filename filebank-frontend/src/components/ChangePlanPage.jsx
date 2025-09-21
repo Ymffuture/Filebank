@@ -210,15 +210,20 @@ export default function ChangePlanPage() {
       try {
         const { data } = await api.get(`/admin/payment-requests/${user._id}`);
         if (data?.status) {
-          setStatusData(data);
-          setUpgradeStatus(data.status);
+  setStatusData(data);
+  setUpgradeStatus(data.status);
 
-          if (data.plan) {
-            const match = plans.find((p) => p.role === data.plan);
-            if (match) setSelectedPlan(match);
-          }
-        }
-      } catch (err) {
+  if (data.plan) {
+    const match = plans.find((p) => p.role === data.plan);
+    if (match) setSelectedPlan(match);
+
+    // ⬇️ Update user role in localStorage when approved
+    if (data.status === "approved") {
+      const updatedUser = { ...user, role: data.plan };
+      localStorage.setItem("filebankUser", JSON.stringify(updatedUser));
+    }
+  }
+} catch (err) {
         console.warn("No upgrade status found:", err);
       }
     };
