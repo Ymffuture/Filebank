@@ -13,7 +13,7 @@ export default function GoogleLoading() {
   useEffect(() => {
     const timer = setTimeout(() => {
       navigate('/');
-    }, 5000); // Simulates loading, you can make it dynamic
+    }, 10000); // Simulates loading, you can make it dynamic
 
     return () => clearTimeout(timer);
   }, [navigate]);
@@ -30,7 +30,7 @@ export default function GoogleLoading() {
 
       <Title level={2} style={{ color: '#666' }}>Logging out...</Title>
       <Text code style={{ color: '#777' }}>
-        Please wait while we saving your data before logging out...
+        Please wait while we saving your data before logging you out...
       </Text>
     </motion.div>
   );
