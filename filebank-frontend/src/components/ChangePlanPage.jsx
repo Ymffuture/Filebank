@@ -262,6 +262,7 @@ export default function ChangePlanPage() {
                 <Col xs={24} sm={12} md={8} key={plan.name}>
                   <Card
                     title={
+                      <>
                       <Text strong className="text-lg text-[#202124]">
                         {plan.name}
                       </Text>
@@ -272,7 +273,7 @@ export default function ChangePlanPage() {
                         </Tag>
                       )}
                       </Text>
-                      
+                      </>
                     }
                     bordered={false}
                     className={`transition-all duration-300 rounded-xl shadow-md hover:shadow-xl p-2 ${
