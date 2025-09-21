@@ -1,155 +1,163 @@
-import React, { useState } from 'react';
-import { Button, Input, Typography, Modal, Space } from 'antd';
-import { MessageOutlined } from '@ant-design/icons';
-import api from '../api/fileApi';
-import { ArrowUp} from 'lucide-react';
-import { Light as SyntaxHighlighter } from 'react-syntax-highlighter';
-import js from 'react-syntax-highlighter/dist/esm/languages/hljs/javascript';
-import { atomOneLight } from 'react-syntax-highlighter/dist/esm/styles/hljs';
-import {Link} from 'react-router-dom' ;
-SyntaxHighlighter.registerLanguage('javascript', js);
+import React, { useState } from "react";
+import { Button, Input, Modal, Tooltip } from "antd";
+import { MessageOutlined, CopyOutlined } from "@ant-design/icons";
+import { ArrowUp } from "lucide-react";
+import { motion } from "framer-motion";
+import { Light as SyntaxHighlighter } from "react-syntax-highlighter";
+import js from "react-syntax-highlighter/dist/esm/languages/hljs/javascript";
+import { atomOneLight } from "react-syntax-highlighter/dist/esm/styles/hljs";
+import api from "../api/fileApi";
 
-const { Text } = Typography;
+SyntaxHighlighter.registerLanguage("javascript", js);
 
 const ChatBotModal = () => {
   const [visible, setVisible] = useState(false);
   const [messages, setMessages] = useState([
-    { from: 'bot', text: 'Hi! How famaAI help? .' },
+    { from: "bot", text: "👋 Hi! I’m FamaAI, how can I help you today?" },
   ]);
-  const [input, setInput] = useState('');
+  const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
 
   const sendMessage = async () => {
     if (!input.trim()) return;
-    const newMessages = [...messages, { from: 'user', text: input }];
+    const newMessages = [...messages, { from: "user", text: input }];
     setMessages(newMessages);
     setLoading(true);
 
     try {
-      const res = await api.post('/chat', { message: input });
-      setMessages([...newMessages, { from: 'bot', text: res.data.reply }]);
+      const res = await api.post("/chat", { message: input });
+      setMessages([...newMessages, { from: "bot", text: res.data.reply }]);
     } catch {
-      const createMessage = (from, text, type = 'text') => ({
-  id: `${Date.now()}-${Math.random()}`,
-  from,
-  text,
-  type,
-  timestamp: new Date().toISOString()
-});
-
-const AI_ERROR_MESSAGE = '⚠️ Sorry, famacloud AI is currently unreachable.';
-
-setMessages(prev => [...prev, createMessage('bot', AI_ERROR_MESSAGE, 'error')]);
-
+      setMessages((prev) => [
+        ...prev,
+        { from: "bot", text: "⚠️ Sorry, famacloud AI is currently unreachable.", type: "error" },
+      ]);
     } finally {
-      setInput('');
+      setInput("");
       setLoading(false);
     }
   };
 
-  const renderMessage = (msg) => {
-    const parts = msg.text.split(/```([\s\S]*?)```/g); // separate code and text
+  const renderMessage = (msg, idx) => {
+    const parts = msg.text.split(/```([\s\S]*?)```/g);
 
-    return parts.map((part, index) => {
-      if (index % 2 === 1) {
-        // CODE block
+    return parts.map((part, i) => {
+      if (i % 2 === 1) {
         return (
-          <SyntaxHighlighter
-            key={index}
-            language="javascript"
-            style={atomOneLight}
-            customStyle={{
-              borderRadius: 8,
-              fontSize: 13,
-              margin: '8px 0',
-              background: '#f6f8fa',
-            }}
-          >
-            {part.trim()}
-          </SyntaxHighlighter>
-        );
-      } else {
-        // TEXT block: parse bold, inline code, and line breaks
-        const html = part
-          .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>') // bold
-          .replace(/`(.*?)`/g, '<code>$1</code>') // inline code
-          .replace(/(?:<br\s*\/?>|\n)/g, '<br/>'); // line breaks
-
-        return (
-          <Text
-            key={index}
-            style={{
-              display: 'inline-block',
-              padding: '8px 12px',
-              borderRadius: 10,
-              background: msg.from === 'user' ? '#333' : '#f5f5f5',
-              color: msg.from === 'user' ? '#fff' : '#000',
-              maxWidth: '90%',
-              wordBreak: 'break-word',
-              whiteSpace: 'pre-wrap',
-            }}
-          >
-            <span dangerouslySetInnerHTML={{ __html: html }} />
-          </Text>
+          <div key={i} className="relative">
+            <SyntaxHighlighter
+              language="javascript"
+              style={atomOneLight}
+              customStyle={{
+                borderRadius: 8,
+                fontSize: 13,
+                margin: "8px 0",
+                background: "#f6f8fa",
+                paddingRight: "32px",
+              }}
+            >
+              {part.trim()}
+            </SyntaxHighlighter>
+            <Tooltip title="Copy code">
+              <Button
+                size="small"
+                shape="circle"
+                icon={<CopyOutlined />}
+                onClick={() => navigator.clipboard.writeText(part.trim())}
+                style={{ position: "absolute", top: 8, right: 8 }}
+              />
+            </Tooltip>
+          </div>
         );
       }
+
+      const html = part
+        .replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>")
+        .replace(/`(.*?)`/g, "<code>$1</code>")
+        .replace(/(?:<br\s*\/?>|\n)/g, "<br/>");
+
+      return (
+        <motion.div
+          key={i}
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.3 }}
+          className={`inline-block px-4 py-2 rounded-2xl max-w-[80%] whitespace-pre-wrap break-words shadow ${
+            msg.from === "user"
+              ? "bg-gradient-to-r from-[#202124] to-[#3a3b3c] text-white ml-auto"
+              : msg.type === "error"
+              ? "bg-red-100 text-red-700"
+              : "bg-gray-100 text-black"
+          }`}
+          dangerouslySetInnerHTML={{ __html: html }}
+        />
+      );
     });
   };
 
   return (
     <>
+      {/* Floating Chat Button */}
       <Button
         type="primary"
         shape="circle"
         icon={<MessageOutlined />}
         size="large"
         onClick={() => setVisible(true)}
+        className="!fixed bottom-6 left-6 z-[999] !w-14 !h-14 !flex !items-center !justify-center shadow-lg"
         style={{
-          position: 'fixed',
-          bottom: 24,
-          left: 24,
-          zIndex: 999,
-          boxShadow: '0 4px 14px #202124',
-          backgroundColor: '#fff',
-          color:'#202124', 
+          background: "linear-gradient(135deg, #202124, #5c2a2a)",
+          border: "none",
         }}
       />
 
+      {/* Chat Modal */}
       <Modal
-        title="Quick Assistant"
+        title={
+          <div className="bg-[#202124] text-white px-4 py-2 rounded">
+            💬 FamaAI Assistant
+          </div>
+        }
         open={visible}
         onCancel={() => setVisible(false)}
-        width={500}
-        footer={'FamaAI'} 
+        footer={null}
+        width={520}
         style={{ top: 30 }}
-        bodyStyle={{ maxHeight: '100vh', overflowY: 'auto', paddingBottom: 0 }}
+        bodyStyle={{ padding: 0, background: "#fafafa" }}
       >
-        <div style={{ marginBottom: 12 }}>
-          {messages.map((msg, idx) => (
-            <div
-              key={idx}
-              style={{
-                textAlign: msg.from === 'user' ? 'right' : 'left',
-                marginBottom: 12,
-              }}
-            >
-              {renderMessage(msg)}
-            </div>
-          ))}
-        </div>
+        <div className="flex flex-col h-[70vh]">
+          {/* Chat history */}
+          <div className="flex-1 overflow-y-auto p-4 space-y-3">
+            {messages.map((msg, idx) => (
+              <div key={idx} className={`flex ${msg.from === "user" ? "justify-end" : "justify-start"}`}>
+                {renderMessage(msg, idx)}
+              </div>
+            ))}
+          </div>
 
-        <Space.Compact style={{ width: '100%' }}>
-          <Input
-            placeholder="Quick ask famaAI..."
-            value={input}
-            onChange={(e) => setInput(e.target.value)}
-            onKeyDown={(e) => e.key === 'Enter' && sendMessage()}
-            style={{border:'#202124', padding:'8px', margin:'8px'}} 
-          />
-          <Button type="link" loading={loading} onClick={sendMessage} >
-            <ArrowUp className="rounded-full bg-black text-white" />
-          </Button>
-        </Space.Compact>
+          {/* Input Bar */}
+          <div className="border-t p-2 bg-white flex items-center gap-2">
+            <Input
+              placeholder="Type your message..."
+              value={input}
+              onChange={(e) => setInput(e.target.value)}
+              onKeyDown={(e) => e.key === "Enter" && sendMessage()}
+              disabled={loading}
+              className="rounded-full px-4 py-2"
+            />
+            <Button
+              type="primary"
+              shape="circle"
+              icon={<ArrowUp size={18} />}
+              loading={loading}
+              onClick={sendMessage}
+              style={{
+                background: "linear-gradient(135deg, #202124, #5c2a2a)",
+                border: "none",
+              }}
+            />
+          </div>
+        </div>
       </Modal>
     </>
   );
