@@ -114,39 +114,40 @@ export default function ChangePlanPage() {
   };
 
   const handleSimulatePayment = async () => {
-    try {
-      const values = await form.validateFields();
-      if (!user || !user._id) {
-        enqueueSnackbar("User not found.");
-        return;
-      }
-
-      if (upgradeStatus === "pending") {
-        enqueueSnackbar("You already have a pending request.");
-        return;
-      }
-
-      setLoading(true);
-
-      const { data } = await api.post("/admin/payment-requests", {
-        userId: user._id,
-        email: user.email,
-        plan: selectedPlan.role,
-        paymentCode: values.paymentCode,
-      });
-
-      setStatusData(data);
-      setUpgradeStatus("pending");
-      enqueueSnackbar(
-        `Code submitted! Waiting for admin to approve your ${selectedPlan.role} plan.`
-      );
-    } catch (err) {
-      console.error(err);
-      enqueueSnackbar("Code submission failed");
-    } finally {
-      setLoading(false);
+  try {
+    const values = await form.validateFields();
+    if (!user || !user._id) {
+      enqueueSnackbar("User not found.");
+      return;
     }
-  };
+
+    if (upgradeStatus === "pending") {
+      enqueueSnackbar("You already have a pending request. Wait for approval.");
+      return;
+    }
+
+    setLoading(true);
+
+    const { data } = await api.post("/admin/payment-requests", {
+      userId: user._id,
+      email: user.email,
+      plan: selectedPlan.role,
+      paymentCode: values.paymentCode,
+    });
+
+    setStatusData(data);
+    setUpgradeStatus("pending");
+    enqueueSnackbar(
+      `Code submitted! Waiting for admin to approve your ${selectedPlan.role} plan.`
+    );
+  } catch (err) {
+    console.error(err);
+    enqueueSnackbar("Code submission failed");
+  } finally {
+    setLoading(false);
+  }
+};
+
 
   const renderStatusBadge = () => {
     if (!upgradeStatus) return null;
