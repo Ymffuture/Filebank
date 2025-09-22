@@ -251,10 +251,10 @@ useEffect(() => {
     )} 
     
 {user?.isBlocked && (
-  <Tooltip title="This account is blocked" color="gold" placement="top">
+  <Tooltip title="This account is blocked" color="#FF0000" placement="top">
     <Badge
       count={
-        <Info size={12} color="#FBBF24" /> // brighter gold for visibility
+        <Info size={22} color="red" /> // brighter gold for visibility
       }
       style={{
         backgroundColor: '#1F2937', // dark background for contrast
