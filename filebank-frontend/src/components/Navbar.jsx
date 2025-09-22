@@ -249,28 +249,7 @@ useEffect(() => {
 
 </Link>
     )} 
-    
-{user?.isBlocked && (
-  <Tooltip title="This account is blocked" color="#FF0000" placement="top">
-    <Badge
-      count={
-        <Info size={22} color="red" /> // brighter gold for visibility
-      }
-      style={{
-        backgroundColor: '#1F2937', // dark background for contrast
-        borderRadius: '50%',
-        padding: '4px',
-        boxShadow: '0 0 6px rgba(0,0,0,0.5)',
-        transition: 'transform 0.3s ease, box-shadow 0.3s ease',
-      }}
-      offset={[-15, -10]}
-      className="animate-pulse hover:scale-110"
-    />
-  </Tooltip>
-)}
-
-
-
+  
     
     {/* Center menu (desktop only) */}
   <div className="hidden md:flex flex-1 justify-center">
@@ -465,30 +444,43 @@ useEffect(() => {
         </div>
       </Drawer>
       
-{newNotif && (
+{user?.hasIssue || user?.isBlocked ? (
   <div
-    className="bg-[#202124] border border-[#202124] text-white px-4 py-2 text-center font-medium animate-fade-in sticky top-[64px] z-50"
-    style={{
-      display: 'flex',
-      justifyContent: 'space-between',
-      alignItems: 'center',
-      gap: '1rem'
-    }}
-    
+    className="bg-[#B91C1C] text-white px-4 py-2 text-center font-medium animate-fade-in sticky top-[64px] z-50 rounded-md shadow-lg flex justify-between items-center gap-4"
   >
-    
-    <span
-      onClick={() => {
-    setNotifModalVisible(true);
-    setDrawerVisible(false);
-      }}
-      >   
-🔔 You have a new notification <span className='text-[8px] text-gray'>Tap to view</span></span>
-    <Button size="small" onClick={() => setNewNotif(false)} type='link'>
-      <CloseOutlined/>
+    <span>
+      {user.isBlocked
+        ? "🚫 This account is blocked. Please contact support."
+        : "⚠️ This account has an issue. Please resolve it."}
+    </span>
+    <Button
+      size="small"
+      onClick={() => setNewNotif(false)}
+      type="text"
+      className="text-white"
+    >
+      <CloseOutlined />
     </Button>
   </div>
-)}
+) : newNotif ? (
+  <div
+    className="bg-[#202124] border border-[#202124] text-white px-4 py-2 text-center font-medium animate-fade-in sticky top-[64px] z-50 flex justify-between items-center gap-4"
+  >
+    <span
+      onClick={() => {
+        setNotifModalVisible(true);
+        setDrawerVisible(false);
+      }}
+    >
+      🔔 You have a new notification{" "}
+      <span className="text-[8px] text-gray">Tap to view</span>
+    </span>
+    <Button size="small" onClick={() => setNewNotif(false)} type="text">
+      <CloseOutlined />
+    </Button>
+  </div>
+) : null}
+
       <NotificationsModal visible={notifModalVisible} onClose={() => setNotifModalVisible(false)} />
     </>
   );
