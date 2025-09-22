@@ -211,33 +211,46 @@ export default function ChangePlanPage() {
     );
   };
 
-  // ✅ Fetch status and update user role if approved
-  useEffect(() => {
-    const fetchStatus = async () => {
-      if (!user?._id) return;
-      try {
-        const { data } = await api.get(`/admin/payment-requests/${user._id}`);
-        if (data?.status) {
-          setStatusData(data);
-          setUpgradeStatus(data.status);
+useEffect(() => {
+  if (!user?._id) return;
 
-          if (data.plan) {
-            const match = plans.find((p) => p.role === data.plan);
-            if (match) setSelectedPlan(match);
+  let intervalId;
 
-            if (data.status === "approved") {
-              const updatedUser = { ...user, role: data.plan };
-              localStorage.setItem("filebankUser", JSON.stringify(updatedUser));
-              setUser(updatedUser); // ✅ immediately update UI
-            }
+  const fetchStatus = async () => {
+    try {
+      const { data } = await api.get(`/admin/payment-requests/${user._id}`);
+      if (data?.status) {
+        setStatusData(data);
+        setUpgradeStatus(data.status);
+
+        if (data.plan) {
+          const match = plans.find((p) => p.role === data.plan);
+          if (match) setSelectedPlan(match);
+
+          if (data.status === "approved") {
+            const updatedUser = { ...user, role: data.plan };
+            localStorage.setItem("filebankUser", JSON.stringify(updatedUser));
+            setUser(updatedUser);
+            clearInterval(intervalId); // ✅ stop polling after approval
+          }
+
+          if (data.status === "rejected") {
+            clearInterval(intervalId); // ✅ stop polling if rejected
           }
         }
-      } catch (err) {
-        console.warn("No upgrade status found:", err);
       }
-    };
-    fetchStatus();
-  }, [user?._id]);
+    } catch (err) {
+      console.warn("No upgrade status found:", err);
+    }
+  };
+
+  // 🔄 run immediately, then every 5s
+  fetchStatus();
+  intervalId = setInterval(fetchStatus, 500);
+
+  return () => clearInterval(intervalId);
+}, [user?._id]);
+
 
   return (
     <>
