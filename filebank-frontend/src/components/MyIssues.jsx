@@ -8,21 +8,31 @@ const { Paragraph } = Typography;
 
 const Navbar = () => (
   <nav className="bg-[#1F2937] text-white px-6 py-3 flex justify-between items-center shadow-md sticky top-0 z-50">
-    <div className="flex items-center gap-6">
-      <Tooltip title="Home" placement="bottom">
-        <Home className="cursor-pointer hover:text-yellow-400 transition" size={22} />
-      </Tooltip>
-      <Tooltip title="Dashboard" placement="bottom">
-        <Activity className="cursor-pointer hover:text-yellow-400 transition" size={22} />
-      </Tooltip>
-      <Tooltip title="Files" placement="bottom">
-        <FileText className="cursor-pointer hover:text-yellow-400 transition" size={22} />
-      </Tooltip>
-    </div>
-    <div className="text-sm text-gray-300">
-      Contact: <a href="mailto:futurekgomotso@gmail.com" className="hover:underline">futurekgomotso@gmail.com</a> | 063 441 4863
-    </div>
-  </nav>
+  <div className="flex items-center gap-6">
+    <Tooltip title="Home" placement="bottom">
+      <a href="/" className="cursor-pointer hover:text-yellow-400 transition">
+        <Home size={22} />
+      </a>
+    </Tooltip>
+
+    <Tooltip title="Dashboard" placement="bottom">
+      <a href="/dashboard" className="cursor-pointer hover:text-yellow-400 transition">
+        <Activity size={22} />
+      </a>
+    </Tooltip>
+
+    <Tooltip title="Files" placement="bottom">
+      <a href="/files" className="cursor-pointer hover:text-yellow-400 transition">
+        <FileText size={22} />
+      </a>
+    </Tooltip>
+  </div>
+
+  <div className="text-sm text-gray-300">
+    Contact: <a href="mailto:futurekgomotso@gmail.com" className="hover:underline">futurekgomotso@gmail.com</a> | 063 441 4863
+  </div>
+</nav>
+
 );
 
 const MyIssues = () => {
@@ -90,7 +100,7 @@ const MyIssues = () => {
 
         {/* Normal Issues */}
         {renderIssueList(normalIssues, "Issues", <AlertTriangle size={20} color="#FACC15" />)}
-
+<hr/><br/>
         {/* Blocked / Critical */}
         {renderIssueList(blocked, "Blocked Accounts", <Lock size={20} color="#EF4444" />)}
 
