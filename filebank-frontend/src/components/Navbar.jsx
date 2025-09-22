@@ -177,7 +177,7 @@ useEffect(() => {
   { key: 'feedback', label: 'Feedback', icon: <MessageSquare size={18} />, path: '/feedback', feature: 'feedback' },
   { key: 'change-plan', label: 'Change Plan', icon: <CreditCard size={18} />, path: '/change-plan' }, 
   { key: 'playtowin', label: 'Play to win', icon: <SwapOutlined size={18} />, path: '/playtowin' },
-
+  user?.isBlocked && { key: 'block', label: 'Blocked', icon: <Lock size={18} color="red" />, path: '/issues' },
   // NEW ITEM: Only show if user has an issue
   user?.hasIssue && { key: 'issues', label: 'My Issues', icon: <ShieldCheck size={18} color="orange" />, path: '/issues' },
 ].filter(Boolean);
@@ -446,7 +446,7 @@ useEffect(() => {
       
 {user?.hasIssue || user?.isBlocked ? (
   <div
-    className="bg-[#B91C1C] text-white px-4 py-2 text-center font-medium animate-fade-in sticky top-[64px] z-50 rounded-md shadow-lg flex justify-between items-center gap-4"
+    className="bg-[#B91C1C] text-white px-4 py-2 text-center font-medium animate-fade-in sticky top-[64px] z-50 shadow-lg flex justify-between items-center gap-4"
   >
     <span>
       {user.isBlocked
