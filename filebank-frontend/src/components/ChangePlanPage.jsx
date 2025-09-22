@@ -7,12 +7,10 @@ import {
   Typography,
   Form,
   Input,
-  Tag, 
-  Badge as AntBadge,
+  Tag,
   Steps,
 } from "antd";
 import Navbar from "./Navbar";
-import { ArrowLeftOutlined } from "@ant-design/icons";
 import { Check, X, ThumbsUp, ThumbsDown, Hourglass } from "lucide-react";
 import api from "../api/fileApi";
 import dayjs from "dayjs";
@@ -81,7 +79,7 @@ const plans = [
     price: "R59 Once",
     description: "AI assistant + early features",
     role: "premium",
-    best:true, 
+    best: true,
   },
 ];
 
@@ -92,18 +90,19 @@ export default function ChangePlanPage() {
   const [statusData, setStatusData] = useState(null);
   const [form] = Form.useForm();
   const { enqueueSnackbar } = useSnackbar();
-  const user = JSON.parse(localStorage.getItem("filebankUser"));
-  const [user, setUser] = useState(() =>
-  JSON.parse(localStorage.getItem("filebankUser"))
-);
 
-useEffect(() => {
-  const handleStorage = () => {
-    setUser(JSON.parse(localStorage.getItem("filebankUser")));
-  };
-  window.addEventListener("storage", handleStorage);
-  return () => window.removeEventListener("storage", handleStorage);
-}, []);
+  // ✅ User state reacts to localStorage changes
+  const [user, setUser] = useState(() =>
+    JSON.parse(localStorage.getItem("filebankUser"))
+  );
+
+  useEffect(() => {
+    const handleStorage = () => {
+      setUser(JSON.parse(localStorage.getItem("filebankUser")));
+    };
+    window.addEventListener("storage", handleStorage);
+    return () => window.removeEventListener("storage", handleStorage);
+  }, []);
 
   const handleChoosePlan = (plan) => {
     setSelectedPlan(plan);
@@ -156,19 +155,16 @@ useEffect(() => {
       pending: {
         text: "Pending Approval",
         icon: <Hourglass className="text-yellow-500 w-4 h-4" />,
-        color: "gold",
         step: 0,
       },
       approved: {
         text: "Plan Approved",
         icon: <ThumbsUp className="text-green-600 w-4 h-4" />,
-        color: "green",
         step: 1,
       },
       rejected: {
         text: "Rejected by Famacloud",
         icon: <ThumbsDown className="text-red-500 w-4 h-4" />,
-        color: "red",
         step: 0,
       },
     };
@@ -215,36 +211,33 @@ useEffect(() => {
     );
   };
 
+  // ✅ Fetch status and update user role if approved
   useEffect(() => {
-  const fetchStatus = async () => {
-    if (!user?._id) return;
-    try {
-      const { data } = await api.get(`/admin/payment-requests/${user._id}`);
-      if (data?.status) {
-        setStatusData(data);
-        setUpgradeStatus(data.status);
+    const fetchStatus = async () => {
+      if (!user?._id) return;
+      try {
+        const { data } = await api.get(`/admin/payment-requests/${user._id}`);
+        if (data?.status) {
+          setStatusData(data);
+          setUpgradeStatus(data.status);
 
-        if (data.plan) {
-          const match = plans.find((p) => p.role === data.plan);
-          if (match) setSelectedPlan(match);
+          if (data.plan) {
+            const match = plans.find((p) => p.role === data.plan);
+            if (match) setSelectedPlan(match);
 
-          // ✅ Update user role locally if approved
-          if (data.status === "approved") {
-            const updatedUser = { ...user, role: data.plan };
-            localStorage.setItem("filebankUser", JSON.stringify(updatedUser));
-
-            // Optional: force UI refresh with new role
-            window.dispatchEvent(new Event("storage"));
+            if (data.status === "approved") {
+              const updatedUser = { ...user, role: data.plan };
+              localStorage.setItem("filebankUser", JSON.stringify(updatedUser));
+              setUser(updatedUser); // ✅ immediately update UI
+            }
           }
         }
+      } catch (err) {
+        console.warn("No upgrade status found:", err);
       }
-    } catch (err) {
-      console.warn("No upgrade status found:", err);
-    }
-  };
-  fetchStatus();
-}, [user?._id]);
-
+    };
+    fetchStatus();
+  }, [user?._id]);
 
   return (
     <>
@@ -257,21 +250,20 @@ useEffect(() => {
       <div className="min-h-screen bg-gradient-to-br from-[#fff] via-[#202124] to-white p-6">
         <div className="max-w-6xl mx-auto">
           <div className="flex items-center justify-between mb-6">
-            
             <Title level={3} style={{ marginBottom: 0, color: "#fff" }}>
-              🔥 Best pricing board
+              Choose your plan
             </Title>
             <div />
           </div>
 
           <div className="bg-gradient-to-r from-[#202124] to-[#1677ff] text-white py-12 text-center mt-2">
-        <Title level={2} style={{ color: "#fff" }}>
-          💎 Upgrade Your Famacloud Experience
-        </Title>
-        <Paragraph style={{ color: "#eee" }}>
-          Choose the best plan for you — from Free to Premium AI-powered tools.
-        </Paragraph>
-      </div>
+            <Title level={2} style={{ color: "#fff" }}>
+             Upgrade Your Famacloud Experience
+            </Title>
+            <Paragraph style={{ color: "#eee" }}>
+              Choose the best plan for you — from Free to Premium AI-powered tools.
+            </Paragraph>
+          </div>
 
           <Row gutter={[24, 24]} justify="center">
             {plans.map((plan) => {
@@ -284,16 +276,14 @@ useEffect(() => {
                   <Card
                     title={
                       <>
-                      <Text strong className="text-lg text-[#202124]">
-                        {plan.name}
-                      </Text>
-                      <Text>
-                      {plan.best && (
-                        <Tag color="green" className="font-bold shadow">
-                          Recommended
-                        </Tag>
-                      )}
-                      </Text>
+                        <Text strong className="text-lg text-[#202124]">
+                          {plan.name}
+                        </Text>
+                        {plan.best && (
+                          <Tag color="green" className="font-bold shadow ml-2">
+                            Recommended
+                          </Tag>
+                        )}
                       </>
                     }
                     bordered={false}
@@ -348,18 +338,12 @@ useEffect(() => {
                         enabled={features.autoDelete}
                         label="Auto delete after 90 days"
                       />
-                      <PlanFeature
-                        enabled={features.ai}
-                        label="AI Assistant"
-                      />
+                      <PlanFeature enabled={features.ai} label="AI Assistant" />
                       <PlanFeature
                         enabled={features.cv}
                         label="CV & Cover Letter"
                       />
-                      <PlanFeature
-                        enabled={features.agents}
-                        label="CV Agents"
-                      />
+                      <PlanFeature enabled={features.agents} label="CV Agents" />
                       <PlanFeature
                         enabled={features.feedback}
                         label="Feedback from Experts"
@@ -426,3 +410,4 @@ useEffect(() => {
     </>
   );
 }
+
