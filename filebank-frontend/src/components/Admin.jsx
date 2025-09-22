@@ -98,8 +98,8 @@ const confirmRejection = async () => {
   }
 };
   
-const MAX_REFRESHES = 20;
-const REFRESH_INTERVAL_MS = 3000;
+const MAX_REFRESHES = 2;
+const REFRESH_INTERVAL_MS = 300;
 
 useEffect(() => {
   let count = 0;
@@ -197,16 +197,25 @@ useEffect(() => {
 
 
 
-  useEffect(() =>{
-setTimeout(() =>{
-  fetchUsers();
-      fetchAllFeedback();
-      fetchUploadCounts();
-      fetchPaymentRequests();
+  useEffect(() => {
+  // Function to fetch all data
+  const fetchAllData = () => {
+    fetchUsers();
+    fetchAllFeedback();
+    fetchUploadCounts();
+    fetchPaymentRequests();
+  };
+
+  // Initial fetch immediately
+  fetchAllData();
+
+  // Set interval to fetch every 1 second (1000ms)
+  const intervalId = setInterval(fetchAllData, 1000);
+
+  // Cleanup on unmount
+  return () => clearInterval(intervalId);
+}, []);
   
-}, 3000)
-    
-  }, []) 
   const columns = [
     {
       title: 'Picture',
