@@ -250,20 +250,25 @@ useEffect(() => {
 </Link>
     )} 
     
-{user?.hasIssue && (
-      <Tooltip title="This account has an issue" color="gold">
-        <Badge
-          count={<Info size={10} color="#9CA3AF" />}
-          style={{
-            backgroundColor: '#121212',
-            borderRadius:'50%', 
-            boxShadow: '0 0 4px gray',
-          }}
-          offset={[-30, - 8]}
-          className='animate-pulse transition-all' 
-        />
-      </Tooltip>
-    )}
+{user?.isBlocked && (
+  <Tooltip title="This account is blocked" color="gold" placement="top">
+    <Badge
+      count={
+        <Info size={12} color="#FBBF24" /> // brighter gold for visibility
+      }
+      style={{
+        backgroundColor: '#1F2937', // dark background for contrast
+        borderRadius: '50%',
+        padding: '4px',
+        boxShadow: '0 0 6px rgba(0,0,0,0.5)',
+        transition: 'transform 0.3s ease, box-shadow 0.3s ease',
+      }}
+      offset={[-15, -10]}
+      className="animate-pulse hover:scale-110"
+    />
+  </Tooltip>
+)}
+
 
 
     
