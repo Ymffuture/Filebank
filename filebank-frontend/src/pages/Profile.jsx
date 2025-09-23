@@ -80,51 +80,68 @@ useEffect(() => {
   return (
     <>
     <Nav/>
-    
-    <div className="flex justify-center items-center min-h-[100vh] p-4 bg-[#fafafa]">
-      {/* Account Status Section */}
+    {/* Account Status Section */}
 <div
-  className={`mb-6 p-4 rounded-xl shadow-sm text-white text-sm font-medium flex flex-col gap-1
-    ${user.isBlocked ? "bg-red-600" : user.hasIssue ? "bg-yellow-500" : "bg-green-600"}`}
+  className={`mb-6 rounded-xl shadow-md border p-5 transition-all duration-300 
+    ${user.isBlocked 
+      ? "bg-red-50 border-red-300 text-red-700" 
+      : user.hasIssue 
+        ? "bg-yellow-50 border-yellow-300 text-yellow-700" 
+        : "bg-green-50 border-green-300 text-green-700"}`}
 >
-  <div className="flex items-center gap-2">
-    <ShieldExclamationIcon className="h-5 w-5" />
-    <span className="text-base font-semibold">Account Status</span>
+  <div className="flex items-center gap-3 mb-2">
+    <ShieldExclamationIcon
+      className={`h-6 w-6 ${
+        user.isBlocked
+          ? "text-red-600"
+          : user.hasIssue
+          ? "text-yellow-600"
+          : "text-green-600"
+      }`}
+    />
+    <span className="text-lg font-semibold">Account Status</span>
   </div>
 
   {/* Explanation */}
   {user.isBlocked ? (
-    <p>
-      🚫 Your account has been <strong>blocked</strong>. Please contact support
-      for assistance.
+    <p className="flex items-center gap-2">
+      <XMarkIcon className="h-5 w-5 text-red-500" />
+      Your account has been <strong>blocked</strong>. Please contact support for assistance.
     </p>
   ) : user.hasIssue ? (
-    <p>
-      ⚠️ Your account has <strong>some issues</strong>. Kindly resolve them to
-      avoid restrictions.
+    <p className="flex items-center gap-2">
+      <ShieldExclamationIcon className="h-5 w-5 text-yellow-500" />
+      Your account has <strong>issues</strong>. Kindly resolve them to avoid restrictions.
     </p>
   ) : (
-    <p>
-      ✅ Your account is in <strong>good standing</strong>. No issues detected.
+    <p className="flex items-center gap-2">
+      <CheckIcon className="h-5 w-5 text-green-500" />
+      Your account is in <strong>good standing</strong>. No issues detected.
     </p>
   )}
 
-  {/* Quick status flags */}
-  <div className="flex items-center gap-4 mt-2">
-    <span>
-      <strong>Issue:</strong>{" "}
-      <span className={user.hasIssue ? "text-black" : "text-white"}>
-        {user.hasIssue ? "Yes" : "No"}
-      </span>
-    </span>
-    <span>
-      <strong>Blocked:</strong>{" "}
-      <span className={user.isBlocked ? "text-black" : "text-white"}>
-        {user.isBlocked ? "Yes" : "No"}
-      </span>
-    </span>
+  {/* Quick flags */}
+  <div className="flex justify-around mt-4 text-sm">
+    <div className="flex items-center gap-1">
+      {user.hasIssue ? (
+        <XMarkIcon className="h-4 w-4 text-yellow-500" />
+      ) : (
+        <CheckIcon className="h-4 w-4 text-green-500" />
+      )}
+      <span>Issue: {user.hasIssue ? "Yes" : "No"}</span>
+    </div>
+    <div className="flex items-center gap-1">
+      {user.isBlocked ? (
+        <XMarkIcon className="h-4 w-4 text-red-500" />
+      ) : (
+        <CheckIcon className="h-4 w-4 text-green-500" />
+      )}
+      <span>Blocked: {user.isBlocked ? "Yes" : "No"}</span>
+    </div>
   </div>
 </div>
+
+    <div className="flex justify-center items-center min-h-[100vh] p-4 bg-[#fafafa]">
 
       <div className="w-full max-w-md bg-white rounded-2xl shadow-lg p-6">
         
