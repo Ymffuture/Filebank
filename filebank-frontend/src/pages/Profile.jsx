@@ -82,7 +82,7 @@ useEffect(() => {
     <Nav/>
     {/* Account Status Section */}
 <div
-  className={`mb-6 rounded-xl shadow-md border p-5 min-h-[60vh] transition-all duration-300 
+  className={`mb-6 rounded-xl shadow-md border p-5 transition-all duration-300 
     ${user.isBlocked 
       ? "bg-red-50 border-red-300 text-red-700" 
       : user.hasIssue 
