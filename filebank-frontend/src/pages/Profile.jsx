@@ -82,7 +82,7 @@ useEffect(() => {
     <Nav/>
     {/* Account Status Section */}
 <div
-  className={`mb-6 rounded-xl shadow-md border p-5 transition-all duration-300 
+  className={`mb-6 rounded-xl shadow-md border p-5 min-h-[60vh] transition-all duration-300 
     ${user.isBlocked 
       ? "bg-red-50 border-red-300 text-red-700" 
       : user.hasIssue 
@@ -141,7 +141,7 @@ useEffect(() => {
   </div>
 </div>
 
-    <div className="flex justify-center items-center min-h-[100vh] p-4 bg-[#fafafa]">
+    <div className="flex justify-center items-center min-h-[80vh] p-4 bg-[#fafafa]">
 
       <div className="w-full max-w-md bg-white rounded-2xl shadow-lg p-6">
         
