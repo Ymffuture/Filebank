@@ -82,6 +82,50 @@ useEffect(() => {
     <Nav/>
     
     <div className="flex justify-center items-center min-h-[100vh] p-4 bg-[#fafafa]">
+      {/* Account Status Section */}
+<div
+  className={`mb-6 p-4 rounded-xl shadow-sm text-white text-sm font-medium flex flex-col gap-1
+    ${user.isBlocked ? "bg-red-600" : user.hasIssue ? "bg-yellow-500" : "bg-green-600"}`}
+>
+  <div className="flex items-center gap-2">
+    <ShieldExclamationIcon className="h-5 w-5" />
+    <span className="text-base font-semibold">Account Status</span>
+  </div>
+
+  {/* Explanation */}
+  {user.isBlocked ? (
+    <p>
+      🚫 Your account has been <strong>blocked</strong>. Please contact support
+      for assistance.
+    </p>
+  ) : user.hasIssue ? (
+    <p>
+      ⚠️ Your account has <strong>some issues</strong>. Kindly resolve them to
+      avoid restrictions.
+    </p>
+  ) : (
+    <p>
+      ✅ Your account is in <strong>good standing</strong>. No issues detected.
+    </p>
+  )}
+
+  {/* Quick status flags */}
+  <div className="flex items-center gap-4 mt-2">
+    <span>
+      <strong>Issue:</strong>{" "}
+      <span className={user.hasIssue ? "text-black" : "text-white"}>
+        {user.hasIssue ? "Yes" : "No"}
+      </span>
+    </span>
+    <span>
+      <strong>Blocked:</strong>{" "}
+      <span className={user.isBlocked ? "text-black" : "text-white"}>
+        {user.isBlocked ? "Yes" : "No"}
+      </span>
+    </span>
+  </div>
+</div>
+
       <div className="w-full max-w-md bg-white rounded-2xl shadow-lg p-6">
         
         {/* Avatar + Edit Image */}
