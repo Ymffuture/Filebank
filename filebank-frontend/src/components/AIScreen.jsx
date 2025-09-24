@@ -458,7 +458,7 @@ if (msg.type === 'error') {
               <Lottie
                 animationData={Wait}
                 loop
-                style={{ width: 50, height: 50 }}
+                style={{ width: 20, height: 20 }}
               />
             </div>
         )}
