@@ -115,7 +115,7 @@ const ErrorFallback = ({ onRetry }) => (
 
     <button
   onClick={onRetry}
-  className="px-6 py-3 bg-[#202124] text-white rounded-full font-semibold shadow-lg hover:bg-[#2c2d30] hover:scale-105 active:scale-95 transition-all duration-300 flex items-center gap-2"
+  className="px-6 py-3 bg-[#1677ff] text-white rounded-full font-semibold shadow-lg hover:bg-[#2c2d30] hover:scale-105 active:scale-95 transition-all duration-300 flex items-center gap-2"
 >
   <RotateCcw size={18} />
   Retry
