@@ -11,7 +11,7 @@ import {
   DeleteOutlined, ClockCircleOutlined, DownloadOutlined, CopyOutlined
 } from '@ant-design/icons';
 import { FaXTwitter, FaWhatsapp, FaLinkedin } from 'react-icons/fa6';
-import { ArrowBigLeftDashIcon } from 'lucide-react';
+import { ArrowBigLeftDashIcon, RotateCcw } from 'lucide-react';
 import dayjs from 'dayjs';
 import Lottie from 'lottie-react';
 import NewBadgeAnimation from '../assets/Badge.json';
@@ -104,15 +104,22 @@ const ErrorFallback = ({ onRetry }) => (
     <div className="w-64 h-64 mb-6">
       <Lottie animationData={errorAnimation} loop={true} />
     </div>
-    <p className="text-gray-600 dark:text-gray-400 mb-8 max-w-md">
-      Looks like something went wrong on our end. Please try again or contact support if the issue persists.
-    </p>
+    
+    <p className="text-gray-600 dark:text-gray-400 mb-8 max-w-md leading-relaxed">
+  Looks like something went wrong on our end. This may happen if your 
+  <span className="font-medium text-red-500"> session expired </span> 
+  or if your account is 
+  <span className="font-medium text-yellow-500"> temporarily blocked</span>.  
+  Please try again, or contact support if the issue persists.
+</p>
+
     <button
-      onClick={onRetry}
-      className="px-6 py-3 bg-gradient-to-r from-[#FF5722] to-[#FF7043] text-white rounded-full font-semibold shadow-lg hover:scale-105 active:scale-95 transition-all"
-    >
-      Retry
-    </button>
+  onClick={onRetry}
+  className="px-6 py-3 bg-[#202124] text-white rounded-full font-semibold shadow-lg hover:bg-[#2c2d30] hover:scale-105 active:scale-95 transition-all duration-300 flex items-center gap-2"
+>
+  <RotateCcw size={18} />
+  Retry
+</button>
   </motion.div>
 );
 
