@@ -9,7 +9,7 @@ export default function NotFoundPage() {
   const location = useLocation(); // Get the current URL path
 
   return (
-    <div className="min-h-screen flex flex-col justify-center items-center p-6 bg-[#202124]">
+    <div className="min-h-screen flex flex-col justify-center items-center p-6 bg-white">
       <div className="text-center max-w-xl bg-white dark:bg-[#2c2c2c] rounded-2xl p-8 shadow-xl">
         {/* Animation */}
         <div className="flex justify-center mb-4">
