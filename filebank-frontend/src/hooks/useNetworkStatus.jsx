@@ -11,16 +11,16 @@ const useNetworkStatus = () => {
     const toastStyle = {
       background: '#000',
       color: '#fff',
-      padding: '6px 8px',
+      padding: '3px 4px',
       fontSize: '14px',
-      fontWeight: '500',
+      fontWeight: '700',
     };
 const _toastStyle = {
       background: '#1E90FF',
       color: '#fff',
-      padding: '6px 8px',
+      padding: '3px 4px',
       fontSize: '14px',
-      fontWeight: '500',
+      fontWeight: '700',
     };
     const iconStyle = {
       marginRight: 8,
