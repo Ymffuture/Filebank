@@ -26,7 +26,7 @@ const useContentLock = () => {
 
     const handleContextMenu = (e) => {
       e.preventDefault();
-      // showError("Right-click is disabled on this site.");
+       showError("Right-click is disabled on this site.");
     };
 
     const handleKeyDown = (e) => {
@@ -47,7 +47,7 @@ const useContentLock = () => {
 
       // Handle double tap
       if (now - lastTap < 300) {
-        // showError('This action is restricted.');
+        showError('This action is restricted.');
       }
       lastTap = now;
 
@@ -57,7 +57,7 @@ const useContentLock = () => {
 
     const handleTouchEnd = () => {
       if (Date.now() - touchStartTime > 500) {
-        // showError("Long press is disabled.");
+         showError("Long press is disabled.");
       }
     };
 
@@ -83,7 +83,7 @@ const useContentLock = () => {
             font-family: monospace;
             animation: fadeIn 0.5s ease-out forwards;
           ">
-            ⚠️ Please stay focused on the app.
+            Temporarily minimized / file upload.
           </div>
         `;
         document.body.appendChild(banner);
