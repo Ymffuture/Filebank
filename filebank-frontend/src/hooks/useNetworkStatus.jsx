@@ -53,7 +53,7 @@ const _toastStyle = {
         toastIdRef.current = toast(
           <span style={{ display: 'flex', alignItems: 'center' }}>
             <WifiOff size={18} style={iconStyle} />
-            <span>You are Offline</span>
+            <span>No internet connection</span>
           </span>,
           {
             type: 'default',
