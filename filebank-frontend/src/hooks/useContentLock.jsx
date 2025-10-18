@@ -78,12 +78,12 @@ const useContentLock = () => {
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 2rem;
+            font-size: 1rem;
             z-index: 9999;
             font-family: monospace;
             animation: fadeIn 0.5s ease-out forwards;
           ">
-            Temporarily minimized / file upload.
+           Temporarily minimized / file upload.
           </div>
         `;
         document.body.appendChild(banner);
