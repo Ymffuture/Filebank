@@ -26,7 +26,7 @@ const useContentLock = () => {
 
     const handleContextMenu = (e) => {
       e.preventDefault();
-       showError("Right-click is disabled on this site.");
+       // showError("Right-click is disabled on this site.");
     };
 
     const handleKeyDown = (e) => {
@@ -35,7 +35,7 @@ const useContentLock = () => {
         e.key === "F12"
       ) {
         e.preventDefault();
-        showError("Copying or inspecting is disabled.");
+        // showError("Copying or inspecting is disabled.");
       }
     };
 
@@ -47,7 +47,7 @@ const useContentLock = () => {
 
       // Handle double tap
       if (now - lastTap < 300) {
-        showError('This action is restricted.');
+      //  showError('This action is restricted.');
       }
       lastTap = now;
 
@@ -57,7 +57,7 @@ const useContentLock = () => {
 
     const handleTouchEnd = () => {
       if (Date.now() - touchStartTime > 500) {
-         showError("Long press is disabled.");
+      //   showError("Long press is disabled.");
       }
     };
 
