@@ -19,7 +19,7 @@ import Beams from './Beams';
 import DecryptedText from './DecryptedText';
 import { AiOutlineDown } from 'react-icons/ai';
 import { FaLock, FaUserCircle } from 'react-icons/fa'; // 'fa' = font-awesome
-import { Bell } from "react-icons";
+import { FiBell } from "react-icons/fi";
 
 
 const { Title, Paragraph, Text } = Typography;
@@ -266,7 +266,7 @@ const usernamebottom = user?.name || user?.displayName || "Guest";
         {user ? (
           <Space>
   <Badge count={notifications} size="small" offset={[-4, 3]}>
-    <Bell
+    <FiBell
       style={{ fontSize: 24, cursor: "pointer", color: "#fff" }}
       onClick={fetchNotifications}
     />
