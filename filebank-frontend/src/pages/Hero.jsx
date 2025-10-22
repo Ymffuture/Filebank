@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { GoogleLogin, googleLogout } from '@react-oauth/google';
-import { Button, Typography, message, Avatar, Dropdown, Menu, Badge, Space, Row, Col, Modal, Form, Input, Spin, Upload, Image} from 'antd';
+import { Button, Typography, message, Avatar, Dropdown, Menu, Badge, Space, Row, Col, Modal, Form, Input, Spin } from 'antd';
 import { BellOutlined, DashboardFilled, DownOutlined, LogoutOutlined, UserOutlined } from '@ant-design/icons';
 import { Link, useNavigate } from 'react-router-dom';
 import api from '../api/fileApi';
@@ -19,7 +19,7 @@ import Beams from './Beams';
 import DecryptedText from './DecryptedText';
 import { AiOutlineDown } from 'react-icons/ai';
 import { FaLock, FaUserCircle } from 'react-icons/fa'; // 'fa' = font-awesome
-import { Bell } from "lucide-react";
+import { Bell } from "react-icons";
 
 
 const { Title, Paragraph, Text } = Typography;
@@ -37,8 +37,7 @@ export default function Hero() {
   const [attempts, setAttempts] = useState(0);
   const [isLockedOut, setIsLockedOut] = useState(false);
   const [remainingTime, setRemainingTime] = useState(0);
-  const [profilePic, setProfilePic] = useState(null);
-  
+
 useEffect(() => {
   const interval = setInterval(() => {
     const email = localStorage.getItem('lastLoginEmail');
@@ -56,7 +55,7 @@ useEffect(() => {
         })
         .catch(() => {});
     }
-  }, 100); // run every 1 second
+  }, 1000); // run every 1 second
 
   return () => clearInterval(interval); // cleanup on unmount
 }, []);
@@ -166,14 +165,14 @@ const usernamebottom = user?.name || user?.displayName || "Guest";
   const getRandomColor = () => {
   const colors = [
     '#A5D8FF', // soft sky blue
- //   '#B5EAD7', // mint green
-  //  '#FFD6A5', // light peach
-  //  '#FFB5E8', // pastel pink
-  //  '#FFF3B0', // pale yellow
+    '#B5EAD7', // mint green
+    '#FFD6A5', // light peach
+    '#FFB5E8', // pastel pink
+    '#FFF3B0', // pale yellow
     '#C9A7EB', // soft lavender
-  //  '#FFDAC1', // cream coral
+    '#FFDAC1', // cream coral
     '#BEE3DB', // aqua mist
-    //'#FAD2E1', // blush pink
+    '#FAD2E1', // blush pink
     '#D7E3FC'  // powder blue
   ];
   return colors[Math.floor(Math.random() * colors.length)];
@@ -263,7 +262,7 @@ const usernamebottom = user?.name || user?.displayName || "Guest";
     zIndex: 1,
     color: '#fff', // white text for dark background
   }}>
-        <Title level={3} style={{ margin: 0, color: '#9CA3AF' }}>Famacloud</Title>
+        <Title level={3} style={{ margin: 0, color: '#0B3D91' }}>Famacloud</Title>
         {user ? (
           <Space>
   <Badge count={notifications} size="small" offset={[-4, 3]}>
@@ -274,7 +273,7 @@ const usernamebottom = user?.name || user?.displayName || "Guest";
   </Badge>
   <Dropdown overlay={userMenu}>
     <Space style={{ cursor: "pointer" }}>
-      <Avatar  icon={ <FaUserCircle className="text-gray-400 text-4xl" />} />
+      <Avatar  icon={ <FaUserCircle className="text-gray-400 text-2xl" />} />
       <Text style={{ color: "#fff" }}>
         {user.name || user.displayName
           ? (user.name || user.displayName).length > 6
@@ -370,7 +369,7 @@ const usernamebottom = user?.name || user?.displayName || "Guest";
         borderRadius: '20px',
         maxWidth: '1000px',
         margin: '2rem auto',
-       // border: '1px solid rgba(255, 255, 255, 0.2)',
+        border: '1px solid rgba(255, 255, 255, 0.2)',
         boxShadow: '0 4px 30px rgba(0, 0, 0, 0.1)',
         zIndex: 1
       }}>
@@ -457,15 +456,9 @@ const usernamebottom = user?.name || user?.displayName || "Guest";
       )}
 
       {isRegistering && (
-      
- <>
-    
- 
-      
         <Form.Item name="name" label="Full Name" rules={[{ required: true }]}>
           <Input placeholder="Your Name" />
         </Form.Item>
- </>
       )}
       <Form.Item
         name="email"
@@ -571,6 +564,7 @@ const usernamebottom = user?.name || user?.displayName || "Guest";
         style={{
         textAlign: 'center',
         marginTop: '3rem',
+        padding: '1rem',
         color: '#777',
         fontSize: '0.85rem', 
       backdropFilter: 'blur(8px)',
@@ -610,5 +604,3 @@ const usernamebottom = user?.name || user?.displayName || "Guest";
     </>
   );
 }
-
-
