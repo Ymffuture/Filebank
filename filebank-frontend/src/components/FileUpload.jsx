@@ -23,6 +23,8 @@ export default function FileUpload({
   const [progress, setProgress] = useState(0);
   const [message, setMessage] = useState(null);
   const { enqueueSnackbar } = useSnackbar();
+const [eta, setEta] = useState(null);
+const [startTime, setStartTime] = useState(null);
 
   // Config
   const MAX_FILES = 5;
@@ -121,14 +123,29 @@ export default function FileUpload({
     const formData = new FormData();
     files.forEach((f) => formData.append("file", f.originFileObj));
 
-    setUploading(true);
-    setProgress(0);
+setUploading(true);
+setProgress(0);
+setEta(null);
+setStartTime(Date.now());
+
 
     try {
       const res = await api.post("files/upload", formData, {
         headers: { "Content-Type": "multipart/form-data" },
-        onUploadProgress: (e) =>
-          setProgress(Math.floor((e.loaded * 100) / e.total)),
+        onUploadProgress: (e) => {
+  const percent = Math.floor((e.loaded * 100) / e.total);
+  setProgress(percent);
+
+  const elapsed = (Date.now() - startTime) / 1000; // seconds
+  const speed = e.loaded / elapsed; // bytes/sec
+  const remaining = e.total - e.loaded;
+  const secondsLeft = remaining / speed;
+
+  if (!isNaN(secondsLeft) && isFinite(secondsLeft)) {
+    setEta(secondsLeft);
+  }
+},
+
       });
 
       setMessage({
@@ -176,6 +193,13 @@ export default function FileUpload({
       setProgress(0);
     }
   };
+  
+const formatTime = (seconds) => {
+  if (seconds < 60) return `${Math.round(seconds)}s`;
+  const minutes = Math.floor(seconds / 60);
+  const secs = Math.floor(seconds % 60);
+  return `${minutes}m ${secs}s`;
+};
 
   return (
     <>
@@ -299,10 +323,16 @@ export default function FileUpload({
 
           {/* Upload Progress */}
           {progress > 0 && (
-            <div className="mt-4">
-              <Progress percent={progress} />
-            </div>
-          )}
+  <div className="mt-4 text-center">
+    <Progress percent={progress} />
+    {eta && (
+      <p className="text-sm text-gray-600 dark:text-gray-300 mt-2">
+        ⏱ Estimated time left: {formatTime(eta)}
+      </p>
+    )}
+  </div>
+)}
+
 
           {/* Alerts */}
           {message && (
