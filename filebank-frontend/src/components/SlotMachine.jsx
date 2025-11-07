@@ -9,12 +9,12 @@ const { Title, Text } = Typography;
 const ROWS = 3;
 const COLS = 3;
 
-const SYMBOLS_COUNT = { A: 6, B: 8, C: 12, D: 20 };
-const SYMBOL_VALUES = { A: 10, B: 8, C: 6, D: 4};
+const SYMBOLS_COUNT = { A: 72, B: 144, C: 288, D: 576 };
+const SYMBOL_VALUES = { A: 100, B: 80, C: 60, D: 40};
 const SYMBOL_EMOJIS = { A: "🍒", B: "🍋", C: "🍉", D: "⭐" };
 const MAX_DEPOSIT = 500;
-const MAX_SPINS_PER_DAY = 10;
-const WITHDRAW_LIMIT = 200;
+const MAX_SPINS_PER_DAY = 100;
+const WITHDRAW_LIMIT = 20000;
 
 export default function SlotMachine() {
   const [balance, setBalance] = useState(() => Number(localStorage.getItem("balance")) || 0);
@@ -102,7 +102,7 @@ export default function SlotMachine() {
         winnings += bet * SYMBOL_VALUES[symbols[0]];
       } else if (unique.length === 2) {
         // 2 matching symbols
-        winnings += bet * 0.1;
+        winnings += bet * 10;
       }
     }
     return winnings;
