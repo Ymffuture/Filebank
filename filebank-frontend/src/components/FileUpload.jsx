@@ -142,9 +142,19 @@ setStartTime(Date.now());
   const secondsLeft = remaining / speed;
 
   if (!isNaN(secondsLeft) && isFinite(secondsLeft)) {
-    setEta(secondsLeft);
+    // Format secondsLeft -> "2m 4s"
+    const minutes = Math.floor(secondsLeft / 60);
+    const seconds = Math.floor(secondsLeft % 60);
+
+    const formatted =
+      minutes > 0
+        ? `${minutes}m ${seconds}s`
+        : `${seconds}s`;
+
+    setEta(formatted);
   }
 },
+
 
       });
 
@@ -170,7 +180,7 @@ setStartTime(Date.now());
 
       if (onUpload) onUpload(res.data);
     } catch (err) {
-      console.error(err);
+    
       setMessage({
         type: "error",
         text: (
@@ -195,11 +205,19 @@ setStartTime(Date.now());
   };
   
 const formatTime = (seconds) => {
+  if (!seconds || isNaN(seconds) || !isFinite(seconds)) return "0s";
+
   if (seconds < 60) return `${Math.round(seconds)}s`;
+
   const minutes = Math.floor(seconds / 60);
   const secs = Math.floor(seconds % 60);
-  return `${minutes}m ${secs}s`;
+
+  // Add leading zero to seconds if less than 10
+  const formattedSecs = secs < 10 ? `0${secs}` : secs;
+
+  return `${minutes}m ${formattedSecs}s`;
 };
+
 
   return (
     <>
